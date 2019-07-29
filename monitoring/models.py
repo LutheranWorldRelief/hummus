@@ -75,7 +75,7 @@ class DataList(models.Model):
     name = models.TextField(blank=True, null=True)
     tag = models.CharField(max_length=255, blank=True, null=True)
     value = models.CharField(max_length=45, blank=True, null=True)
-    list_id = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
+    data_list = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     notes = models.TextField(blank=True, null=True)
     slug = models.CharField(max_length=255, blank=True, null=True)
     order = models.IntegerField(blank=True, null=True)
