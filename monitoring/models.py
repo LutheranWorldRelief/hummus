@@ -212,7 +212,7 @@ class Structure(models.Model):
     id = models.IntegerField(primary_key=True)
     code = models.CharField(max_length=150, blank=True, null=True)
     description = models.TextField()
-    structure_id = models.IntegerField(blank=True, null=True)
+    structure = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent")
     notes = models.TextField(blank=True, null=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
 
@@ -221,5 +221,4 @@ class Structure(models.Model):
 
     class Meta:
         ordering = ['project', 'description']
-        managed = False
         db_table = 'structure'
