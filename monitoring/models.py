@@ -134,11 +134,11 @@ class Filter(models.Model):
 class Organization(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.TextField()
-    country = models.CharField(max_length=2, blank=True, null=True)
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     organization_type_id = models.IntegerField(blank=True, null=True)
     organization_id = models.IntegerField(blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
-    country_id = models.IntegerField(blank=True, null=True)
+    country_number = models.IntegerField(blank=True, null=True)
     is_implementer = models.BooleanField()
 
     def __str__(self):
@@ -146,7 +146,6 @@ class Organization(models.Model):
 
     class Meta:
         ordering = ['name']
-        managed = False
         db_table = 'organization'
 
 
