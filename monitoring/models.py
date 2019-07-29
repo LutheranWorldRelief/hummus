@@ -75,17 +75,16 @@ class DataList(models.Model):
     name = models.TextField(blank=True, null=True)
     tag = models.CharField(max_length=255, blank=True, null=True)
     value = models.CharField(max_length=45, blank=True, null=True)
-    list_id = models.IntegerField(blank=True, null=True)
+    list_id = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
     notes = models.TextField(blank=True, null=True)
     slug = models.CharField(max_length=255, blank=True, null=True)
     order = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s: %s" % (self.list_id, self.name)
+        return "%s: %s" % (self.id, self.name)
 
     class Meta:
-        ordering = ['list_id', 'name']
-        managed = False
+        ordering = ['id', 'name']
         db_table = 'data_list'
 
 
@@ -102,14 +101,13 @@ class Event(models.Model):
     end = models.DateTimeField(blank=True, null=True)
     place = models.CharField(max_length=200, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    country_id = models.IntegerField(blank=True, null=True)
+    country = models.ForeignKey('Country', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
-        managed = False
         db_table = 'event'
 
 
@@ -120,14 +118,13 @@ class Filter(models.Model):
     end = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
     order = models.IntegerField(blank=True, null=True)
-    filter_id = models.IntegerField(blank=True, null=True)
+    filter = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent")
 
     def __str__(self):
         return "%s: %s" % (self.slug, self.name)
 
     class Meta:
         ordering = ['slug', 'name']
-        managed = False
         db_table = 'filter'
 
 
@@ -160,7 +157,6 @@ class OrganizationType(models.Model):
 
     class Meta:
         ordering = ['name']
-        managed = False
         db_table = 'organization_type'
 
 
@@ -181,7 +177,6 @@ class Project(models.Model):
 
     class Meta:
         ordering = ['name']
-        managed = False
         db_table = 'project'
 
 
@@ -204,7 +199,6 @@ class ProjectContact(models.Model):
 
     class Meta:
         ordering = ['project', 'contact']
-        managed = False
         db_table = 'project_contact'
 
 
