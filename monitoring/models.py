@@ -7,7 +7,7 @@ class Attendance(models.Model):
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
     document = models.CharField(max_length=45, blank=True, null=True)
     sex = models.CharField(max_length=1, blank=True, null=True)
-    country = models.CharField(max_length=45, blank=True, null=True)
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     community = models.CharField(max_length=255, blank=True, null=True)
     org_id = models.IntegerField(blank=True, null=True)
     phone_personal = models.CharField(max_length=45, blank=True, null=True)
@@ -18,7 +18,6 @@ class Attendance(models.Model):
 
     class Meta:
         ordering = ['event', 'contact']
-        managed = False
         db_table = 'attendance'
 
 
