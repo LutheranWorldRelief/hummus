@@ -53,10 +53,10 @@ class Contact(models.Model):
 
 
 class Country(models.Model):
-    name_es = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    codigo_numerico = models.IntegerField()
     id = models.CharField(primary_key=True, max_length=2)
+    name = models.CharField(max_length=255)
+    name_es = models.CharField(max_length=255)
+    codigo_numerico = models.IntegerField()
     alfa3 = models.CharField(max_length=3)
     x = models.CharField(max_length=255)
     y = models.CharField(max_length=255)
@@ -65,6 +65,7 @@ class Country(models.Model):
         return self.name
 
     class Meta:
+        verbose_name_plural = "Countries"
         ordering = ['name']
         db_table = 'country'
 

@@ -10,6 +10,8 @@ class ListAdminMixin(object):
         self.list_display = [field.name for field in model._meta.fields if field.name not in not_allowed ]
         if 'name' in self.list_display:
             self.search_fields = ['name']
+        if 'country' in self.list_display:
+            self.list_filter = [('country', admin.RelatedOnlyFieldListFilter)]
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
