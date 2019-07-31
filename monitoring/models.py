@@ -216,3 +216,12 @@ class Structure(models.Model):
     class Meta:
         ordering = ['project', 'description']
         db_table = 'structure'
+
+
+class Education(models.Model):
+    name = models.CharField(max_length=100)
+    name_es = models.CharField(max_length=100)
+    name_fr = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ['name']
