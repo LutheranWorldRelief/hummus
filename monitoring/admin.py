@@ -7,11 +7,14 @@ from django.apps import apps
 class ListAdminMixin(object):
     def __init__(self, model, admin_site):
         not_allowed = ['password', 'colors']
+        self.list_filter = []
         self.list_display = [field.name for field in model._meta.fields if field.name not in not_allowed ]
         if 'name' in self.list_display:
             self.search_fields = ['name']
+        if 'type' in self.list_display:
+            self.list_filter.append(('type', admin.RelatedOnlyFieldListFilter))
         if 'country' in self.list_display:
-            self.list_filter = [('country', admin.RelatedOnlyFieldListFilter)]
+            self.list_filter.append(('country', admin.RelatedOnlyFieldListFilter))
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 

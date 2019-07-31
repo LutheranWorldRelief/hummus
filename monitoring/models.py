@@ -41,7 +41,7 @@ class Contact(models.Model):
     women_home = models.IntegerField(blank=True, null=True)
     created = models.DateField(blank=True, null=True)
     modified = models.DateField(blank=True, null=True)
-    type_id = models.IntegerField(blank=True, null=True)
+    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True)
     birthdate = models.DateField(blank=True, null=True)
 
     def __str__(self):
