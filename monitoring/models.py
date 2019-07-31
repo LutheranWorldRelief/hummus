@@ -5,13 +5,13 @@ class Attendance(models.Model):
     id = models.IntegerField(primary_key=True)
     event = models.ForeignKey('Event', on_delete=models.CASCADE)
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
+    type_id = models.IntegerField(blank=True, null=True)
     document = models.CharField(max_length=45, blank=True, null=True)
     sex = models.CharField(max_length=1, blank=True, null=True)
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     community = models.CharField(max_length=255, blank=True, null=True)
     org_id = models.IntegerField(blank=True, null=True)
     phone_personal = models.CharField(max_length=45, blank=True, null=True)
-    type_id = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return "%s: %s" % (self.event.name, self.contact.name)
@@ -26,10 +26,12 @@ class Contact(models.Model):
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=80, blank=True, null=True)
     first_name = models.CharField(max_length=80, blank=True, null=True)
+    birthdate = models.DateField(blank=True, null=True)
     document = models.CharField(max_length=40, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     organization_id = models.IntegerField(blank=True, null=True)
     sex = models.CharField(max_length=1, blank=True, null=True)
+    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True)
     community = models.CharField(max_length=40, blank=True, null=True)
     municipality = models.CharField(max_length=40, blank=True, null=True)
     city = models.CharField(max_length=40, blank=True, null=True)
@@ -41,8 +43,6 @@ class Contact(models.Model):
     women_home = models.IntegerField(blank=True, null=True)
     created = models.DateField(blank=True, null=True)
     modified = models.DateField(blank=True, null=True)
-    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True)
-    birthdate = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -162,7 +162,7 @@ class OrganizationType(models.Model):
 
 class Project(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.TextField()
+    name = models.CharField(max_length=255)
     code = models.CharField(max_length=255)
     logo = models.CharField(max_length=255, blank=True, null=True)
     colors = models.TextField()
@@ -178,6 +178,17 @@ class Project(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'project'
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    name_es = models.CharField(max_length=100)
+    name_fr = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class ProjectContact(models.Model):
