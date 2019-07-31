@@ -195,7 +195,7 @@ class ProjectContact(models.Model):
     id = models.IntegerField(primary_key=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
-    product = models.CharField(max_length=255, blank=True, null=True)
+    product = models.ForeignKey('Product', on_delete=models.SET_NULL, blank=True, null=True)
     area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     development_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     productive_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
