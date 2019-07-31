@@ -34,7 +34,7 @@ class Contact(models.Model):
     municipality = models.CharField(max_length=40, blank=True, null=True)
     city = models.CharField(max_length=40, blank=True, null=True)
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
-    education_id = models.IntegerField(blank=True, null=True)
+    education = models.ForeignKey('Education', on_delete=models.SET_NULL, blank=True, null=True)
     phone_personal = models.CharField(max_length=20, blank=True, null=True)
     phone_work = models.CharField(max_length=20, blank=True, null=True)
     men_home = models.IntegerField(blank=True, null=True)
@@ -222,6 +222,9 @@ class Education(models.Model):
     name = models.CharField(max_length=100)
     name_es = models.CharField(max_length=100)
     name_fr = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ['name']
