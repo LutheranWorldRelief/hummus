@@ -228,3 +228,15 @@ class Education(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+class ContactType(models.Model):
+    name = models.CharField(max_length=100)
+    name_es = models.CharField(max_length=100)
+    name_fr = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
