@@ -5,7 +5,7 @@ class Attendance(models.Model):
     id = models.IntegerField(primary_key=True)
     event = models.ForeignKey('Event', on_delete=models.CASCADE)
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
-    type_id = models.IntegerField(blank=True, null=True)
+    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True)
     document = models.CharField(max_length=45, blank=True, null=True)
     sex = models.CharField(max_length=1, blank=True, null=True)
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
