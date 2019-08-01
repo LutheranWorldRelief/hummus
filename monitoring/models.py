@@ -10,7 +10,7 @@ class Attendance(models.Model):
     sex = models.CharField(max_length=1, blank=True, null=True)
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     community = models.CharField(max_length=255, blank=True, null=True)
-    org_id = models.IntegerField(blank=True, null=True)
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
     phone_personal = models.CharField(max_length=45, blank=True, null=True)
 
     def __str__(self):
@@ -94,7 +94,7 @@ class Event(models.Model):
     structure_id = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=455)
     title = models.TextField(blank=True, null=True)
-    implementing_organization_id = models.IntegerField()
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
     organizer = models.CharField(max_length=200, blank=True, null=True)
     text = models.TextField(blank=True, null=True)
     start = models.DateTimeField(blank=True, null=True)
