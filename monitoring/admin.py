@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.apps import apps
+from import_export.admin import ImportExportModelAdmin
 
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
@@ -20,7 +21,7 @@ class ListAdminMixin(object):
 
 models = apps.get_models()
 for model in models:
-    admin_class = type('AdminClass', (ListAdminMixin, admin.ModelAdmin), {})
+    admin_class = type('AdminClass', (ListAdminMixin, ImportExportModelAdmin), {})
     try:
         admin.site.register(model, admin_class)
     except admin.sites.AlreadyRegistered:
