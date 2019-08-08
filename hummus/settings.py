@@ -42,8 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     # extra
+    'django_tables2',
+    'django_filters',
+    'crispy_forms',
     'import_export',
+    'microsoft_auth',
     # my apps
     'legacy',
     'monitoring',
@@ -72,6 +77,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # extras
+                'microsoft_auth.context_processors.microsoft',
             ],
         },
     },
@@ -117,3 +124,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django PHP Bridge
+
+#SESSION_ENGINE = 'django_php_bridge.backends.db'
+#SESSION_COOKIE_NAME = 'PHPSESSID'
+
+# From https://django-microsoft-auth.readthedocs.io/en/latest/usage.html
+
+AUTHENTICATION_BACKENDS = [
+    'microsoft_auth.backends.MicrosoftAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# values you got from step 2 from your Mirosoft app
+MICROSOFT_AUTH_CLIENT_ID = env('MICROSOFT_AUTH_CLIENT_ID')
+MICROSOFT_AUTH_CLIENT_SECRET = env('MICROSOFT_AUTH_CLIENT_SECRET')
+
+# pick one MICROSOFT_AUTH_LOGIN_TYPE value
+# Microsoft authentication
+# include Microsoft Accounts, Office 365 Enterpirse and Azure AD accounts
+MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
+

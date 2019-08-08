@@ -44,6 +44,9 @@ class Contact(models.Model):
     created = models.DateField(blank=True, null=True)
     modified = models.DateField(blank=True, null=True)
 
+    def get_absolute_url(self):
+        return "/contact/%i/" % self.id
+
     def __str__(self):
         return self.name
 
