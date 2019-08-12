@@ -119,7 +119,10 @@ def graficoTipoParticipante(request):
 
 @csrf_exempt
 def graficoSexoParticipante(request):
-    return JsonResponse({'foo':'bar'})
+    result = Attendance.objects.aggregate(
+        total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
+    )
+    return JsonResponse(result)
 
 @csrf_exempt
 def graficoNacionalidad(request):
