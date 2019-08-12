@@ -12,3 +12,56 @@ class ContactTableView(PagedFilteredTableView):
     paginate_by = 50
     filter_class = ContactFilter
     formhelper_class = ContactFilterFormHelper
+
+class DashboardView(TemplateView):
+    template_name = 'dashboard.html'
+    pass
+
+
+def proyecto(request):
+    pass
+
+def cantidadProyectos(request):
+    pass
+
+def cantidadEventos(request):
+    pass
+
+def graficoActividades(request):
+    pass
+
+def paises(request):
+    pass
+
+def rubros(request):
+    pass
+
+def graficoOrganizaciones(request):
+    pass
+
+def proyectosMetas(request):
+    pass
+
+def graficoAnioFiscal(request):
+    pass
+
+def graficoEdad(request):
+    pass
+
+def graficoEducacion(request):
+    pass
+
+def graficoEventos(request):
+    pass
+
+def graficoTipoParticipante(request):
+    pass
+
+def graficoSexoParticipante(request):
+    pass
+
+def graficoNacionalidad(request):
+    pass
+
+def graficoPaisEventos(request):
+    pass
