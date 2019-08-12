@@ -5,7 +5,7 @@ from .models import *
 
 @csrf_exempt
 def proyecto(request):
-    data = {}
+    data = {'proyecto': None}
     return JsonResponse(data)
 
 @csrf_exempt
@@ -39,7 +39,7 @@ def rubros(request):
 @csrf_exempt
 def graficoOrganizaciones(request):
     organizaciones = Organization.objects.values('name', 'organization_type_id')
-    types = OrganizationType.objects.values('id')
+    types = OrganizationType.objects.values('id', 'name')
     colorNumero = 0;
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     data_array = {}
@@ -49,12 +49,10 @@ def graficoOrganizaciones(request):
         v['value'] = 0
         data_array[v['id']] = v
     for v in organizaciones:
-        if not v['organization_type_id']:
-            v['organization_type_id'] = 'NE'
         data_array[v['organization_type_id']]['value'] += 1;
 
-    data = {"organizaciones" : {"data" : organizaciones }}
-    return JsonResponse({'foo':'bar'})
+    data = {"organizaciones" : {"data" : data_array }}
+    return JsonResponse(data)
 
 @csrf_exempt
 def proyectosMetas(request):
