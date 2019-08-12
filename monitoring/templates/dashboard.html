@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'nobase.html' %}
 {% load static %}
 {% csrf_token %}
 
@@ -25,6 +25,10 @@
 <link href="/assets/98c5193a/css/select2.css' %}" rel="stylesheet">
 <link href="/assets/98c5193a/css/select2-addl.css' %}" rel="stylesheet">
 <link href="/assets/98c5193a/css/select2-krajee.css' %}" rel="stylesheet">
+
+<link href="{% static 'css/site.app.css' %}" rel="stylesheet">
+<link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
+
 
 <script src="{% static 'js/servicios_angular/datos.js' %}"></script>
 {% endblock %}

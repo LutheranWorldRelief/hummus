@@ -1,0 +1,17 @@
+/*multiselect list box */
+
+.bootstrap-duallistbox-container .moveall, .bootstrap-duallistbox-container .removeall {
+    box-sizing: inherit;
+}
+
+.moveall {
+    background-color: #00a65a;
+    border-color: #008d4c;
+    color:white;
+}
+
+.removeall {
+    background-color: #dd4b39;
+    border-color: #d73925;
+    color:white;
+}
