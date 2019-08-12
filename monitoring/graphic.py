@@ -1,17 +1,24 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from .models import *
+
 @csrf_exempt
 def proyecto(request):
-    return JsonResponse({'foo':'bar'})
+    data = {}
+    return JsonResponse(data)
 
 @csrf_exempt
 def cantidadProyectos(request):
-    return JsonResponse({'foo':'bar'})
+    proyectos = Project.objects.count()
+    data = {'proyectos': proyectos }
+    return JsonResponse(data)
 
 @csrf_exempt
 def cantidadEventos(request):
-    return JsonResponse({'foo':'bar'})
+    eventos = Event.objects.count()
+    data = {'eventos': eventos }
+    return JsonResponse(data)
 
 @csrf_exempt
 def graficoActividades(request):
@@ -19,14 +26,34 @@ def graficoActividades(request):
 
 @csrf_exempt
 def paises(request):
-    return JsonResponse({'foo':'bar'})
+    paises = Country.objects.count()
+    data = {'paises': paises }
+    return JsonResponse(data)
 
 @csrf_exempt
 def rubros(request):
-    return JsonResponse({'foo':'bar'})
+    rubros = Product.objects.count()
+    data = {'rubros': rubros }
+    return JsonResponse(data)
 
 @csrf_exempt
 def graficoOrganizaciones(request):
+    organizaciones = Organization.objects.values('name', 'organization_type_id')
+    types = OrganizationType.objects.values('id')
+    colorNumero = 0;
+    colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+    data_array = {}
+    for v in types:
+        v['color'] = colores[colorNumero % 10]
+        colorNumero += 1
+        v['value'] = 0
+        data_array[v['id']] = v
+    for v in organizaciones:
+        if not v['organization_type_id']:
+            v['organization_type_id'] = 'NE'
+        data_array[v['organization_type_id']]['value'] += 1;
+
+    data = {"organizaciones" : {"data" : organizaciones }}
     return JsonResponse({'foo':'bar'})
 
 @csrf_exempt
