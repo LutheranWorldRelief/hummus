@@ -69,21 +69,20 @@ def graficoOrganizaciones(request):
     data = {"organizaciones" : {"data" : data_array }}
     return JsonResponse(data)
 
+
 @csrf_exempt
 def proyectosMetas(request):
     return JsonResponse({'foo':'bar'})
 
+
 @csrf_exempt
 def graficoAnioFiscal(request):
-    return JsonResponse({'foo':'bar'})
+    cursor = connection.cursor()
+    cursor.execute("SELECT type, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT id, CASE WHEN 10<=6 THEN CASE WHEN 10<= date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)-1    END ELSE CASE WHEN 10 > date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)+1    END END  as type, sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id GROUP BY c.id) sq) q GROUP BY type ORDER BY type")
+    result = dictfetchall(cursor)
+    return JsonResponse({'fiscal': result})
 
-def dictfetchall(cursor):
-    "Return all rows from a cursor as a dict"
-    columns = [col[0] for col in cursor.description]
-    return [
-        dict(zip(columns, row))
-        for row in cursor.fetchall()
-    ]
+
 @csrf_exempt
 def graficoEdad(request):
     cursor = connection.cursor()
