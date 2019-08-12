@@ -3,7 +3,7 @@
 {% csrf_token %}
 
 {% block extra_header %}
-<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/assets/jquery.js' %}"></script>
 
 <script src="{% static 'js/lib/highcharts/maparequisito/proj4.js' %}"></script>
 <script src="{% static 'js/lib/highcharts/highcharts.js' %}"></script>
@@ -21,6 +21,11 @@
 <script src="{% static 'js/lib/angular-resource.min.js' %}"></script>
 <script src="{% static 'js/lib/angular-sanitize.min.js' %}"></script>
 <script src="{% static 'js/lib/dirPagination.js' %}"></script>
+
+<link href="/assets/98c5193a/css/select2.css' %}" rel="stylesheet">
+<link href="/assets/98c5193a/css/select2-addl.css' %}" rel="stylesheet">
+<link href="/assets/98c5193a/css/select2-krajee.css' %}" rel="stylesheet">
+
 <script src="{% static 'js/servicios_angular/datos.js' %}"></script>
 {% endblock %}
 
@@ -51,7 +56,7 @@
     <section ng-show="!cargando">
         <div class="row container-fluid">
             <!--Filtros-->
-            {% include "dashboard/filtros.html" %}
+            {#include "dashboard/filtros.html" #}
 
             <!--Resumen-->
             {% include "dashboard/resumen.html" %}
@@ -114,4 +119,11 @@
 <script src="{% static 'js/servicios_angular/highcharts.optiones.js' %}"></script>
 <script src="{% static 'js/script/dashboard_index.js' %}"></script>
 <link rel="stylesheet" href="{% static 'js/servicios_angular/ng-grid.css' %}">
+
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/datepicker-kv.js' %}"></script>
+<script src="{% static 'js/locales/bootstrap-datepicker.es.min.js' %}"></script>
+<script src="{% static 'js/kv-widgets.js' %}"></script>
+<script src="{% static 'js/select2.full.js' %}"></script>
+<script src="{% static 'js/select2-krajee.js' %}"></script>
 {% endblock %}

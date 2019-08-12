@@ -17,7 +17,8 @@ def cantidadProyectos(request):
 @csrf_exempt
 def cantidadEventos(request):
     eventos = Event.objects.count()
-    data = {'eventos': eventos }
+    actividades = Event.objects.order_by('structure_id').distinct('structure_id').count()
+    data = {"cantidadEventos": {"eventos": eventos ,"actividades": actividades} }
     return JsonResponse(data)
 
 @csrf_exempt

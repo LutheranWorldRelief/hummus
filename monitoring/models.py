@@ -94,7 +94,7 @@ class DataList(models.Model):
 
 class Event(models.Model):
     id = models.IntegerField(primary_key=True)
-    structure_id = models.IntegerField(blank=True, null=True)
+    structure = models.ForeignKey('Structure', on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=455)
     title = models.TextField(blank=True, null=True)
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
