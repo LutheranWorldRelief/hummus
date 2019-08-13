@@ -81,7 +81,7 @@ def graficoOrganizaciones(request):
 
 @csrf_exempt
 def proyectosMetas(request):
-    return JsonResponse({'foo':'bar'})
+    return JsonResponse({'proyectos_metas': []})
 
 
 @csrf_exempt
