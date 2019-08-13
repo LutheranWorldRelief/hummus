@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Concat
-from django.db.models import Sum, Count, Q, Value, CharField
+from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.db import connection
 
 from .models import *
@@ -123,7 +123,13 @@ def graficoEventos(request):
 
 @csrf_exempt
 def graficoTipoParticipante(request):
-    return JsonResponse({'foo':'bar'})
+    result = Attendance.objects.order_by('contact__type__name').values('contact__type__name').annotate(
+        total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
+    )
+    for row in result:
+        row['type'] = row['contact__type__name']
+    data = list(result)
+    return JsonResponse(data, safe=False)
 
 @csrf_exempt
 def graficoSexoParticipante(request):
