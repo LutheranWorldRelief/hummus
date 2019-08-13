@@ -62,20 +62,25 @@ def rubros(request):
 
 @csrf_exempt
 def graficoOrganizaciones(request):
-    organizaciones = Organization.objects.values('name', 'organization_type_id')
+    organizaciones = Event.objects.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
+        values('organization_id', 'organization__name', 'organization__organization_type_id').distinct()
+    org_list = []
+    for row in organizaciones:
+        org_list.append({'id': row['organization_id'], 'name': row['organization__name'], 'parent': row['organization__organization_type_id']})
     types = OrganizationType.objects.values('id', 'name')
     colorNumero = 0;
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
-    data_array = {}
+    data_dict = {}
     for v in types:
         v['color'] = colores[colorNumero % 10]
         colorNumero += 1
         v['value'] = 0
-        data_array[v['id']] = v
+        data_dict[v['id']] = v
     for v in organizaciones:
-        data_array[v['organization_type_id']]['value'] += 1;
+        data_dict[v['organization__organization_type_id']]['value'] += 1;
 
-    data = {"organizaciones" : {"data" : data_array }}
+    result = list(data_dict.values()) + org_list
+    data = {"organizaciones" : {"data" : result, "total" : len(organizaciones), "tipos" : data_dict, 'total_categorias' : len(data_dict) }}
     return JsonResponse(data)
 
 

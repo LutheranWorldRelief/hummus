@@ -641,7 +641,6 @@
             var data = [];
             //País en ingles, total, mujeres, hombres, coordenada x, cooredenada y, pais en español, alfa2
             Highcharts.each(paises, function (row) {
-                console.log(row);
                 data.push(row);
             });
 
