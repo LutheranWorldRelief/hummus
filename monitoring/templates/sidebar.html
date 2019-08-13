@@ -1,0 +1,88 @@
+<aside class="main-sidebar">
+
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="<?= Yii::getAlias('@web/img/logo_user.png') ?>" class="img-circle" alt="User Image"/>
+            </div>
+            <div class="pull-left info">
+                <p><?= $user->nombre completo</p>
+                <small>correo</small>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu tree" data-widget="tree">
+            <li class="header"><span><span>Menú</span></span></li>
+            <li><a href="http://localhost:8001/import/beneficiarios-paso1"><i class="fa fa-upload"></i> <span>Importar Beneficiarios</span></a>
+            </li>
+            <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-users"></i> <span>Participantes</span>
+                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                <ul class="treeview-menu">
+                    <li><a href="http://localhost:8001/contact/index"><i class="fa fa-users"></i>
+                        <span>Participantes</span></a></li>
+                    <li><a href="http://localhost:8001/contact/contact-event"><i class="fa fa-users"></i> <span>Participantes/Evento</span></a>
+                    </li>
+                    <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i>
+                        <span>Duplicados</span> <span class="pull-right-container"><i
+                                class="fa fa-angle-left pull-right"></i></span></a>
+                        <ul class="treeview-menu">
+                            <li><a href="http://localhost:8001/opt/debug-contact-name"><i class="fa fa-user"></i> <span>Nombre</span></a>
+                            </li>
+                            <li><a href="http://localhost:8001/opt/debug-contact-doc"><i class="fa fa-id-card"></i>
+                                <span>Documento</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="http://localhost:8001/event/index"><i class="fa fa-calendar"></i> <span>Eventos</span></a></li>
+            <li class="header"><span><span>Reportes</span></span></li>
+            <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>Reports</span> <span
+                    class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                <ul class="treeview-menu">
+                    <li><a href="http://localhost:8001/report/index"><i class="fa fa-file-excel-o"></i>
+                        <span>Principal</span></a></li>
+                    <li><a href="http://localhost:8001/report/template-clean"><i class="fa fa-file-excel-o"></i> <span>Plantilla en Limpio</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="http://localhost:8001/graphic/dashboard"><i class="fa fa-bar-chart"></i> <span>Gráficos</span></a>
+            </li>
+            <li class="header"><span><span>Catálogos y Configuraciones</span></span></li>
+            <li class="treeview"><a href="#"><i class="fa fa-sitemap"></i> <span>Configuraciones</span> <span
+                    class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                <ul class="treeview-menu">
+                    <li><a href="http://localhost:8001/project"><i class="fa fa-folder-open-o"></i>
+                        <span>Proyectos</span></a></li>
+                    <li class="treeview"><a href="#"><i class="fa fa-home"></i> <span>Organizaciones</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                        <ul class="treeview-menu">
+                            <li><a href="http://localhost:8001/organization"><i class="fa fa-list"></i>
+                                <span>Listado</span></a></li>
+                            <li><a href="http://localhost:8001/organization-type"><i class="fa fa-list"></i>
+                                <span>Tipos</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="http://localhost:8001/data-list"><i class="fa fa-list"></i> <span>Catálogos</span></a>
+                    </li>
+                    <li><a href="http://localhost:8001/filter"><i class="fa fa-filter"></i>
+                        <span>Segmentación</span></a></li>
+                </ul>
+            </li>
+            <li class="treeview"><a href="#"><i class="fa fa-lock"></i> <span>Seguridad</span> <span
+                    class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                <ul class="treeview-menu">
+                    <li><a href="http://localhost:8001/seguridad/usuarios"><i class="fa fa-circle-o"></i>
+                        <span>Usuarios</span></a></li>
+                    <li><a href="http://localhost:8001/seguridad/roles"><i class="fa fa-circle-o"></i>
+                        <span>Roles</span></a></li>
+                    <li><a href="http://localhost:8001/seguridad/rutas"><i class="fa fa-circle-o"></i>
+                        <span>Rutas</span></a></li>
+                    <li><a href="http://localhost:8001/audit"><i class="fa fa-circle-o"></i> <span>Bitácora</span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+</aside>
