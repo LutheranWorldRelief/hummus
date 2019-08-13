@@ -1,17 +1,21 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Hummus</title>
-          {% block extra_header %}
-          {% endblock %}
-  </head>
-  <body>
-    <div class="container">
-          {% block content %}
-          {% endblock %}
-          {% block extra_body %}
-          {% endblock %}
-  </body>
+    {% block extra_header %}
+    {% endblock %}
+</head>
+<body class="skin-blue sidebar-mini sidebar-collapse">
+<div class="wrapper">
+    {% include 'header.html' %}
+    {% include 'sidebar.html' %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block extra_body %}
+    {% endblock %}
+</body>
 </html>
