@@ -3,132 +3,133 @@
 {% csrf_token %}
 
 {% block extra_header %}
-<script src="{% static 'js/assets/jquery.js' %}"></script>
+    <script src="{% static 'js/assets/jquery.js' %}"></script>
 
-<script src="{% static 'js/lib/highcharts/maparequisito/proj4.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/highcharts.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/data.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/drilldown.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/treemap.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/heatmap.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/exporting.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/export-data.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/offline-exporting.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/modules/map.js' %}"></script>
-<script src="{% static 'js/lib/highcharts/mapdata/custom/world.js' %}"></script>
-<script src="{% static 'js/lib/angular.min.js' %}"></script>
-<script src="{% static 'js/lib/ui-bootstrap-tpls-0.10.0.min.js' %}"></script>
-<script src="{% static 'js/lib/angular-resource.min.js' %}"></script>
-<script src="{% static 'js/lib/angular-sanitize.min.js' %}"></script>
-<script src="{% static 'js/lib/dirPagination.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/maparequisito/proj4.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/highcharts.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/data.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/drilldown.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/treemap.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/heatmap.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/exporting.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/export-data.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/offline-exporting.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/map.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/mapdata/custom/world.js' %}"></script>
+    <script src="{% static 'js/lib/angular.min.js' %}"></script>
+    <script src="{% static 'js/lib/ui-bootstrap-tpls-0.10.0.min.js' %}"></script>
+    <script src="{% static 'js/lib/angular-resource.min.js' %}"></script>
+    <script src="{% static 'js/lib/angular-sanitize.min.js' %}"></script>
+    <script src="{% static 'js/lib/dirPagination.js' %}"></script>
 
-<link href="/assets/98c5193a/css/select2.css' %}" rel="stylesheet">
-<link href="/assets/98c5193a/css/select2-addl.css' %}" rel="stylesheet">
-<link href="/assets/98c5193a/css/select2-krajee.css' %}" rel="stylesheet">
+    <link href="{% static 'js/lib/select2/css/select2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'js/lib/select2/css/select2-addl.min.css' %}" rel="stylesheet">
+    <link href="{% static 'js/lib/select2/css/select2-krajee.min.css' %}" rel="stylesheet">
 
-<link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-<link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
 
 
-<script src="{% static 'js/servicios_angular/datos.js' %}"></script>
+    <script src="{% static 'js/servicios_angular/datos.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div ng-app="App" ng-controller="AppCtrl" ng-cloak="">
-    <!--    Encabezado-->
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-2">
-                    <img src="{% static 'img/logo.png' %}" class="image-responsive">
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8">
-                    <h1 class="text-center" style="color: #3A3A3A;"><?= \Yii::t('app', 'Sistema de Monitoreo de Proyectos') ?></h1>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2">
-                    <img class="image-responsive" style="width:100%; height: auto;"
-                         ng-src="{{proyecto.logo}}" alt="" ng-if="proyecto !== null">
-                </div>
+    <div ng-app="App" ng-controller="AppCtrl" ng-cloak="">
+        <!--    Encabezado-->
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <img src="{% static 'img/logo.png' %}" class="image-responsive">
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <h1 class="text-center"
+                            style="color: #3A3A3A;"><?= \Yii::t('app', 'Sistema de Monitoreo de Proyectos') ?></h1>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2">
+                        <img class="image-responsive" style="width:100%; height: auto;"
+                             ng-src="{{ proyecto.logo }}" alt="" ng-if="proyecto !== null">
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div ng-if="cargando">
-        <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="Loading...">
-    </div>
-    <section ng-show="!cargando">
-        <div class="row container-fluid">
-            <!--Filtros-->
-            {#include "dashboard/filtros.html" #}
-
-            <!--Resumen-->
-            {% include "dashboard/resumen.html" %}
-
-            <!--Paises y Rubros-->
-            {% include "dashboard/paises_rubros.html" %}
-
-            <!--Metas-->
-            {% include "dashboard/metas.html" %}
-
-            <!--Paises-->
-            {% include "dashboard/nacionalidad.html" %}
-
-            <!-- Organizaciones, Pastel, Fiscal   -->
-            {% include "dashboard/organizaciones_pastel_fiscal.html" %}
-
-            <!--Edad y Educación-->
-            {% include "dashboard/educacion.html" %}
-
-            <!--Eventos y Tipo-->
-            {% include "dashboard/eventos_tipo.html" %}
+        <div ng-if="cargando">
+            <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="Loading...">
         </div>
-    </section>
-</div>
-<script>
-    UrlsAcciones = {};
-    UrlsAcciones.nombreGrafico = "PARTICIPANTES POR ACTIVIDAD";
-    UrlsAcciones.UrlDatosProyecto = "{% url 'monitoring:graphic-proyecto' %}";
-    UrlsAcciones.UrlDatosCantidadProyectos = "{% url 'monitoring:cantidad-proyectos' %}";
-    UrlsAcciones.UrlDatosCantidadEventos = "{% url 'monitoring:cantidad-eventos' %}";
-    UrlsAcciones.UrlDatosGraficoActividades = "{% url 'monitoring:grafico-actividades' %}";
-    UrlsAcciones.UrlDatosPaises = "{% url 'monitoring:graphic-paises' %}";
-    UrlsAcciones.UrlDatosRubros = "{% url 'monitoring:graphic-rubros' %}";
-    UrlsAcciones.UrlDatosGraficoOrganizaciones = "{% url 'monitoring:grafico-organizaciones' %}";
-    UrlsAcciones.UrlDatosProyectosMetas = "{% url 'monitoring:proyectos-metas' %}";
-    UrlsAcciones.UrlDatosGraficoAnioFiscal = "{% url 'monitoring:grafico-anio-fiscal' %}";
-    UrlsAcciones.UrlDatosGraficoEdad = "{% url 'monitoring:grafico-edad' %}";
-    UrlsAcciones.UrlDatosGraficoEducacion = "{% url 'monitoring:grafico-educacion' %}";
-    UrlsAcciones.UrlDatosGraficoEventos = "{% url 'monitoring:grafico-eventos' %}";
-    UrlsAcciones.UrlDatosGraficoTipoParticipante = "{% url 'monitoring:grafico-tipo-participante' %}";
-    UrlsAcciones.UrlDatosGraficoSexoParticipante = "{% url 'monitoring:grafico-sexo-participante' %}";
-    UrlsAcciones.UrlDatosGraficoNacionalidad = "{% url 'monitoring:grafico-nacionalidad' %}";
-    UrlsAcciones.UrlDatosGraficoPaisEventos = "{% url 'monitoring:grafico-pais-eventos' %}";
-    UrlsAcciones.UrlLogo = "{% static 'img/logo.png' %}";
-</script>
-<style>
-    .bg-blue, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
-        background-color: #00AAA7 !important;
+        <section ng-show="!cargando">
+            <div class="row container-fluid">
+                <!--Filtros-->
+                {#include "dashboard/filtros.html" #}
+
+                <!--Resumen-->
+                {% include "dashboard/resumen.html" %}
+
+                <!--Paises y Rubros-->
+                {% include "dashboard/paises_rubros.html" %}
+
+                <!--Metas-->
+                {% include "dashboard/metas.html" %}
+
+                <!--Paises-->
+                {% include "dashboard/nacionalidad.html" %}
+
+                <!-- Organizaciones, Pastel, Fiscal   -->
+                {% include "dashboard/organizaciones_pastel_fiscal.html" %}
+
+                <!--Edad y Educación-->
+                {% include "dashboard/educacion.html" %}
+
+                <!--Eventos y Tipo-->
+                {% include "dashboard/eventos_tipo.html" %}
+            </div>
+        </section>
+    </div>
+    <script>
+        UrlsAcciones = {};
+        UrlsAcciones.nombreGrafico = "PARTICIPANTES POR ACTIVIDAD";
+        UrlsAcciones.UrlDatosProyecto = "{% url 'monitoring:graphic-proyecto' %}";
+        UrlsAcciones.UrlDatosCantidadProyectos = "{% url 'monitoring:cantidad-proyectos' %}";
+        UrlsAcciones.UrlDatosCantidadEventos = "{% url 'monitoring:cantidad-eventos' %}";
+        UrlsAcciones.UrlDatosGraficoActividades = "{% url 'monitoring:grafico-actividades' %}";
+        UrlsAcciones.UrlDatosPaises = "{% url 'monitoring:graphic-paises' %}";
+        UrlsAcciones.UrlDatosRubros = "{% url 'monitoring:graphic-rubros' %}";
+        UrlsAcciones.UrlDatosGraficoOrganizaciones = "{% url 'monitoring:grafico-organizaciones' %}";
+        UrlsAcciones.UrlDatosProyectosMetas = "{% url 'monitoring:proyectos-metas' %}";
+        UrlsAcciones.UrlDatosGraficoAnioFiscal = "{% url 'monitoring:grafico-anio-fiscal' %}";
+        UrlsAcciones.UrlDatosGraficoEdad = "{% url 'monitoring:grafico-edad' %}";
+        UrlsAcciones.UrlDatosGraficoEducacion = "{% url 'monitoring:grafico-educacion' %}";
+        UrlsAcciones.UrlDatosGraficoEventos = "{% url 'monitoring:grafico-eventos' %}";
+        UrlsAcciones.UrlDatosGraficoTipoParticipante = "{% url 'monitoring:grafico-tipo-participante' %}";
+        UrlsAcciones.UrlDatosGraficoSexoParticipante = "{% url 'monitoring:grafico-sexo-participante' %}";
+        UrlsAcciones.UrlDatosGraficoNacionalidad = "{% url 'monitoring:grafico-nacionalidad' %}";
+        UrlsAcciones.UrlDatosGraficoPaisEventos = "{% url 'monitoring:grafico-pais-eventos' %}";
+        UrlsAcciones.UrlLogo = "{% static 'img/logo.png' %}";
+    </script>
+    <style>
+        .bg-blue, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+            background-color: #00AAA7 !important;
         }
 
-    .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
-        background-color: #C1CD23 !important;
+        .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+            background-color: #C1CD23 !important;
         }
-</style>
-<link href="{% static 'css/checkbox.css' %}" rel="stylesheet">
+    </style>
+    <link href="{% static 'css/checkbox.css' %}" rel="stylesheet">
 
 {% endblock %}
 {% block extra_body %}
-<script src="{% static 'js/servicios_angular/ng-grid.js' %}"></script>
-<script src="{% static 'js/servicios_angular/highcharts.optiones.js' %}"></script>
-<script src="{% static 'js/script/dashboard_index.js' %}"></script>
-<link rel="stylesheet" href="{% static 'js/servicios_angular/ng-grid.css' %}">
+    <script src="{% static 'js/servicios_angular/ng-grid.js' %}"></script>
+    <script src="{% static 'js/servicios_angular/highcharts.optiones.js' %}"></script>
+    <script src="{% static 'js/script/dashboard_index.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'js/servicios_angular/ng-grid.css' %}">
 
-<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-<script src="{% static 'js/datepicker-kv.js' %}"></script>
-<script src="{% static 'js/locales/bootstrap-datepicker.es.min.js' %}"></script>
-<script src="{% static 'js/kv-widgets.js' %}"></script>
-<script src="{% static 'js/select2.full.js' %}"></script>
-<script src="{% static 'js/select2-krajee.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/datepicker-kv.js' %}"></script>
+    <script src="{% static 'js/locales/bootstrap-datepicker.es.min.js' %}"></script>
+    <script src="{% static 'js/kv-widgets.js' %}"></script>
+    <script src="{% static 'js/select2.full.js' %}"></script>
+    <script src="{% static 'js/select2-krajee.js' %}"></script>
 {% endblock %}
