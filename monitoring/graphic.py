@@ -138,4 +138,22 @@ def graficoNacionalidad(request):
 
 @csrf_exempt
 def graficoPaisEventos(request):
-    return JsonResponse({'foo':'bar'})
+    cursor = connection.cursor()
+    cursor.execute("SELECT name, COUNT(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, id, count(distinct(eventos)) as eventos FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, e.id AS eventos, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON pa.id = ca.id GROUP BY c.id, e.id, ca.id) q GROUP BY name, name_es, x, y, id ORDER BY name")
+    result = dictfetchall(cursor)
+    pais_array = [];
+    for row in result:
+        if 'id' in row:
+            pais_array.append([
+                row['name'],
+                row['total'],
+                row['f'],
+                row['m'],
+                row['x'],
+                row['y'],
+                row['name_es'],
+                row['id'],
+                row['eventos']
+            ])
+
+    return JsonResponse({'pais': result, 'paisArray': pais_array})
