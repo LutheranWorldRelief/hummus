@@ -4,7 +4,6 @@
 
 {% block extra_header %}
 
-
     <link href="{% static 'js/servicios_angular/ng-grid.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
@@ -17,27 +16,17 @@
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
 
-    <script src="{% static 'js/assets/jquery.js' %}"></script>
+     <style>
+        .bg-blue, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+            background-color: #00AAA7 !important;
+        }
 
-    <script src="{% static 'js/lib/highcharts/maparequisito/proj4.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/highcharts.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/data.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/drilldown.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/treemap.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/heatmap.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/exporting.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/export-data.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/offline-exporting.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/modules/map.js' %}"></script>
-    <script src="{% static 'js/lib/highcharts/mapdata/custom/world.js' %}"></script>
-    <script src="{% static 'js/lib/angular.min.js' %}"></script>
-    <script src="{% static 'js/lib/ui-bootstrap-tpls-0.10.0.min.js' %}"></script>
-    <script src="{% static 'js/lib/angular-resource.min.js' %}"></script>
-    <script src="{% static 'js/lib/angular-sanitize.min.js' %}"></script>
-    <script src="{% static 'js/lib/dirPagination.js' %}"></script>
-    <script src="{% static 'js/adminlte.min.js' %}"></script>
+        .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
+            background-color: #C1CD23 !important;
+        }
+    </style>
+    <link href="{% static 'css/checkbox.css' %}" rel="stylesheet">
 
-    <script src="{% static 'js/servicios_angular/datos.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -118,19 +107,31 @@
         UrlsAcciones.UrlDatosGraficoPaisEventos = "{% url 'monitoring:grafico-pais-eventos' %}";
         UrlsAcciones.UrlLogo = "{% static 'img/logo.png' %}";
     </script>
-    <style>
-        .bg-blue, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
-            background-color: #00AAA7 !important;
-        }
 
-        .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
-            background-color: #C1CD23 !important;
-        }
-    </style>
-    <link href="{% static 'css/checkbox.css' %}" rel="stylesheet">
 
 {% endblock %}
 {% block extra_body %}
+
+    <script src="{% static 'js/assets/jquery.js' %}"></script>
+
+    <script src="{% static 'js/lib/highcharts/maparequisito/proj4.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/highcharts.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/data.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/drilldown.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/treemap.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/heatmap.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/exporting.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/export-data.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/offline-exporting.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/modules/map.js' %}"></script>
+    <script src="{% static 'js/lib/highcharts/mapdata/custom/world.js' %}"></script>
+    <script src="{% static 'js/lib/angular.min.js' %}"></script>
+    <script src="{% static 'js/lib/ui-bootstrap-tpls-0.10.0.min.js' %}"></script>
+    <script src="{% static 'js/lib/angular-resource.min.js' %}"></script>
+    <script src="{% static 'js/lib/angular-sanitize.min.js' %}"></script>
+    <script src="{% static 'js/lib/dirPagination.js' %}"></script>
+    <script src="{% static 'js/servicios_angular/datos.js' %}"></script>
+
     <script src="{% static 'js/servicios_angular/ng-grid.js' %}"></script>
     <script src="{% static 'js/servicios_angular/highcharts.optiones.js' %}"></script>
     <script src="{% static 'js/script/dashboard_index.js' %}"></script>
@@ -138,6 +139,8 @@
     <script src="{% static 'js/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datepicker/js/datepicker-kv.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.min.js' %}"></script>
-    <script src="{% static 'js/kv-widgets.js' %}"></script>
+{#    <script src="{% static 'js/kv-widgets.js' %}"></script>#}
     <script src="{% static 'js/lib/select2/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/adminlte.min.js' %}"></script>
 {% endblock %}
