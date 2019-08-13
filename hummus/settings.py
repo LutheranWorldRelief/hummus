@@ -125,10 +125,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Django PHP Bridge
+SESSION_COOKIE_DOMAIN=".hummus.cc"
 
-#SESSION_ENGINE = 'django_php_bridge.backends.db'
-#SESSION_COOKIE_NAME = 'PHPSESSID'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
 
 # From https://django-microsoft-auth.readthedocs.io/en/latest/usage.html
 

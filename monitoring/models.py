@@ -191,6 +191,10 @@ class Project(models.Model):
         ordering = ['name']
         db_table = 'project'
 
+    def get_absolute_url(self):
+        return "/project/%i/" % self.id
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     name_es = models.CharField(max_length=100)

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load django_tables2 crispy_forms_tags %}
-{% crispy filter.form filter.form.helper %}
 {% block content %}
+{% crispy filter.form filter.form.helper %}
 {% render_table table %}
 {% endblock %}

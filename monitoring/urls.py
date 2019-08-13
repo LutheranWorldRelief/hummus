@@ -7,6 +7,7 @@ app_name = 'monitoring'
 
 urlpatterns = [
     path('contact/', views.ContactTableView.as_view()),
+    path('project/', views.ProjectTableView.as_view()),
     path('dashboard/', views.DashboardView.as_view()),
     path('graphic/proyecto/', graphic.proyecto, name='graphic-proyecto' ),
     path('graphic/cantidad-proyectos/', graphic.cantidadProyectos, name='cantidad-proyectos' ),
