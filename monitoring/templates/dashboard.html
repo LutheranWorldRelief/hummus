@@ -26,6 +26,8 @@
 <link href="/assets/98c5193a/css/select2-addl.css' %}" rel="stylesheet">
 <link href="/assets/98c5193a/css/select2-krajee.css' %}" rel="stylesheet">
 
+<link href="{% static 'js/servicios_angular/ng-grid.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
 <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
@@ -35,6 +37,8 @@
 {% endblock %}
 
 {% block content %}
+<div class="content-wrapper">
+<section class="content">
 <div ng-app="App" ng-controller="AppCtrl" ng-cloak="">
     <!--    Encabezado-->
     <div class="box">
@@ -86,6 +90,8 @@
         </div>
     </section>
 </div>
+</section>
+</div>
 <script>
     UrlsAcciones = {};
     UrlsAcciones.nombreGrafico = "PARTICIPANTES POR ACTIVIDAD";
@@ -123,7 +129,6 @@
 <script src="{% static 'js/servicios_angular/ng-grid.js' %}"></script>
 <script src="{% static 'js/servicios_angular/highcharts.optiones.js' %}"></script>
 <script src="{% static 'js/script/dashboard_index.js' %}"></script>
-<link rel="stylesheet" href="{% static 'js/servicios_angular/ng-grid.css' %}">
 
 <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 <script src="{% static 'js/datepicker-kv.js' %}"></script>
