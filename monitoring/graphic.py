@@ -6,10 +6,12 @@ from django.db import connection
 
 from .models import *
 
+
 @csrf_exempt
 def proyecto(request):
     data = {'proyecto': None}
     return JsonResponse(data)
+
 
 @csrf_exempt
 def cantidadProyectos(request):
@@ -17,12 +19,14 @@ def cantidadProyectos(request):
     data = {'proyectos': proyectos }
     return JsonResponse(data)
 
+
 @csrf_exempt
 def cantidadEventos(request):
     eventos = Event.objects.count()
     actividades = Event.objects.order_by('structure_id').distinct('structure_id').count()
     data = {"cantidadEventos": {"eventos": eventos ,"actividades": actividades} }
     return JsonResponse(data)
+
 
 @csrf_exempt
 def graficoActividades(request):
@@ -37,11 +41,16 @@ def graficoActividades(request):
     data = {'actividades': list(result) }
     return JsonResponse(data)
 
+
 @csrf_exempt
 def paises(request):
-    paises = Country.objects.count()
-    data = {'paises': paises }
+    result = Event.objects.order_by('country_id').values('country_id').distinct()
+    for row in result:
+        row['id'] =  row['country_id']
+        row['country'] = row['country_id']
+    data = {'paises': list(result) }
     return JsonResponse(data)
+
 
 @csrf_exempt
 def rubros(request):
