@@ -35,7 +35,7 @@ class ContactAdmin(admin.ModelAdmin):
         ('organization__name', DropdownFilter),
         'type'
     ]
-    search_fields = ['name']
+    search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
 
 
 admin.site.register(Contact, ContactAdmin)
