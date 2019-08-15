@@ -3,6 +3,10 @@ from django.apps import apps
 from import_export.admin import ImportExportModelAdmin
 from .models import Contact
 
+from django_admin_listfilter_dropdown.filters import (
+    DropdownFilter, RelatedOnlyDropdownFilter
+)
+
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
 
@@ -27,7 +31,8 @@ class ContactAdmin(admin.ModelAdmin):
     list_max_show_all = 50
     ordering = ['name']
     list_filter = [
-        ('country', admin.RelatedOnlyFieldListFilter),
+        ('country', RelatedOnlyDropdownFilter),
+        ('organization__name', DropdownFilter),
         'type'
     ]
     search_fields = ['name']
