@@ -38,7 +38,7 @@ class Contact(models.Model):
     birthdate = models.DateField(blank=True, null=True)
     document = models.CharField(max_length=40, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
-    organization_id = models.IntegerField(blank=True, null=True)
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True)
     sex = models.CharField(max_length=1, blank=True, null=True)
     type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True)
     community = models.CharField(max_length=40, blank=True, null=True)
