@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'import_export',
     'microsoft_auth',
+    'django_admin_listfilter_dropdown',
     # my apps
     'legacy',
     'monitoring',
