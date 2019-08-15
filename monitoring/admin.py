@@ -36,6 +36,7 @@ class ContactAdmin(admin.ModelAdmin):
         'type'
     ]
     search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
+    autocomplete_fields = ('country', 'organization', 'type','education')
 
 
 admin.site.register(Contact, ContactAdmin)
