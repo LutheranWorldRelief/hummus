@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.apps import apps
 from import_export.admin import ImportExportModelAdmin
-from .models import Contact
+from .models import Contact, Event
 
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter, RelatedOnlyDropdownFilter
@@ -36,10 +36,45 @@ class ContactAdmin(admin.ModelAdmin):
         'type'
     ]
     search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
-    autocomplete_fields = ('country', 'organization', 'type','education')
+    autocomplete_fields = ('country', 'organization', 'type', 'education')
+
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'project_name', 'structure', 'country', 'organization', 'start',
+                    'men', 'women', 'total')
+    list_display_links = ['name']
+    list_per_page = 20
+    list_max_show_all = 50
+    ordering = ['-start']
+    list_filter = [
+        ('country', RelatedOnlyDropdownFilter),
+        ('organization', RelatedOnlyDropdownFilter),
+    ]
+    search_fields = ['id', 'name', 'project__name', 'structure__name', 'organization__name', 'country__name']
+
+    def project_name(self, obj):
+        if obj.structure:
+            return obj.structure.project
+        else:
+            return ''
+
+    def men(self, obj):
+        return obj.attendance_set.filter(contact__sex='M').count()
+
+    def women(self, obj):
+        return obj.attendance_set.filter(contact__sex='F').count()
+
+    def total(self, obj):
+        return self.men(obj) + self.women(obj)
+
+    class Media:
+        css = {
+            'all': ('css/table_event.css',)
+        }
 
 
 admin.site.register(Contact, ContactAdmin)
+admin.site.register(Event, EventAdmin)
 
 models = apps.get_models()
 for model in models:
