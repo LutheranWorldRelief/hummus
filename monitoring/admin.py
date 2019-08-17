@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.apps import apps
 from import_export.admin import ImportExportModelAdmin
-from .models import Contact, Event, Project, Attendance
-from django.db.models import Count, Q
+from .models import Contact, Event, Project
 
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter, RelatedOnlyDropdownFilter
