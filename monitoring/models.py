@@ -181,8 +181,8 @@ class Project(models.Model):
     url = models.CharField(max_length=255, blank=True, null=True)
     start = models.DateField(blank=True, null=True)
     end = models.DateField(blank=True, null=True)
-    goal_men = models.IntegerField(blank=True, null=True)
-    goal_women = models.IntegerField(blank=True, null=True)
+    goalmen = models.IntegerField(blank=True, null=True, db_column='goal_men')
+    goalwomen = models.IntegerField(blank=True, null=True, db_column='goal_women')
 
     def __str__(self):
         return self.name
