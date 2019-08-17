@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.apps import apps
 from import_export.admin import ImportExportModelAdmin
-from .models import Contact, Event, Project, ProjectContact
+from .models import Contact, Event, Project, Attendance
+from django.db.models import Count, Q
 
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter, RelatedOnlyDropdownFilter
@@ -74,36 +75,35 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('code', 'name', 'countries', 'goal__men', 'goal__women','woman')
+    list_display = (
+        'code', 'name', 'get_countries', 'goalmen', 'goalwomen', 'get_women', 'get_men', 'get_total')
     list_per_page = 20
     list_max_show_all = 50
     list_display_links = ['name']
     ordering = ['id']
+    search_fields = ['code', 'name', ]
 
-    def countries(self, obj):
+    def get_countries(self, obj):
         return ', '.join(
             Event.objects.filter(structure__project_id=obj.id).order_by('country').values_list('country__name',
                                                                                                flat=True).distinct())
 
-    def goal__men(self, obj):
-        if obj.goal_men is not None:
-            return obj.goal_men
-        else:
-            return 0
+    get_countries.short_description = 'Countries'
 
-    def goal__women(self, obj):
-        if obj.goal_women is not None:
-            return obj.goal_women
-        else:
-            return 0
+    def get_women(self, obj):
+        return 0
 
-    def woman(self, obj):
-        a = ProjectContact.contact.filter(sex='F')
-        print(a)
-        # print(obj.projectcontact_set.contact)
-        # return ProjectContact.objects.filter(project__id=obj.id).count()
-        # count = Event.objects.filter(structure__project_id=obj.id).values_list('attendance__contact').filter(sex='F').count()
-        # return count
+    get_women.short_description = 'M'
+
+    def get_men(self, obj):
+        return 0
+
+    get_men.short_description = 'H'
+
+    def get_total(self, obj):
+        return self.get_men(obj) + self.get_women(obj)
+
+    get_total.short_description = 'T'
 
 
 admin.site.register(Contact, ContactAdmin)
