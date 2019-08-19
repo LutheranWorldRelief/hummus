@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.apps import apps
 from import_export.admin import ImportExportModelAdmin
-from .models import Contact, Event, Project
+from .models import Contact, Event, Project, Organization
 
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter, RelatedOnlyDropdownFilter
@@ -104,10 +104,31 @@ class ProjectAdmin(admin.ModelAdmin):
 
     get_total.short_description = 'T'
 
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = (
+    'id', 'name', 'description', 'country', 'organization_parent', 'organization_type', 'is_implementer')
+    list_per_page = 20
+    list_max_show_all = 50
+    ordering = ['id']
+    list_filter = [
+    ('name', DropdownFilter),
+    ('country', RelatedOnlyDropdownFilter),
+   ('organization_type', RelatedOnlyDropdownFilter),
+    ]
+    search_fields = ['id', 'name', 'description', 'country__name']
+    autocomplete_fields = ('country', 'organization_type',)
+    exclude = ['id']
+
+    def organization_parent(self, object):
+        if object.organization_id is not None:
+            return object.name
+        else:
+            return ''
 
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(Organization, OrganizationAdmin)
 
 models = apps.get_models()
 for model in models:
