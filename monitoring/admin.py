@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.apps import apps
 from import_export.admin import ImportExportModelAdmin
-from .models import Contact, Event, Project
+from .models import *
 
 from django_admin_listfilter_dropdown.filters import (
     DropdownFilter, RelatedOnlyDropdownFilter
@@ -73,7 +73,20 @@ class EventAdmin(admin.ModelAdmin):
         }
 
 
+class EventInline(admin.TabularInline):
+    model = Event
+    extra = 0
+
+
+class StructureInline(admin.TabularInline):
+    model = Structure
+    extra = 0
+
+
 class ProjectAdmin(admin.ModelAdmin):
+    inlines = [
+        StructureInline,
+    ]
     list_display = (
         'code', 'name', 'get_countries', 'goalmen', 'goalwomen', 'get_women', 'get_men', 'get_total')
     list_per_page = 20
@@ -104,7 +117,13 @@ class ProjectAdmin(admin.ModelAdmin):
 
     get_total.short_description = 'T'
 
+class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
+    inlines = [
+        EventInline,
+    ]
 
+
+admin.site.register(Structure, StructureAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Project, ProjectAdmin)
