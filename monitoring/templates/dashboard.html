@@ -1,5 +1,6 @@
 {% extends 'nobase.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block extra_header %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
@@ -49,7 +50,7 @@
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                 <h1 class="text-center"
-                                    style="color: #3A3A3A;"><?= \Yii::t('app', 'Sistema de Monitoreo de Proyectos') ?></h1>
+                                    style="color: #3A3A3A;">{% trans 'Project Monitoring System' %}</h1>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-2">
                                 <img class="image-responsive" style="width:100%; height: auto;"
@@ -61,12 +62,12 @@
                 </div>
 
                 <div ng-if="cargando">
-                    <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="Loading...">
+                    <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="{% trans 'Loading...' %}">
                 </div>
                 <section ng-show="!cargando">
                     <div class="row container-fluid">
                         <!--Filtros-->
-                        {#include "dashboard/filtros.html" #}
+                        {% include "dashboard/filtros.html" %}
 
                         <!--Resumen-->
                         {% include "dashboard/resumen.html" %}

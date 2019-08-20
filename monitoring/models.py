@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
 
 def dictfetchall(cursor):
     "Return all rows from a cursor as a dict"
@@ -8,6 +10,19 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
+
+months = [('1','January'),
+    ('2',_('February')),
+    ('3',_('March')),
+    ('4',_('April')),
+    ('5',_('May')),
+    ('6',_('June')),
+    ('7',_('July')),
+    ('8',_('August')),
+    ('9',_('September')),
+    ('10',_('October')),
+    ('11',_('November')),
+    ('12',_('December')),]
 
 
 class Attendance(models.Model):

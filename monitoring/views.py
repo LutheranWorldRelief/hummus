@@ -28,3 +28,9 @@ class ContactTableView(LoginRequiredMixin, PagedFilteredTableView):
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['months'] = months
+        context['projects'] = Project.objects.values('id', 'name')
+        return context

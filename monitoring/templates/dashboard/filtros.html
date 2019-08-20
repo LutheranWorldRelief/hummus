@@ -1,14 +1,15 @@
-<?php use app\components\UCatalogo;
-use app\models\Project;
-use kartik\select2\Select2;
-use kartik\widgets\DatePicker;
-use yii\helpers\Html;
-
-?>
+{% load static %}
+{% load i18n %}
+<script>
+window.kvDatepicker_48486bff = {"format":"yyyy-mm-dd","todayHighlight":true,"languaje":"es","language":"es"};
+window.kvDatepicker_bfc1fa12 = {"format":"yyyy-mm-dd","todayHighlight":true,"languaje":"es","autoclose":true,"language":"es"};
+var s2options_d6851687 = {"themeCss":".select2-container--krajee","sizeCss":"","doReset":true,"doToggle":false,"doOrder":false};
+window.select2_de559a6a = {"allowClear":true,"theme":"krajee","width":"100%","placeholder":"Seleccione un proyecto ...","language":"es"};
+</script>
 <div class="row">
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Filtros</h3>
+            <h3 class="box-title">{% trans 'Filters' %}</h3>
 
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -18,58 +19,23 @@ use yii\helpers\Html;
         </div>
         <div class="box-body">
             <div class="col-md-2">
-                <label>Mes inicio Año Fiscal</label>
-                <?= Html::dropDownList('mes_fiscal', null, UCatalogo::getNombreMesesArrayDesde1(), ['ng-model' => 'formulario.mes_fiscal', 'class' => 'form-control']) ?>
+                <label>{% trans 'Fiscal year start month' %}</label>
+				<select class="form-control" name="mes_fiscal" ng-model="formulario.mes_fiscal">{% for month in months %}<option value="{{ month.0 }}">{{ month.1 }}</option>{% endfor %}</select>
             </div>
             <div class="col-md-2">
-                <?php
-                echo '<label>Desde</label>';
-                echo DatePicker::widget([
-                    'name' => 'desde',
-                    'options' => ['placeholder' => 'Selecciona desde ...', 'ng-model' => 'formulario.desde'],
-                    'pluginOptions' => [
-                        'format' => 'yyyy-mm-dd',
-                        'todayHighlight' => true,
-                        'languaje' => 'es'
-                    ]
-                ]);
-                ?>
+                <label>{% trans 'From' %}</label>
+                <div id="w0-kvdate" class="input-group  date"><span class="input-group-addon kv-date-picker" title="{% trans 'Pick date' %}"><i class="glyphicon glyphicon-calendar kv-dp-icon"></i></span><span class="input-group-addon kv-date-remove" title="{% trans 'Clean field' %}"><i class="glyphicon glyphicon-remove kv-dp-icon"></i></span><input type="text" id="w0" class="form-control krajee-datepicker" name="desde" placeholder="{% trans 'Select from...' %}" ng-model="formulario.desde" data-datepicker-source="w0-kvdate" data-datepicker-type="2" data-krajee-kvDatepicker="kvDatepicker_48486bff"></div>
             </div>
             <div class="col-md-2">
-                <?php
-                echo '<label>Hasta</label>';
-                echo DatePicker::widget([
-                    'name' => 'hasta',
-                    'options' => ['placeholder' => 'Selecciona hasta ...', 'ng-model' => 'formulario.hasta'],
-                    'pluginOptions' => [
-                        'format' => 'yyyy-mm-dd',
-                        'todayHighlight' => true,
-                        'languaje' => 'es',
-                        'autoclose' => true,
-                    ],
-                    'language' => 'es'
-                ]);
-                ?>
+                <label>{% trans 'To' %}</label>
+				<div id="w1-kvdate" class="input-group  date"><span class="input-group-addon kv-date-picker" title="{% trans 'Pick date' %}"><i class="glyphicon glyphicon-calendar kv-dp-icon"></i></span><span class="input-group-addon kv-date-remove" title="Limpiar campo"><i class="glyphicon glyphicon-remove kv-dp-icon"></i></span><input type="text" id="w1" class="form-control krajee-datepicker" name="hasta" placeholder="{% trans 'Select to...' %}" ng-model="formulario.hasta" data-datepicker-source="w1-kvdate" data-datepicker-type="2" data-krajee-kvDatepicker="kvDatepicker_bfc1fa12"></div>
             </div>
             <div class="col-md-4">
-                <label>Proyecto</label>
-                <?php
-                echo Select2::widget([
-                    'name' => 'state_10',
-                    'data' => Project::listDataBlank("name"),
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'options' => [
-
-                        'placeholder' => 'Seleccione un proyecto ...',
-                        'multiple' => false,
-                        'ng-model' => 'formulario.proyecto'
-                    ],
-                ]);
-                ?>
-                <?php
-                //                \yii\helpers\Html::dropDownList('proyecto', null, \app\models\Project::listDataBlank("name"), ['ng-model' => 'formulario.proyecto', 'class' => 'form-control']) ?>
+                <label>{% trans 'Project' %}</label>
+				<select id="w2" class="form-control" name="state_10" ng-model="formulario.proyecto" data-s2-options="s2options_d6851687" data-krajee-select2="select2_de559a6a" style="display:none">
+				<option value="">{% trans 'Select a project...' %}</option>
+				{% for project in projects %}<option value="{{ project.id }}">{{ project.name }}</option>{% endfor %}
+				</select>
             </div>
             <div class="col-md-2">
                 <br>
@@ -80,3 +46,22 @@ use yii\helpers\Html;
     </div>
 </div>
 <br>
+<script>
+jQuery(function ($) {
+jQuery.fn.kvDatepicker.dates={};
+jQuery&&jQuery.pjax&&(jQuery.pjax.defaults.maxCacheLength=0);
+if (jQuery('#w0').data('kvDatepicker')) { jQuery('#w0').kvDatepicker('destroy'); }
+jQuery('#w0-kvdate').kvDatepicker(kvDatepicker_48486bff);
+
+initDPRemove('w0');
+initDPAddon('w0');
+if (jQuery('#w1').data('kvDatepicker')) { jQuery('#w1').kvDatepicker('destroy'); }
+jQuery('#w1-kvdate').kvDatepicker(kvDatepicker_bfc1fa12);
+
+initDPRemove('w1');
+initDPAddon('w1');
+if (jQuery('#w2').data('select2')) { jQuery('#w2').select2('destroy'); }
+jQuery.when(jQuery('#w2').select2(select2_de559a6a)).done(initS2Loading('w2','s2options_d6851687'));
+
+});
+</script>
