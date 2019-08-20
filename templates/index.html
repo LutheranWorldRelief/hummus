@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+{% block extra_header %}
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+  <p>Hummus is LWR's Data Integration Platform.</p>
+  <ul>
+  <li><a href="{% url 'monitoring:dashboard' %}">Dashboard</a></li>
+  <li><a href="{% url 'admin:index' %}">Database interface</a></li>
+  </ul>
+</div>
+{% endblock %}
