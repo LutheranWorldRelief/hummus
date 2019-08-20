@@ -54,7 +54,9 @@ def paises(request):
     for row in result:
         row['id'] =  row['country_id']
         row['country'] = row['country_id']
-    data = {'paises': list(result) }
+        row['active'] = row['id'] in request.POST.getlist("paises[]")
+    data = {'paises': list(result), 'todos': False,  'ninguno': False, }
+
     return JsonResponse(data)
 
 
