@@ -1,19 +1,22 @@
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Concat
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.db import connection
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 
 
 @csrf_exempt
+@login_required
 def proyecto(request):
     data = {'proyecto': None}
     return JsonResponse(data)
 
 
 @csrf_exempt
+@login_required
 def cantidadProyectos(request):
     proyectos = Project.objects.count()
     data = {'proyectos': proyectos }
@@ -21,6 +24,7 @@ def cantidadProyectos(request):
 
 
 @csrf_exempt
+@login_required
 def cantidadEventos(request):
     eventos = Event.objects.count()
     actividades = Event.objects.order_by('structure_id').distinct('structure_id').count()
@@ -29,6 +33,7 @@ def cantidadEventos(request):
 
 
 @csrf_exempt
+@login_required
 def graficoActividades(request):
     result = Attendance.objects.order_by('event__structure_id', 'event__structure__description', 'event__structure__project__name').values(
         'event__structure_id', 'event__structure__description', 'event__structure__project__name').annotate(
@@ -43,6 +48,7 @@ def graficoActividades(request):
 
 
 @csrf_exempt
+@login_required
 def paises(request):
     result = Event.objects.order_by('country_id').values('country_id').distinct()
     for row in result:
@@ -53,6 +59,7 @@ def paises(request):
 
 
 @csrf_exempt
+@login_required
 def rubros(request):
     result = Product.objects.all().values()
     for row in result:
@@ -60,7 +67,9 @@ def rubros(request):
     data = {'rubros': list(result) }
     return JsonResponse(data)
 
+
 @csrf_exempt
+@login_required
 def graficoOrganizaciones(request):
     organizaciones = Event.objects.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
         values('organization_id', 'organization__name', 'organization__organization_type_id').distinct()
@@ -85,11 +94,13 @@ def graficoOrganizaciones(request):
 
 
 @csrf_exempt
+@login_required
 def proyectosMetas(request):
     return JsonResponse({'proyectos_metas': []})
 
 
 @csrf_exempt
+@login_required
 def graficoAnioFiscal(request):
     cursor = connection.cursor()
     cursor.execute("SELECT type, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT id, CASE WHEN 10<=6 THEN CASE WHEN 10<= date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)-1    END ELSE CASE WHEN 10 > date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)+1    END END  as type, sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id GROUP BY c.id) sq) q GROUP BY type ORDER BY type")
@@ -98,6 +109,7 @@ def graficoAnioFiscal(request):
 
 
 @csrf_exempt
+@login_required
 def graficoEdad(request):
     cursor = connection.cursor()
     cursor.execute("SELECT filter.name AS type, \
@@ -111,7 +123,9 @@ def graficoEdad(request):
     result = dictfetchall(cursor)
     return JsonResponse({'edad': result})
 
+
 @csrf_exempt
+@login_required
 def graficoEducacion(request):
     result = Contact.objects.order_by('education__name').values('education__name').annotate(
         m=Count('id', filter=Q(sex='M')),
@@ -122,11 +136,15 @@ def graficoEducacion(request):
     data = {'educacion': list(result) }
     return JsonResponse(data)
 
+
 @csrf_exempt
+@login_required
 def graficoEventos(request):
     return JsonResponse({'foo':'bar'})
 
+
 @csrf_exempt
+@login_required
 def graficoTipoParticipante(request):
     result = Attendance.objects.order_by('contact__type__name').values('contact__type__name').annotate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
@@ -137,13 +155,16 @@ def graficoTipoParticipante(request):
     return JsonResponse(data, safe=False)
 
 @csrf_exempt
+@login_required
 def graficoSexoParticipante(request):
     result = Attendance.objects.aggregate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
     return JsonResponse(result)
 
+
 @csrf_exempt
+@login_required
 def graficoNacionalidad(request):
     cursor = connection.cursor()
     cursor.execute("SELECT name, count(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, country FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON c.country_id = ca.id GROUP BY c.id, ca.id) q GROUP BY country, name_es, name, x, y ORDER BY country")
@@ -164,7 +185,9 @@ def graficoNacionalidad(request):
 
     return JsonResponse({'pais': result, 'paisArray': pais_array})
 
+
 @csrf_exempt
+@login_required
 def graficoPaisEventos(request):
     cursor = connection.cursor()
     cursor.execute("SELECT name, COUNT(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, id, count(distinct(eventos)) as eventos FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, e.id AS eventos, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON pa.id = ca.id GROUP BY c.id, e.id, ca.id) q GROUP BY name, name_es, x, y, id ORDER BY name")
