@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 
 def dictfetchall(cursor):
@@ -23,6 +24,35 @@ months = [('1','January'),
     ('10',_('October')),
     ('11',_('November')),
     ('12',_('December')),]
+
+
+class Region(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+    class Meta:
+        ordering = ['name']
+
+
+class Profile(models.Model):
+    LANGUAGE_CHOICES = [
+	('en', 'English'),
+	('fr', 'French'),
+	('es', 'Spanish'),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='en')
+    regiones = models.ManyToManyField('Region', blank=True)
+    countries = models.ManyToManyField('Country', blank=True)
+    projects = models.ManyToManyField('Project', blank=True)
+
+    def __str__(self):
+        return "%s" % (self.user)
+
+    class Meta:
+        ordering = ['user']
 
 
 class Attendance(models.Model):
@@ -87,6 +117,7 @@ class Country(models.Model):
     alfa3 = models.CharField(max_length=3)
     x = models.CharField(max_length=255)
     y = models.CharField(max_length=255)
+    region = models.ForeignKey('Region', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
