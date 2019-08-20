@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-20 16:02+0000\n"
+"POT-Creation-Date: 2019-08-20 22:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,207 @@ msgstr ""
 
 #: hummus/settings.py:30
 msgid "French"
+msgstr ""
+
+#: monitoring/models.py:15
+msgid "February"
+msgstr ""
+
+#: monitoring/models.py:16
+msgid "March"
+msgstr ""
+
+#: monitoring/models.py:17
+msgid "April"
+msgstr ""
+
+#: monitoring/models.py:18
+msgid "May"
+msgstr ""
+
+#: monitoring/models.py:19
+msgid "June"
+msgstr ""
+
+#: monitoring/models.py:20
+msgid "July"
+msgstr ""
+
+#: monitoring/models.py:21
+msgid "August"
+msgstr ""
+
+#: monitoring/models.py:22
+msgid "September"
+msgstr ""
+
+#: monitoring/models.py:23
+msgid "October"
+msgstr ""
+
+#: monitoring/models.py:24
+msgid "November"
+msgstr ""
+
+#: monitoring/models.py:25
+msgid "December"
+msgstr ""
+
+#: monitoring/templates/dashboard.html:53
+msgid "Project Monitoring System"
+msgstr ""
+
+#: monitoring/templates/dashboard.html:65
+msgid "Loading..."
+msgstr ""
+
+#: monitoring/templates/dashboard/educacion.html:5
+msgid "Participants by age and education"
+msgstr ""
+
+#: monitoring/templates/dashboard/eventos_tipo.html:4
+msgid "Participants in events and Participants by type of person"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:12
+msgid "Filters"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:22
+msgid "Fiscal year start month"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:26
+msgid "From"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:27
+#: monitoring/templates/dashboard/filtros.html:31
+msgid "Pick date"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:27
+msgid "Clean field"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:27
+msgid "Select from..."
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:30
+msgid "To"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:31
+msgid "Select to..."
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:34
+msgid "Project"
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:36
+msgid "Select a project..."
+msgstr ""
+
+#: monitoring/templates/dashboard/metas.html:4
+msgid "Goals and scopes"
+msgstr ""
+
+#: monitoring/templates/dashboard/nacionalidad.html:5
+msgid "Map"
+msgstr ""
+
+#: monitoring/templates/dashboard/nacionalidad.html:25
+msgid "Nationality of the participants"
+msgstr ""
+
+#: monitoring/templates/dashboard/organizaciones_pastel_fiscal.html:4
+msgid "Implementing Organizations, Participants by Sex and Fiscal Year"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:20
+msgid "Participants"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:25
+msgid "Participants/Event"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:31
+msgid "Name"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:34
+msgid "Document"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:39
+msgid "Events"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:41
+msgid "Reports"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:45
+msgid "Principal"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:46
+msgid "Clean template"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:50
+msgid "Graphics"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:53
+msgid "Configurations"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:57
+msgid "Projects"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:58
+msgid "Organizations"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:62
+msgid "List"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:64
+msgid "Types"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:67
+msgid "Catalogs"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:70
+msgid "Segmentation"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:73
+msgid "Security"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:77
+msgid "Users"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:79
+msgid "Roles"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:81
+msgid "Routes"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:82
+msgid "Binnacle"
 msgstr ""
 
 #: templates/microsoft/admin_login.html:15
