@@ -145,7 +145,7 @@ class Organization(models.Model):
     name = models.TextField()
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True, null=True)
-    organization_id = models.IntegerField(blank=True, null=True)
+    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent")
     description = models.CharField(max_length=255, blank=True, null=True)
     country_number = models.IntegerField(blank=True, null=True)
     is_implementer = models.BooleanField()
