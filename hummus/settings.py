@@ -14,6 +14,8 @@ import os
 import environ
 from django.utils.translation import gettext_lazy as _
 
+
+# Env basic configuration
 env = environ.Env(
     DEBUG=(bool, False)
 )
@@ -24,11 +26,14 @@ DATABASES = {
     'default': env.db(),
 }
 
+
+# Localization and translation
 LANGUAGES = [
     ('en', _('English')),
     ('es', _('Spanish')),
     ('fr', _('French')),
 ]
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -153,3 +158,5 @@ MICROSOFT_AUTH_CLIENT_SECRET = env('MICROSOFT_AUTH_CLIENT_SECRET')
 # Microsoft authentication
 # include Microsoft Accounts, Office 365 Enterpirse and Azure AD accounts
 MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
+
+LOGIN_URL = '/admin/login/'
