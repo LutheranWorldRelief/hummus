@@ -2,105 +2,148 @@
 {% load i18n static %}
 
 {% block extrastyle %}
-  {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static 'microsoft/css/login.css' %}" />
-  {{ form.media }}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'microsoft/css/login.css' %}"/>
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <style>
+        .login {
+            background: #00AAA7 !important;
+        }
+
+        .login-logo {
+            text-align: center;
+        }
+
+        .d-none {
+            display: none;
+        }
+    </style>
+    {{ form.media }}
 {% endblock %}
+
 
 {% block content %}
 
-  {% if form.errors and not form.non_field_errors %}
-    <p class="errornote">
-      {% if form.errors.items|length == 1 %}
-        {% trans "Please correct the error below." %}
-      {% else %}
-        {% trans "Please correct the errors below." %}
-      {% endif %}
-    </p>
-  {% endif %}
-
-  {% if form.non_field_errors %}
-    {% for error in form.non_field_errors %}
-      <p class="errornote">
-        {{ error }}
-      </p>
-    {% endfor %}
-  {% endif %}
-
-  <div id="content-main">
-    {% if user.is_authenticated %}
-      <p class="errornote">
-        {% blocktrans trimmed %}
-          You are authenticated as {{ username }}, but are not authorized to
-          access this page. Would you like to login to a different account?
-        {% endblocktrans %}
-      </p>
+    {% if form.errors and not form.non_field_errors %}
+        <p class="errornote">
+            {% if form.errors.items|length == 1 %}
+                {% trans "Please correct the error below." %}
+            {% else %}
+                {% trans "Please correct the errors below." %}
+            {% endif %}
+        </p>
     {% endif %}
 
-    {% if microsoft_login_enabled %}
-      <div class="center">
-        <p>{% trans 'Log in with' %}</p>
-        <div class="container">
-          <div>
-            <button id="microsoft-login" class="button" type="button">{{ microsoft_login_type_text }}</button>
-          </div>
-          <div>
-            <p>{% trans 'or' %}</p>
-          </div>
-          <div>
-            <button id="password-login" class="button" type="button">{% trans 'Django' %}</button>
-          </div>
-        </div>
-      </div>
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="errornote">
+                {{ error }}
+            </p>
+        {% endfor %}
     {% endif %}
 
-    <div id="login-container" class="{% if microsoft_login_enabled %}hide{% endif %}">
-      <form action="{{ app_path }}" method="post" id="login-form">
-        {% csrf_token %}
+    <div id="content-main">
 
-        <div class="form-row">
-          {{ form.username.errors }}
-          {{ form.username.label_tag }}
-          {{ form.username }}
-        </div>
-
-        <div class="form-row">
-          {{ form.password.errors }}
-          {{ form.password.label_tag }}
-          {{ form.password }}
-          <input type="hidden" name="next" value="{{ next }}" />
-        </div>
-
-        {% url 'admin_password_reset' as password_reset_url %}
-        {% if password_reset_url %}
-          <div class="password-reset-link">
-            <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-          </div>
+        {% if user.is_authenticated %}
+            <p class="errornote">
+                {% blocktrans trimmed %}
+                    You are authenticated as {{ username }}, but are not authorized to
+                    access this page. Would you like to login to a different account?
+                {% endblocktrans %}
+            </p>
         {% endif %}
 
-        <div class="submit-row">
-          <label>&nbsp;</label>
-          <input type="submit" value="{% trans 'Log in' %}" />
-        </div>
+        {% if microsoft_login_enabled %}
+            <div class="center">
+                <p>{% trans 'Log in with' %}</p>
+                <div class="container">
+                    <div>
+                        <button id="microsoft-login" class="button"
+                                type="button">{{ microsoft_login_type_text }}</button>
+                    </div>
+                    <div>
+                        <p>{% trans 'or' %}</p>
+                    </div>
+                    <div>
+                        <button id="password-login" class="button" type="button">{% trans 'Django' %}</button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
-      </form>
+        <div id="login-container" class="login-box d-none">
+
+            <!-- /.login-logo -->
+            <div class="login-box-body" style="padding: 5px">
+                <!--<p class="login-box-msg">Sign in to start your session</p>-->
+                <div class="login-logo">
+                    <img class="image-responsive" src="{% static 'img/logo_pral.png' %}" alt=""> <br>
+                    <span style="font-size:0.9em"><b>Monitoreo</b> de Proyectos</span>
+                </div>
+                <form id="login-form" action="{{ app_path }}" method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        {# username input #}
+                        {{ form.username.errors }}
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div class="form-row">
+                        {# password input #}
+                        {{ form.password.errors }}
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                    </div>
+
+
+                    {% url 'admin_password_reset' as password_reset_url %}
+                    {% if password_reset_url %}
+                        <div class="password-reset-link">
+                            <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+                        </div>
+                    {% endif %}
+                    <!-- /.col -->
+                    <div class="submit-row">
+                        <label>&nbsp;</label>
+                        <input type="submit" value="{% trans 'login' %}"/>
+                    </div>
+                    <!-- /.col -->
+
+                </form>
+
+            </div>
+            <!-- /.login-box-body -->
+        </div>
     </div>
-  </div>
 
 {% endblock %}
 
-{% block footer %}
-  {{ block.super }}
+{% block  footer %}
+    {{ block.super }}
 
-  {% if microsoft_login_enabled %}
-    <script type="text/javascript" src="{% static 'microsoft/js/login.js' %}"></script>
-    <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded",
-                              function(event) {
-                                window.microsoft.login = new window.microsoft.objects.LoginController({
-                                  'authorization_url': '{{ microsoft_authorization_url }}'
-                                });
-                              });
+    {% if microsoft_login_enabled %}
+        <script type="text/javascript" src="{% static 'microsoft/js/login.js' %}"></script>
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded",
+                function (event) {
+                    window.microsoft.login = new window.microsoft.objects.LoginController({
+                        'authorization_url': '{{ microsoft_authorization_url }}'
+                    });
+                });
+        </script>
+    {% endif %}
+    <script src="{% static 'js/assets/jquery.js' %}"></script>
+    <script>
+        $(function () {
+            $('body')
+                .on('click', '#password-login', function () {
+                    $('#login-container').removeClass('d-none');
+                    setTimeout(function () {
+                        $('.center').fadeOut('fast');
+                    }, 100);
+
+                })
+        })
     </script>
-  {% endif %}
 {% endblock %}

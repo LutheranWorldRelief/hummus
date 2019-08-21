@@ -1,8 +1,8 @@
-{% verbatim %}
+{% load i18n %}
 <section class="row">
     <div class="box">
         <div class="box-header with-border">
-		<h3 class="box-title">{% trans 'Summary Cards' %}</h3>
+            <h3 class="box-title">{% trans 'Summary Cards' %}</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -17,8 +17,10 @@
                                                                    aria-hidden="true"></i></span>
                         <div class="info-box-content">
                             <br>
-			    <span class="info-box-text">{% trans 'Projects' %}</span>
+                            <span class="info-box-text">{% trans 'Projects' %}</span>
+{% verbatim %}
                             <span class="info-box-number">{{proyectos}}</span>
+{% endverbatim %}
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -29,8 +31,10 @@
                                                                 aria-hidden="true"></i></span>
                         <div class="info-box-content">
                             <br>
-			    <span class="info-box-text">{% trans 'Activities' %}</span>
+                            <span class="info-box-text">{% trans 'Activities' %}</span>
+{% verbatim %}
                             <span class="info-box-number">{{eventos.actividades}}</span>
+{% endverbatim %}
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -41,8 +45,10 @@
                                                                    aria-hidden="true"></i></span>
                         <div class="info-box-content">
                             <br>
-			    <span class="info-box-text">{% trans 'Events' %}</span>
+                            <span class="info-box-text">{% trans 'Events' %}</span>
+{% verbatim %}
                             <span class="info-box-number">{{eventos.eventos}}</span>
+{% endverbatim %}
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -54,8 +60,10 @@
                         <span class="info-box-icon bg-green"><i class="fa fa-list" aria-hidden="true"></i></span>
                         <div class="info-box-content">
                             <br>
-			    <span class="info-box-text">{% trans 'Items' %}</span>
+                            <span class="info-box-text">{% trans 'Areas' %}</span>
+{% verbatim %}
                             <span class="info-box-number">{{CantidadRubros()}}</span>
+{% endverbatim %}
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -64,4 +72,3 @@
         </div>
     </div>
 </section>
-{% endverbatim %}

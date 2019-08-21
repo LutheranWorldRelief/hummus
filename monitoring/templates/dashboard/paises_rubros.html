@@ -1,21 +1,22 @@
-{% verbatim %}
+{% load i18n %}
 <section class="row">
     <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="box">
             <div class="box-header with-border">
-		    <h3 class="box-title">{% trans 'Countries' %}</h3>
+                <h3 class="box-title">{% trans 'Countries' %}</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn" ng-class="{'btn-success':formulario.paises_todos}"
-                            ng-click="PaisesTodos()">Todos
+                            ng-click="PaisesTodos()">{% trans 'All' %}
                     </button>
                     <button type="button" class="btn" ng-class="{'btn-danger':formulario.paises_ninguno}"
-                            ng-click="PaisesNinguno()">Ninguno
+                            ng-click="PaisesNinguno()">{% trans 'None' %}
                     </button>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
                     </button>
                 </div>
             </div>
+{% verbatim %}
             <div class="box-body">
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4" ng-repeat="r in paises">
@@ -38,23 +39,25 @@
             </div>
         </div>
     </div>
+{% endverbatim %}
 
     <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="box">
             <div class="box-header with-border">
-		    <h3 class="box-title">{% trans 'Items' %}</h3>
+                <h3 class="box-title">{% trans 'Areas' %}</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn" ng-class="{'btn-success':formulario.rubros_todos}"
-                            ng-click="RubrosTodos()">Todos
+                            ng-click="RubrosTodos()">{% trans 'All' %}
                     </button>
                     <button type="button" class="btn" ng-class="{'btn-danger':formulario.rubros_ninguno}"
-                            ng-click="RubrosNinguno()">Ninguno
+                            ng-click="RubrosNinguno()">{% trans 'None' %}
                     </button>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
                     </button>
                 </div>
             </div>
+{% verbatim %}
             <div class="box-body">
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-4" ng-repeat="r in rubros">
@@ -77,5 +80,5 @@
             </div>
         </div>
     </div>
-</section>
 {% endverbatim %}
+</section>
