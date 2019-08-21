@@ -66,6 +66,7 @@ def rubros(request):
     result = Product.objects.all().values()
     for row in result:
         row['rubro'] = row['name_es']
+        row['active'] = str(row['id']) in request.POST.getlist("rubros[]")
     data = {'rubros': list(result) }
     return JsonResponse(data)
 
