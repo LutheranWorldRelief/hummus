@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <header class="main-header">
     <a href="" class="logo">
         <span class="logo-mini">LWR</span>
@@ -35,10 +36,10 @@
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                               Perfil
+                                <a class="btn btn-default btn-flat" href="/site/profile">{% trans 'Profile' %}</a>
                             </div>
                             <div class="pull-right">
-                                Salir
+                                <a class="btn btn-default btn-flat" href="{% url 'admin:logout' %}" data-method="post">{% trans 'Log out' %}</a>
                             </div>
                         </li>
                     </ul>
