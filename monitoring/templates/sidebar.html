@@ -16,13 +16,13 @@
 
         <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header"><span><span>Menú</span></span></li>
-	    <li><a href="/import/beneficiarios-paso1"><i class="fa fa-upload"></i> <span>{ % trans Import Beneficiaries' %}</span></a>
+	    <li><a href="/import/beneficiarios-paso1"><i class="fa fa-upload"></i> <span>{% trans 'Import Beneficiaries' %}</span></a>
             </li>
 	    <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-users"></i> <span>{% trans 'Participants' %}</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="/contact/index"><i class="fa fa-users"></i>
-				    <span>{ % trans 'Participants' %}</span></a></li>
+				    <span>{% trans 'Participants' %}</span></a></li>
 		    <li><a href="/contact/contact-event"><i class="fa fa-users"></i> <span>{% trans 'Participants/Event' %}</span></a>
                     </li>
                     <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i>
@@ -50,7 +50,7 @@
             </li>
 	    <li><a href="/graphic/dashboard"><i class="fa fa-bar-chart"></i> <span>{% trans 'Graphics' %}</span></a>
             </li>
-            <li class="header"><span><span>Catálogos y Configuraciones</span></span></li>
+            <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
 	    <li class="treeview"><a href="#"><i class="fa fa-sitemap"></i> <span>{% trans 'Configurations' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
