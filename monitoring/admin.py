@@ -165,7 +165,7 @@ class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
     ]
 
 class AttendanceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'event', 'contact', 'type', 'country','organization')
+    list_display = ('id', 'event', 'contact', 'type', 'country','organization',)
     list_display_links = ['id', 'event']
     list_per_page = 20
     list_max_show_all = 50
@@ -173,15 +173,10 @@ class AttendanceAdmin(admin.ModelAdmin):
     list_filter = [
         ('country', RelatedOnlyDropdownFilter),
         ('organization__name', DropdownFilter),
-        'type'
+        ('contact__projectcontact__project__name',DropdownFilter),
+        'type',
     ]
     search_fields = ['contact__name', 'event__name']
-
-    def project_name(self, obj):
-        if obj.projectcontact:
-            return obj.projectcontact.project
-        else:
-            return ''
 
 
 admin.site.register(Structure, StructureAdmin)
