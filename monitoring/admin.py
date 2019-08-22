@@ -24,6 +24,14 @@ class ListAdminMixin(object):
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
+class ProjectContactInline(admin.StackedInline):
+    model = ProjectContact
+    extra = 0
+
+class AttendanceInline(admin.StackedInline):
+    model = Attendance
+    extra = 0
+
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
     list_display_links = ['name', 'country', 'type']
@@ -34,6 +42,10 @@ class ContactAdmin(admin.ModelAdmin):
         ('country', RelatedOnlyDropdownFilter),
         ('organization__name', DropdownFilter),
         'type'
+    ]
+    inlines = [
+        ProjectContactInline,
+        AttendanceInline,
     ]
     search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
     autocomplete_fields = ('country', 'organization', 'type', 'education')
