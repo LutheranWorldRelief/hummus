@@ -164,12 +164,32 @@ class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
         EventInline,
     ]
 
-    
+class AttendanceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'event', 'contact', 'type', 'country','organization')
+    list_display_links = ['id', 'event']
+    list_per_page = 20
+    list_max_show_all = 50
+    ordering = ['event']
+    list_filter = [
+        ('country', RelatedOnlyDropdownFilter),
+        ('organization__name', DropdownFilter),
+        'type'
+    ]
+    search_fields = ['contact__name', 'event__name']
+
+    def project_name(self, obj):
+        if obj.projectcontact:
+            return obj.projectcontact.project
+        else:
+            return ''
+
+
 admin.site.register(Structure, StructureAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(Attendance, AttendanceAdmin)
 
 models = apps.get_models()
 for model in models:
