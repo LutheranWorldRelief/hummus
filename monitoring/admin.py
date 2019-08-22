@@ -58,6 +58,7 @@ class EventAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_max_show_all = 50
     ordering = ['-start']
+    date_hierarchy = 'start'
     list_filter = [
         ('country', RelatedOnlyDropdownFilter),
         ('organization', RelatedOnlyDropdownFilter),
@@ -106,6 +107,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display_links = ['name']
     ordering = ['id']
     search_fields = ['code', 'name', ]
+    date_hierarchy = 'start'
 
     def get_countries(self, obj):
         return ', '.join(
