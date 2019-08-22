@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.apps import apps
+from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
 
@@ -164,7 +165,15 @@ class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
         EventInline,
     ]
 
-class AttendanceAdmin(admin.ModelAdmin):
+class AttendanceResource(resources.ModelResource):
+
+    class Meta:
+        model = Attendance
+        fields = ('event__name','contact__name', 'type__name', 'country__name','document','sex','community','phone_personal','organization__name', 'contact__projectcontact__project__name')
+        export_order = ('event__name','contact__name', 'type__name', 'country__name','document','sex','community','phone_personal','organization__name')
+
+class AttendanceAdmin(ImportExportModelAdmin):
+    resource_class = AttendanceResource
     list_display = ('id', 'event', 'contact', 'type', 'country','organization',)
     list_display_links = ['id', 'event']
     list_per_page = 20
