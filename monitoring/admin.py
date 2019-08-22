@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.apps import apps
+from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
 
@@ -164,8 +165,16 @@ class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
         EventInline,
     ]
 
-class AttendanceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'event', 'contact', 'type', 'country','organization')
+class AttendanceResource(resources.ModelResource):
+
+    class Meta:
+        model = Attendance
+        fields = ('event__name','contact__name', 'type__name', 'country__name','document','sex','community','phone_personal','organization__name', 'contact__projectcontact__project__name')
+        export_order = ('event__name','contact__name', 'type__name', 'country__name','document','sex','community','phone_personal','organization__name')
+
+class AttendanceAdmin(ImportExportModelAdmin):
+    resource_class = AttendanceResource
+    list_display = ('id', 'event', 'contact', 'type', 'country','organization',)
     list_display_links = ['id', 'event']
     list_per_page = 20
     list_max_show_all = 50
@@ -173,15 +182,10 @@ class AttendanceAdmin(admin.ModelAdmin):
     list_filter = [
         ('country', RelatedOnlyDropdownFilter),
         ('organization__name', DropdownFilter),
-        'type'
+        ('contact__projectcontact__project__name',DropdownFilter),
+        'type',
     ]
     search_fields = ['contact__name', 'event__name']
-
-    def project_name(self, obj):
-        if obj.projectcontact:
-            return obj.projectcontact.project
-        else:
-            return ''
 
 
 admin.site.register(Structure, StructureAdmin)
