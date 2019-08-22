@@ -108,6 +108,11 @@ class ProjectAdmin(admin.ModelAdmin):
     ordering = ['id']
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
+    fieldsets = [
+        ('General information',{'fields': ['id','code','name','logo','colors','url']}),
+        ('Date information', {'fields': ['start', 'end']}),
+        ('Goal', {'fields': ['goalmen', 'goalwomen']}),
+    ]
 
     def get_countries(self, obj):
         return ', '.join(
