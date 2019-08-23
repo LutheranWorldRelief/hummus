@@ -29,9 +29,11 @@ class ProjectContactInline(admin.StackedInline):
     model = ProjectContact
     extra = 0
 
+
 class AttendanceInline(admin.StackedInline):
     model = Attendance
     extra = 0
+
 
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
@@ -81,11 +83,6 @@ class EventAdmin(admin.ModelAdmin):
     def total(self, obj):
         return self.men(obj) + self.women(obj)
 
-    class Media:
-        css = {
-            'all': ('css/table_event.css',)
-        }
-
 
 class EventInline(admin.TabularInline):
     model = Event
@@ -110,7 +107,7 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
     fieldsets = [
-        ('General information',{'fields': ['id','code','name','logo','colors','url']}),
+        ('General information', {'fields': ['id', 'code', 'name', 'logo', 'colors', 'url']}),
         ('Date information', {'fields': ['start', 'end']}),
         ('Goal', {'fields': ['goalmen', 'goalwomen']}),
     ]
@@ -140,14 +137,14 @@ class ProjectAdmin(admin.ModelAdmin):
 
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = (
-    'id', 'name', 'description', 'country', 'organization_parent', 'organization_type', 'is_implementer')
+        'id', 'name', 'description', 'country', 'organization_parent', 'organization_type', 'is_implementer')
     list_per_page = 20
     list_max_show_all = 50
     ordering = ['id']
     list_filter = [
-    ('name', DropdownFilter),
-    ('country', RelatedOnlyDropdownFilter),
-   ('organization_type', RelatedOnlyDropdownFilter),
+        ('name', DropdownFilter),
+        ('country', RelatedOnlyDropdownFilter),
+        ('organization_type', RelatedOnlyDropdownFilter),
     ]
     search_fields = ['id', 'name', 'description', 'country__name']
     autocomplete_fields = ('country', 'organization_type',)
@@ -159,22 +156,29 @@ class OrganizationAdmin(admin.ModelAdmin):
         else:
             return ''
 
- 
+
 class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
     inlines = [
         EventInline,
     ]
 
-class AttendanceResource(resources.ModelResource):
 
+class AttendanceResource(resources.ModelResource):
     class Meta:
         model = Attendance
-        fields = ('event__name','contact__name', 'type__name', 'country__name','document','sex','community','phone_personal','organization__name', 'contact__projectcontact__project__name')
-        export_order = ('event__name','contact__name', 'type__name', 'country__name','document','sex','community','phone_personal','organization__name')
+        fields = (
+            'event__name', 'contact__name', 'type__name', 'country__name', 'document', 'sex', 'community',
+            'phone_personal',
+            'organization__name', 'contact__projectcontact__project__name')
+        export_order = (
+            'event__name', 'contact__name', 'type__name', 'country__name', 'document', 'sex', 'community',
+            'phone_personal',
+            'organization__name')
+
 
 class AttendanceAdmin(ImportExportModelAdmin):
     resource_class = AttendanceResource
-    list_display = ('id', 'event', 'contact', 'type', 'country','organization',)
+    list_display = ('id', 'event', 'contact', 'type', 'country', 'organization',)
     list_display_links = ['id', 'event']
     list_per_page = 20
     list_max_show_all = 50
@@ -182,7 +186,7 @@ class AttendanceAdmin(ImportExportModelAdmin):
     list_filter = [
         ('country', RelatedOnlyDropdownFilter),
         ('organization__name', DropdownFilter),
-        ('contact__projectcontact__project__name',DropdownFilter),
+        ('contact__projectcontact__project__name', DropdownFilter),
         'type',
     ]
     search_fields = ['contact__name', 'event__name']
