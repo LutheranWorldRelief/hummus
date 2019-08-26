@@ -93,6 +93,9 @@ TEMPLATES = [
                 # extras
                 'microsoft_auth.context_processors.microsoft',
             ],
+            'libraries': {
+                'common_utils': 'hummus.templatetags.utils',
+},
         },
     },
 ]
