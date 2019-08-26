@@ -117,15 +117,46 @@ a.deletelink:before {
     background-color: rgba(38, 98, 128, 1) !important;
 }
 
+/*content table*/
+div#content.flex h1 {
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
+    color: #31708f;
+    height: 35px;
+    font-size: 16px;
+    font-weight: 500 !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin: 0 0 0;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+div#content.flex > #content-main {
+    border: 1px solid #bce8f1;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div#content.flex > #content-main p.paginator {
+    border-bottom: none;
+    margin-top:10px ;
+}
+
 /*tables css*/
+table#result_list thead tr {
+    background-color: #f9f9f9;
+}
+
 table#result_list thead tr th a,
 table#result_list thead tr th div span {
     color: #3c8dbc;
     text-decoration: none;
 }
 
-table#result_list thead tr th a:hover{
-     color: #72afd2;
+table#result_list thead tr th a:hover {
+    color: #72afd2;
     text-decoration: none;
 }
 
