@@ -84,7 +84,7 @@ class EventAdmin(admin.ModelAdmin):
         return self.men(obj) + self.women(obj)
 
 
-class EventInline(admin.TabularInline):
+class EventInline(admin.StackedInline):
     model = Event
     extra = 0
 
