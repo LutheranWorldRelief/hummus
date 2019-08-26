@@ -12,6 +12,23 @@ div#header h1#site-name a {
     color: rgb(255, 255, 255);
 }
 
+.login div#header {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 16px;
+    background: #417690 !important;
+    color: #ffc;
+    overflow: hidden;
+}
+
+.login div#header h1#site-name a {
+    background-color: #417690 !important;
+    color: rgb(255, 255, 255);
+}
+
 div#header a:hover {
     color: rgb(255, 255, 255);
 }
@@ -39,8 +56,15 @@ select {
     background: whitesmoke;
 }
 
-select#id_event, select#id_contact, select#id_country, select#id_organization, select#id_type {
+select#id_event, select#id_contact,
+select#id_country, select#id_organization,
+select#id_type, select#id_organization_type,
+.field-event select, .field-type select {
     width: 40%;
+}
+
+select#id_structure, select#id_project {
+    width: 50%;
 }
 
 input[type="submit"].default {
@@ -48,8 +72,9 @@ input[type="submit"].default {
     border-color: #367fa9;
 }
 
-#structure_set-group fieldset.module h2 {
-    /*background-color: rgba(255, 255, 255, 0) !important;*/
+#structure_set-group fieldset.module h2, #event_set-group fieldset.module h2,
+#attendance_set-group fieldset.module h2, #projectcontact_set-group fieldset.module h2 {
+    background-color: rgba(38, 98, 128, 1) !important;
 }
 
 #structure_set-group table thead tr th.column-code {
@@ -60,14 +85,27 @@ input[type="submit"].default {
     width: 5em !important;
 }
 
-
-#structure_set-group table thead tr th.column-description, #structure_set-group table thead tr th.column-structure, #structure_set-group table thead tr th.column-notes {
+#structure_set-group table thead tr th.column-description,
+#structure_set-group table thead tr th.column-structure,
+#structure_set-group table thead tr th.column-notes /*,
+#event_set-group table thead tr th.column-title*/
+{
     width: 20em !important;
 }
 
-#structure_set-group table tbody tr td.field-description textarea, #structure_set-group table tbody tr td.field-structure select, #structure_set-group table tbody tr td.field-notes textarea {
+#structure_set-group table tbody tr td.field-description textarea,
+#structure_set-group table tbody tr td.field-structure select,
+#structure_set-group table tbody tr td.field-notes textarea /*,
+#event_set-group table tbody tr td.field-title textarea */
+{
     width: 20em !important;
 }
+
+a.deletelink:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1f8";
+}
+
 
 /* * * * responsive css * * * */
 @media screen and (max-width: 1025px) {
