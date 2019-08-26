@@ -56,14 +56,24 @@ select {
     background: whitesmoke;
 }
 
+input[type="number"], .field-id input[type="number"],
+.field-goalmen input[type="number"], .field-goalwomen input[type="number"] {
+    width: 21%;
+}
+
+select#id_region {
+    width: 25%;
+}
+
 select#id_event, select#id_contact,
 select#id_country, select#id_organization,
 select#id_type, select#id_organization_type,
+select#id_contact, select#id_project,
 .field-event select, .field-type select {
     width: 40%;
 }
 
-select#id_structure, select#id_project {
+select#id_structure {
     width: 50%;
 }
 
@@ -87,23 +97,36 @@ input[type="submit"].default {
 
 #structure_set-group table thead tr th.column-description,
 #structure_set-group table thead tr th.column-structure,
-#structure_set-group table thead tr th.column-notes /*,
-#event_set-group table thead tr th.column-title*/
-{
+#structure_set-group table thead tr th.column-notes {
     width: 20em !important;
 }
 
 #structure_set-group table tbody tr td.field-description textarea,
 #structure_set-group table tbody tr td.field-structure select,
-#structure_set-group table tbody tr td.field-notes textarea /*,
-#event_set-group table tbody tr td.field-title textarea */
-{
+#structure_set-group table tbody tr td.field-notes textarea {
     width: 20em !important;
 }
 
 a.deletelink:before {
     font: normal normal normal 14px/1 FontAwesome;
     content: "\f1f8";
+}
+
+
+.module table caption {
+    background-color: rgba(38, 98, 128, 1) !important;
+}
+
+/*tables css*/
+table#result_list thead tr th a,
+table#result_list thead tr th div span {
+    color: #3c8dbc;
+    text-decoration: none;
+}
+
+table#result_list thead tr th a:hover{
+     color: #72afd2;
+    text-decoration: none;
 }
 
 
