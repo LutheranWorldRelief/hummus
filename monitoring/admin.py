@@ -3,6 +3,7 @@ from django.apps import apps
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
+from jet.admin import CompactInline
 
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
@@ -21,14 +22,28 @@ class ListAdminMixin(object):
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
-class ProjectContactInline(admin.StackedInline):
+class ProjectContactInline(admin.TabularInline):
     model = ProjectContact
+    fields = ('project',)
+    readonly_fields = ('project',)
+    show_change_link = True
+    can_delete = False
     extra = 0
 
+    def has_add_permission(self, request):
+        return False
 
-class AttendanceInline(admin.StackedInline):
+
+class AttendanceInline(admin.TabularInline):
     model = Attendance
+    fields = ('id', 'community', 'organization', 'type',)
+    readonly_fields = ('id', 'community', 'organization', 'type',)
+    show_change_link = True
+    can_delete = False
     extra = 0
+
+    def has_add_permission(self, request):
+        return False
 
 
 class ContactAdmin(admin.ModelAdmin):
