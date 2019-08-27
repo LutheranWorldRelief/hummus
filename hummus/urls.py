@@ -20,6 +20,8 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
     path('',TemplateView.as_view(template_name='index.html')),
