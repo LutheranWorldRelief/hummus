@@ -2,319 +2,324 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Ruddy Mora <rmora.alvarado@gmail.com>, 2019
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-08-22 15:40+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-08-23 06:33+0000\n"
+"Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
+"Language-Team: Spanish (https://www.transifex.com/lutheran-world-relief/teams/101869/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: hummus/settings.py:32
 msgid "English"
-msgstr ""
+msgstr "Inglés"
 
 #: hummus/settings.py:33
 msgid "Spanish"
-msgstr ""
+msgstr "Español"
 
 #: hummus/settings.py:34
 msgid "French"
-msgstr ""
+msgstr "Francés"
 
 #: monitoring/models.py:16
 msgid "February"
-msgstr ""
+msgstr "Febrero"
 
 #: monitoring/models.py:17
 msgid "March"
-msgstr ""
+msgstr "Marzo"
 
 #: monitoring/models.py:18
 msgid "April"
-msgstr ""
+msgstr "Abril"
 
 #: monitoring/models.py:19
 msgid "May"
-msgstr ""
+msgstr "Mayo"
 
 #: monitoring/models.py:20
 msgid "June"
-msgstr ""
+msgstr "Junio"
 
 #: monitoring/models.py:21
 msgid "July"
-msgstr ""
+msgstr "Julio"
 
 #: monitoring/models.py:22
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 #: monitoring/models.py:23
 msgid "September"
-msgstr ""
+msgstr "Septiembre"
 
 #: monitoring/models.py:24
 msgid "October"
-msgstr ""
+msgstr "Octubre"
 
 #: monitoring/models.py:25
 msgid "November"
-msgstr ""
+msgstr "Noviembre"
 
 #: monitoring/models.py:26
 msgid "December"
-msgstr ""
+msgstr "Diciembre"
 
 #: monitoring/templates/base.html:17
 msgid "Hummus"
-msgstr ""
+msgstr "Hummus"
 
 #: monitoring/templates/dashboard.html:53
 msgid "Project Monitoring System"
-msgstr ""
+msgstr "Sistema de monitoreo de proyectos"
 
 #: monitoring/templates/dashboard.html:65
 msgid "Loading..."
-msgstr ""
+msgstr "Cargando..."
 
 #: monitoring/templates/dashboard/educacion.html:6
 msgid "Participants by age and education"
-msgstr ""
+msgstr "Participantes por edad y educación"
 
 #: monitoring/templates/dashboard/eventos_tipo.html:5
 msgid "Participants in events and Participants by type of person"
-msgstr ""
+msgstr "Participantes en eventos y Participantes por tipo de persona."
 
 #: monitoring/templates/dashboard/filtros.html:12
 msgid "Filters"
-msgstr ""
+msgstr "Filtros"
 
 #: monitoring/templates/dashboard/filtros.html:22
 msgid "Fiscal year start month"
-msgstr ""
+msgstr "Año fiscal mes de inicio"
 
 #: monitoring/templates/dashboard/filtros.html:26
 msgid "From"
-msgstr ""
+msgstr "Desde"
 
 #: monitoring/templates/dashboard/filtros.html:27
 #: monitoring/templates/dashboard/filtros.html:31
 msgid "Pick date"
-msgstr ""
+msgstr "Escoger fecha"
 
 #: monitoring/templates/dashboard/filtros.html:27
 msgid "Clean field"
-msgstr ""
+msgstr "Limpiar campo"
 
 #: monitoring/templates/dashboard/filtros.html:27
 msgid "Select from..."
-msgstr ""
+msgstr "Seleccionar desde..."
 
 #: monitoring/templates/dashboard/filtros.html:30
 msgid "To"
-msgstr ""
+msgstr "Para"
 
 #: monitoring/templates/dashboard/filtros.html:31
 msgid "Select to..."
-msgstr ""
+msgstr "Seleccione para ..."
 
 #: monitoring/templates/dashboard/filtros.html:34
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #: monitoring/templates/dashboard/filtros.html:36
 msgid "Select a project..."
-msgstr ""
+msgstr "Seleccione un proyecto..."
 
 #: monitoring/templates/dashboard/metas.html:5
 msgid "Goals and scopes"
-msgstr ""
+msgstr "Objetivos y alcances"
 
 #: monitoring/templates/dashboard/nacionalidad.html:6
 msgid "Map"
-msgstr ""
+msgstr "Mapa"
 
 #: monitoring/templates/dashboard/nacionalidad.html:26
 msgid "Nationality of the participants"
-msgstr ""
+msgstr "Nacionalidad de los participantes"
 
 #: monitoring/templates/dashboard/organizaciones_pastel_fiscal.html:5
 msgid "Implementing Organizations, Participants by Sex and Fiscal Year"
-msgstr ""
+msgstr "Organizaciones implementadoras, participantes por sexo y año fiscal"
 
 #: monitoring/templates/dashboard/paises_rubros.html:6
 msgid "Countries"
-msgstr ""
+msgstr "Países"
 
 #: monitoring/templates/dashboard/paises_rubros.html:9
 #: monitoring/templates/dashboard/paises_rubros.html:50
 msgid "All"
-msgstr ""
+msgstr "Todo"
 
 #: monitoring/templates/dashboard/paises_rubros.html:12
 #: monitoring/templates/dashboard/paises_rubros.html:53
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: monitoring/templates/dashboard/paises_rubros.html:47
 #: monitoring/templates/dashboard/resumen.html:63
 msgid "Areas"
-msgstr ""
+msgstr "Áreas"
 
 #: monitoring/templates/dashboard/resumen.html:5
 msgid "Summary Cards"
-msgstr ""
+msgstr "Tarjetas de resumen"
 
 #: monitoring/templates/dashboard/resumen.html:20
 #: monitoring/templates/sidebar.html:58
 msgid "Projects"
-msgstr ""
+msgstr "Proyectos"
 
 #: monitoring/templates/dashboard/resumen.html:34
 msgid "Activities"
-msgstr ""
+msgstr "Actividades"
 
 #: monitoring/templates/dashboard/resumen.html:48
 #: monitoring/templates/sidebar.html:40
 msgid "Events"
-msgstr ""
+msgstr "Eventos"
 
 #: monitoring/templates/header.html:12
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Alternar navegación"
 
 #: monitoring/templates/header.html:39
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: monitoring/templates/header.html:42
 msgid "Log out"
-msgstr ""
+msgstr "Cerrar sesión"
 
 #: monitoring/templates/sidebar.html:19
 msgid "Import Beneficiaries"
-msgstr ""
+msgstr "Importar Beneficiarios"
 
 #: monitoring/templates/sidebar.html:21 monitoring/templates/sidebar.html:25
 msgid "Participants"
-msgstr ""
+msgstr "Participantes"
 
 #: monitoring/templates/sidebar.html:26
 msgid "Participants/Event"
-msgstr ""
+msgstr "Participantes/Evento"
 
 #: monitoring/templates/sidebar.html:32
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: monitoring/templates/sidebar.html:35
 msgid "Document"
-msgstr ""
+msgstr "Documento"
 
 #: monitoring/templates/sidebar.html:42
 msgid "Reports"
-msgstr ""
+msgstr "Reportes"
 
 #: monitoring/templates/sidebar.html:46
 msgid "Principal"
-msgstr ""
+msgstr "Principal"
 
 #: monitoring/templates/sidebar.html:47
 msgid "Clean template"
-msgstr ""
+msgstr "Plantilla Limpia"
 
 #: monitoring/templates/sidebar.html:51
 msgid "Graphics"
-msgstr ""
+msgstr "Gráficos"
 
 #: monitoring/templates/sidebar.html:53
 msgid "Catalogs and Configurations"
-msgstr ""
+msgstr "Catálogos y Configuraciones"
 
 #: monitoring/templates/sidebar.html:54
 msgid "Configurations"
-msgstr ""
+msgstr "Configuraciones"
 
 #: monitoring/templates/sidebar.html:59
 msgid "Organizations"
-msgstr ""
+msgstr "Organizaciones"
 
 #: monitoring/templates/sidebar.html:63
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: monitoring/templates/sidebar.html:65
 msgid "Types"
-msgstr ""
+msgstr "Tipos"
 
 #: monitoring/templates/sidebar.html:68
 msgid "Catalogs"
-msgstr ""
+msgstr "Catálogos"
 
 #: monitoring/templates/sidebar.html:71
 msgid "Segmentation"
-msgstr ""
+msgstr "Segmentación"
 
 #: monitoring/templates/sidebar.html:74
 msgid "Security"
-msgstr ""
+msgstr "Seguridad"
 
 #: monitoring/templates/sidebar.html:78
 msgid "Users"
-msgstr ""
+msgstr "Usuarios"
 
 #: monitoring/templates/sidebar.html:80
 msgid "Roles"
-msgstr ""
+msgstr "Roles"
 
 #: monitoring/templates/sidebar.html:82
 msgid "Routes"
-msgstr ""
+msgstr "Rutas"
 
 #: monitoring/templates/sidebar.html:83
 msgid "Binnacle"
-msgstr ""
+msgstr "Bitácora"
 
 #: templates/microsoft/admin_login.html:30
 msgid "Please correct the error below."
-msgstr ""
+msgstr "Por favor corrija el error a continuación."
 
 #: templates/microsoft/admin_login.html:32
 msgid "Please correct the errors below."
-msgstr ""
+msgstr "Por favor corrija los siguientes errores."
 
 #: templates/microsoft/admin_login.html:49
 #, python-format
 msgid ""
-"You are authenticated as %(username)s, but are not authorized to access this "
-"page. Would you like to login to a different account?"
+"You are authenticated as %(username)s, but are not authorized to access this"
+" page. Would you like to login to a different account?"
 msgstr ""
+"Está autenticado como %(username)s, pero no está autorizado para acceder a "
+"esta página. ¿Desea iniciar sesión en una cuenta diferente?"
 
 #: templates/microsoft/admin_login.html:58
 msgid "Log in with"
-msgstr ""
+msgstr "Inicia con"
 
 #: templates/microsoft/admin_login.html:65
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: templates/microsoft/admin_login.html:68
 msgid "Django"
-msgstr ""
+msgstr "Django"
 
 #: templates/microsoft/admin_login.html:103
 msgid "Forgotten your password or username?"
-msgstr ""
+msgstr "¿Olvidó su contraseña o nombre de usuario?"
 
 #: templates/microsoft/admin_login.html:109
 msgid "login"
-msgstr ""
+msgstr "iniciar sesión"
