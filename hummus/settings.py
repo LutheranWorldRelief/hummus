@@ -48,6 +48,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -93,9 +95,6 @@ TEMPLATES = [
                 # extras
                 'microsoft_auth.context_processors.microsoft',
             ],
-            'libraries': {
-                'common_utils': 'hummus.templatetags.utils',
-},
         },
     },
 ]
@@ -141,7 +140,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SESSION_COOKIE_DOMAIN=".hummus.cc"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+SESSION_COOKIE_DOMAIN="karinka.guegue.com"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
