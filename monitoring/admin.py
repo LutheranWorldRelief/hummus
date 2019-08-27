@@ -42,8 +42,8 @@ class ContactAdmin(admin.ModelAdmin):
     list_max_show_all = 50
     ordering = ['name']
     list_filter = [
-        ('country', RelatedOnlyDropdownFilter),
-        ('organization__name', DropdownFilter),
+        ('country'),
+        ('organization__name'),
         'type'
     ]
     inlines = [
@@ -63,8 +63,8 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ['-start']
     date_hierarchy = 'start'
     list_filter = [
-        ('country', RelatedOnlyDropdownFilter),
-        ('organization', RelatedOnlyDropdownFilter),
+        ('country'),
+        ('organization'),
     ]
     search_fields = ['id', 'name', 'project__name', 'structure__name', 'organization__name', 'country__name']
 
@@ -142,9 +142,9 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_max_show_all = 50
     ordering = ['id']
     list_filter = [
-        ('name', DropdownFilter),
-        ('country', RelatedOnlyDropdownFilter),
-        ('organization_type', RelatedOnlyDropdownFilter),
+        ('name'),
+        ('country'),
+        ('organization_type'),
     ]
     search_fields = ['id', 'name', 'description', 'country__name']
     autocomplete_fields = ('country', 'organization_type',)
@@ -184,9 +184,9 @@ class AttendanceAdmin(ImportExportModelAdmin):
     list_max_show_all = 50
     ordering = ['event']
     list_filter = [
-        ('country', RelatedOnlyDropdownFilter),
-        ('organization__name', DropdownFilter),
-        ('contact__projectcontact__project__name', DropdownFilter),
+        ('country'),
+        ('organization__name'),
+        ('contact__projectcontact__project__name'),
         'type',
     ]
     search_fields = ['contact__name', 'event__name']
