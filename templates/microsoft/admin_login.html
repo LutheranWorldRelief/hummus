@@ -53,25 +53,9 @@
             </p>
         {% endif %}
 
-        {% if microsoft_login_enabled %}
-            <div class="center">
-                <p>{% trans 'Log in with' %}</p>
-                <div class="container">
-                    <div>
-                        <button id="microsoft-login" class="button"
-                                type="button">{{ microsoft_login_type_text }}</button>
-                    </div>
-                    <div>
-                        <p>{% trans 'or' %}</p>
-                    </div>
-                    <div>
-                        <button id="password-login" class="button" type="button">{% trans 'Django' %}</button>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
 
-        <div id="login-container" class="login-box d-none">
+
+        <div id="login-container" class="login-box">
 
             <!-- /.login-logo -->
             <div class="login-box-body" style="padding: 5px">
@@ -80,7 +64,27 @@
                     <img class="image-responsive" src="{% static 'img/logo_pral.png' %}" alt=""> <br>
                     <span style="font-size:0.9em"><b>Monitoreo</b> de Proyectos</span>
                 </div>
-                <form id="login-form" action="{{ app_path }}" method="post">
+
+                {#botones#}
+                {% if microsoft_login_enabled %}
+                    <div class="center">
+                        <p>{% trans 'Log in with' %}</p>
+                        <div class="container">
+                            <div>
+                                <button id="microsoft-login" class="button"
+                                        type="button">{{ microsoft_login_type_text }}</button>
+                            </div>
+                            <div>
+                                <p>{% trans 'or' %}</p>
+                            </div>
+                            <div>
+                                <button id="password-login" class="button" type="button">{% trans 'Django' %}</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {#form de login#}
+                <form id="login-form" action="{{ app_path }}" class="d-none" method="post">
                     {% csrf_token %}
                     <div class="form-row">
                         {# username input #}
@@ -138,7 +142,7 @@
         $(function () {
             $('body')
                 .on('click', '#password-login', function () {
-                    $('#login-container').removeClass('d-none');
+                    $('#login-form').removeClass('d-none');
                     setTimeout(function () {
                         $('.center').fadeOut('fast');
                     }, 100);
