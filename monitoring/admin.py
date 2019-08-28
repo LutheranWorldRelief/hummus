@@ -3,7 +3,6 @@ from django.apps import apps
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
-from jet.admin import CompactInline
 
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
