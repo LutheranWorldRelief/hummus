@@ -14,7 +14,6 @@ import os
 import environ
 from django.utils.translation import gettext_lazy as _
 
-
 # Env basic configuration
 env = environ.Env(
     DEBUG=(bool, False)
@@ -26,7 +25,6 @@ DATABASES = {
     'default': env.db(),
 }
 
-
 # Localization and translation
 LANGUAGES = [
     ('en', _('English')),
@@ -34,16 +32,13 @@ LANGUAGES = [
     ('fr', _('French')),
 ]
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -83,7 +78,7 @@ ROOT_URLCONF = 'hummus.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,7 +94,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hummus.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -119,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -133,7 +126,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -141,7 +133,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-SESSION_COOKIE_DOMAIN=".hummus.cc"
+SESSION_COOKIE_DOMAIN = ".hummus.cc"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
@@ -163,3 +155,24 @@ MICROSOFT_AUTH_CLIENT_SECRET = env('MICROSOFT_AUTH_CLIENT_SECRET')
 MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
 
 LOGIN_URL = '/admin/login/'
+
+JET_SIDE_MENU_ITEMS = [
+    {'app_label': 'monitoring', 'items': [
+        {'name': 'attendance'},
+        {'name': 'contacttype'},
+        {'name': 'contact'},
+        {'name': 'country'},
+        {'name': 'datalist'},
+        {'name': 'education'},
+        {'name': 'event'},
+        {'name': 'filter'},
+        {'name': 'organizationtype'},
+        {'name': 'organization'},
+        {'name': 'product'},
+        {'name': 'profile'},
+        {'name': 'projectcontact'},
+        {'name': 'project'},
+        {'name': 'region'},
+        {'name': 'structure'},
+    ]}
+]
