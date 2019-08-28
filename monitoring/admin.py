@@ -21,14 +21,28 @@ class ListAdminMixin(object):
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
-class ProjectContactInline(admin.StackedInline):
+class ProjectContactInline(admin.TabularInline):
     model = ProjectContact
+    fields = ('project',)
+    readonly_fields = ('project',)
+    show_change_link = True
+    can_delete = False
     extra = 0
 
+    def has_add_permission(self, request):
+        return False
 
-class AttendanceInline(admin.StackedInline):
+
+class AttendanceInline(admin.TabularInline):
     model = Attendance
+    fields = ('id', 'community', 'organization', 'type',)
+    readonly_fields = ('id', 'community', 'organization', 'type',)
+    show_change_link = True
+    can_delete = False
     extra = 0
+
+    def has_add_permission(self, request):
+        return False
 
 
 class ContactAdmin(admin.ModelAdmin):
