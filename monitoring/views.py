@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.views.generic.detail import DetailView
 from django_tables2 import RequestConfig
 
 from .tables import *
@@ -33,4 +33,13 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(*args, **kwargs)
         context['months'] = months
         context['projects'] = Project.objects.values('id', 'name')
+        return context
+
+
+class ProjectAdminView(DetailView):
+    model = Project
+    template_name = 'detail_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         return context
