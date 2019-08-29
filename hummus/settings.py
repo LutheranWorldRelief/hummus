@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'import_export',
     'microsoft_auth',
+    'constance',
+    'constance.backends.database',
     # my apps
     'legacy',
     'monitoring',
@@ -176,3 +178,10 @@ JET_SIDE_MENU_ITEMS = [
         {'name': 'structure'},
     ]}
 ]
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+try:
+    from .constance_settings import *
+except ImportError:
+    pass
