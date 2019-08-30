@@ -122,19 +122,19 @@ a.desc:after {
     background-color: #E0E0E0;
 }
 
-input.linked, 
-input.linked:active, 
+input.linked,
+input.linked:active,
 input.linked:hover{
     background-color: #BDE8AE;
     border: solid #00FF00 1px
 }
 
-input.linked_no, 
-input.linked_no:active, 
-input.linked_no:hover, 
+input.linked_no,
+input.linked_no:active,
+input.linked_no:hover,
 input.linked_no:focus{
     background-color: #FFDEDC;
-    border: solid #E86A2A 1px   
+    border: solid #E86A2A 1px
 }
 
 div.required label.control-label:after {
@@ -185,3 +185,19 @@ div.required label.control-label:after {
 /* Estilos para highcharts en datatable*/
 
 .datepicker, .krajee-datepicker{z-index:99999 !important;}
+
+/*Inicio estilo para select en dashboard*/
+ #select2-w2-container{padding-top: .5em;}
+ .select2-container> .selection{ width: inherit;}
+  span.select2-selection__clear{position: inherit !important;}
+  #select2-w2-container{
+      display: block !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+  }
+  .select2-container>.selection, .select2-selection--single{display: grid !important;}
+
+  .select2-container{ display: flex}
+  .select2-results>ul{padding: 0px;}
+/*Fin estilo select dashboard*/
