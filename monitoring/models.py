@@ -110,6 +110,7 @@ class Contact(models.Model):
         ordering = ['name']
         db_table = 'contact'
         verbose_name=_('Contact')
+        verbose_name_plural = _('Contacts')
 
 class Country(models.Model):
     id = models.CharField(primary_key=True, max_length=2, verbose_name=_('Id'))
