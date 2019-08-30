@@ -166,6 +166,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 
 class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
+    list_display_links = ('id', 'description')
     inlines = [
         EventInline,
     ]
