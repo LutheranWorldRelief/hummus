@@ -8,6 +8,10 @@ li.changeform-tabs-item a {
     color: #999 !important;
 }
 
+li.changeform-tabs-item.selected {
+    border-color: #3c8dbc !important;
+}
+
 li.changeform-tabs-item.selected a {
     font-weight: bold;
     color: #000 !important;
@@ -17,7 +21,7 @@ li.changeform-tabs-item.selected a {
 
 /*buttons form */
 .submit-row input[type="submit"], .submit-row input.default {
-    cursor: pointer ;
+    cursor: pointer;
     color: #fff;
     background-color: #3c8dbc !important;
     border-color: #367fa9 !important;
@@ -34,6 +38,21 @@ a.deletelink:hover, a.deletelink:active {
 }
 
 /*select*/
-.related-widget-wrapper span.select2{
+.related-widget-wrapper span.select2 {
     width: 26% !important;
+}
+
+/*button change next or previos */
+.changeform-navigation-button.segmented-button:hover > span {
+    color: #fff !important;
+}
+
+span.changeform-navigation-button-label {
+    color: #000 !important;
+}
+
+/*tabular inline to tables*/
+fieldset.module table thead tr th {
+    color: #000 !important;
+    background: #fff !important;
 }
