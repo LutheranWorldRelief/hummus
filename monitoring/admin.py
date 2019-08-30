@@ -4,6 +4,17 @@ from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
 
+#<<Start Config language >>
+from django.conf import settings
+from django.contrib.auth import user_logged_in
+from django.dispatch import receiver
+
+@receiver(user_logged_in)
+def on_user_logged_in(sender, request, **kwargs):
+    languageUser = Profile.objects.filter(user_id=request.user.id).values('language')
+    if languageUser:
+        settings.LANGUAGE_CODE = languageUser[0]['language']
+#<<End Config language >>
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
 
