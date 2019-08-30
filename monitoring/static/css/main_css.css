@@ -2,3 +2,38 @@
 .field-structure, .field-organization {
     white-space: normal !important;
 }
+
+/*option tab selected*/
+li.changeform-tabs-item a {
+    color: #999 !important;
+}
+
+li.changeform-tabs-item.selected a {
+    font-weight: bold;
+    color: #000 !important;
+    font-size: 0.8rem;
+}
+
+
+/*buttons form */
+.submit-row input[type="submit"], .submit-row input.default {
+    cursor: pointer ;
+    color: #fff;
+    background-color: #3c8dbc !important;
+    border-color: #367fa9 !important;
+}
+
+a.deletelink {
+    background-color: #dd4b39;
+    border-color: #d73925;
+    color: #fff;
+}
+
+a.deletelink:hover, a.deletelink:active {
+    background-color: #d73925 !important;
+}
+
+/*select*/
+.related-widget-wrapper span.select2{
+    width: 26% !important;
+}
