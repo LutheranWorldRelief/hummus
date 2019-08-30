@@ -56,3 +56,32 @@ fieldset.module table thead tr th {
     color: #000 !important;
     background: #fff !important;
 }
+
+/*breadcrumbs*/
+div.breadcrumbs a {
+    color: #00AAA7 !important;
+}
+
+/*button tools*/
+ul.object-tools li a {
+    color: #fff !important;
+    background-color: #00AAA7 !important;
+}
+
+ul.object-tools li a:before {
+    color: #fff !important;
+    background-color: #00AAA7 !important;
+}
+
+/*buttons with icons*/
+a.change-related span {
+    color: #fcedcf;
+}
+
+a.add-related span {
+    color: #87c84c;
+}
+
+a.delete-related span {
+    color: #dd4b39;
+}
