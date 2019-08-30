@@ -61,7 +61,6 @@ class ContactAdmin(admin.ModelAdmin):
         AttendanceInline,
     ]
     search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
-    autocomplete_fields = ('country', 'organization', 'type', 'education')
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -157,7 +156,6 @@ class OrganizationAdmin(admin.ModelAdmin):
         ('organization_type'),
     ]
     search_fields = ['id', 'name', 'description', 'country__name']
-    autocomplete_fields = ('country', 'organization_type',)
     exclude = ['id']
 
     def organization_parent(self, object):
