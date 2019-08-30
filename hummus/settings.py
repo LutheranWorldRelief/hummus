@@ -184,6 +184,12 @@ JET_SIDE_MENU_ITEMS = [
     ]}
 ]
 
+# Salesforce settings
+SALESFORCE_USERNAME = env('SALESFORCE_USERNAME')
+SALESFORCE_PASSWORD = env('SALESFORCE_PASSWORD')
+SALESFORCE_TOKEN = env('SALESFORCE_TOKEN')
+
+# Django Constance Dynamic settings
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 try:
