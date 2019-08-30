@@ -163,6 +163,7 @@ MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
 
 LOGIN_URL = '/admin/login/'
 
+#Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
     {'app_label': 'monitoring', 'items': [
         {'name': 'attendance'},
@@ -183,6 +184,9 @@ JET_SIDE_MENU_ITEMS = [
         {'name': 'structure'},
     ]}
 ]
+
+#JET dashboard custumization
+JET_INDEX_DASHBOARD = 'monitoring.dashboard.CustomIndexDashboard'
 
 # Salesforce settings
 SALESFORCE_USERNAME = env('SALESFORCE_USERNAME')
