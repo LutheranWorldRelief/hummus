@@ -2,36 +2,84 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Ruddy Mora <rmora.alvarado@gmail.com>, 2019
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-22 15:40+0000\n"
+"POT-Creation-Date: 2019-08-30 17:56+0000\n"
 "PO-Revision-Date: 2019-08-23 06:33+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
-"Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
+"Language-Team: French (https://www.transifex.com/lutheran-world-relief/"
+"teams/101869/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hummus/settings.py:32
+#: hummus/settings.py:30
 msgid "English"
 msgstr "Anglais"
 
-#: hummus/settings.py:33
+#: hummus/settings.py:31
 msgid "Spanish"
 msgstr "Espanol"
 
-#: hummus/settings.py:34
+#: hummus/settings.py:32
 msgid "French"
 msgstr "Français"
+
+#: monitoring/admin.py:132
+msgid "General information"
+msgstr ""
+
+#: monitoring/admin.py:133
+msgid "Date information"
+msgstr ""
+
+#: monitoring/admin.py:134
+msgid "Goal"
+msgstr ""
+
+#: monitoring/admin.py:142 monitoring/models.py:49
+#: monitoring/templates/dashboard/paises_rubros.html:6
+msgid "Countries"
+msgstr "Des pays"
+
+#: monitoring/admin.py:147
+msgid "M"
+msgstr ""
+
+#: monitoring/admin.py:152
+msgid "H"
+msgstr ""
+
+#: monitoring/admin.py:157
+#, fuzzy
+#| msgid "To"
+msgid "T"
+msgstr "À"
+
+#: monitoring/dashboard.py:21
+msgid "Quick links"
+msgstr ""
+
+#: monitoring/dashboard.py:27
+msgid "Return to site"
+msgstr ""
+
+#: monitoring/dashboard.py:28
+msgid "Change password"
+msgstr ""
+
+#: monitoring/dashboard.py:30 monitoring/templates/header.html:42
+msgid "Log out"
+msgstr "Connectez - Out"
 
 #: monitoring/models.py:16
 msgid "February"
@@ -76,6 +124,345 @@ msgstr "novembre"
 #: monitoring/models.py:26
 msgid "December"
 msgstr "décembre"
+
+#: monitoring/models.py:30 monitoring/models.py:82 monitoring/models.py:116
+#: monitoring/models.py:135 monitoring/models.py:155 monitoring/models.py:176
+#: monitoring/models.py:193 monitoring/models.py:212 monitoring/models.py:225
+#: monitoring/models.py:247 monitoring/models.py:297 monitoring/models.py:309
+#: monitoring/templates/sidebar.html:32
+msgid "Name"
+msgstr "prénom"
+
+#: monitoring/models.py:37 monitoring/models.py:122
+msgid "Region"
+msgstr ""
+
+#: monitoring/models.py:46
+#, fuzzy
+#| msgid "Users"
+msgid "User"
+msgstr "Utilisateurs"
+
+#: monitoring/models.py:47
+msgid "Language"
+msgstr ""
+
+#: monitoring/models.py:48
+msgid "Regions"
+msgstr ""
+
+#: monitoring/models.py:50 monitoring/templates/dashboard/resumen.html:20
+#: monitoring/templates/sidebar.html:58
+msgid "Projects"
+msgstr "Projets"
+
+#: monitoring/models.py:57 monitoring/templates/header.html:39
+msgid "Profile"
+msgstr "Profil"
+
+#: monitoring/models.py:61 monitoring/models.py:81 monitoring/models.py:115
+#: monitoring/models.py:134 monitoring/models.py:153 monitoring/models.py:175
+#: monitoring/models.py:192 monitoring/models.py:210 monitoring/models.py:224
+#: monitoring/models.py:259 monitoring/models.py:281
+msgid "Id"
+msgstr ""
+
+#: monitoring/models.py:62 monitoring/models.py:172
+#, fuzzy
+#| msgid "Events"
+msgid "Event"
+msgstr "Événements"
+
+#: monitoring/models.py:63 monitoring/models.py:112 monitoring/models.py:261
+msgid "Contact"
+msgstr ""
+
+#: monitoring/models.py:64 monitoring/models.py:90
+#, fuzzy
+#| msgid "Types"
+msgid "Type"
+msgstr "Les types"
+
+#: monitoring/models.py:65 monitoring/models.py:86
+#: monitoring/templates/sidebar.html:35
+msgid "Document"
+msgstr "Document"
+
+#: monitoring/models.py:66 monitoring/models.py:89
+msgid "Sex"
+msgstr ""
+
+#: monitoring/models.py:67 monitoring/models.py:94 monitoring/models.py:131
+#: monitoring/models.py:164 monitoring/models.py:194
+#, fuzzy
+#| msgid "Countries"
+msgid "Country"
+msgstr "Des pays"
+
+#: monitoring/models.py:68 monitoring/models.py:91
+msgid "Community"
+msgstr ""
+
+#: monitoring/models.py:69 monitoring/models.py:88 monitoring/models.py:157
+#: monitoring/models.py:196 monitoring/models.py:207
+#, fuzzy
+#| msgid "Organizations"
+msgid "Organization"
+msgstr "Les organisations"
+
+#: monitoring/models.py:70 monitoring/models.py:96
+msgid "Phone Personal"
+msgstr ""
+
+#: monitoring/models.py:78
+msgid "Attendance"
+msgstr ""
+
+#: monitoring/models.py:83
+#, fuzzy
+#| msgid "Name"
+msgid "Last Name"
+msgstr "prénom"
+
+#: monitoring/models.py:84
+msgid "First Name"
+msgstr ""
+
+#: monitoring/models.py:85
+msgid "Birthdate"
+msgstr ""
+
+#: monitoring/models.py:87 monitoring/models.py:156
+msgid "Title"
+msgstr ""
+
+#: monitoring/models.py:92
+msgid "Municipality"
+msgstr ""
+
+#: monitoring/models.py:93
+msgid "City"
+msgstr ""
+
+#: monitoring/models.py:95 monitoring/models.py:306
+msgid "Education"
+msgstr ""
+
+#: monitoring/models.py:97
+msgid "Phone Work"
+msgstr ""
+
+#: monitoring/models.py:98
+msgid "Men Home"
+msgstr ""
+
+#: monitoring/models.py:99
+msgid "Women Home"
+msgstr ""
+
+#: monitoring/models.py:100
+msgid "Created"
+msgstr ""
+
+#: monitoring/models.py:101
+msgid "Modified"
+msgstr ""
+
+#: monitoring/models.py:117 monitoring/models.py:248 monitoring/models.py:298
+#: monitoring/models.py:310
+#, fuzzy
+#| msgid "Name"
+msgid "Name_Es"
+msgstr "prénom"
+
+#: monitoring/models.py:118
+msgid "Numerical Code"
+msgstr ""
+
+#: monitoring/models.py:119
+msgid "Alfa3"
+msgstr ""
+
+#: monitoring/models.py:120
+msgid "X"
+msgstr ""
+
+#: monitoring/models.py:121
+msgid "Y"
+msgstr ""
+
+#: monitoring/models.py:136
+msgid "Tag"
+msgstr ""
+
+#: monitoring/models.py:137
+msgid "Value"
+msgstr ""
+
+#: monitoring/models.py:138
+#, fuzzy
+#| msgid "List"
+msgid "Data List"
+msgstr "liste"
+
+#: monitoring/models.py:139 monitoring/models.py:163 monitoring/models.py:285
+msgid "Notes"
+msgstr ""
+
+#: monitoring/models.py:140 monitoring/models.py:179
+msgid "Slug"
+msgstr ""
+
+#: monitoring/models.py:141 monitoring/models.py:180
+msgid "Order"
+msgstr ""
+
+#: monitoring/models.py:149
+#, fuzzy
+#| msgid "List"
+msgid "DataList"
+msgstr "liste"
+
+#: monitoring/models.py:154 monitoring/models.py:284 monitoring/models.py:294
+msgid "Structure"
+msgstr ""
+
+#: monitoring/models.py:158
+#, fuzzy
+#| msgid "Organizations"
+msgid "Organizer"
+msgstr "Les organisations"
+
+#: monitoring/models.py:159
+msgid "Text"
+msgstr ""
+
+#: monitoring/models.py:160 monitoring/models.py:177 monitoring/models.py:230
+msgid "Start"
+msgstr ""
+
+#: monitoring/models.py:161 monitoring/models.py:178 monitoring/models.py:231
+msgid "End"
+msgstr ""
+
+#: monitoring/models.py:162
+msgid "Place"
+msgstr ""
+
+#: monitoring/models.py:181 monitoring/models.py:189
+#, fuzzy
+#| msgid "Filters"
+msgid "Filter"
+msgstr "Les filtres"
+
+#: monitoring/models.py:195 monitoring/models.py:221
+#, fuzzy
+#| msgid "Organizations"
+msgid "Organization Type"
+msgstr "Les organisations"
+
+#: monitoring/models.py:197 monitoring/models.py:213 monitoring/models.py:283
+msgid "Description"
+msgstr ""
+
+#: monitoring/models.py:198
+#, fuzzy
+#| msgid "Countries"
+msgid "Country Number"
+msgstr "Des pays"
+
+#: monitoring/models.py:199
+msgid "Is Implementer"
+msgstr ""
+
+#: monitoring/models.py:211
+msgid "Abbreviation"
+msgstr ""
+
+#: monitoring/models.py:226 monitoring/models.py:282
+msgid "Code"
+msgstr ""
+
+#: monitoring/models.py:227
+msgid "Logo"
+msgstr ""
+
+#: monitoring/models.py:228
+msgid "Colors"
+msgstr ""
+
+#: monitoring/models.py:229
+msgid "Url"
+msgstr ""
+
+#: monitoring/models.py:232
+msgid "Goal Men"
+msgstr ""
+
+#: monitoring/models.py:233
+msgid "Goal Women"
+msgstr ""
+
+#: monitoring/models.py:241 monitoring/models.py:260 monitoring/models.py:286
+#: monitoring/templates/dashboard/filtros.html:34
+msgid "Project"
+msgstr "Projet"
+
+#: monitoring/models.py:249 monitoring/models.py:299 monitoring/models.py:311
+#, fuzzy
+#| msgid "Name"
+msgid "Name_Fr"
+msgstr "prénom"
+
+#: monitoring/models.py:256 monitoring/models.py:262
+msgid "Product"
+msgstr ""
+
+#: monitoring/models.py:263
+#, fuzzy
+#| msgid "Areas"
+msgid "Area"
+msgstr "Zones"
+
+#: monitoring/models.py:264
+msgid "Development Area"
+msgstr ""
+
+#: monitoring/models.py:265
+msgid "Productive Area"
+msgstr ""
+
+#: monitoring/models.py:266
+msgid "Age Development Plantation"
+msgstr ""
+
+#: monitoring/models.py:267
+msgid "Age Productive Plantation"
+msgstr ""
+
+#: monitoring/models.py:268
+msgid "Yield Field"
+msgstr ""
+
+#: monitoring/models.py:269
+msgid "Date Entry Project"
+msgstr ""
+
+#: monitoring/models.py:270
+#, fuzzy
+#| msgid "Project"
+msgid "Date End Project"
+msgstr "Projet"
+
+#: monitoring/models.py:278
+#, fuzzy
+#| msgid "Project"
+msgid "Project Contact"
+msgstr "Projet"
+
+#: monitoring/models.py:318
+msgid "Contact Type"
+msgstr ""
 
 #: monitoring/templates/base.html:17
 msgid "Hummus"
@@ -130,10 +517,6 @@ msgstr "À"
 msgid "Select to..."
 msgstr "Sélectionnez pour ..."
 
-#: monitoring/templates/dashboard/filtros.html:34
-msgid "Project"
-msgstr "Projet"
-
 #: monitoring/templates/dashboard/filtros.html:36
 msgid "Select a project..."
 msgstr "Sélectionnez un projet ..."
@@ -155,10 +538,6 @@ msgid "Implementing Organizations, Participants by Sex and Fiscal Year"
 msgstr ""
 "Organismes de mise en œuvre, participants par sexe et exercice financier"
 
-#: monitoring/templates/dashboard/paises_rubros.html:6
-msgid "Countries"
-msgstr "Des pays"
-
 #: monitoring/templates/dashboard/paises_rubros.html:9
 #: monitoring/templates/dashboard/paises_rubros.html:50
 msgid "All"
@@ -178,11 +557,6 @@ msgstr "Zones"
 msgid "Summary Cards"
 msgstr "Cartes récapitulatives"
 
-#: monitoring/templates/dashboard/resumen.html:20
-#: monitoring/templates/sidebar.html:58
-msgid "Projects"
-msgstr "Projets"
-
 #: monitoring/templates/dashboard/resumen.html:34
 msgid "Activities"
 msgstr "Activités"
@@ -196,14 +570,6 @@ msgstr "Événements"
 msgid "Toggle navigation"
 msgstr "Basculer la navigation"
 
-#: monitoring/templates/header.html:39
-msgid "Profile"
-msgstr "Profil"
-
-#: monitoring/templates/header.html:42
-msgid "Log out"
-msgstr "Connectez - Out"
-
 #: monitoring/templates/sidebar.html:19
 msgid "Import Beneficiaries"
 msgstr "Bénéficiaires à l'importation"
@@ -215,14 +581,6 @@ msgstr "Participants"
 #: monitoring/templates/sidebar.html:26
 msgid "Participants/Event"
 msgstr "Participants / événement"
-
-#: monitoring/templates/sidebar.html:32
-msgid "Name"
-msgstr "prénom"
-
-#: monitoring/templates/sidebar.html:35
-msgid "Document"
-msgstr "Document"
 
 #: monitoring/templates/sidebar.html:42
 msgid "Reports"
@@ -299,28 +657,28 @@ msgstr "Se il vous plaît corriger les erreurs ci-dessous."
 #: templates/microsoft/admin_login.html:49
 #, python-format
 msgid ""
-"You are authenticated as %(username)s, but are not authorized to access this"
-" page. Would you like to login to a different account?"
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
 msgstr ""
 "Vous êtes authentifié en tant que %(username)s, mais n'êtes pas autorisé à "
 "accéder à cette page. Voulez-vous vous connecter à un autre compte?"
 
-#: templates/microsoft/admin_login.html:58
+#: templates/microsoft/admin_login.html:71
 msgid "Log in with"
 msgstr "Connectez-vous avec"
 
-#: templates/microsoft/admin_login.html:65
+#: templates/microsoft/admin_login.html:78
 msgid "or"
 msgstr "ou"
 
-#: templates/microsoft/admin_login.html:68
+#: templates/microsoft/admin_login.html:81
 msgid "Django"
 msgstr "Django"
 
-#: templates/microsoft/admin_login.html:103
+#: templates/microsoft/admin_login.html:107
 msgid "Forgotten your password or username?"
 msgstr "Mot de passe ou nom d'utilisateur oublié?"
 
-#: templates/microsoft/admin_login.html:109
+#: templates/microsoft/admin_login.html:113
 msgid "login"
 msgstr "s'identifier"

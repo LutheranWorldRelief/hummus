@@ -3,6 +3,7 @@ from django.apps import apps
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
+from django.utils.translation import gettext_lazy as _
 
 #<<Start Config language >>
 from django.conf import settings
@@ -128,9 +129,9 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
     fieldsets = [
-        ('General information', {'fields': ['id', 'code', 'name', 'logo', 'colors', 'url']}),
-        ('Date information', {'fields': ['start', 'end']}),
-        ('Goal', {'fields': ['goalmen', 'goalwomen']}),
+        (_('General information'), {'fields': ['id', 'code', 'name', 'logo', 'colors', 'url']}),
+        (_('Date information'), {'fields': ['start', 'end']}),
+        (_('Goal'), {'fields': ['goalmen', 'goalwomen']}),
     ]
 
     def get_countries(self, obj):
@@ -138,22 +139,22 @@ class ProjectAdmin(admin.ModelAdmin):
             Event.objects.filter(structure__project_id=obj.id).order_by('country').values_list('country__name',
                                                                                                flat=True).distinct())
 
-    get_countries.short_description = 'Countries'
+    get_countries.short_description = _('Countries')
 
     def get_women(self, obj):
         return 0
 
-    get_women.short_description = 'M'
+    get_women.short_description = _('M')
 
     def get_men(self, obj):
         return 0
 
-    get_men.short_description = 'H'
+    get_men.short_description = _('H')
 
     def get_total(self, obj):
         return self.get_men(obj) + self.get_women(obj)
 
-    get_total.short_description = 'T'
+    get_total.short_description = _('T')
 
 
 class OrganizationAdmin(admin.ModelAdmin):
