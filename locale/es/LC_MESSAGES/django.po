@@ -2,24 +2,23 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Ruddy Mora <rmora.alvarado@gmail.com>, 2019
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-30 17:56+0000\n"
+"POT-Creation-Date: 2019-08-30 19:27+0000\n"
 "PO-Revision-Date: 2019-08-23 06:33+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
-"Language-Team: Spanish (https://www.transifex.com/lutheran-world-relief/"
-"teams/101869/es/)\n"
-"Language: es\n"
+"Language-Team: Spanish (https://www.transifex.com/lutheran-world-relief/teams/101869/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: hummus/settings.py:30
@@ -36,15 +35,15 @@ msgstr "Francés"
 
 #: monitoring/admin.py:132
 msgid "General information"
-msgstr ""
+msgstr "Información General"
 
 #: monitoring/admin.py:133
 msgid "Date information"
-msgstr ""
+msgstr "Información de la fecha"
 
 #: monitoring/admin.py:134
 msgid "Goal"
-msgstr ""
+msgstr "Meta"
 
 #: monitoring/admin.py:142 monitoring/models.py:49
 #: monitoring/templates/dashboard/paises_rubros.html:6
@@ -53,33 +52,31 @@ msgstr "Países"
 
 #: monitoring/admin.py:147
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: monitoring/admin.py:152
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: monitoring/admin.py:157
-#, fuzzy
-#| msgid "To"
 msgid "T"
-msgstr "Para"
+msgstr "T"
 
-#: monitoring/dashboard.py:21
-msgid "Quick links"
-msgstr ""
+#: monitoring/dashboard.py:11
+msgid "List Applications"
+msgstr "Lista de aplicaciones"
+
+#: monitoring/dashboard.py:19
+msgid "Supporting"
+msgstr "Secundario"
+
+#: monitoring/dashboard.py:22
+msgid "Django documentation"
+msgstr "Documentación de Django"
 
 #: monitoring/dashboard.py:27
-msgid "Return to site"
-msgstr ""
-
-#: monitoring/dashboard.py:28
-msgid "Change password"
-msgstr ""
-
-#: monitoring/dashboard.py:30 monitoring/templates/header.html:42
-msgid "Log out"
-msgstr "Cerrar sesión"
+msgid "Django \"django-users\" mailing list"
+msgstr "Lista de correo \"usuarios de django\" de Django"
 
 #: monitoring/models.py:16
 msgid "February"
@@ -135,21 +132,19 @@ msgstr "Nombre"
 
 #: monitoring/models.py:37 monitoring/models.py:122
 msgid "Region"
-msgstr ""
+msgstr "Región"
 
 #: monitoring/models.py:46
-#, fuzzy
-#| msgid "Users"
 msgid "User"
-msgstr "Usuarios"
+msgstr "Usuario"
 
 #: monitoring/models.py:47
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: monitoring/models.py:48
 msgid "Regions"
-msgstr ""
+msgstr "Regiones"
 
 #: monitoring/models.py:50 monitoring/templates/dashboard/resumen.html:20
 #: monitoring/templates/sidebar.html:58
@@ -165,23 +160,19 @@ msgstr "Perfil"
 #: monitoring/models.py:192 monitoring/models.py:210 monitoring/models.py:224
 #: monitoring/models.py:259 monitoring/models.py:281
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 #: monitoring/models.py:62 monitoring/models.py:172
-#, fuzzy
-#| msgid "Events"
 msgid "Event"
-msgstr "Eventos"
+msgstr "Evento"
 
 #: monitoring/models.py:63 monitoring/models.py:112 monitoring/models.py:261
 msgid "Contact"
-msgstr ""
+msgstr "Contacto"
 
 #: monitoring/models.py:64 monitoring/models.py:90
-#, fuzzy
-#| msgid "Types"
 msgid "Type"
-msgstr "Tipos"
+msgstr "Tipo"
 
 #: monitoring/models.py:65 monitoring/models.py:86
 #: monitoring/templates/sidebar.html:35
@@ -190,218 +181,198 @@ msgstr "Documento"
 
 #: monitoring/models.py:66 monitoring/models.py:89
 msgid "Sex"
-msgstr ""
+msgstr "Sexo"
 
 #: monitoring/models.py:67 monitoring/models.py:94 monitoring/models.py:131
 #: monitoring/models.py:164 monitoring/models.py:194
-#, fuzzy
-#| msgid "Countries"
 msgid "Country"
-msgstr "Países"
+msgstr "País"
 
 #: monitoring/models.py:68 monitoring/models.py:91
 msgid "Community"
-msgstr ""
+msgstr "Comunidad"
 
 #: monitoring/models.py:69 monitoring/models.py:88 monitoring/models.py:157
 #: monitoring/models.py:196 monitoring/models.py:207
-#, fuzzy
-#| msgid "Organizations"
 msgid "Organization"
-msgstr "Organizaciones"
+msgstr "Organización"
 
 #: monitoring/models.py:70 monitoring/models.py:96
 msgid "Phone Personal"
-msgstr ""
+msgstr "Teléfono Personal"
 
 #: monitoring/models.py:78
 msgid "Attendance"
-msgstr ""
+msgstr "Asistencia"
 
 #: monitoring/models.py:83
-#, fuzzy
-#| msgid "Name"
 msgid "Last Name"
-msgstr "Nombre"
+msgstr "Apellido"
 
 #: monitoring/models.py:84
 msgid "First Name"
-msgstr ""
+msgstr "Nombre"
 
 #: monitoring/models.py:85
 msgid "Birthdate"
-msgstr ""
+msgstr "Fecha de Nacimiento"
 
 #: monitoring/models.py:87 monitoring/models.py:156
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: monitoring/models.py:92
 msgid "Municipality"
-msgstr ""
+msgstr "Municipio"
 
 #: monitoring/models.py:93
 msgid "City"
-msgstr ""
+msgstr "Ciudad"
 
 #: monitoring/models.py:95 monitoring/models.py:306
 msgid "Education"
-msgstr ""
+msgstr "Educación"
 
 #: monitoring/models.py:97
 msgid "Phone Work"
-msgstr ""
+msgstr "Teléfono del Trabajo"
 
 #: monitoring/models.py:98
 msgid "Men Home"
-msgstr ""
+msgstr "Inicio de Hombres"
 
 #: monitoring/models.py:99
 msgid "Women Home"
-msgstr ""
+msgstr "Inicio de Mujeres"
 
 #: monitoring/models.py:100
 msgid "Created"
-msgstr ""
+msgstr "Creado"
 
 #: monitoring/models.py:101
 msgid "Modified"
-msgstr ""
+msgstr "Modificado"
 
 #: monitoring/models.py:117 monitoring/models.py:248 monitoring/models.py:298
 #: monitoring/models.py:310
-#, fuzzy
-#| msgid "Name"
 msgid "Name_Es"
-msgstr "Nombre"
+msgstr "Nombre_Es"
 
 #: monitoring/models.py:118
 msgid "Numerical Code"
-msgstr ""
+msgstr "Código Numérico"
 
 #: monitoring/models.py:119
 msgid "Alfa3"
-msgstr ""
+msgstr "Alfa3"
 
 #: monitoring/models.py:120
 msgid "X"
-msgstr ""
+msgstr "X"
 
 #: monitoring/models.py:121
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: monitoring/models.py:136
 msgid "Tag"
-msgstr ""
+msgstr "Etiqueta"
 
 #: monitoring/models.py:137
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: monitoring/models.py:138
-#, fuzzy
-#| msgid "List"
 msgid "Data List"
-msgstr "Lista"
+msgstr "Lista de datos"
 
 #: monitoring/models.py:139 monitoring/models.py:163 monitoring/models.py:285
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #: monitoring/models.py:140 monitoring/models.py:179
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: monitoring/models.py:141 monitoring/models.py:180
 msgid "Order"
-msgstr ""
+msgstr "Orden"
 
 #: monitoring/models.py:149
-#, fuzzy
-#| msgid "List"
 msgid "DataList"
-msgstr "Lista"
+msgstr "ListadeDatos"
 
 #: monitoring/models.py:154 monitoring/models.py:284 monitoring/models.py:294
 msgid "Structure"
-msgstr ""
+msgstr "Estructura"
 
 #: monitoring/models.py:158
-#, fuzzy
-#| msgid "Organizations"
 msgid "Organizer"
-msgstr "Organizaciones"
+msgstr "Organizador"
 
 #: monitoring/models.py:159
 msgid "Text"
-msgstr ""
+msgstr "Texto"
 
 #: monitoring/models.py:160 monitoring/models.py:177 monitoring/models.py:230
 msgid "Start"
-msgstr ""
+msgstr "Inicio"
 
 #: monitoring/models.py:161 monitoring/models.py:178 monitoring/models.py:231
 msgid "End"
-msgstr ""
+msgstr "Final"
 
 #: monitoring/models.py:162
 msgid "Place"
-msgstr ""
+msgstr "Lugar"
 
 #: monitoring/models.py:181 monitoring/models.py:189
-#, fuzzy
-#| msgid "Filters"
 msgid "Filter"
-msgstr "Filtros"
+msgstr "Filtro"
 
 #: monitoring/models.py:195 monitoring/models.py:221
-#, fuzzy
-#| msgid "Organizations"
 msgid "Organization Type"
-msgstr "Organizaciones"
+msgstr "Tipo de Organización"
 
 #: monitoring/models.py:197 monitoring/models.py:213 monitoring/models.py:283
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #: monitoring/models.py:198
-#, fuzzy
-#| msgid "Countries"
 msgid "Country Number"
-msgstr "Países"
+msgstr "Número de país"
 
 #: monitoring/models.py:199
 msgid "Is Implementer"
-msgstr ""
+msgstr "Es implementador"
 
 #: monitoring/models.py:211
 msgid "Abbreviation"
-msgstr ""
+msgstr "Abreviatura"
 
 #: monitoring/models.py:226 monitoring/models.py:282
 msgid "Code"
-msgstr ""
+msgstr "Código"
 
 #: monitoring/models.py:227
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: monitoring/models.py:228
 msgid "Colors"
-msgstr ""
+msgstr "Colores"
 
 #: monitoring/models.py:229
 msgid "Url"
-msgstr ""
+msgstr "URL"
 
 #: monitoring/models.py:232
 msgid "Goal Men"
-msgstr ""
+msgstr "Meta Hombres"
 
 #: monitoring/models.py:233
 msgid "Goal Women"
-msgstr ""
+msgstr "Meta Mujeres"
 
 #: monitoring/models.py:241 monitoring/models.py:260 monitoring/models.py:286
 #: monitoring/templates/dashboard/filtros.html:34
@@ -409,60 +380,52 @@ msgid "Project"
 msgstr "Proyecto"
 
 #: monitoring/models.py:249 monitoring/models.py:299 monitoring/models.py:311
-#, fuzzy
-#| msgid "Name"
 msgid "Name_Fr"
-msgstr "Nombre"
+msgstr "Nombre_Fr"
 
 #: monitoring/models.py:256 monitoring/models.py:262
 msgid "Product"
-msgstr ""
+msgstr "Producto"
 
 #: monitoring/models.py:263
-#, fuzzy
-#| msgid "Areas"
 msgid "Area"
-msgstr "Áreas"
+msgstr "Área"
 
 #: monitoring/models.py:264
 msgid "Development Area"
-msgstr ""
+msgstr "Área de Desarrollo"
 
 #: monitoring/models.py:265
 msgid "Productive Area"
-msgstr ""
+msgstr "Área Productiva"
 
 #: monitoring/models.py:266
 msgid "Age Development Plantation"
-msgstr ""
+msgstr "Plantación de desarrollo de edad"
 
 #: monitoring/models.py:267
 msgid "Age Productive Plantation"
-msgstr ""
+msgstr "Plantación productiva por edad"
 
 #: monitoring/models.py:268
 msgid "Yield Field"
-msgstr ""
+msgstr "Campo de rendimiento"
 
 #: monitoring/models.py:269
 msgid "Date Entry Project"
-msgstr ""
+msgstr "Fecha de entrada del proyecto"
 
 #: monitoring/models.py:270
-#, fuzzy
-#| msgid "Project"
 msgid "Date End Project"
-msgstr "Proyecto"
+msgstr "Fecha de finalización del proyecto"
 
 #: monitoring/models.py:278
-#, fuzzy
-#| msgid "Project"
 msgid "Project Contact"
-msgstr "Proyecto"
+msgstr "Contacto del proyecto"
 
 #: monitoring/models.py:318
 msgid "Contact Type"
-msgstr ""
+msgstr "Tipo de Contacto"
 
 #: monitoring/templates/base.html:17
 msgid "Hummus"
@@ -475,6 +438,10 @@ msgstr "Sistema de monitoreo de proyectos"
 #: monitoring/templates/dashboard.html:65
 msgid "Loading..."
 msgstr "Cargando..."
+
+#: monitoring/templates/dashboard.html:99
+msgid "PARTICIPANTS BY ACTIVITY"
+msgstr "PARTICIPANTES POR ACTIVIDAD"
 
 #: monitoring/templates/dashboard/educacion.html:6
 msgid "Participants by age and education"
@@ -520,6 +487,10 @@ msgstr "Seleccione para ..."
 #: monitoring/templates/dashboard/filtros.html:36
 msgid "Select a project..."
 msgstr "Seleccione un proyecto..."
+
+#: monitoring/templates/dashboard/filtros.html:42
+msgid "Graph"
+msgstr "Graficar"
 
 #: monitoring/templates/dashboard/metas.html:5
 msgid "Goals and scopes"
@@ -569,6 +540,14 @@ msgstr "Eventos"
 msgid "Toggle navigation"
 msgstr "Alternar navegación"
 
+#: monitoring/templates/header.html:42
+msgid "Log out"
+msgstr "Cerrar sesión"
+
+#: monitoring/templates/sidebar.html:13
+msgid "Email"
+msgstr "Correo"
+
 #: monitoring/templates/sidebar.html:19
 msgid "Import Beneficiaries"
 msgstr "Importar Beneficiarios"
@@ -580,6 +559,10 @@ msgstr "Participantes"
 #: monitoring/templates/sidebar.html:26
 msgid "Participants/Event"
 msgstr "Participantes/Evento"
+
+#: monitoring/templates/sidebar.html:29
+msgid "Duplicates"
+msgstr "Duplicados"
 
 #: monitoring/templates/sidebar.html:42
 msgid "Reports"
@@ -656,8 +639,8 @@ msgstr "Por favor corrija los siguientes errores."
 #: templates/microsoft/admin_login.html:49
 #, python-format
 msgid ""
-"You are authenticated as %(username)s, but are not authorized to access this "
-"page. Would you like to login to a different account?"
+"You are authenticated as %(username)s, but are not authorized to access this"
+" page. Would you like to login to a different account?"
 msgstr ""
 "Está autenticado como %(username)s, pero no está autorizado para acceder a "
 "esta página. ¿Desea iniciar sesión en una cuenta diferente?"
