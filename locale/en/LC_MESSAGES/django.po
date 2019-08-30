@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-30 17:56+0000\n"
+"POT-Creation-Date: 2019-08-30 19:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,20 +59,20 @@ msgstr ""
 msgid "T"
 msgstr ""
 
-#: monitoring/dashboard.py:21
-msgid "Quick links"
+#: monitoring/dashboard.py:11
+msgid "List Applications"
+msgstr ""
+
+#: monitoring/dashboard.py:19
+msgid "Supporting"
+msgstr ""
+
+#: monitoring/dashboard.py:22
+msgid "Django documentation"
 msgstr ""
 
 #: monitoring/dashboard.py:27
-msgid "Return to site"
-msgstr ""
-
-#: monitoring/dashboard.py:28
-msgid "Change password"
-msgstr ""
-
-#: monitoring/dashboard.py:30 monitoring/templates/header.html:42
-msgid "Log out"
+msgid "Django \"django-users\" mailing list"
 msgstr ""
 
 #: monitoring/models.py:16
@@ -436,6 +436,10 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
+#: monitoring/templates/dashboard.html:99
+msgid "PARTICIPANTS BY ACTIVITY"
+msgstr ""
+
 #: monitoring/templates/dashboard/educacion.html:6
 msgid "Participants by age and education"
 msgstr ""
@@ -479,6 +483,10 @@ msgstr ""
 
 #: monitoring/templates/dashboard/filtros.html:36
 msgid "Select a project..."
+msgstr ""
+
+#: monitoring/templates/dashboard/filtros.html:42
+msgid "Graph"
 msgstr ""
 
 #: monitoring/templates/dashboard/metas.html:5
@@ -529,6 +537,14 @@ msgstr ""
 msgid "Toggle navigation"
 msgstr ""
 
+#: monitoring/templates/header.html:42
+msgid "Log out"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:13
+msgid "Email"
+msgstr ""
+
 #: monitoring/templates/sidebar.html:19
 msgid "Import Beneficiaries"
 msgstr ""
@@ -539,6 +555,10 @@ msgstr ""
 
 #: monitoring/templates/sidebar.html:26
 msgid "Participants/Event"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:29
+msgid "Duplicates"
 msgstr ""
 
 #: monitoring/templates/sidebar.html:42
