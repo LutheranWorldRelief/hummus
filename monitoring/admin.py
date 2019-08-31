@@ -6,15 +6,16 @@ from .models import *
 from django.utils.translation import gettext_lazy as _
 
 #<<Start Config language >>
-from django.conf import settings
 from django.contrib.auth import user_logged_in
 from django.dispatch import receiver
+from django.utils import translation
 
 @receiver(user_logged_in)
 def on_user_logged_in(sender, request, **kwargs):
     languageUser = Profile.objects.filter(user_id=request.user.id).values('language')
     if languageUser:
-        settings.LANGUAGE_CODE = languageUser[0]['language']
+        translation.activate(languageUser[0]['language'])
+        request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
 #<<End Config language >>
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
