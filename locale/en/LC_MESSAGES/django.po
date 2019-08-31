@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-30 19:27+0000\n"
+"POT-Creation-Date: 2019-08-30 22:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,22 +59,6 @@ msgstr ""
 msgid "T"
 msgstr ""
 
-#: monitoring/dashboard.py:11
-msgid "List Applications"
-msgstr ""
-
-#: monitoring/dashboard.py:19
-msgid "Supporting"
-msgstr ""
-
-#: monitoring/dashboard.py:22
-msgid "Django documentation"
-msgstr ""
-
-#: monitoring/dashboard.py:27
-msgid "Django \"django-users\" mailing list"
-msgstr ""
-
 #: monitoring/models.py:16
 msgid "February"
 msgstr ""
@@ -119,15 +103,15 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: monitoring/models.py:30 monitoring/models.py:82 monitoring/models.py:116
-#: monitoring/models.py:135 monitoring/models.py:155 monitoring/models.py:176
-#: monitoring/models.py:193 monitoring/models.py:212 monitoring/models.py:225
-#: monitoring/models.py:247 monitoring/models.py:297 monitoring/models.py:309
+#: monitoring/models.py:30 monitoring/models.py:82 monitoring/models.py:117
+#: monitoring/models.py:136 monitoring/models.py:156 monitoring/models.py:177
+#: monitoring/models.py:194 monitoring/models.py:213 monitoring/models.py:226
+#: monitoring/models.py:248 monitoring/models.py:298 monitoring/models.py:310
 #: monitoring/templates/sidebar.html:32
 msgid "Name"
 msgstr ""
 
-#: monitoring/models.py:37 monitoring/models.py:122
+#: monitoring/models.py:37 monitoring/models.py:123
 msgid "Region"
 msgstr ""
 
@@ -152,18 +136,18 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: monitoring/models.py:61 monitoring/models.py:81 monitoring/models.py:115
-#: monitoring/models.py:134 monitoring/models.py:153 monitoring/models.py:175
-#: monitoring/models.py:192 monitoring/models.py:210 monitoring/models.py:224
-#: monitoring/models.py:259 monitoring/models.py:281
+#: monitoring/models.py:61 monitoring/models.py:81 monitoring/models.py:116
+#: monitoring/models.py:135 monitoring/models.py:154 monitoring/models.py:176
+#: monitoring/models.py:193 monitoring/models.py:211 monitoring/models.py:225
+#: monitoring/models.py:260 monitoring/models.py:282
 msgid "Id"
 msgstr ""
 
-#: monitoring/models.py:62 monitoring/models.py:172
+#: monitoring/models.py:62 monitoring/models.py:173
 msgid "Event"
 msgstr ""
 
-#: monitoring/models.py:63 monitoring/models.py:112 monitoring/models.py:261
+#: monitoring/models.py:63 monitoring/models.py:112 monitoring/models.py:262
 msgid "Contact"
 msgstr ""
 
@@ -180,8 +164,8 @@ msgstr ""
 msgid "Sex"
 msgstr ""
 
-#: monitoring/models.py:67 monitoring/models.py:94 monitoring/models.py:131
-#: monitoring/models.py:164 monitoring/models.py:194
+#: monitoring/models.py:67 monitoring/models.py:94 monitoring/models.py:132
+#: monitoring/models.py:165 monitoring/models.py:195
 msgid "Country"
 msgstr ""
 
@@ -189,8 +173,8 @@ msgstr ""
 msgid "Community"
 msgstr ""
 
-#: monitoring/models.py:69 monitoring/models.py:88 monitoring/models.py:157
-#: monitoring/models.py:196 monitoring/models.py:207
+#: monitoring/models.py:69 monitoring/models.py:88 monitoring/models.py:158
+#: monitoring/models.py:197 monitoring/models.py:208
 msgid "Organization"
 msgstr ""
 
@@ -214,7 +198,7 @@ msgstr ""
 msgid "Birthdate"
 msgstr ""
 
-#: monitoring/models.py:87 monitoring/models.py:156
+#: monitoring/models.py:87 monitoring/models.py:157
 msgid "Title"
 msgstr ""
 
@@ -226,7 +210,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: monitoring/models.py:95 monitoring/models.py:306
+#: monitoring/models.py:95 monitoring/models.py:307
 msgid "Education"
 msgstr ""
 
@@ -250,177 +234,181 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: monitoring/models.py:117 monitoring/models.py:248 monitoring/models.py:298
-#: monitoring/models.py:310
+#: monitoring/models.py:113
+msgid "Contacts"
+msgstr ""
+
+#: monitoring/models.py:118 monitoring/models.py:249 monitoring/models.py:299
+#: monitoring/models.py:311
 msgid "Name_Es"
 msgstr ""
 
-#: monitoring/models.py:118
+#: monitoring/models.py:119
 msgid "Numerical Code"
 msgstr ""
 
-#: monitoring/models.py:119
+#: monitoring/models.py:120
 msgid "Alfa3"
 msgstr ""
 
-#: monitoring/models.py:120
+#: monitoring/models.py:121
 msgid "X"
 msgstr ""
 
-#: monitoring/models.py:121
+#: monitoring/models.py:122
 msgid "Y"
 msgstr ""
 
-#: monitoring/models.py:136
+#: monitoring/models.py:137
 msgid "Tag"
 msgstr ""
 
-#: monitoring/models.py:137
+#: monitoring/models.py:138
 msgid "Value"
 msgstr ""
 
-#: monitoring/models.py:138
+#: monitoring/models.py:139
 msgid "Data List"
 msgstr ""
 
-#: monitoring/models.py:139 monitoring/models.py:163 monitoring/models.py:285
+#: monitoring/models.py:140 monitoring/models.py:164 monitoring/models.py:286
 msgid "Notes"
 msgstr ""
 
-#: monitoring/models.py:140 monitoring/models.py:179
+#: monitoring/models.py:141 monitoring/models.py:180
 msgid "Slug"
 msgstr ""
 
-#: monitoring/models.py:141 monitoring/models.py:180
+#: monitoring/models.py:142 monitoring/models.py:181
 msgid "Order"
 msgstr ""
 
-#: monitoring/models.py:149
+#: monitoring/models.py:150
 msgid "DataList"
 msgstr ""
 
-#: monitoring/models.py:154 monitoring/models.py:284 monitoring/models.py:294
+#: monitoring/models.py:155 monitoring/models.py:285 monitoring/models.py:295
 msgid "Structure"
 msgstr ""
 
-#: monitoring/models.py:158
+#: monitoring/models.py:159
 msgid "Organizer"
 msgstr ""
 
-#: monitoring/models.py:159
+#: monitoring/models.py:160
 msgid "Text"
 msgstr ""
 
-#: monitoring/models.py:160 monitoring/models.py:177 monitoring/models.py:230
+#: monitoring/models.py:161 monitoring/models.py:178 monitoring/models.py:231
 msgid "Start"
 msgstr ""
 
-#: monitoring/models.py:161 monitoring/models.py:178 monitoring/models.py:231
+#: monitoring/models.py:162 monitoring/models.py:179 monitoring/models.py:232
 msgid "End"
 msgstr ""
 
-#: monitoring/models.py:162
+#: monitoring/models.py:163
 msgid "Place"
 msgstr ""
 
-#: monitoring/models.py:181 monitoring/models.py:189
+#: monitoring/models.py:182 monitoring/models.py:190
 msgid "Filter"
 msgstr ""
 
-#: monitoring/models.py:195 monitoring/models.py:221
+#: monitoring/models.py:196 monitoring/models.py:222
 msgid "Organization Type"
 msgstr ""
 
-#: monitoring/models.py:197 monitoring/models.py:213 monitoring/models.py:283
+#: monitoring/models.py:198 monitoring/models.py:214 monitoring/models.py:284
 msgid "Description"
 msgstr ""
 
-#: monitoring/models.py:198
+#: monitoring/models.py:199
 msgid "Country Number"
 msgstr ""
 
-#: monitoring/models.py:199
+#: monitoring/models.py:200
 msgid "Is Implementer"
 msgstr ""
 
-#: monitoring/models.py:211
+#: monitoring/models.py:212
 msgid "Abbreviation"
 msgstr ""
 
-#: monitoring/models.py:226 monitoring/models.py:282
+#: monitoring/models.py:227 monitoring/models.py:283
 msgid "Code"
 msgstr ""
 
-#: monitoring/models.py:227
+#: monitoring/models.py:228
 msgid "Logo"
 msgstr ""
 
-#: monitoring/models.py:228
+#: monitoring/models.py:229
 msgid "Colors"
 msgstr ""
 
-#: monitoring/models.py:229
+#: monitoring/models.py:230
 msgid "Url"
 msgstr ""
 
-#: monitoring/models.py:232
+#: monitoring/models.py:233
 msgid "Goal Men"
 msgstr ""
 
-#: monitoring/models.py:233
+#: monitoring/models.py:234
 msgid "Goal Women"
 msgstr ""
 
-#: monitoring/models.py:241 monitoring/models.py:260 monitoring/models.py:286
+#: monitoring/models.py:242 monitoring/models.py:261 monitoring/models.py:287
 #: monitoring/templates/dashboard/filtros.html:34
 msgid "Project"
 msgstr ""
 
-#: monitoring/models.py:249 monitoring/models.py:299 monitoring/models.py:311
+#: monitoring/models.py:250 monitoring/models.py:300 monitoring/models.py:312
 msgid "Name_Fr"
 msgstr ""
 
-#: monitoring/models.py:256 monitoring/models.py:262
+#: monitoring/models.py:257 monitoring/models.py:263
 msgid "Product"
 msgstr ""
 
-#: monitoring/models.py:263
+#: monitoring/models.py:264
 msgid "Area"
 msgstr ""
 
-#: monitoring/models.py:264
+#: monitoring/models.py:265
 msgid "Development Area"
 msgstr ""
 
-#: monitoring/models.py:265
+#: monitoring/models.py:266
 msgid "Productive Area"
 msgstr ""
 
-#: monitoring/models.py:266
+#: monitoring/models.py:267
 msgid "Age Development Plantation"
 msgstr ""
 
-#: monitoring/models.py:267
+#: monitoring/models.py:268
 msgid "Age Productive Plantation"
 msgstr ""
 
-#: monitoring/models.py:268
+#: monitoring/models.py:269
 msgid "Yield Field"
 msgstr ""
 
-#: monitoring/models.py:269
+#: monitoring/models.py:270
 msgid "Date Entry Project"
 msgstr ""
 
-#: monitoring/models.py:270
+#: monitoring/models.py:271
 msgid "Date End Project"
 msgstr ""
 
-#: monitoring/models.py:278
+#: monitoring/models.py:279
 msgid "Project Contact"
 msgstr ""
 
-#: monitoring/models.py:318
+#: monitoring/models.py:319
 msgid "Contact Type"
 msgstr ""
 
@@ -539,6 +527,10 @@ msgstr ""
 
 #: monitoring/templates/header.html:42
 msgid "Log out"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:12
+msgid "Full name"
 msgstr ""
 
 #: monitoring/templates/sidebar.html:13
