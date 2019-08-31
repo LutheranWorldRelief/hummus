@@ -17,8 +17,6 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from django.views.generic import TemplateView
-from django.conf.urls.i18n import i18n_patterns
-
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),
@@ -26,8 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
     path('',TemplateView.as_view(template_name='index.html')),
-]
-urlpatterns += i18n_patterns(
     path('', include('monitoring.urls')),
-    prefix_default_language=False,
-)
+]

@@ -8,7 +8,6 @@ from .tables import *
 from .models import *
 
 #<<Start Config language >>
-from django.conf import settings
 from django.contrib.auth import user_logged_in
 from django.dispatch import receiver
 from django.utils import translation
@@ -19,7 +18,6 @@ def on_user_logged_in(sender, request, **kwargs):
     if languageUser:
         translation.activate(languageUser[0]['language'])
         request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
-        #settings.LANGUAGE_CODE = languageUser[0]['language']
 #<<End Config language >>
 
 class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
