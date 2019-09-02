@@ -57,6 +57,10 @@ fieldset.module table thead tr th {
     background: #fff !important;
 }
 
+td.field-is_implementer {
+    text-align: center;
+}
+
 /*breadcrumbs*/
 div.breadcrumbs a {
     color: #00AAA7 !important;
@@ -84,4 +88,15 @@ a.add-related span {
 
 a.delete-related span {
     color: #dd4b39;
+}
+
+/*search input*/
+form#changelist-search div input[type="submit"] {
+    color: white;
+    font-weight: bold;
+}
+
+form#changelist-search div input[type="submit"]:hover {
+    color: white;
+    font-weight: bold;
 }
