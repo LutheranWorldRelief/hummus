@@ -116,7 +116,14 @@ class EventInline(admin.StackedInline):
 
 class StructureInline(admin.TabularInline):
     model = Structure
+    fields = ('code', 'description')
+    readonly_fields = ('code', 'description')
+    show_change_link = True
+    can_delete = False
     extra = 0
+
+    def has_add_permission(self, request):
+        return False
 
 
 class ProjectAdmin(admin.ModelAdmin):
