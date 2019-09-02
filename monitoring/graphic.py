@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
-
+from django.utils import translation
 
 @csrf_exempt
 @login_required
@@ -130,12 +130,18 @@ def graficoEdad(request):
 @csrf_exempt
 @login_required
 def graficoEducacion(request):
-    result = Contact.objects.order_by('education__name').values('education__name').annotate(
+    language_user = translation.get_language()
+
+    education_column = 'education__name'
+    if (language_user != 'en'):
+        education_column += '_' + language_user
+
+    result = Contact.objects.order_by(education_column).values(education_column).annotate(
         m=Count('id', filter=Q(sex='M')),
         f=Count('id', filter=Q(sex='M')),
         total=Count('id'))
     for row in result:
-        row['type'] = str(row['education__name'])
+        row['type'] = str(row[education_column])
     data = {'educacion': list(result) }
     return JsonResponse(data)
 
@@ -149,11 +155,16 @@ def graficoEventos(request):
 @csrf_exempt
 @login_required
 def graficoTipoParticipante(request):
-    result = Attendance.objects.order_by('contact__type__name').values('contact__type__name').annotate(
+    language_user = translation.get_language()
+    contacttype_column = 'contact__type__name'
+    if (language_user != 'en'):
+        contacttype_column += '_' + language_user
+
+    result = Attendance.objects.order_by(contacttype_column).values(contacttype_column).annotate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
     for row in result:
-        row['type'] = row['contact__type__name']
+        row['type'] = row[contacttype_column]
     data = list(result)
     return JsonResponse(data, safe=False)
 
