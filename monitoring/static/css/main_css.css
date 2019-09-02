@@ -1,5 +1,5 @@
 /*list view for event*/
-.field-structure, .field-organization {
+.field-structure, .field-organization, .field-project {
     white-space: normal !important;
 }
 
@@ -79,7 +79,7 @@ ul.object-tools li a:before {
 
 /*buttons with icons*/
 a.change-related span {
-    color: #fcedcf;
+    color: #0a68a3;
 }
 
 a.add-related span {
