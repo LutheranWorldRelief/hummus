@@ -221,6 +221,14 @@ class OrganizationType(models.Model):
         db_table = 'organization_type'
         verbose_name=_('Organization Type')
 
+
+class ProjectQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if user.profile.projects.exists():
+            return self.filter(profile=user.profile)
+        else:
+            return self
+
 class Project(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
@@ -232,6 +240,8 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     goalmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Goal Men'))
     goalwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Goal Women'))
+
+    objects = ProjectQuerySet.as_manager()
 
     def __str__(self):
         return self.name
