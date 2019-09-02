@@ -585,13 +585,13 @@
 
         $scope.$watchCollection('nacionalidad', function () {
             $timeout(function () {
-                $scope.mapaPaises($scope.nacionalidad, 'participantes-nacionalidad', 'Participantes por Nacionalidad');
+                $scope.mapaPaises($scope.nacionalidad, 'participantes-nacionalidad', gettext('Participantes por Nacionalidad'));
             }, 10);
         });
 
         $scope.$watchCollection('paisEventos', function () {
             $timeout(function () {
-                $scope.mapaPaises($scope.paisEventos, 'pais-eventos', 'Ubicación geográfica de participantes');
+                $scope.mapaPaises($scope.paisEventos, 'pais-eventos', gettext('Ubicación geográfica de participantes'));
             }, 10);
         });
 
@@ -1119,6 +1119,5 @@
 
         $scope.refrescar();
     }
-
 
 })();

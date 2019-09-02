@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from django.views.generic import TemplateView
+from django.views.i18n import JavaScriptCatalog
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
     path('',TemplateView.as_view(template_name='index.html')),
     path('', include('monitoring.urls')),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]
