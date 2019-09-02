@@ -74,7 +74,6 @@ class ContactAdmin(admin.ModelAdmin):
         AttendanceInline,
     ]
     search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
-    autocomplete_fields = ('country', 'organization', 'type', 'education')
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -170,7 +169,6 @@ class OrganizationAdmin(admin.ModelAdmin):
         ('organization_type'),
     ]
     search_fields = ['id', 'name', 'description', 'country__name']
-    autocomplete_fields = ('country', 'organization_type',)
     exclude = ['id']
 
     def organization_parent(self, object):
@@ -181,6 +179,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 
 class StructureAdmin(ListAdminMixin, ImportExportModelAdmin):
+    list_display_links = ('id', 'description')
     inlines = [
         EventInline,
     ]
@@ -215,12 +214,33 @@ class AttendanceAdmin(ImportExportModelAdmin):
     search_fields = ['contact__name', 'event__name']
 
 
+class ProjectContactAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'project', 'contact', 'getCountryContact', 'product', 'area', 'date_entry_project', 'date_end_project',
+        'yield_field')
+    list_display_links = ['id', 'project']
+    ordering = ['-date_entry_project']
+    list_per_page = 20
+    list_max_show_all = 50
+    search_fields = ['id', 'project__name', 'contact__name', 'product__name']
+    list_filter = [
+        ('product'),
+        ('contact__country', admin.RelatedOnlyFieldListFilter)
+    ]
+
+    def getCountryContact(self, obj):
+        return obj.contact.country
+
+    getCountryContact.short_description = 'Country'
+
+
 admin.site.register(Structure, StructureAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
+admin.site.register(ProjectContact, ProjectContactAdmin)
 
 models = apps.get_models()
 for model in models:
