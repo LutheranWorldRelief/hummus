@@ -1,5 +1,6 @@
-/*list view for event*/
-.field-structure, .field-organization, .field-project {
+/*css class for td */
+.field-structure, .field-organization, .field-project, .field-getStartEvent,
+.field-getEndEvent, .field-contact, .field-event {
     white-space: normal !important;
 }
 
