@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: monitoring/static/js/lib/highcharts/lib/svg2pdf.js:24
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-02 19:39+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: monitoring/static/js/lib/highcharts/lib/svg2pdf.js:24
+msgid "_"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:103
+#: monitoring/static/js/script/dashboard_index.js:696
+#: monitoring/static/js/script/dashboard_index.js:770
+#: monitoring/static/js/script/dashboard_index.js:837
+#: monitoring/static/js/script/dashboard_index.js:1089
+msgid "Men"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:104
+#: monitoring/static/js/script/dashboard_index.js:697
+#: monitoring/static/js/script/dashboard_index.js:774
+#: monitoring/static/js/script/dashboard_index.js:840
+#: monitoring/static/js/script/dashboard_index.js:1092
+msgid "Women"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:373
+msgid "Activities"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:375
+#: monitoring/static/js/script/dashboard_index.js:424
+#: monitoring/static/js/script/dashboard_index.js:511
+#: monitoring/static/js/script/dashboard_index.js:555
+msgid "Amount of people"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:385
+#: monitoring/static/js/script/dashboard_index.js:434
+#: monitoring/static/js/script/dashboard_index.js:522
+#: monitoring/static/js/script/dashboard_index.js:565
+msgid "<b>Participants</b><br/>"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:386
+#: monitoring/static/js/script/dashboard_index.js:435
+#: monitoring/static/js/script/dashboard_index.js:478
+#: monitoring/static/js/script/dashboard_index.js:523
+#: monitoring/static/js/script/dashboard_index.js:566
+msgid "Total:"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:418
+msgid "PARTICIPANTS BY TYPE OF PERSON"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:421
+msgid "Types"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:461
+msgid "PARTICIPANTS BY AGE"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:464
+msgid "Ages"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:504
+msgid "PARTICIPANTS BY FISCAL YEAR"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:507
+msgid "Years"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:549
+msgid "PARTICIPANTS BY EDUCATION"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:552
+msgid "Education"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:588
+#: monitoring/static/js/script/dashboard_index.js:682
+msgid "Participants by Nationality"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:594
+msgid "Geographic location of participants"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:694
+msgid "<b>Participants "
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:711
+msgid "<br/><b>Total Participants: </b>"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:714
+msgid "<br/><b>Events: </b>"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:816
+msgid "Participants reached, by sex"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:817
+msgid "Total amount "
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:834
+#: monitoring/static/js/script/dashboard_index.js:847
+msgid "Participants"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:857
+msgid "ORGANIZATIONS"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:858
+msgid " total, in "
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:858
+msgid " Categories"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:879
+msgid "Organizations"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:897
+msgid "Total participants achieved and goals, by sex"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:904
+msgid "Persons"
+msgstr ""
+
+#: monitoring/static/js/script/dashboard_index.js:924
+msgid "Goals"
+msgstr ""
