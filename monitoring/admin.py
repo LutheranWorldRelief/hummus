@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.apps import apps
+from django.http import HttpResponse
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from .models import *
@@ -9,14 +10,17 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import user_logged_in
 from django.dispatch import receiver
 from django.utils import translation
+from hummus import settings
 
 
 @receiver(user_logged_in)
 def on_user_logged_in(sender, request, **kwargs):
     languageUser = Profile.objects.filter(user_id=request.user.id).values('language')
-    if languageUser:
-        translation.activate(languageUser[0]['language'])
-        request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
+    #if languageUser:
+        #translation.activate(languageUser[0]['language'])
+        #request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
+        #response = HttpResponse(...)
+        #response.set_cookie(settings.LANGUAGE_COOKIE_NAME, languageUser[0]['language'])
 
 
 # <<End Config language >>
