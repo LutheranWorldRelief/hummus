@@ -170,7 +170,6 @@ JET_SIDE_MENU_ITEMS = [
         {'name': 'contacttype'},
         {'name': 'contact'},
         {'name': 'country'},
-        {'name': 'datalist'},
         {'name': 'education'},
         {'name': 'event'},
         {'name': 'filter'},
