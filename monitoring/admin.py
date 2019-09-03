@@ -21,6 +21,14 @@ def on_user_logged_in(sender, request, **kwargs):
 
 # <<End Config language >>
 
+# Change default query
+class AdminForUserMixin(object):
+    def get_queryset(self, request):
+        if request.user:
+            return self.model.objects.for_user(request.user)
+        else:
+            return super().get_queryset(request)
+
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
 
 class ListAdminMixin(object):
@@ -126,7 +134,7 @@ class StructureInline(admin.TabularInline):
         return False
 
 
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     inlines = [
         StructureInline,
     ]
