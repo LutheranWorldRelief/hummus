@@ -5,10 +5,11 @@ from import_export.admin import ImportExportModelAdmin
 from .models import *
 from django.utils.translation import gettext_lazy as _
 
-#<<Start Config language >>
+# <<Start Config language >>
 from django.contrib.auth import user_logged_in
 from django.dispatch import receiver
 from django.utils import translation
+
 
 @receiver(user_logged_in)
 def on_user_logged_in(sender, request, **kwargs):
@@ -16,7 +17,9 @@ def on_user_logged_in(sender, request, **kwargs):
     if languageUser:
         translation.activate(languageUser[0]['language'])
         request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
-#<<End Config language >>
+
+
+# <<End Config language >>
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
 
@@ -113,7 +116,14 @@ class EventInline(admin.StackedInline):
 
 class StructureInline(admin.TabularInline):
     model = Structure
+    fields = ('code', 'description')
+    readonly_fields = ('code', 'description')
+    show_change_link = True
+    can_delete = False
     extra = 0
+
+    def has_add_permission(self, request):
+        return False
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -200,18 +210,34 @@ class AttendanceResource(resources.ModelResource):
 
 class AttendanceAdmin(ImportExportModelAdmin):
     resource_class = AttendanceResource
-    list_display = ('id', 'event', 'contact', 'type', 'country', 'organization',)
+    list_display = (
+        'id', 'event', 'contact', 'type', 'country', 'organization', 'getStartEvent', 'getEndEvent', 'getPlaceEvent')
     list_display_links = ['id', 'event']
     list_per_page = 20
     list_max_show_all = 50
     ordering = ['event']
     list_filter = [
         ('country'),
-        ('organization__name'),
+        ('organization', admin.RelatedOnlyFieldListFilter),
         ('contact__projectcontact__project__name'),
         'type',
     ]
     search_fields = ['contact__name', 'event__name']
+
+    def getStartEvent(self, obj):
+        return obj.event.start
+
+    getStartEvent.short_description = 'Start'
+
+    def getEndEvent(self, obj):
+        return obj.event.end
+
+    getEndEvent.short_description = 'End'
+
+    def getPlaceEvent(self, obj):
+        return obj.event.place
+
+    getPlaceEvent.short_description = 'Place'
 
 
 class ProjectContactAdmin(admin.ModelAdmin):
