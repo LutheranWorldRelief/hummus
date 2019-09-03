@@ -4,25 +4,9 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from django_tables2 import RequestConfig
-from hummus import settings;
 
 from .tables import *
 from .models import *
-
-#<<Start Config language >>
-from django.contrib.auth import user_logged_in
-from django.dispatch import receiver
-from django.utils import translation
-
-@receiver(user_logged_in)
-def on_user_logged_in(sender, request, **kwargs):
-    languageUser = Profile.objects.filter(user_id=request.user.id).values('language')
-    #if languageUser:
-        #translation.activate(languageUser[0]['language'])
-        #request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
-        #response = HttpResponse(...)
-        #response.set_cookie(settings.LANGUAGE_COOKIE_NAME, languageUser[0]['language'])
-#<<End Config language >>
 
 class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = Project
