@@ -1,7 +1,7 @@
 from django.utils.safestring import mark_safe
 
 from django_tables2 import Table, SingleTableView, RequestConfig
-from django_filters import NumberFilter, FilterSet
+from django_filters import NumberFilter, FilterSet, CharFilter
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
 
@@ -72,9 +72,11 @@ class ProjectTable(Table):
         fields = ('name',)
 
 class ProjectFilter(FilterSet):
+    name = CharFilter(lookup_expr='icontains')
+
     class Meta:
-        model = Project
         fields = ('name',)
+        model = Project
 
 class ProjectFilterFormHelper(FormHelper):
     form_method = 'GET'
