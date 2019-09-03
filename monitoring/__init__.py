@@ -1,1 +1,1 @@
-from signal import *
+default_app_config = 'monitoring.apps.MonitoringConfig'
