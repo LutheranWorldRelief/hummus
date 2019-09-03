@@ -15,8 +15,8 @@
         </div>
 
         <ul class="sidebar-menu tree" data-widget="tree">
-            <li class="header"><span><span>Menú</span></span></li>
-            <li><a href="/import/beneficiarios-paso1"><i class="fa fa-upload"></i>
+            <li class="header"><span><span>{% trans 'Menú' %}</span></span></li>
+            <li><a href="{{ DOMAIN_SERVER }}import/beneficiarios-paso1"><i class="fa fa-upload"></i>
                 <span>{% trans 'Import Beneficiaries' %}</span></a>
             </li>
             <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-users"></i>
@@ -47,9 +47,9 @@
             <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
-                    <li><a href="/report/index"><i class="fa fa-file-excel-o"></i>
+                    <li><a href="{{ DOMAIN_SERVER }}report/index"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Principal' %}</span></a></li>
-                    <li><a href="/report/template-clean"><i class="fa fa-file-excel-o"></i>
+                    <li><a href="{{ DOMAIN_SERVER }}report/template-clean"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Clean template' %}</span></a>
                     </li>
                 </ul>
@@ -102,9 +102,9 @@
                         <span>{% trans 'Users' %}</span></a></li>
                     <li><a href="{% url 'admin:auth_group_changelist' %}"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Roles' %}</span></a></li>
-                    <li><a href="/seguridad/rutas"><i class="fa fa-circle-o"></i>
+                    <li><a href="{{ DOMAIN_SERVER }}seguridad/rutas"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Routes' %}</span></a></li>
-                    <li><a href="/audit"><i class="fa fa-circle-o"></i> <span>{% trans 'Binnacle' %}</span></a>
+                    <li><a href="{{ DOMAIN_SERVER }}audit"><i class="fa fa-circle-o"></i> <span>{% trans 'Binnacle' %}</span></a>
                     </li>
                 </ul>
             </li>
