@@ -26,7 +26,7 @@ DATABASES = {
 }
 
 # domain server
-DOMAIN_SERVER = env('DOMAIN_SERVER', default='localhost')
+DOMAIN_SERVER = env('LEGACY_DOMAIN', default='localhost')
 
 # Localization and translation
 LANGUAGES = [
