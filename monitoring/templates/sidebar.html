@@ -41,7 +41,8 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="{% url 'admin:monitoring_event_changelist' %}"><i class="fa fa-calendar"></i> <span>{% trans 'Events' %}</span></a></li>
+            <li><a href="{% url 'admin:monitoring_event_changelist' %}"><i class="fa fa-calendar"></i>
+                <span>{% trans 'Events' %}</span></a></li>
             <li class="header"><span><span>Reportes</span></span></li>
             <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
@@ -74,7 +75,21 @@
                                 <span>{% trans 'Types' %}</span></a></li>
                         </ul>
                     </li>
-                    <li><a href="/data-list"><i class="fa fa-list"></i> <span>{% trans 'Catalogs' %}</span></a>
+                    <li class="treeview"><a href="#"><i class="fa fa-list"></i>
+                        <span>{% trans 'Catalogs' %}</span>
+                        <span
+                                class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                        <ul class="treeview-menu">
+                            <li><a href="{% url 'admin:monitoring_country_changelist' %}"><i
+                                    class="fa fa-list"></i>
+                                <span>{% trans 'Countries' %}</span></a></li>
+                            <li><a href="{% url 'admin:monitoring_contacttype_changelist' %}"><i
+                                    class="fa fa-list"></i>
+                                <span>{% trans 'Contact Types' %}</span></a></li>
+                            <li><a href="{% url 'admin:monitoring_education_changelist' %}"><i
+                                    class="fa fa-list"></i>
+                                <span>{% trans 'Educations' %}</span></a></li>
+                        </ul>
                     </li>
                     <li><a href="{% url 'admin:monitoring_filter_changelist' %}"><i class="fa fa-filter"></i>
                         <span>{% trans 'Segmentation' %}</span></a></li>
@@ -83,9 +98,9 @@
             <li class="treeview"><a href="#"><i class="fa fa-lock"></i> <span>i{% trans 'Security' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
-                    <li><a href="/seguridad/usuarios"><i class="fa fa-circle-o"></i>
+                    <li><a href="{% url 'admin:auth_user_changelist' %}"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Users' %}</span></a></li>
-                    <li><a href="/seguridad/roles"><i class="fa fa-circle-o"></i>
+                    <li><a href="{% url 'admin:auth_group_changelist' %}"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Roles' %}</span></a></li>
                     <li><a href="/seguridad/rutas"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Routes' %}</span></a></li>
