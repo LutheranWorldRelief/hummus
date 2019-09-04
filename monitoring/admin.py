@@ -5,6 +5,7 @@ from import_export.admin import ImportExportModelAdmin
 from .models import *
 from django.utils.translation import gettext_lazy as _
 
+
 # Change default query
 class AdminForUserMixin(object):
     def get_queryset(self, request):
@@ -12,6 +13,7 @@ class AdminForUserMixin(object):
             return self.model.objects.for_user(request.user)
         else:
             return super().get_queryset(request)
+
 
 # based on https://hackernoon.com/automatically-register-all-models-in-django-admin-django-tips-481382cf75e5
 
@@ -252,6 +254,18 @@ class ProjectContactAdmin(admin.ModelAdmin):
     getCountryContact.short_description = 'Country'
 
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'language')
+    list_display_links = ('id', 'user')
+    ordering = ['-id']
+    list_per_page = 20
+    list_max_show_all = 50
+    search_fields = ['id', 'user__username']
+    list_filter = [
+        ('language')
+    ]
+
+
 admin.site.register(Structure, StructureAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Event, EventAdmin)
@@ -259,6 +273,7 @@ admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
+admin.site.register(Profile, ProfileAdmin)
 
 models = apps.get_models()
 for model in models:
