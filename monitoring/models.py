@@ -12,18 +12,18 @@ def dictfetchall(cursor):
     ]
 
 
-months = [('1','January'),
-    ('2',_('February')),
-    ('3',_('March')),
-    ('4',_('April')),
-    ('5',_('May')),
-    ('6',_('June')),
-    ('7',_('July')),
-    ('8',_('August')),
-    ('9',_('September')),
-    ('10',_('October')),
-    ('11',_('November')),
-    ('12',_('December')),]
+months = [('1', 'January'),
+          ('2', _('February')),
+          ('3', _('March')),
+          ('4', _('April')),
+          ('5', _('May')),
+          ('6', _('June')),
+          ('7', _('July')),
+          ('8', _('August')),
+          ('9', _('September')),
+          ('10', _('October')),
+          ('11', _('November')),
+          ('12', _('December')), ]
 
 
 class Region(models.Model):
@@ -34,14 +34,14 @@ class Region(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name=_('Region')
+        verbose_name = _('Region')
 
 
 class Profile(models.Model):
     LANGUAGE_CHOICES = [
-	('en', 'English'),
-	('fr', 'French'),
-	('es', 'Spanish'),
+        ('en', 'English'),
+        ('fr', 'French'),
+        ('es', 'Spanish'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_('User'))
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, verbose_name=_('Language'), default='en')
@@ -54,7 +54,7 @@ class Profile(models.Model):
 
     class Meta:
         ordering = ['user']
-        verbose_name=_('Profile')
+        verbose_name = _('Profile')
 
 
 class Attendance(models.Model):
@@ -66,7 +66,8 @@ class Attendance(models.Model):
     sex = models.CharField(max_length=1, blank=True, null=True, verbose_name=_('Sex'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
     community = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Community'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Organization'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
+                                     verbose_name=_('Organization'))
     phone_personal = models.CharField(max_length=45, blank=True, null=True, verbose_name=_('Phone Personal'))
 
     def __str__(self):
@@ -75,7 +76,8 @@ class Attendance(models.Model):
     class Meta:
         ordering = ['event', 'contact']
         db_table = 'attendance'
-        verbose_name=_('Attendance')
+        verbose_name = _('Attendance')
+
 
 class Contact(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
@@ -85,14 +87,16 @@ class Contact(models.Model):
     birthdate = models.DateField(blank=True, null=True, verbose_name=_('Birthdate'))
     document = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Document'))
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Title'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Organization'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
+                                     verbose_name=_('Organization'))
     sex = models.CharField(max_length=1, blank=True, null=True, verbose_name=_('Sex'))
     type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Type'))
     community = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Community'))
     municipality = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Municipality'))
     city = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('City'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
-    education = models.ForeignKey('Education', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Education'))
+    education = models.ForeignKey('Education', on_delete=models.SET_NULL, blank=True, null=True,
+                                  verbose_name=_('Education'))
     phone_personal = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Phone Personal'))
     phone_work = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Phone Work'))
     men_home = models.IntegerField(blank=True, null=True, verbose_name=_('Men Home'))
@@ -109,8 +113,9 @@ class Contact(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'contact'
-        verbose_name=_('Contact')
+        verbose_name = _('Contact')
         verbose_name_plural = _('Contacts')
+
 
 class Country(models.Model):
     id = models.CharField(primary_key=True, max_length=2, verbose_name=_('Id'))
@@ -129,33 +134,17 @@ class Country(models.Model):
         verbose_name_plural = "Countries"
         ordering = ['name']
         db_table = 'country'
-        verbose_name=_('Country')
-
-class DataList(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
-    name = models.TextField(blank=True, null=True, verbose_name=_('Name'))
-    tag = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Tag'))
-    value = models.CharField(max_length=45, blank=True, null=True, verbose_name=_('Value'))
-    data_list = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, verbose_name=_('Data List'))
-    notes = models.TextField(blank=True, null=True, verbose_name=_('Notes'))
-    slug = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Slug'))
-    order = models.IntegerField(blank=True, null=True, verbose_name=_('Order'))
-
-    def __str__(self):
-        return "%s: %s" % (self.id, self.name)
-
-    class Meta:
-        ordering = ['id', 'name']
-        db_table = 'data_list'
-        verbose_name=_('DataList')
+        verbose_name = _('Country')
 
 
 class Event(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
-    structure = models.ForeignKey('Structure', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Structure'))
+    structure = models.ForeignKey('Structure', on_delete=models.SET_NULL, blank=True, null=True,
+                                  verbose_name=_('Structure'))
     name = models.CharField(max_length=455, verbose_name=_('Name'))
     title = models.TextField(blank=True, null=True, verbose_name=_('Title'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Organization'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
+                                     verbose_name=_('Organization'))
     organizer = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Organizer'))
     text = models.TextField(blank=True, null=True, verbose_name=_('Text'))
     start = models.DateTimeField(blank=True, null=True, verbose_name=_('Start'))
@@ -170,7 +159,8 @@ class Event(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'event'
-        verbose_name=_('Event')
+        verbose_name = _('Event')
+
 
 class Filter(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
@@ -179,7 +169,8 @@ class Filter(models.Model):
     end = models.CharField(max_length=255, verbose_name=_('End'))
     slug = models.CharField(max_length=255, verbose_name=_('Slug'))
     order = models.IntegerField(blank=True, null=True, verbose_name=_('Order'))
-    filter = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent", verbose_name=_('Filter'))
+    filter = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
+                               verbose_name=_('Filter'))
 
     def __str__(self):
         return "%s: %s" % (self.slug, self.name)
@@ -187,14 +178,17 @@ class Filter(models.Model):
     class Meta:
         ordering = ['slug', 'name']
         db_table = 'filter'
-        verbose_name=_('Filter')
+        verbose_name = _('Filter')
+
 
 class Organization(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     name = models.TextField(verbose_name=_('Name'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
-    organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Organization Type'))
-    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent", verbose_name=_('Organization'))
+    organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True, null=True,
+                                          verbose_name=_('Organization Type'))
+    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
+                                     verbose_name=_('Organization'))
     description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
     country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
     is_implementer = models.BooleanField(verbose_name=_('Is Implementer'))
@@ -205,7 +199,8 @@ class Organization(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'organization'
-        verbose_name=_('Organization')
+        verbose_name = _('Organization')
+
 
 class OrganizationType(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
@@ -219,7 +214,7 @@ class OrganizationType(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'organization_type'
-        verbose_name=_('Organization Type')
+        verbose_name = _('Organization Type')
 
 
 class ProjectQuerySet(models.QuerySet):
@@ -228,6 +223,7 @@ class ProjectQuerySet(models.QuerySet):
             return self.filter(profile=user.profile)
         else:
             return self
+
 
 class Project(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
@@ -249,7 +245,8 @@ class Project(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'project'
-        verbose_name=_('Project')
+        verbose_name = _('Project')
+
     def get_absolute_url(self):
         return "/project/%i/" % self.id
 
@@ -264,7 +261,8 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name=_('Product')
+        verbose_name = _('Product')
+
 
 class ProjectContact(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
@@ -272,11 +270,15 @@ class ProjectContact(models.Model):
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Product'))
     area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, verbose_name=_('Area'))
-    development_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, verbose_name=_('Development Area'))
-    productive_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, verbose_name=_('Productive Area'))
-    age_development_plantation = models.IntegerField(blank=True, null=True, verbose_name=_('Age Development Plantation'))
+    development_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True,
+                                           verbose_name=_('Development Area'))
+    productive_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True,
+                                          verbose_name=_('Productive Area'))
+    age_development_plantation = models.IntegerField(blank=True, null=True,
+                                                     verbose_name=_('Age Development Plantation'))
     age_productive_plantation = models.IntegerField(blank=True, null=True, verbose_name=_('Age Productive Plantation'))
-    yield_field = models.FloatField(db_column='yield', blank=True, null=True, verbose_name=_('Yield Field'))  # Field renamed because it was a Python reserved word.
+    yield_field = models.FloatField(db_column='yield', blank=True, null=True, verbose_name=_(
+        'Yield Field'))  # Field renamed because it was a Python reserved word.
     date_entry_project = models.DateField(blank=True, null=True, verbose_name=_('Date Entry Project'))
     date_end_project = models.DateField(blank=True, null=True, verbose_name=_('Date End Project'))
 
@@ -286,13 +288,15 @@ class ProjectContact(models.Model):
     class Meta:
         ordering = ['project', 'contact']
         db_table = 'project_contact'
-        verbose_name=_('Project Contact')
+        verbose_name = _('Project Contact')
+
 
 class Structure(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     code = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Code'))
     description = models.TextField(verbose_name=_('Description'))
-    structure = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent", verbose_name=_('Structure'))
+    structure = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
+                                  verbose_name=_('Structure'))
     notes = models.TextField(blank=True, null=True, verbose_name=_('Notes'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
 
@@ -302,7 +306,8 @@ class Structure(models.Model):
     class Meta:
         ordering = ['project', 'description']
         db_table = 'structure'
-        verbose_name=_('Structure')
+        verbose_name = _('Structure')
+
 
 class Education(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
@@ -314,7 +319,8 @@ class Education(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name=_('Education')
+        verbose_name = _('Education')
+
 
 class ContactType(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
@@ -326,4 +332,4 @@ class ContactType(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name=_('Contact Type')
+        verbose_name = _('Contact Type')
