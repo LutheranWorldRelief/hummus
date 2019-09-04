@@ -101,3 +101,27 @@ form#changelist-search div input[type="submit"]:hover {
     color: white;
     font-weight: bold;
 }
+
+/*helping paragraph*/
+p.help {
+    color: black !important;
+}
+
+/*textarea from permissions list*/
+
+.related-widget-wrapper span.select2 {
+    width: 45% !important;
+}
+
+@media screen and (max-width: 1097px) {
+    .related-widget-wrapper span.select2 {
+         width: 60% !important;
+    }
+}
+@media screen and (max-width: 740px) {
+    .related-widget-wrapper span.select2 {
+         width: 100% !important;
+    }
+}
+
+
