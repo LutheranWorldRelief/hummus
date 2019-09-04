@@ -5,22 +5,6 @@ from import_export.admin import ImportExportModelAdmin
 from .models import *
 from django.utils.translation import gettext_lazy as _
 
-# <<Start Config language >>
-from django.contrib.auth import user_logged_in
-from django.dispatch import receiver
-from django.utils import translation
-
-
-@receiver(user_logged_in)
-def on_user_logged_in(sender, request, **kwargs):
-    languageUser = Profile.objects.filter(user_id=request.user.id).values('language')
-    if languageUser:
-        translation.activate(languageUser[0]['language'])
-        request.session[translation.LANGUAGE_SESSION_KEY] = languageUser[0]['language']
-
-
-# <<End Config language >>
-
 # Change default query
 class AdminForUserMixin(object):
     def get_queryset(self, request):
