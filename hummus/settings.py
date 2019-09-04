@@ -26,7 +26,7 @@ DATABASES = {
 }
 
 # domain server
-DOMAIN_SERVER = env('LEGACY_DOMAIN', default='localhost')
+LEGACY_URL = env('LEGACY_URL', default='http://localhost/')
 
 # Localization and translation
 LANGUAGES = [
@@ -94,7 +94,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # extras
                 'microsoft_auth.context_processors.microsoft',
-                'monitoring.context_processors.admin_domain',
+                'monitoring.context_processors.legacy_url',
             ],
         },
     },
