@@ -25,6 +25,9 @@ DATABASES = {
     'default': env.db(),
 }
 
+# domain server
+DOMAIN_SERVER = env('DOMAIN_SERVER', default='localhost')
+
 # Localization and translation
 LANGUAGES = [
     ('en', _('English')),
@@ -91,6 +94,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # extras
                 'microsoft_auth.context_processors.microsoft',
+                'monitoring.context_processors.admin_domain',
             ],
         },
     },
@@ -130,7 +134,7 @@ USE_L10N = True
 USE_TZ = True
 
 LOCALE_PATHS = (
- os.path.join(BASE_DIR, "locale"),
+    os.path.join(BASE_DIR, "locale"),
 )
 
 # Static files (CSS, JavaScript, Images)
@@ -163,7 +167,7 @@ MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
 
 LOGIN_URL = '/admin/login/'
 
-#Jet Menu Settings
+# Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
     {'app_label': 'monitoring', 'items': [
         {'name': 'attendance'},
@@ -185,7 +189,7 @@ JET_SIDE_MENU_ITEMS = [
     ]}
 ]
 
-#JET dashboard custumization
+# JET dashboard custumization
 JET_INDEX_DASHBOARD = 'monitoring.dashboard.CustomIndexDashboard'
 
 # Salesforce settings
