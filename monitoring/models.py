@@ -35,6 +35,7 @@ class Region(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _('Region')
+        verbose_name_plural = _('Regions')
 
 
 class Profile(models.Model):
@@ -55,6 +56,7 @@ class Profile(models.Model):
     class Meta:
         ordering = ['user']
         verbose_name = _('Profile')
+        verbose_name_plural = _('Profiles')
 
 
 class Attendance(models.Model):
@@ -77,6 +79,7 @@ class Attendance(models.Model):
         ordering = ['event', 'contact']
         db_table = 'attendance'
         verbose_name = _('Attendance')
+        verbose_name_plural = _('Attendances')
 
 
 class Contact(models.Model):
@@ -135,6 +138,7 @@ class Country(models.Model):
         ordering = ['name']
         db_table = 'country'
         verbose_name = _('Country')
+        verbose_name_plural = _('Countries')
 
 
 class Event(models.Model):
@@ -160,6 +164,7 @@ class Event(models.Model):
         ordering = ['name']
         db_table = 'event'
         verbose_name = _('Event')
+        verbose_name_plural = _('Events')
 
 
 class Filter(models.Model):
@@ -179,6 +184,7 @@ class Filter(models.Model):
         ordering = ['slug', 'name']
         db_table = 'filter'
         verbose_name = _('Filter')
+        verbose_name_plural = _('Filters')
 
 
 class Organization(models.Model):
@@ -200,12 +206,15 @@ class Organization(models.Model):
         ordering = ['name']
         db_table = 'organization'
         verbose_name = _('Organization')
+        verbose_name_plural = _('Organizations')
 
 
 class OrganizationType(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     abbreviation = models.CharField(max_length=45, verbose_name=_('Abbreviation'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
+    name_es = models.CharField(max_length=255, verbose_name=_('Name_Es'))
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name_Fr'))
     description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
 
     def __str__(self):
@@ -215,6 +224,7 @@ class OrganizationType(models.Model):
         ordering = ['name']
         db_table = 'organization_type'
         verbose_name = _('Organization Type')
+        verbose_name_plural = _('Organizations Types')
 
 
 class ProjectQuerySet(models.QuerySet):
@@ -246,6 +256,7 @@ class Project(models.Model):
         ordering = ['name']
         db_table = 'project'
         verbose_name = _('Project')
+        verbose_name_plural = _('Projects')
 
     def get_absolute_url(self):
         return "/project/%i/" % self.id
@@ -262,6 +273,7 @@ class Product(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _('Product')
+        verbose_name_plural = _('products')
 
 
 class ProjectContact(models.Model):
@@ -289,6 +301,7 @@ class ProjectContact(models.Model):
         ordering = ['project', 'contact']
         db_table = 'project_contact'
         verbose_name = _('Project Contact')
+        verbose_name_plural = _('Projects Contacts')
 
 
 class Structure(models.Model):
@@ -320,6 +333,7 @@ class Education(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _('Education')
+        verbose_name_plural = _('Educations')
 
 
 class ContactType(models.Model):
@@ -333,3 +347,4 @@ class ContactType(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _('Contact Type')
+        verbose_name_plural = _('Contacts Types')
