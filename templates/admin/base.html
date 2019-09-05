@@ -203,6 +203,16 @@
                             </span>
                             </a>
                         {% endif %}
+
+                        {% if user.is_active %}
+                            <a href="{{ LEGACY_URL }}" class="sidebar-link icon">
+                            <span class="sidebar-link-label">
+                                 <span class="sidebar-link-icon icon-star"></span>
+                                {% trans 'DASHBOARD' %}
+                            </span>
+                            </a>
+                        {% endif %}
+
                         {% url 'django-admindocs-docroot' as docsroot %}
                         {% if docsroot %}
                             <a href="{{ docsroot }}" class="sidebar-link icon">
