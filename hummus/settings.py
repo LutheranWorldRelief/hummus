@@ -169,28 +169,45 @@ LOGIN_URL = '/admin/login/'
 
 # Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
-    {'app_label': 'monitoring', 'items': [
-        {'name': 'attendance'},
-        {'name': 'contacttype'},
-        {'name': 'contact'},
-        {'name': 'country'},
-        {'name': 'education'},
-        {'name': 'event'},
-        {'name': 'filter'},
-        {'name': 'organizationtype'},
-        {'name': 'organization'},
-        {'name': 'product'},
-        {'name': 'profile'},
-        {'name': 'projectcontact'},
-        {'name': 'project'},
-        {'name': 'region'},
-        {'name': 'structure'},
+    {'label': _('Import Beneficiaries'), 'items': [
+        {'name': '', 'url': LEGACY_URL + 'import/beneficiarios-paso1',
+         'label': _('Import Beneficiaries')},
+
+    ]},
+    {'label': _('Participants'), 'items': [
+        {'name': 'monitoring.contact', 'label': _('Participants')},
+        {'name': 'monitoring.attendance', 'label': _('Participants/Event')},
+
+    ]},
+    {'label': _('Events'), 'items': [
+        {'name': 'monitoring.event', 'label': _('Events')},
+    ]},
+    {'label': _('Reports'), 'items': [
+        {'name': '', 'url': LEGACY_URL + 'report/index/', 'label': _('Principal')},
+        {'name': '', 'url': LEGACY_URL + 'report/clean-template/', 'label': _('Clean Template')},
+    ]},
+    {'label': _('Graphics'), 'items': [
+        {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},
+    ]},
+    {'label': _('Configurations'), 'items': [
+        {'name': 'monitoring.project', 'label': _('Projects')},
+        {'name': 'monitoring.organization', 'label': _('Organizations')},
+        {'name': 'monitoring.organizationtype', 'label': _('Types')},
+        {'name': 'monitoring.country', 'label': _('Countries')},
+        {'name': 'monitoring.contacttype', 'label': _('Contact Types')},
+        {'name': 'monitoring.education', 'label': _('Educations')},
+        {'name': 'monitoring.filter', 'label': _('Segmentation')},
+    ]},
+    {'label': _('Security'), 'items': [
+        {'name': 'auth.user', 'label': _('Users')},
+        {'name': 'auth.group', 'label': _('Roles')},
+        {'name': '', 'url': LEGACY_URL + 'seguridad/rutas', 'label': _('Routes')},
+        {'name': '', 'url': LEGACY_URL + 'audit', 'label': _('Binnacle')},
     ]}
 ]
 
 # JET dashboard custumization
 JET_INDEX_DASHBOARD = 'monitoring.dashboard.CustomIndexDashboard'
-
 # Salesforce settings
 SALESFORCE_USERNAME = env('SALESFORCE_USERNAME')
 SALESFORCE_PASSWORD = env('SALESFORCE_PASSWORD')
