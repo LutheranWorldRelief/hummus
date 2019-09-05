@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+{% block content %}
+    {% block object-tools %}{% endblock %}
+    <style>
+        iframe {
+            border: none;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            width: 100%;
+        }
+
+
+        iframe > html {
+            visibility: hidden !important;
+            display: none !important;
+        }
+
+    </style>
+    <iframe src="http://dev.hummus.cc/import/beneficiarios-paso1" id="iframe">
+        <p>{% trans 'Your browser does not support iframes.' %}</p>
+    </iframe>
+
+{% endblock %}
