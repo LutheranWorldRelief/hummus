@@ -77,9 +77,11 @@ def graficoOrganizaciones(request):
     organizaciones = Event.objects.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
         values('organization_id', 'organization__name', 'organization__organization_type_id').distinct()
     org_list = []
+    OrganizationType_column = get_select_column('name')
+
     for row in organizaciones:
         org_list.append({'id': row['organization_id'], 'name': row['organization__name'], 'parent': row['organization__organization_type_id']})
-    types = OrganizationType.objects.values('id', 'name')
+    types = OrganizationType.objects.values('id', OrganizationType_column)
     colorNumero = 0;
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     data_dict = {}
@@ -130,11 +132,7 @@ def graficoEdad(request):
 @csrf_exempt
 @login_required
 def graficoEducacion(request):
-    language_user = translation.get_language()
-
-    education_column = 'education__name'
-    if (language_user != 'en'):
-        education_column += '_' + language_user
+    education_column = get_select_column('education__name')
 
     result = Contact.objects.order_by(education_column).values(education_column).annotate(
         m=Count('id', filter=Q(sex='M')),
@@ -155,10 +153,7 @@ def graficoEventos(request):
 @csrf_exempt
 @login_required
 def graficoTipoParticipante(request):
-    language_user = translation.get_language()
-    contacttype_column = 'contact__type__name'
-    if (language_user != 'en'):
-        contacttype_column += '_' + language_user
+    contacttype_column=get_select_column('contact__type__name')
 
     result = Attendance.objects.order_by(contacttype_column).values(contacttype_column).annotate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
@@ -222,3 +217,9 @@ def graficoPaisEventos(request):
             ])
 
     return JsonResponse({'pais': result, 'paisArray': pais_array})
+
+def get_select_column(column):
+    language_user = translation.get_language()
+    if (language_user != 'en'):
+        column += '_' + language_user
+    return column
