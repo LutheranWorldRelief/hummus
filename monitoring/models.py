@@ -246,6 +246,7 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     goalmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Goal Men'))
     goalwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Goal Women'))
+    countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
 
     objects = ProjectQuerySet.as_manager()
 
