@@ -814,7 +814,7 @@
                         type: 'pie'
                     },
                     title: highchartsOpciones.title(gettext('Participants reached, by sex')),
-                    subtitle: {text: gettext('Total amount ') + $scope.dataTotales.total},
+                    subtitle: {text: gettext('Total amount')+' '+$scope.dataTotales.total},
                     tooltip: {pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'},
                     plotOptions: {
                         pie: {
@@ -855,7 +855,7 @@
                 var opciones = {
 
                     title: highchartsOpciones.title(gettext('ORGANIZATIONS')),
-                    subtitle: {text: $scope.organizacionesObj.total + gettext(' total, in ') + $scope.organizacionesObj.total_categorias + gettext(' Categories')},
+                    subtitle: {text: $scope.organizacionesObj.total +' '+gettext('total, in')+' '+ $scope.organizacionesObj.total_categorias + ' '+gettext('Categories')},
 
                     series: [{
                         type: 'treemap',

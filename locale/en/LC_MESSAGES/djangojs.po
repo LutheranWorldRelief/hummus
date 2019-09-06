@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-02 19:39+0000\n"
+"POT-Creation-Date: 2019-09-06 15:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,7 +123,7 @@ msgid "Participants reached, by sex"
 msgstr ""
 
 #: monitoring/static/js/script/dashboard_index.js:817
-msgid "Total amount "
+msgid "Total amount"
 msgstr ""
 
 #: monitoring/static/js/script/dashboard_index.js:834
@@ -136,11 +136,11 @@ msgid "ORGANIZATIONS"
 msgstr ""
 
 #: monitoring/static/js/script/dashboard_index.js:858
-msgid " total, in "
+msgid "total, in"
 msgstr ""
 
 #: monitoring/static/js/script/dashboard_index.js:858
-msgid " Categories"
+msgid "Categories"
 msgstr ""
 
 #: monitoring/static/js/script/dashboard_index.js:879
