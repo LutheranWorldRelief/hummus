@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 from . import graphic
+from django.views.generic import TemplateView
 
 app_name = 'monitoring'
 
@@ -26,4 +27,5 @@ urlpatterns = [
     path('graphic/grafico-nacionalidad/', graphic.graficoNacionalidad, name='grafico-nacionalidad'),
     path('graphic/grafico-pais-eventos/', graphic.graficoPaisEventos, name='grafico-pais-eventos'),
     path('admin/<int:pk>/detailview/', views.ProjectAdminView.as_view(), name='detail-view'),
+    path('import/beneficiarios', TemplateView.as_view(template_name='import.html'), name='iframe'),
 ]

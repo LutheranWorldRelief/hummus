@@ -170,7 +170,7 @@ LOGIN_URL = '/admin/login/'
 # Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
     {'label': _('Import Beneficiaries'), 'items': [
-        {'name': '', 'url': LEGACY_URL + 'import/beneficiarios-paso1',
+        {'name': '', 'url': '/import/beneficiarios',
          'label': _('Import Beneficiaries')},
 
     ]},
