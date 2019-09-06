@@ -134,6 +134,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     date_hierarchy = 'start'
     fieldsets = [
         (_('General information'), {'fields': ['id', 'code', 'name', 'logo', 'colors', 'url']}),
+        (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['goalmen', 'goalwomen']}),
     ]
