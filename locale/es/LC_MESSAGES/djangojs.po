@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-02 19:39+0000\n"
+"POT-Creation-Date: 2019-09-06 15:31+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/lutheran-world-relief/teams/101869/es/)\n"
@@ -125,7 +125,7 @@ msgid "Participants reached, by sex"
 msgstr "Participantes alcanzados, por sexo"
 
 #: monitoring/static/js/script/dashboard_index.js:817
-msgid "Total amount "
+msgid "Total amount"
 msgstr "Cantidad total"
 
 #: monitoring/static/js/script/dashboard_index.js:834
@@ -138,11 +138,11 @@ msgid "ORGANIZATIONS"
 msgstr "ORGANIZACIONES"
 
 #: monitoring/static/js/script/dashboard_index.js:858
-msgid " total, in "
+msgid "total, in"
 msgstr "total, en"
 
 #: monitoring/static/js/script/dashboard_index.js:858
-msgid " Categories"
+msgid "Categories"
 msgstr "Categorías"
 
 #: monitoring/static/js/script/dashboard_index.js:879
