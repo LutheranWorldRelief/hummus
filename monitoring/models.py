@@ -236,7 +236,6 @@ class ProjectQuerySet(models.QuerySet):
 
 
 class Project(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     code = models.CharField(max_length=255, verbose_name=_('Code'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
