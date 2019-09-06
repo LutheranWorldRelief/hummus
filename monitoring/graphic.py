@@ -4,9 +4,9 @@ from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from monitoring.common import get_localized_name as __
 
 from .models import *
-from django.utils import translation
 
 @csrf_exempt
 @login_required
@@ -77,11 +77,10 @@ def graficoOrganizaciones(request):
     organizaciones = Event.objects.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
         values('organization_id', 'organization__name', 'organization__organization_type_id').distinct()
     org_list = []
-    OrganizationType_column = get_select_column('name')
 
     for row in organizaciones:
         org_list.append({'id': row['organization_id'], 'name': row['organization__name'], 'parent': row['organization__organization_type_id']})
-    types = OrganizationType.objects.values('id', OrganizationType_column)
+    types = OrganizationType.objects.values('id', __('name'))
     colorNumero = 0;
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
     data_dict = {}
@@ -89,6 +88,7 @@ def graficoOrganizaciones(request):
         v['color'] = colores[colorNumero % 10]
         colorNumero += 1
         v['value'] = 0
+        v['name'] = v[__('name')]
         data_dict[v['id']] = v
     for v in organizaciones:
         data_dict[v['organization__organization_type_id']]['value'] += 1;
@@ -132,14 +132,12 @@ def graficoEdad(request):
 @csrf_exempt
 @login_required
 def graficoEducacion(request):
-    education_column = get_select_column('education__name')
-
-    result = Contact.objects.order_by(education_column).values(education_column).annotate(
+    result = Contact.objects.order_by(__('education__name')).values(__('education__name')).annotate(
         m=Count('id', filter=Q(sex='M')),
         f=Count('id', filter=Q(sex='M')),
         total=Count('id'))
     for row in result:
-        row['type'] = str(row[education_column])
+        row['type'] = str(row[__('education__name')])
     data = {'educacion': list(result) }
     return JsonResponse(data)
 
@@ -153,13 +151,12 @@ def graficoEventos(request):
 @csrf_exempt
 @login_required
 def graficoTipoParticipante(request):
-    contacttype_column=get_select_column('contact__type__name')
 
-    result = Attendance.objects.order_by(contacttype_column).values(contacttype_column).annotate(
+    result = Attendance.objects.order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
     for row in result:
-        row['type'] = row[contacttype_column]
+        row['type'] = row[__('contact__type__name')]
     data = list(result)
     return JsonResponse(data, safe=False)
 
@@ -218,8 +215,3 @@ def graficoPaisEventos(request):
 
     return JsonResponse({'pais': result, 'paisArray': pais_array})
 
-def get_select_column(column):
-    language_user = translation.get_language()
-    if (language_user != 'en'):
-        column += '_' + language_user
-    return column
