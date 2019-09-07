@@ -183,7 +183,7 @@ JET_SIDE_MENU_ITEMS = [
         {'name': 'monitoring.event', 'label': _('Events')},
     ]},
     {'label': _('Reports'), 'items': [
-        {'name': '', 'url': LEGACY_URL + 'report/index/', 'label': _('Principal')},
+        {'name': '', 'url': '/report/proyectos', 'label': _('Principal')},
         {'name': '', 'url': LEGACY_URL + 'report/clean-template/', 'label': _('Clean Template')},
     ]},
     {'label': _('Graphics'), 'items': [
