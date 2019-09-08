@@ -123,11 +123,15 @@ class Contact(models.Model):
 class Country(models.Model):
     id = models.CharField(primary_key=True, max_length=2, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=255, verbose_name=_('Name_Es'))
+    name_es = models.CharField(max_length=255, verbose_name=_('Name_ES'))
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name_FR'))
     codigo_numerico = models.IntegerField(verbose_name=_('Numerical Code'))
     alfa3 = models.CharField(max_length=3, verbose_name=_('Alfa3'))
     x = models.CharField(max_length=255, verbose_name=_('X'))
     y = models.CharField(max_length=255, verbose_name=_('Y'))
+    continent = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Continent'))
+    subregion = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Sub Region'))
+    phonecode = models.CharField(max_length=3, blank=True, null=True, verbose_name=_('Phone Code'))
     region = models.ForeignKey('Region', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Region'))
 
     def __str__(self):
@@ -213,8 +217,8 @@ class OrganizationType(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     abbreviation = models.CharField(max_length=45, verbose_name=_('Abbreviation'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=255, verbose_name=_('Name_Es'))
-    name_fr = models.CharField(max_length=255, verbose_name=_('Name_Fr'))
+    name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
     description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
 
     def __str__(self):
@@ -264,8 +268,8 @@ class Project(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=100, verbose_name=_('Name_Es'))
-    name_fr = models.CharField(max_length=100, verbose_name=_('Name_Fr'))
+    name_es = models.CharField(max_length=100, verbose_name=_('Name ES'))
+    name_fr = models.CharField(max_length=100, verbose_name=_('Name FR'))
 
     def __str__(self):
         return self.name
@@ -324,8 +328,8 @@ class Structure(models.Model):
 
 class Education(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=100, verbose_name=_('Name_Es'))
-    name_fr = models.CharField(max_length=100, verbose_name=_('Name_Fr'))
+    name_es = models.CharField(max_length=100, verbose_name=_('Name ES'))
+    name_fr = models.CharField(max_length=100, verbose_name=_('Name FR'))
 
     def __str__(self):
         return self.name
@@ -338,8 +342,8 @@ class Education(models.Model):
 
 class ContactType(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=100, verbose_name=_('Name_Es'))
-    name_fr = models.CharField(max_length=100, verbose_name=_('Name_Fr'))
+    name_es = models.CharField(max_length=100, verbose_name=_('Name ES'))
+    name_fr = models.CharField(max_length=100, verbose_name=_('Name FR'))
 
     def __str__(self):
         return self.name
