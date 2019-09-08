@@ -131,7 +131,7 @@ class Country(models.Model):
     y = models.CharField(max_length=255, verbose_name=_('Y'))
     continent = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Continent'))
     subregion = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Sub Region'))
-    phonecode = models.CharField(max_length=3, blank=True, null=True, verbose_name=_('Phone Code'))
+    phonecode = models.CharField(max_length=5, blank=True, null=True, verbose_name=_('Phone Code'))
     region = models.ForeignKey('Region', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Region'))
 
     def __str__(self):

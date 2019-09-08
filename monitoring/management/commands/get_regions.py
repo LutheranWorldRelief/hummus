@@ -16,8 +16,13 @@ class Command(BaseCommand):
             qs.filter(id__in=args)
         for country in qs:
             r = requests.get("%s%s" % (self.url, country.id))
-            region = r.json()['region']
-            subregion = r.json()['subregion']
-
+            data = r.json()
+            region = data['region']
+            subregion = data['subregion']
+            phonecode = data['callingCodes'][0]
+            print("%s : %s : %s : %s" % (country.name, region, subregion, phonecode))
+            country.continent = region
+            country.subregion = subregion
+            country.phonecode = phonecode
+            country.save()
             #self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"' % poll_id))
-            print("%s: %s: %s" % (country.name, region, subregion))
