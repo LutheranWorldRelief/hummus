@@ -7,6 +7,7 @@ from django_tables2 import RequestConfig
 
 from .tables import *
 from .models import *
+from .common import months
 
 class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = Project

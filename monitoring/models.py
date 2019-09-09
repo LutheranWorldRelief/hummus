@@ -3,20 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
 
-months = [('1', 'January'),
-          ('2', _('February')),
-          ('3', _('March')),
-          ('4', _('April')),
-          ('5', _('May')),
-          ('6', _('June')),
-          ('7', _('July')),
-          ('8', _('August')),
-          ('9', _('September')),
-          ('10', _('October')),
-          ('11', _('November')),
-          ('12', _('December')), ]
-
-
 class LWRRegion(models.Model):
     id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
     name = models.CharField(max_length=20, verbose_name=_('Name'))
