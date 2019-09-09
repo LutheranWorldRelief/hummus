@@ -140,7 +140,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     ]
 
     def get_countries(self, obj):
-        return ', '.join(obj.countries.all())
+        return ', '.join([country.name for country in obj.countries.all()])
 
     get_countries.short_description = _('Countries')
 
