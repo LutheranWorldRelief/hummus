@@ -237,6 +237,7 @@ class ProjectQuerySet(models.QuerySet):
 class Project(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     code = models.CharField(max_length=255, verbose_name=_('Code'))
+    salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
     colors = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Colors'))
     url = models.URLField(blank=True, null=True, verbose_name=_('Url'))
@@ -259,6 +260,30 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return "/project/%i/" % self.id
+
+
+class SubProjectQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if user.profile.projects.exists():
+            return self.filter(project__profile=user.profile)
+        else:
+            return self
+
+
+class SubProject(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    code = models.CharField(max_length=255, verbose_name=_('Code'))
+    salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
+
+    class Meta:
+        ordering = ['name']
+        db_table = 'subproject'
+        verbose_name = _('Sub Project')
+        verbose_name_plural = _('Sub Projects')
+
+    def get_absolute_url(self):
+        return "/subproject/%i/" % self.id
 
 
 class Product(models.Model):

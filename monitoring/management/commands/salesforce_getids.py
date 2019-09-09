@@ -5,6 +5,10 @@ from simple_salesforce import Salesforce
 
 from monitoring.models import Project
 
+def soql_escape(string):
+    # Escape backslashes and single-quotes, in that order.
+    return string.replace("\\", "\\\\").replace("'", "\\'")
+
 class Command(BaseCommand):
     help = 'Gets Salesforce IDs for projects created in Hummus'
 
@@ -24,26 +28,23 @@ class Command(BaseCommand):
                     Project__r.End_Date__c,\
                     CreatedBy.Name,\
                     Project__r.Project_Identifier__c,\
+                    Project__r.Id,\
                     Sub_Project_Identifier__c"
         qs = Project.objects.all()
         if options['project_ids']:
-            qs.filter(id__in=project_ids)
+            qs = qs.filter(id__in=project_ids)
         for project in qs:
-            qs.filter(salesforce_project__isnull=True, saleforce_subproject__isnull=True)
-            subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Sub_Project__c.Name = '%s' OR Sub_Project__c.Project__r.Name = '%s'" % (
-                project.name, project.name)
+            qs = qs.filter(salesforce__isnull=True)
+            # FIXME add list of ids to exclude
+            subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Name = '%s'" % (
+                sf_fields, soql_escape(project.name))
             )
             if len(subprojects['records']):
                 found = subprojects['records'][0]
-                status = 'FOUND: %s' % (found['Id'])
-                if found['Name'] == project.name:
-                    project.salesforce_subproject = found['Id']
-                if found['Project_r']['Name'] == project.name:
-                    project.salesforce_project = found['Project_r']['Id']
+                status = 'FOUND: %s' % (found['Project__r']['Id'])
+                project.salesforce = found['Project__r']['Id']
                 project.save()
-                # FIXME: update Hummus_Id field in Salesforce Sub Project or Project
             else:
                 status = 'N/A'
 
-            #self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"' % poll_id))
-            print("%s: %s: %s" % (project.id, status, project.name))
+            print("%s, %s, %s" % (project.id, status, soql_escape(project.name)))
