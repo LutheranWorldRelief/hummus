@@ -26,7 +26,7 @@ months = [('1', 'January'),
           ('12', _('December')), ]
 
 
-class Region(models.Model):
+class LWRRegion(models.Model):
     name = models.CharField(max_length=20, verbose_name=_('Name'))
     subregions = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Subregions'))
 
@@ -35,8 +35,8 @@ class Region(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name = _('Region')
-        verbose_name_plural = _('Regions')
+        verbose_name = _('LWR Region')
+        verbose_name_plural = _('LWR Regions')
 
 
 class Profile(models.Model):
@@ -47,7 +47,7 @@ class Profile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_('User'))
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, verbose_name=_('Language'), default='en')
-    regiones = models.ManyToManyField('Region', verbose_name=_('Regions'), blank=True)
+    lwrregions = models.ManyToManyField('LWRRegion', verbose_name=_('LWR Regions'), blank=True)
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
     projects = models.ManyToManyField('Project', verbose_name=_('Projects'), blank=True)
 
@@ -128,10 +128,10 @@ class Country(models.Model):
     alfa3 = models.CharField(max_length=3, verbose_name=_('Alfa3'))
     x = models.CharField(max_length=255, verbose_name=_('X'))
     y = models.CharField(max_length=255, verbose_name=_('Y'))
-    continent = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Continent'))
+    region = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Region'))
     subregion = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Sub Region'))
     phonecode = models.CharField(max_length=5, blank=True, null=True, verbose_name=_('Phone Code'))
-    region = models.ForeignKey('Region', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Region'))
+    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
 
     def __str__(self):
         return self.name
@@ -223,7 +223,7 @@ class OrganizationType(models.Model):
         ordering = ['name']
         db_table = 'organization_type'
         verbose_name = _('Organization Type')
-        verbose_name_plural = _('Organizations Types')
+        verbose_name_plural = _('Organization Types')
 
 
 class ProjectQuerySet(models.QuerySet):
@@ -297,7 +297,7 @@ class Product(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _('Product')
-        verbose_name_plural = _('products')
+        verbose_name_plural = _('Products')
 
 
 class ProjectContact(models.Model):
@@ -324,7 +324,7 @@ class ProjectContact(models.Model):
         ordering = ['project', 'contact']
         db_table = 'project_contact'
         verbose_name = _('Project Contact')
-        verbose_name_plural = _('Projects Contacts')
+        verbose_name_plural = _('Project Contacts')
 
 
 class Structure(models.Model):
