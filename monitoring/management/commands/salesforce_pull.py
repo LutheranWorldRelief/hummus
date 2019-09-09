@@ -3,7 +3,7 @@ from django.conf import settings
 
 from simple_salesforce import Salesforce
 
-from monitoring.models import Project
+from monitoring.models import Project, SubProject
 
 class Command(BaseCommand):
     help = 'Imports Salesforce products into Hummus'
@@ -16,24 +16,49 @@ class Command(BaseCommand):
         password = settings.SALESFORCE_PASSWORD
         token = settings.SALESFORCE_TOKEN
         sf = Salesforce(username=username, password=password, security_token=token)
-        sf_fields = "Id, Name, \
-                    Project__r.Project_Type__c,\
-                    Project__r.LWR_Region__c,\
-                    Country__r.Name,\
-                    Project__r.Start_Date__c,\
-                    Project__r.End_Date__c,\
-                    CreatedBy.Name,\
-                    Project__r.Project_Identifier__c,\
-                    Sub_Project_Identifier__c"
+
+
+        # Get Projects
+
+        qs = Project.objects.all()
+        sf_fields = "Id, Name, Project_Type__c, LWR_Region__c, Search_Strings__c, Start_Date__c, End_Date__c, CreatedBy.Name, Project_Identifier__c"
         if options['project_ids']:
-            subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Id IN %s" % (options['project_ids']))
+            projects = sf.query_all("SELECT %s FROM Project__c WHERE Id IN %s" % (sf_fields, options['project_ids']))
         else:
-            subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Hummus_Id = NULL")
-        for project in subprojects['records']:
-            if qs.filter(saleforce_subproject=project['Id']).exists():
-                # FIXME: Update Salesforce Hummus_Id
+            projects = sf.query_all("SELECT %s FROM Project__c WHERE RecordType.Name <> 'Non-Project' AND Status__c <> 'Terminated'" % (sf_fields,))
+        for project in projects['records']:
+            if qs.filter(salesforce=project['Id']).exists():
+                # project exists already, update fields
+                pass
             else:
-                project.salesforce_subproject = project['Id']
-                project.name = project['name']
-                project.save()
-            self.stdout.write(self.style.SUCCESS('Successfully created project "%s: %s"' % (project.id, project.name))
+                # new project
+                """
+                new_project = Project()
+                new_project.salesforce = project['Id']
+                new_project.name = project['name']
+                new_project.save()
+                """
+                self.stdout.write(self.style.SUCCESS('Successfully created project "%s: %s"' % (project['Id'], project['Name'])))
+
+        # Get Sub Projects
+
+        qs = SubProject.objects.all()
+        sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c"
+        if options['project_ids']:
+            subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
+        else:
+            subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.RecordType.Name <> 'Non-Project' AND Project__r.Status__c <> 'Terminated'" % (sf_fields,))
+        for subproject in subprojects['records']:
+            if qs.filter(salesforce=subproject['Id']).exists():
+                # subproject exists already, update fields
+                pass
+            else:
+                # new subproject
+                """
+                new_subproject = SubProject()
+                new_subproject.salesforce = subproject['Id']
+                new_subproject.name = subproject['name']
+                new_subproject.project = project
+                new_project.save()
+                """
+                self.stdout.write(self.style.SUCCESS('Successfully created subproject "%s: %s"' % (subproject['Id'], subproject['Name'])))
