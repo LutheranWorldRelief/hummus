@@ -3,7 +3,7 @@ from django.conf import settings
 
 from simple_salesforce import Salesforce
 
-from monitoring.models import Project, SubProject, Country
+from monitoring.models import Project, SubProject, Country, LWRRegion
 
 class Command(BaseCommand):
     help = 'Imports Salesforce products into Hummus'
@@ -20,14 +20,14 @@ class Command(BaseCommand):
 
         # Get Projects
 
-        qs = Project.objects.all()
+        hummus_projects = Project.objects.all()
         sf_fields = "Id, Name, Project_Type__c, LWR_Region__c, Search_Strings__c, Start_Date__c, End_Date__c, CreatedBy.Name, Project_Identifier__c"
         if options['project_ids']:
             projects = sf.query_all("SELECT %s FROM Project__c WHERE Id IN %s" % (sf_fields, options['project_ids']))
         else:
             projects = sf.query_all("SELECT %s FROM Project__c WHERE RecordType.Name <> 'Non-Project' AND Status__c <> 'Terminated'" % (sf_fields,))
         for project in projects['records']:
-            if qs.filter(salesforce=project['Id']).exists():
+            if hummus_projects.filter(salesforce=project['Id']).exists():
                 # project exists already, update fields
                 pass
             else:
@@ -39,32 +39,35 @@ class Command(BaseCommand):
                         countries.extend(country.split(' and '))
                 real_countries = []
                 for country in countries:
-                    real_countries.append(Country.objects.filter(name=country).first())
-                continue
+                    real_country = Country.objects.filter(name=country).first()
+                    if real_country:
+                        real_countries.append(real_country)
+
+                real_region = LWRRegion.objects.filter(name=project['LWR_Region__c']).first()
                 new_project = Project()
                 new_project.salesforce = project['Id']
                 new_project.name = project['Name']
-                new_project.countries = real_countries
+                new_project.lwrregion = real_region
                 new_project.save()
+                new_project.countries.set(real_countries)
                 self.stdout.write(self.style.SUCCESS('Successfully created project "%s: %s"' % (project['Id'], project['Name'])))
 
         # Get Sub Projects
 
-        qs = SubProject.objects.all()
-        sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c"
+        hummus_subprojects = SubProject.objects.all()
+        sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id"
         if options['project_ids']:
             subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
         else:
             subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.RecordType.Name <> 'Non-Project' AND Project__r.Status__c <> 'Terminated'" % (sf_fields,))
         for subproject in subprojects['records']:
-            if qs.filter(salesforce=subproject['Id']).exists():
+            if hummus_subprojects.filter(salesforce=subproject['Id']).exists():
                 # subproject exists already, update fields
                 pass
             else:
                 # new subproject
-                if qs.filter(project__salesforce=subproject['Project__r']['Id']).exists():
-                    continue
-                    project = Project.objects.get(id=subproject['Project__r']['Id'])
+                if hummus_projects.filter(salesforce=subproject['Project__r']['Id']).exists():
+                    project = hummus_projects.filter(salesforce=subproject['Project__r']['Id']).first()
                     new_subproject = SubProject()
                     new_subproject.salesforce = subproject['Id']
                     new_subproject.name = subproject['Name']
