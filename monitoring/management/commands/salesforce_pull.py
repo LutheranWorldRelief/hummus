@@ -3,7 +3,7 @@ from django.conf import settings
 
 from simple_salesforce import Salesforce
 
-from monitoring.models import Project, SubProject
+from monitoring.models import Project, SubProject, Country
 
 class Command(BaseCommand):
     help = 'Imports Salesforce products into Hummus'
@@ -32,12 +32,20 @@ class Command(BaseCommand):
                 pass
             else:
                 # new project
-                """
+                countries = project['Search_Strings__c'].split(', ')
+                for country in countries:
+                    if " and " in country:
+                        countries.remove(country)
+                        countries.extend(country.split(' and '))
+                real_countries = []
+                for country in countries:
+                    real_countries.append(Country.objects.filter(name=country).first())
+                continue
                 new_project = Project()
                 new_project.salesforce = project['Id']
-                new_project.name = project['name']
+                new_project.name = project['Name']
+                new_project.countries = real_countries
                 new_project.save()
-                """
                 self.stdout.write(self.style.SUCCESS('Successfully created project "%s: %s"' % (project['Id'], project['Name'])))
 
         # Get Sub Projects
@@ -54,11 +62,13 @@ class Command(BaseCommand):
                 pass
             else:
                 # new subproject
-                """
-                new_subproject = SubProject()
-                new_subproject.salesforce = subproject['Id']
-                new_subproject.name = subproject['name']
-                new_subproject.project = project
-                new_project.save()
-                """
-                self.stdout.write(self.style.SUCCESS('Successfully created subproject "%s: %s"' % (subproject['Id'], subproject['Name'])))
+                if qs.filter(project__salesforce=subproject['Project__r']['Id']).exists():
+                    continue
+                    project = Project.objects.get(id=subproject['Project__r']['Id'])
+                    new_subproject = SubProject()
+                    new_subproject.salesforce = subproject['Id']
+                    new_subproject.name = subproject['Name']
+                    new_subproject.project = project
+                    new_subproject.save()
+                    self.stdout.write(self.style.SUCCESS('Successfully created subproject "%s: %s"' % (subproject['Id'], subproject['Name'])))
+

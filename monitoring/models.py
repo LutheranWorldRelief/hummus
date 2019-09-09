@@ -27,6 +27,7 @@ months = [('1', 'January'),
 
 
 class LWRRegion(models.Model):
+    id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
     name = models.CharField(max_length=20, verbose_name=_('Name'))
     subregions = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Subregions'))
 
@@ -37,6 +38,7 @@ class LWRRegion(models.Model):
         ordering = ['name']
         verbose_name = _('LWR Region')
         verbose_name_plural = _('LWR Regions')
+        db_table = 'lwrregion'
 
 
 class Profile(models.Model):
