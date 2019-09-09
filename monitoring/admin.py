@@ -264,6 +264,24 @@ class ProfileAdmin(admin.ModelAdmin):
         ('language')
     ]
 
+class SubprojectAdmin(admin.ModelAdmin):
+    list_display = ('name','code','project')
+    list_display_links = ('name',)
+    ordering = ['project']
+    list_per_page = 20
+    list_max_show_all = 50
+    search_fields = ['name', 'code','project__name']
+    fieldsets = [
+        (_('General information'), {'fields': ['code', 'name', 'project']}),
+        (_('Salesforce'), {'fields': ['salesforce']}),
+        (_('Goals'), {'fields': ['targetimen','targetiwomen','targetmen','targetwomen']}),
+    ]
+    list_filter = [
+        ('project__countries'),
+        ('project__lwrregion'),
+    ]
+
+
 
 admin.site.register(Structure, StructureAdmin)
 admin.site.register(Contact, ContactAdmin)
@@ -273,6 +291,7 @@ admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(SubProject, SubprojectAdmin)
 
 models = apps.get_models()
 for model in models:

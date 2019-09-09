@@ -1,6 +1,7 @@
 /*css class for td */
 .field-structure, .field-organization, .field-project, .field-getStartEvent,
-.field-getEndEvent, .field-contact, .field-event {
+.field-getEndEvent, .field-contact, .field-event, .field-project,
+.field-name {
     white-space: normal !important;
 }
 
