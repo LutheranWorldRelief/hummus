@@ -61,7 +61,6 @@ class Profile(models.Model):
 
 
 class Attendance(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     event = models.ForeignKey('Event', on_delete=models.CASCADE, verbose_name=_('Event'))
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
     type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Type'))
@@ -84,7 +83,6 @@ class Attendance(models.Model):
 
 
 class Contact(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     last_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('Last Name'))
     first_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('First Name'))
@@ -147,7 +145,6 @@ class Country(models.Model):
 
 
 class Event(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     structure = models.ForeignKey('Structure', on_delete=models.SET_NULL, blank=True, null=True,
                                   verbose_name=_('Structure'))
     name = models.CharField(max_length=455, verbose_name=_('Name'))
@@ -173,7 +170,6 @@ class Event(models.Model):
 
 
 class Filter(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     start = models.CharField(max_length=255, verbose_name=_('Start'))
     end = models.CharField(max_length=255, verbose_name=_('End'))
@@ -193,7 +189,6 @@ class Filter(models.Model):
 
 
 class Organization(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     name = models.TextField(verbose_name=_('Name'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
     organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True, null=True,
@@ -215,7 +210,6 @@ class Organization(models.Model):
 
 
 class OrganizationType(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     abbreviation = models.CharField(max_length=45, verbose_name=_('Abbreviation'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
@@ -282,7 +276,6 @@ class Product(models.Model):
 
 
 class ProjectContact(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Product'))
@@ -310,7 +303,6 @@ class ProjectContact(models.Model):
 
 
 class Structure(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name=_('Id'))
     code = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Code'))
     description = models.TextField(verbose_name=_('Description'))
     structure = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
