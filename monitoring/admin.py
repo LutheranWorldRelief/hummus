@@ -270,9 +270,15 @@ class SubprojectAdmin(admin.ModelAdmin):
     ordering = ['project']
     list_per_page = 20
     list_max_show_all = 50
+    search_fields = ['name', 'code','project__name']
     fieldsets = [
         (_('General information'), {'fields': ['code', 'name', 'project']}),
         (_('Salesforce'), {'fields': ['salesforce']}),
+        (_('Goals'), {'fields': ['targetimen','targetiwomen','targetmen','targetwomen']}),
+    ]
+    list_filter = [
+        ('project__countries'),
+        ('project__lwrregion'),
     ]
 
 
