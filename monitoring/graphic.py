@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from monitoring.common import get_localized_name as __
 
 from .models import *
+from .common import  dictfetchall
 
 @csrf_exempt
 @login_required
