@@ -139,6 +139,11 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
     ]
 
+    list_filter = [
+        ('countries'),
+        ('lwrregion'),
+    ]
+
     def get_countries(self, obj):
         return ', '.join([country.name for country in obj.countries.all()])
 
