@@ -5,6 +5,21 @@ from simple_salesforce import Salesforce
 
 from monitoring.models import Project, SubProject, Country, LWRRegion
 
+
+def getCountries(string):
+    countries = string.split(', ')
+    for country in countries:
+        if " and " in country:
+            countries.remove(country)
+            countries.extend(country.split(' and '))
+    real_countries = []
+    for country in countries:
+        real_country = Country.objects.filter(name=country).first()
+        if real_country:
+            real_countries.append(real_country)
+    return real_countries
+
+
 class Command(BaseCommand):
     help = 'Imports Salesforce products into Hummus'
 
@@ -27,21 +42,16 @@ class Command(BaseCommand):
         else:
             projects = sf.query_all("SELECT %s FROM Project__c WHERE RecordType.Name <> 'Non-Project' AND Status__c <> 'Terminated'" % (sf_fields,))
         for project in projects['records']:
-            if hummus_projects.filter(salesforce=project['Id']).exists():
+            hummus_project = hummus_projects.filter(salesforce=project['Id']).first()
+            if hummus_project:
                 # project exists already, update fields
-                pass
+                if project['LWR_Region__c']:
+                    hummus_project.lwrregion = LWRRegion.objects.get(name=project['LWR_Region__c'])
+                hummus_project.countries.set(getCountries(project['Search_Strings__c']))
+                hummus_project.save()
+                self.stdout.write(self.style.SUCCESS('Successfully updated project %s: "%s"' % (project['Id'], project['Name'])))
             else:
                 # new project
-                countries = project['Search_Strings__c'].split(', ')
-                for country in countries:
-                    if " and " in country:
-                        countries.remove(country)
-                        countries.extend(country.split(' and '))
-                real_countries = []
-                for country in countries:
-                    real_country = Country.objects.filter(name=country).first()
-                    if real_country:
-                        real_countries.append(real_country)
 
                 real_region = LWRRegion.objects.filter(name=project['LWR_Region__c']).first()
                 new_project = Project()
@@ -49,8 +59,8 @@ class Command(BaseCommand):
                 new_project.name = project['Name']
                 new_project.lwrregion = real_region
                 new_project.save()
-                new_project.countries.set(real_countries)
-                self.stdout.write(self.style.SUCCESS('Successfully created project "%s: %s"' % (project['Id'], project['Name'])))
+                new_project.countries.set(getCountries(project['Search_Strings__c']))
+                self.stdout.write(self.style.SUCCESS('Successfully created project %s: "%s"' % (project['Id'], project['Name'])))
 
         # Get Sub Projects
 
@@ -73,5 +83,5 @@ class Command(BaseCommand):
                     new_subproject.name = subproject['Name']
                     new_subproject.project = project
                     new_subproject.save()
-                    self.stdout.write(self.style.SUCCESS('Successfully created subproject "%s: %s"' % (subproject['Id'], subproject['Name'])))
+                    self.stdout.write(self.style.SUCCESS('Successfully created subproject %s: "%s"' % (subproject['Id'], subproject['Name'])))
 

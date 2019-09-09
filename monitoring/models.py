@@ -248,6 +248,7 @@ class Project(models.Model):
     targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Men'))
     targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Target Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
+    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
 
     objects = ProjectQuerySet.as_manager()
 

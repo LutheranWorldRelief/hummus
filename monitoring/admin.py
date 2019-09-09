@@ -125,7 +125,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         StructureInline,
     ]
     list_display = (
-        'code', 'name', 'get_countries', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
+        'code', 'name', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
     list_per_page = 20
     list_max_show_all = 50
     list_display_links = ['name']
@@ -133,16 +133,14 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'logo', 'colors', 'url']}),
+        (_('General information'), {'fields': ['code', 'name', 'logo', 'colors', 'url', 'lwrregion']}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
     ]
 
     def get_countries(self, obj):
-        return ', '.join(
-            Event.objects.filter(structure__project_id=obj.id).order_by('country').values_list('country__name',
-                                                                                               flat=True).distinct())
+        return ', '.join(obj.countries.all())
 
     get_countries.short_description = _('Countries')
 
