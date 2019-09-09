@@ -243,8 +243,8 @@ class Project(models.Model):
     url = models.URLField(blank=True, null=True, verbose_name=_('Url'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
-    goalmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Goal Men'))
-    goalwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Goal Women'))
+    targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Men'))
+    targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Target Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
 
     objects = ProjectQuerySet.as_manager()
@@ -275,6 +275,10 @@ class SubProject(models.Model):
     code = models.CharField(max_length=255, verbose_name=_('Code'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
+    targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
+    targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
+    targetmen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Men'))
+    targetwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Women'))
 
     class Meta:
         ordering = ['name']

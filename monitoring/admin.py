@@ -125,7 +125,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         StructureInline,
     ]
     list_display = (
-        'code', 'name', 'get_countries', 'goalmen', 'goalwomen', 'get_women', 'get_men', 'get_total')
+        'code', 'name', 'get_countries', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
     list_per_page = 20
     list_max_show_all = 50
     list_display_links = ['name']
@@ -136,7 +136,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         (_('General information'), {'fields': ['code', 'name', 'logo', 'colors', 'url']}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
-        (_('Goal'), {'fields': ['goalmen', 'goalwomen']}),
+        (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
     ]
 
     def get_countries(self, obj):
