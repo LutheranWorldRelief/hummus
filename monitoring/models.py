@@ -122,8 +122,8 @@ class Contact(models.Model):
 class Country(models.Model):
     id = models.CharField(primary_key=True, max_length=2, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=255, verbose_name=_('Name_ES'))
-    name_fr = models.CharField(max_length=255, verbose_name=_('Name_FR'))
+    name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
     codigo_numerico = models.IntegerField(verbose_name=_('Numerical Code'))
     alfa3 = models.CharField(max_length=3, verbose_name=_('Alfa3'))
     x = models.CharField(max_length=255, verbose_name=_('X'))
