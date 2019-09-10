@@ -76,6 +76,7 @@ class StructureInline(admin.TabularInline):
 class CountryInline(admin.TabularInline):
     model = Country
     fields = ('id', 'name')
+    readonly_fields = ('id', 'name')
     show_change_link = True
     can_delete = False
     extra = 0
