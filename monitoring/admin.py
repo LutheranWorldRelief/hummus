@@ -85,6 +85,21 @@ class CountryInline(admin.TabularInline):
         return False
 
 
+class SubProjectsInline(admin.TabularInline):
+    model = SubProject
+    fields = ('name', 'code',)
+    readonly_fields = ('name', 'code')
+    show_change_link = True
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, **kwargs):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
 # Admin Class
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
@@ -137,6 +152,7 @@ class EventAdmin(admin.ModelAdmin):
 class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     inlines = [
         StructureInline,
+        SubProjectsInline,
     ]
     list_display = (
         'code', 'name', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
@@ -312,7 +328,7 @@ class RegionAdmin(admin.ModelAdmin):
         CountryInline,
     ]
     fieldsets = [
-        (_('General information'), {'fields': ['id','name', 'subregions']}),
+        (_('General information'), {'fields': ['id', 'name', 'subregions']}),
     ]
 
 
