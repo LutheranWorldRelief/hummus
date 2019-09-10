@@ -76,6 +76,7 @@ class StructureInline(admin.TabularInline):
 
 class CountryInline(CompactInline):
     model = Country
+    can_delete = False
     extra = 0
 
 
