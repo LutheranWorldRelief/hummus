@@ -31,6 +31,7 @@ class ListAdminMixin(object):
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
+# Inlines Class
 class ProjectContactInline(admin.TabularInline):
     model = ProjectContact
     fields = ('project',)
@@ -39,7 +40,7 @@ class ProjectContactInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, **kwargs):
         return False
 
 
@@ -51,10 +52,39 @@ class AttendanceInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, **kwargs):
         return False
 
 
+class EventInline(admin.StackedInline):
+    model = Event
+    extra = 0
+
+
+class StructureInline(admin.TabularInline):
+    model = Structure
+    fields = ('code', 'description')
+    readonly_fields = ('code', 'description')
+    show_change_link = True
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, **kwargs):
+        return False
+
+
+class CountryInline(admin.TabularInline):
+    model = Country
+    fields = ('id', 'name')
+    show_change_link = True
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, **kwargs):
+        return False
+
+
+# Admin Class
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
     list_display_links = ['name', 'country', 'type']
@@ -101,23 +131,6 @@ class EventAdmin(admin.ModelAdmin):
 
     def total(self, obj):
         return self.men(obj) + self.women(obj)
-
-
-class EventInline(admin.StackedInline):
-    model = Event
-    extra = 0
-
-
-class StructureInline(admin.TabularInline):
-    model = Structure
-    fields = ('code', 'description')
-    readonly_fields = ('code', 'description')
-    show_change_link = True
-    can_delete = False
-    extra = 0
-
-    def has_add_permission(self, request):
-        return False
 
 
 class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
@@ -269,23 +282,37 @@ class ProfileAdmin(admin.ModelAdmin):
         ('language')
     ]
 
+
 class SubprojectAdmin(admin.ModelAdmin):
-    list_display = ('name','code','project')
+    list_display = ('name', 'code', 'project')
     list_display_links = ('name',)
     ordering = ['project']
     list_per_page = 20
     list_max_show_all = 50
-    search_fields = ['name', 'code','project__name']
+    search_fields = ['name', 'code', 'project__name']
     fieldsets = [
         (_('General information'), {'fields': ['code', 'name', 'project']}),
         (_('Salesforce'), {'fields': ['salesforce']}),
-        (_('Goals'), {'fields': ['targetimen','targetiwomen','targetmen','targetwomen']}),
+        (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
     list_filter = [
         ('project__countries'),
         ('project__lwrregion'),
     ]
 
+
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'subregions')
+    list_display_links = ('name',)
+    list_per_page = 20
+    list_max_show_all = 50
+    search_fields = ['name', 'subregions']
+    inlines = [
+        CountryInline,
+    ]
+    fieldsets = [
+        (_('General information'), {'fields': ['id','name', 'subregions']}),
+    ]
 
 
 admin.site.register(Structure, StructureAdmin)
@@ -297,6 +324,7 @@ admin.site.register(Attendance, AttendanceAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(SubProject, SubprojectAdmin)
+admin.site.register(LWRRegion, RegionAdmin)
 
 models = apps.get_models()
 for model in models:
