@@ -32,15 +32,22 @@ def cantidadEventos(request):
     data = {"cantidadEventos": {"eventos": eventos ,"actividades": actividades} }
     return JsonResponse(data)
 
-
 @csrf_exempt
 @login_required
 def graficoActividades(request):
-    result = Attendance.objects.order_by('event__structure_id', 'event__structure__description', 'event__structure__project__name').values(
+    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte','hasta': 'event__start__lte'}
+    filter_kwargs = filterBy(parameters, request)
+
+    query = Attendance.objects
+    if len(filter_kwargs)>0:
+        query = query.filter(**filter_kwargs)
+
+    result = query.order_by('event__structure_id', 'event__structure__description', 'event__structure__project__name').values(
         'event__structure_id', 'event__structure__description', 'event__structure__project__name').annotate(
-        m=Count('id', filter=Q(sex='M')),
-        f=Count('id', filter=Q(sex='M')),
+        m=Count('id', filter=Q(contact__sex='M')),
+        f=Count('id', filter=Q(contact__sex='F')),
         total=Count('id'))
+
     for row in result:
         row['name'] = str(row['event__structure__description']) + ' / ' + str(row['event__structure__project__name'])
         row['activity_id'] = row['event__structure_id']
@@ -51,48 +58,71 @@ def graficoActividades(request):
 @csrf_exempt
 @login_required
 def paises(request):
-    result = Event.objects.order_by('country_id').values('country_id').distinct()
+
+    parameters = {'paises[]': 'country__in','proyecto': 'structure__project','desde':'start__gte','hasta':'start__lte'}
+    filter_kwargs = filterBy(parameters, request)
+    filter_kwargs['id__isnull']= False
+
+    result = Event.objects.filter(**filter_kwargs).order_by('country_id').distinct().values('country_id')
+
     for row in result:
         row['id'] =  row['country_id']
         row['country'] = row['country_id']
-        row['active'] = row['id'] in request.POST.getlist("paises[]")
+        row['active'] = row['country_id'] in request.POST.getlist("paises[]")
     data = {'paises': list(result), 'todos': False,  'ninguno': False, }
 
     return JsonResponse(data)
 
-
 @csrf_exempt
 @login_required
 def rubros(request):
-    result = Product.objects.all().values()
+    proyecto_id = request.POST.get('proyecto')
+    filter_kwargs = {'product__isnull':False}
+
+    if(proyecto_id):
+        filter_kwargs['project_id']=proyecto_id
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('product__name')).distinct().values('product_id',__('product__name'))
+
     for row in result:
-        row['rubro'] = row['name_es']
-        row['active'] = str(row['id']) in request.POST.getlist("rubros[]")
+        row['rubro'] = row[__('product__name')]
+        row['id'] = row['product_id']
+        row['active'] = str(row['product_id']) in request.POST.getlist("rubros[]")
     data = {'rubros': list(result) }
+
     return JsonResponse(data)
 
 
 @csrf_exempt
 @login_required
 def graficoOrganizaciones(request):
-    organizaciones = Event.objects.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
+    parameters = {'proyecto': 'structure__project_id', 'desde': 'start__gte','hasta': 'start__lte'}
+    filter_kwargs = filterBy(parameters, request)
+
+    query = Event.objects
+    if len(filter_kwargs) > 0:
+        query = query.filter(**filter_kwargs)
+
+    organizaciones = query.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
         values('organization_id', 'organization__name', 'organization__organization_type_id').distinct()
+
     org_list = []
 
     for row in organizaciones:
         org_list.append({'id': row['organization_id'], 'name': row['organization__name'], 'parent': row['organization__organization_type_id']})
-    types = OrganizationType.objects.values('id', __('name'))
-    colorNumero = 0;
-    colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+
+    types = Event.objects.filter(**filter_kwargs).values('organization__organization_type_id', __('organization__organization_type__name'))
+
+    colorNumero = 0
+    colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
     data_dict = {}
     for v in types:
         v['color'] = colores[colorNumero % 10]
-        colorNumero += 1
+        colorNumero += 1 if colorNumero<8  else -8
         v['value'] = 0
-        v['name'] = v[__('name')]
-        data_dict[v['id']] = v
+        v['name'] = v[__('organization__organization_type__name')]
+        data_dict[v['organization__organization_type_id']] = v
     for v in organizaciones:
-        data_dict[v['organization__organization_type_id']]['value'] += 1;
+        data_dict[v['organization__organization_type_id']]['value'] += 1
 
     result = list(data_dict.values()) + org_list
     data = {"organizaciones" : {"data" : result, "total" : len(organizaciones), "tipos" : data_dict, 'total_categorias' : len(data_dict) }}
@@ -104,12 +134,13 @@ def graficoOrganizaciones(request):
 def proyectosMetas(request):
     return JsonResponse({'proyectos_metas': []})
 
-
 @csrf_exempt
 @login_required
 def graficoAnioFiscal(request):
+    filter = getFilters(request)
+
     cursor = connection.cursor()
-    cursor.execute("SELECT type, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT id, CASE WHEN 10<=6 THEN CASE WHEN 10<= date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)-1    END ELSE CASE WHEN 10 > date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)+1    END END  as type, sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id GROUP BY c.id) sq) q GROUP BY type ORDER BY type")
+    cursor.execute("SELECT type, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT id, CASE WHEN 10<=6 THEN CASE WHEN 10<= date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)-1    END ELSE CASE WHEN 10 > date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)+1    END END  as type, sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id "+filter+" GROUP BY c.id) sq) q GROUP BY type ORDER BY type")
     result = dictfetchall(cursor)
     return JsonResponse({'fiscal': result})
 
@@ -117,15 +148,22 @@ def graficoAnioFiscal(request):
 @csrf_exempt
 @login_required
 def graficoEdad(request):
+
+    filter = getFilters(request)
     cursor = connection.cursor()
-    cursor.execute("SELECT filter.name AS type, \
-                        COUNT(case when sex = 'F' then 1 else NULL end) AS f, \
-                        COUNT(case when sex = 'M' then 1 else NULL end) AS m, \
-                        COUNT(sex) as total \
-                        FROM contact \
-			JOIN filter ON filter.slug='age' AND date_part('YEAR', age(birthdate)) \
-			BETWEEN CAST( filter.start as INTEGER) AND CAST( filter.end as INTEGER) \
-                        GROUP BY filter.name ")
+    query = "SELECT filter.name AS type,\
+                        COUNT(case when c.sex = 'F' then 1 else NULL end) AS f,\
+                        COUNT(case when c.sex = 'M' then 1 else NULL end) AS m,\
+                        COUNT(c.sex) as total\
+                        FROM attendance a \
+                        LEFT JOIN contact c ON a.contact_id = c.id \
+                        LEFT JOIN event e ON a.event_id = e.id \
+                   LEFT JOIN structure act ON e.structure_id = act.id \
+                   LEFT JOIN project p ON act.project_id = p.id \
+			LEFT JOIN filter ON filter.slug='age' AND date_part('YEAR', age(birthdate)) \
+			BETWEEN CAST( filter.start as INTEGER) AND CAST( filter.end as INTEGER) "+filter+'  GROUP BY filter.name'
+
+    cursor.execute(query)
     result = dictfetchall(cursor)
     return JsonResponse({'edad': result})
 
@@ -133,12 +171,19 @@ def graficoEdad(request):
 @csrf_exempt
 @login_required
 def graficoEducacion(request):
-    result = Contact.objects.order_by(__('education__name')).values(__('education__name')).annotate(
-        m=Count('id', filter=Q(sex='M')),
-        f=Count('id', filter=Q(sex='M')),
+    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte','hasta': 'event__start__lte'}
+    filter_kwargs = filterBy(parameters, request)
+
+    query = Attendance.objects
+    if len(filter_kwargs)>0:
+        query = query.filter(**filter_kwargs)
+
+    result = query.order_by(__('contact__education__name')).values(__('contact__education__name')).annotate(
+        m=Count('id', filter=Q(contact__sex='M')),
+        f=Count('id', filter=Q(contact__sex='F')),
         total=Count('id'))
     for row in result:
-        row['type'] = str(row[__('education__name')])
+        row['type'] = str(row[__('contact__education__name')])
     data = {'educacion': list(result) }
     return JsonResponse(data)
 
@@ -152,10 +197,17 @@ def graficoEventos(request):
 @csrf_exempt
 @login_required
 def graficoTipoParticipante(request):
+    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte', 'hasta': 'event__start__lte'}
+    filter_kwargs = filterBy(parameters, request)
 
-    result = Attendance.objects.order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
-        total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
+    query = Attendance.objects
+    if len(filter_kwargs)>0:
+        query = query.filter(**filter_kwargs)
+
+    result = query.order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
+        total=Count ('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
+
     for row in result:
         row['type'] = row[__('contact__type__name')]
     data = list(result)
@@ -164,17 +216,24 @@ def graficoTipoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoSexoParticipante(request):
-    result = Attendance.objects.aggregate(
+    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte', 'hasta': 'event__start__lte'}
+    filter_kwargs = filterBy(parameters, request)
+
+    query = Attendance.objects
+    if len(filter_kwargs)>0:
+        query = query.filter(**filter_kwargs)
+
+    result = query.aggregate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')), m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
     return JsonResponse(result)
 
-
 @csrf_exempt
 @login_required
 def graficoNacionalidad(request):
+    filter = getFilters(request)
     cursor = connection.cursor()
-    cursor.execute("SELECT name, count(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, country FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON c.country_id = ca.id GROUP BY c.id, ca.id) q GROUP BY country, name_es, name, x, y ORDER BY country")
+    cursor.execute("SELECT name, count(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, country FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON c.country_id = ca.id "+filter+" GROUP BY c.id, ca.id) q GROUP BY country, name_es, name, x, y ORDER BY country")
     result = dictfetchall(cursor)
     pais_array = [];
     for row in result:
@@ -196,8 +255,10 @@ def graficoNacionalidad(request):
 @csrf_exempt
 @login_required
 def graficoPaisEventos(request):
+    filter = getFilters(request)
+
     cursor = connection.cursor()
-    cursor.execute("SELECT name, COUNT(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, id, count(distinct(eventos)) as eventos FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, e.id AS eventos, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON pa.id = ca.id GROUP BY c.id, e.id, ca.id) q GROUP BY name, name_es, x, y, id ORDER BY name")
+    cursor.execute("SELECT name, COUNT(sex) as total, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, name_es, x, y, id, count(distinct(eventos)) as eventos FROM (SELECT COALESCE(ca.name_es,'N/E') as country, ca.*, e.id AS eventos, c.sex FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id LEFT JOIN country ca ON pa.id = ca.id "+filter+"  GROUP BY c.id, e.id, ca.id) q GROUP BY name, name_es, x, y, id ORDER BY name")
     result = dictfetchall(cursor)
     pais_array = [];
     for row in result:
@@ -215,4 +276,27 @@ def graficoPaisEventos(request):
             ])
 
     return JsonResponse({'pais': result, 'paisArray': pais_array})
+
+def filterBy(parameters, request):
+    paises = request.POST.getlist("paises[]")
+    filter_kwargs = {}
+
+    for key, value in request.POST.items():
+        if key in parameters:
+            filter_kwargs[parameters[key]] = value if key!='paises[]' else paises
+
+    return filter_kwargs
+
+def getFilters(request):
+    filter = ''
+    if request.POST.get('proyecto') and request.POST.get('desde'):
+        filter = " WHERE e.start>='" + request.POST.get('desde') + "' and e.start<='" + request.POST.get(
+            'hasta') + "' and p.id=" + request.POST.get('proyecto')
+
+    elif request.POST.get('proyecto'):
+        filter = " WHERE p.id=" + request.POST.get('proyecto')
+    elif request.POST.get('desde'):
+        filter = " WHERE e.start>='" + request.POST.get('desde') + "' and e.start<='" + request.POST.get('hasta')
+
+    return filter
 
