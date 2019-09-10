@@ -80,19 +80,10 @@ class CountryInline(CompactInline):
     extra = 0
 
 
-class SubProjectsInline(admin.TabularInline):
+class SubProjectsInline(CompactInline):
     model = SubProject
-    fields = ('name', 'code',)
-    readonly_fields = ('name', 'code')
-    show_change_link = True
     can_delete = False
     extra = 0
-
-    def has_add_permission(self, request, **kwargs):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
 
 
 # Admin Class
