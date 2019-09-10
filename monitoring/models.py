@@ -207,7 +207,11 @@ class OrganizationType(models.Model):
 
 class ProjectQuerySet(models.QuerySet):
     def for_user(self, user):
-        if user.profile.projects.exists():
+        if user.profile.lwrregions.exists():
+            return self.filter(lwrregion__in=user.profile.lwrregions.all())
+        elif user.profile.countries.exists():
+            return self.filter(countries__in=user.profile.countries.all())
+        elif user.profile.projects.exists():
             return self.filter(profile=user.profile)
         else:
             return self
