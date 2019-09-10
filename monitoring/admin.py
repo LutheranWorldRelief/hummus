@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.apps import apps
-from import_export import resources, fields
+from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from .models import *
 from django.utils.translation import gettext_lazy as _
+from jet.admin import CompactInline
 
 
 # Change default query
@@ -73,16 +74,9 @@ class StructureInline(admin.TabularInline):
         return False
 
 
-class CountryInline(admin.TabularInline):
+class CountryInline(CompactInline):
     model = Country
-    fields = ('id', 'name')
-    readonly_fields = ('id', 'name')
-    show_change_link = True
-    can_delete = False
     extra = 0
-
-    def has_add_permission(self, request, **kwargs):
-        return False
 
 
 # Admin Class
@@ -312,7 +306,7 @@ class RegionAdmin(admin.ModelAdmin):
         CountryInline,
     ]
     fieldsets = [
-        (_('General information'), {'fields': ['id','name', 'subregions']}),
+        (_('General information'), {'fields': ['id', 'name', 'subregions']}),
     ]
 
 
