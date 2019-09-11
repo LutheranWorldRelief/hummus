@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.apps import apps
-from import_export import resources, fields
+from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from .models import *
 from django.utils.translation import gettext_lazy as _
+from jet.admin import CompactInline
 
 
 # Change default query
@@ -31,6 +32,7 @@ class ListAdminMixin(object):
         super(ListAdminMixin, self).__init__(model, admin_site)
 
 
+# Inlines Class
 class ProjectContactInline(admin.TabularInline):
     model = ProjectContact
     fields = ('project',)
@@ -39,7 +41,7 @@ class ProjectContactInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, **kwargs):
         return False
 
 
@@ -51,10 +53,40 @@ class AttendanceInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, **kwargs):
         return False
 
 
+class EventInline(admin.StackedInline):
+    model = Event
+    extra = 0
+
+
+class StructureInline(admin.TabularInline):
+    model = Structure
+    fields = ('code', 'description')
+    readonly_fields = ('code', 'description')
+    show_change_link = True
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, **kwargs):
+        return False
+
+
+class CountryInline(CompactInline):
+    model = Country
+    can_delete = False
+    extra = 0
+
+
+class SubProjectsInline(CompactInline):
+    model = SubProject
+    can_delete = False
+    extra = 0
+
+
+# Admin Class
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
     list_display_links = ['name', 'country', 'type']
@@ -103,26 +135,10 @@ class EventAdmin(admin.ModelAdmin):
         return self.men(obj) + self.women(obj)
 
 
-class EventInline(admin.StackedInline):
-    model = Event
-    extra = 0
-
-
-class StructureInline(admin.TabularInline):
-    model = Structure
-    fields = ('code', 'description')
-    readonly_fields = ('code', 'description')
-    show_change_link = True
-    can_delete = False
-    extra = 0
-
-    def has_add_permission(self, request):
-        return False
-
-
 class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     inlines = [
         StructureInline,
+        SubProjectsInline,
     ]
     list_display = (
         'code', 'name', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
@@ -269,23 +285,37 @@ class ProfileAdmin(admin.ModelAdmin):
         ('language')
     ]
 
+
 class SubprojectAdmin(admin.ModelAdmin):
-    list_display = ('name','code','project')
+    list_display = ('name', 'code', 'project')
     list_display_links = ('name',)
     ordering = ['project']
     list_per_page = 20
     list_max_show_all = 50
-    search_fields = ['name', 'code','project__name']
+    search_fields = ['name', 'code', 'project__name']
     fieldsets = [
         (_('General information'), {'fields': ['code', 'name', 'project']}),
         (_('Salesforce'), {'fields': ['salesforce']}),
-        (_('Goals'), {'fields': ['targetimen','targetiwomen','targetmen','targetwomen']}),
+        (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
     list_filter = [
         ('project__countries'),
         ('project__lwrregion'),
     ]
 
+
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'subregions')
+    list_display_links = ('name',)
+    list_per_page = 20
+    list_max_show_all = 50
+    search_fields = ['name', 'subregions']
+    inlines = [
+        CountryInline,
+    ]
+    fieldsets = [
+        (_('General information'), {'fields': ['id', 'name', 'subregions']}),
+    ]
 
 
 admin.site.register(Structure, StructureAdmin)
@@ -297,6 +327,7 @@ admin.site.register(Attendance, AttendanceAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(SubProject, SubprojectAdmin)
+admin.site.register(LWRRegion, RegionAdmin)
 
 models = apps.get_models()
 for model in models:
