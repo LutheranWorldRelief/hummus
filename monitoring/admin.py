@@ -141,7 +141,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         SubProjectsInline,
     ]
     list_display = (
-        'code', 'name', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
+        'code', 'name', 'status', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
     list_per_page = 20
     list_max_show_all = 50
     list_display_links = ['name']
@@ -149,13 +149,14 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'logo', 'colors', 'url', 'lwrregion']}),
+        (_('General information'), {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion']}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
     ]
 
     list_filter = [
+        ('status'),
         ('countries'),
         ('lwrregion'),
     ]
@@ -292,13 +293,15 @@ class SubprojectAdmin(admin.ModelAdmin):
     ordering = ['project']
     list_per_page = 20
     list_max_show_all = 50
-    search_fields = ['name', 'code', 'project__name']
+    search_fields = ['name', 'code', 'project__name', 'status']
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'project']}),
+        (_('General information'), {'fields': ['code', 'name', 'project', 'status']}),
         (_('Salesforce'), {'fields': ['salesforce']}),
+        (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
     list_filter = [
+        ('status'),
         ('project__countries'),
         ('project__lwrregion'),
     ]
