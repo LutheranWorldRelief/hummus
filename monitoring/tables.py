@@ -84,3 +84,17 @@ class ProjectFilterFormHelper(FormHelper):
         'name',
         Submit('submit', 'Apply Filter'),
     )
+
+
+class SubProjectTable(ProjectTable):
+    class Meta:
+        fields = ('name',)
+        model = SubProject
+
+class SubProjectFilter(ProjectFilter):
+    class Meta:
+        fields = ('name',)
+        model = SubProject
+
+class SubProjectFilterFormHelper(ProjectFilterFormHelper):
+    pass
