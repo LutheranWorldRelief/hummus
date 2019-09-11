@@ -20,9 +20,9 @@ class LWRRegion(models.Model):
 
 class Profile(models.Model):
     LANGUAGE_CHOICES = [
-        ('en', 'English'),
-        ('fr', 'French'),
-        ('es', 'Spanish'),
+        ('en', _('English')),
+        ('fr', _('French')),
+        ('es', _('Spanish')),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_('User'))
     language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, verbose_name=_('Language'), default='en')
@@ -219,6 +219,14 @@ class ProjectQuerySet(models.QuerySet):
 
 class Project(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
+    STATUS_CHOICES = [
+        ('In Development', _('In Development')),
+        ('Active', _('Active')),
+        ('Inactive', _('Inactive')),
+        ('Closed', _('Closed')),
+        ('Suspended', _('Suspended')),
+        ('Terminated', _('Terminated')),
+    ]
     code = models.CharField(max_length=255, verbose_name=_('Code'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
@@ -226,6 +234,7 @@ class Project(models.Model):
     url = models.URLField(blank=True, null=True, verbose_name=_('Url'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
     targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Men'))
     targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Target Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
@@ -255,10 +264,21 @@ class SubProjectQuerySet(models.QuerySet):
 
 
 class SubProject(models.Model):
+    STATUS_CHOICES = [
+        ('Proposed', _('Proposed')),
+        ('Active', _('Active')),
+        ('Inactive', _('Inactive')),
+        ('Suspended', _('Suspended')),
+        ('Terminated', _('Terminated')),
+        ('Closed', _('Closed')),
+    ]
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     code = models.CharField(max_length=255, verbose_name=_('Code'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
+    start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
+    end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     targetmen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Men'))

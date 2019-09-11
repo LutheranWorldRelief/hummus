@@ -42,11 +42,11 @@ class Command(BaseCommand):
         hummus_projects = Project.objects.all()
 
         if not options['skip_projects']:
-            sf_fields = "Id, Name, Project_Type__c, LWR_Region__c, Search_Strings__c, Start_Date__c, End_Date__c, CreatedBy.Name, Project_Identifier__c"
+            sf_fields = "Id, Name, Project_Type__c, LWR_Region__c, Search_Strings__c, Status__c, Start_Date__c, End_Date__c, CreatedBy.Name, Project_Identifier__c"
             if options['project_ids']:
                 projects = sf.query_all("SELECT %s FROM Project__c WHERE Id IN %s" % (sf_fields, options['project_ids']))
             else:
-                projects = sf.query_all("SELECT %s FROM Project__c WHERE RecordType.Name <> 'Non-Project' AND Status__c <> 'Terminated'" % (sf_fields,))
+                projects = sf.query_all("SELECT %s FROM Project__c WHERE RecordType.Name <> 'Non-Project'" % (sf_fields,))
             for project in projects['records']:
                 hummus_project = hummus_projects.filter(salesforce=project['Id']).first()
                 if hummus_project:
@@ -57,6 +57,9 @@ class Command(BaseCommand):
                     if hummus_project.code == project['Project_Identifier__c']:
                         if project['LWR_Region__c']:
                             hummus_project.lwrregion = LWRRegion.objects.get(name=project['LWR_Region__c'])
+                        hummus_project.status = project['Status__c']
+                        hummus_project.start = project['Start_Date__c']
+                        hummus_project.end = project['End_Date__c']
                         hummus_project.countries.set(getCountries(project['Search_Strings__c']))
                         hummus_project.save()
                         self.stdout.write(self.style.SUCCESS('Successfully updated project %s: "%s"' % (project['Id'], project['Name'])))
@@ -75,7 +78,7 @@ class Command(BaseCommand):
 
         if not options['skip_subprojects']:
             hummus_subprojects = SubProject.objects.all()
-            sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c"
+            sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c"
             if options['project_ids']:
                 subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
             else:
@@ -88,6 +91,9 @@ class Command(BaseCommand):
                         hummus_subproject.code = subproject['Sub_Project_Identifier__c']
                     # double check we are referring to the same subproject
                     if hummus_subproject.code == subproject['Sub_Project_Identifier__c']:
+                        hummus_subproject.status = subproject['Status__c']
+                        hummus_subproject.start = subproject['Start_Date__c']
+                        hummus_subproject.end = subproject['End_Date__c']
                         hummus_subproject.targetmen = subproject['Men_Direct_Target__c']
                         hummus_subproject.targetimen = subproject['Men_Indirect_Target__c']
                         hummus_subproject.targetwomen = subproject['Women_Direct_Target__c']
