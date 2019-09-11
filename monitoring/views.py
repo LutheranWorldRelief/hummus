@@ -9,6 +9,16 @@ from .tables import *
 from .models import *
 from .common import months
 
+
+class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
+    model = SubProject
+    table_class = SubProjectTable
+    template_name = 'contact_table.html'
+    paginate_by = 50
+    filter_class = SubProjectFilter
+    formhelper_class = SubProjectFilterFormHelper
+
+
 class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = Project
     table_class = ProjectTable
@@ -37,9 +47,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class ProjectAdminView(DetailView):
+class SubProjectDetailView(DetailView):
+    model = SubProject
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class ProjectDetailView(DetailView):
     model = Project
-    template_name = 'detail_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

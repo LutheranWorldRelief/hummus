@@ -9,6 +9,9 @@ app_name = 'monitoring'
 urlpatterns = [
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
+    path('subproject/', views.SubProjectTableView.as_view()),
+    path('project/<int:pk>/', views.ProjectDetailView.as_view(), name='project'),
+    path('subproject/<int:pk>/', views.SubProjectDetailView.as_view(), name='subproject'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('graphic/proyecto/', graphic.proyecto, name='graphic-proyecto'),
     path('graphic/cantidad-proyectos/', graphic.cantidadProyectos, name='cantidad-proyectos'),
@@ -26,7 +29,6 @@ urlpatterns = [
     path('graphic/grafico-sexo-participante/', graphic.graficoSexoParticipante, name='grafico-sexo-participante'),
     path('graphic/grafico-nacionalidad/', graphic.graficoNacionalidad, name='grafico-nacionalidad'),
     path('graphic/grafico-pais-eventos/', graphic.graficoPaisEventos, name='grafico-pais-eventos'),
-    path('admin/<int:pk>/detailview/', views.ProjectAdminView.as_view(), name='detail-view'),
     path('import/beneficiarios', TemplateView.as_view(template_name='import.html'), name='iframe_import'),
     path('report/proyectos', TemplateView.as_view(template_name='report.html'), name='iframe_report'),
 ]
