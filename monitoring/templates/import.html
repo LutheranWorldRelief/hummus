@@ -3,7 +3,7 @@
 {% block content %}
     {% block object-tools %}{% endblock %}
     <style>
-        iframe {
+        object {
             border: none;
             padding: 0;
             margin: 0;
@@ -11,15 +11,9 @@
             width: 100%;
         }
 
-
-        iframe > html {
-            visibility: hidden !important;
-            display: none !important;
-        }
-
     </style>
-    <iframe data="{{ LEGACY_URL }}import/beneficiarios-paso1" id="iframe">
-        <p>{% trans 'Your browser does not support iframes.' %}</p>
-    </iframe>
+    <object data="{{ LEGACY_URL }}import/beneficiarios-paso1" id="object">
+        <p>{% trans 'Your browser does not support objects.' %}</p>
+    </object>
 
 {% endblock %}
