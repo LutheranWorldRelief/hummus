@@ -141,7 +141,8 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         SubProjectsInline,
     ]
     list_display = (
-        'code', 'name', 'status', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men', 'get_total')
+        'code', 'name', 'status', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen', 'get_women', 'get_men',
+        'get_total')
     list_per_page = 20
     list_max_show_all = 50
     list_display_links = ['name']
@@ -157,7 +158,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
 
     list_filter = [
         ('status'),
-        ('countries'),
+        ('countries', admin.RelatedOnlyFieldListFilter),
         ('lwrregion'),
     ]
 
@@ -302,7 +303,7 @@ class SubprojectAdmin(admin.ModelAdmin):
     ]
     list_filter = [
         ('status'),
-        ('project__countries'),
+        ('project__countries', admin.RelatedOnlyFieldListFilter),
         ('project__lwrregion'),
     ]
 
