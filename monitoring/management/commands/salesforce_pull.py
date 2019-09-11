@@ -51,13 +51,15 @@ class Command(BaseCommand):
                 hummus_project = hummus_projects.filter(salesforce=project['Id']).first()
                 if hummus_project:
                     # project exists already, update fields
-                    if project['LWR_Region__c']:
-                        hummus_project.lwrregion = LWRRegion.objects.get(name=project['LWR_Region__c'])
-                    hummus_project.countries.set(getCountries(project['Search_Strings__c']))
                     if not hummus_project.code:
                         hummus_project.code = project['Project_Identifier__c']
-                    hummus_project.save()
-                    self.stdout.write(self.style.SUCCESS('Successfully updated project %s: "%s"' % (project['Id'], project['Name'])))
+                    # double check we are referring to the same subproject
+                    if hummus_project.code == project['Project_Identifier__c']:
+                        if project['LWR_Region__c']:
+                            hummus_project.lwrregion = LWRRegion.objects.get(name=project['LWR_Region__c'])
+                        hummus_project.countries.set(getCountries(project['Search_Strings__c']))
+                        hummus_project.save()
+                        self.stdout.write(self.style.SUCCESS('Successfully updated project %s: "%s"' % (project['Id'], project['Name'])))
                 else:
                     # new project
                     real_region = LWRRegion.objects.filter(name=project['LWR_Region__c']).first()
@@ -73,7 +75,7 @@ class Command(BaseCommand):
 
         if not options['skip_subprojects']:
             hummus_subprojects = SubProject.objects.all()
-            sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id"
+            sf_fields = "Id, Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c"
             if options['project_ids']:
                 subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
             else:
@@ -84,8 +86,14 @@ class Command(BaseCommand):
                     # subproject exists already, update fields
                     if not hummus_subproject.code:
                         hummus_subproject.code = subproject['Sub_Project_Identifier__c']
-                    hummus_subproject.save()
-                    self.stdout.write(self.style.SUCCESS('Successfully updated subproject %s: "%s"' % (subproject['Id'], subproject['Name'])))
+                    # double check we are referring to the same subproject
+                    if hummus_subproject.code == subproject['Sub_Project_Identifier__c']:
+                        hummus_subproject.targetmen = subproject['Men_Direct_Target__c']
+                        hummus_subproject.targetimen = subproject['Men_Indirect_Target__c']
+                        hummus_subproject.targetwomen = subproject['Women_Direct_Target__c']
+                        hummus_subproject.targetiwomen = subproject['Women_Indirect_Target__c']
+                        hummus_subproject.save()
+                        self.stdout.write(self.style.SUCCESS('Successfully updated subproject %s: "%s"' % (subproject['Id'], subproject['Name'])))
                 else:
                     # new subproject
                     if hummus_projects.filter(salesforce=subproject['Project__r']['Id']).exists():
