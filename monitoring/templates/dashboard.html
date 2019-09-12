@@ -40,33 +40,41 @@
 
 {% block content %}
     <div class="content-wrapper">
-                <section class="content">
+        <section class="content">
             <div ng-app="App" ng-controller="AppCtrl" ng-cloak="">
-                <!--    Encabezado-->
-                <div class="box">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <img src="{% static 'img/logo.png' %}" class="image-responsive">
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8">
-                                <h1 class="text-center"
-                                    style="color: #3A3A3A;">{% trans 'Project Monitoring System' %}</h1>
-                            </div>
-                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                <img class="image-responsive" style="width:100%; height: auto;"
-                                     ng-src="{{ proyecto.logo }}" alt="" ng-if="proyecto !== null">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                            <!--    Encabezado-->
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                            <img src="{% static 'img/logo.png' %}" class="image-responsive">
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <h1 class="text-center"
+                                                style="color: #3A3A3A;">{% trans 'Project Monitoring System' %}</h1>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                            <img class="image-responsive" style="width:100%; height: auto;"
+                                                 ng-src="{{ proyecto.logo }}" alt="" ng-if="proyecto !== null">
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-
                 <div ng-if="cargando">
-                    <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="{% trans 'Loading...' %}">
+                    <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}"
+                         alt="{% trans 'Loading...' %}">
                 </div>
                 <section ng-show="!cargando">
-                    <div class="row container-fluid">
+                    <div class="container-fluid">
                         <!--Filtros-->
                         {% include "dashboard/filtros.html" %}
 
@@ -123,6 +131,10 @@
 
         .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
             background-color: #C1CD23 !important;
+        }
+
+        .height-550 {
+            height: 550px;
         }
     </style>
     <link href="{% static 'css/checkbox.css' %}" rel="stylesheet">
