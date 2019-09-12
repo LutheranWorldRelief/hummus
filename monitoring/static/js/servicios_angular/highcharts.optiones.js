@@ -1,20 +1,20 @@
 highchartsOpciones = {
     theme: {
         lang: {
-            drillUpText: '◁ Regresar',
-            months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
-            shortMonths: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-            downloadPDF: 'Archivo PDF',
-            downloadJPEG: 'Imagén JPEG',
-            downloadPNG: 'Imagén PNG',
-            downloadSVG: 'Imagén SVG',
-            printChart: 'Imprimir Gráfico',
-            resetZoom: 'Reestablecer Zoom',
-            resetZoomTitle: 'Reestablecer Zoom',
-            downloadCSV: "Descargar CSV",
-            downloadXLS: "Descargar Excel XLS",
-            openInCloud: "Abrir en Highcharts Cloud",
-            viewData: "Visualizar tabla de datos"
+            drillUpText: '◁ '+gettext('Return'),
+            months: [gettext('January'), gettext('February'), gettext('March'), gettext('April'), gettext('May'), gettext('June'), gettext('July'), gettext('August'), gettext('September'), gettext('October'), gettext('November'), gettext('December')],
+            shortMonths: [gettext('Jan'), gettext('Feb'), gettext('Mar'), gettext('Apr'), gettext('May'), gettext('Jun'), gettext('Jul'), gettext('Aug'), gettext('Sept'), gettext('Oct'), gettext('Nov'), gettext('Dec')],
+            downloadPDF: gettext('File PDF'),
+            downloadJPEG: gettext('Image JPEG'),
+            downloadPNG: gettext('Image PNG'),
+            downloadSVG: gettext('Image SVG'),
+            printChart: gettext('Print Chart'),
+            resetZoom: gettext('Reset Zoom'),
+            resetZoomTitle: gettext('Reset Zoom'),
+            downloadCSV: gettext("Download CSV"),
+            downloadXLS: gettext("Download Excel XLS"),
+            openInCloud: gettext("Open in Highcharts Cloud"),
+            viewData: gettext("Display data table")
         },
         colors: ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
         colorsDefault: ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
@@ -100,21 +100,21 @@ highchartsOpciones = {
         navigation: {buttonOptions: {theme: {stroke: '#CCCCCC'}}}
     },
     lang: {
-        months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
-        shortMonths: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-        downloadPDF: 'Archivo PDF',
-        downloadJPEG: 'Imagén JPEG',
-        downloadPNG: 'Imagén PNG',
-        downloadSVG: 'Imagén SVG',
-        printChart: 'Imprimir Gráfico',
-        resetZoom: 'Reestablecer Zoom',
-        resetZoomTitle: 'Reestablecer Zoom',
+        months: [gettext('January'), gettext('February'), gettext('March'), gettext('April'), gettext('May'), gettext('June'), gettext('July'), gettext('August'), gettext('September'), gettext('October'), gettext('November'), gettext('December')],
+        shortMonths: [gettext('Jan'), gettext('Feb'), gettext('Mar'), gettext('Apr'), gettext('May'), gettext('Jun'), gettext('Jul'), gettext('Aug'), gettext('Sept'), gettext('Oct'), gettext('Nov'), gettext('Dec')],
+        downloadPDF: gettext('File PDF'),
+        downloadJPEG: gettext('Image JPEG'),
+        downloadPNG: gettext('Image PNG'),
+        downloadSVG: gettext('Image SVG'),
+        printChart: gettext('Print Chart'),
+        resetZoom: gettext('Reset Zoom'),
+        resetZoomTitle: gettext('Reset Zoom'),
     },
 
     credits: {
         enabled: true,
         href: getCreditHref('#'),
-        text: 'Todos los derechos reservados LWR'
+        text: gettext('All rights reserved LWR')
     },
     exporting: function (val) {
         return {sourceWidth: 1200, sourceHeight: 400, filename: val};
