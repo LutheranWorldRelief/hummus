@@ -207,7 +207,7 @@ JET_SIDE_MENU_ITEMS = [
 ]
 
 # JET dashboard custumization
-JET_INDEX_DASHBOARD = 'monitoring.dashboard.CustomIndexDashboard'
+JET_INDEX_DASHBOARD = 'monitoring.admin-dashboard.CustomIndexDashboard'
 # Salesforce settings
 SALESFORCE_USERNAME = env('SALESFORCE_USERNAME')
 SALESFORCE_PASSWORD = env('SALESFORCE_PASSWORD')
