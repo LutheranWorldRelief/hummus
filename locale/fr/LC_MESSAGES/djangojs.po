@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-06 15:31+0000\n"
+"POT-Creation-Date: 2019-09-12 17:33+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -160,3 +160,176 @@ msgstr "Personnes"
 #: monitoring/static/js/script/dashboard_index.js:924
 msgid "Goals"
 msgstr "Objectifs"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:4
+msgid "Return"
+msgstr "Revenir"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "January"
+msgstr "Janvier"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "February"
+msgstr "Février"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "March"
+msgstr "Mars"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "April"
+msgstr "Avril"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "May"
+msgstr "Mai"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "June"
+msgstr "Juin"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "July"
+msgstr "Juillet"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "August"
+msgstr "Août"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "September"
+msgstr "Septembre"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "October"
+msgstr "Octobre"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "November"
+msgstr "Novembre"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
+msgid "December"
+msgstr "Décembre"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Jan"
+msgstr "Janv"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Feb"
+msgstr "Févr"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Mar"
+msgstr "Mars"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Apr"
+msgstr "Avril"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Jun"
+msgstr "Juin"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Jul"
+msgstr "Juil"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Aug"
+msgstr "Août"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Sept"
+msgstr "Sept"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Oct"
+msgstr "Oct"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Nov"
+msgstr "Nov"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
+msgid "Dec"
+msgstr "Déc"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:7
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:105
+msgid "File PDF"
+msgstr "Fichier PDF"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:8
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:106
+msgid "Image JPEG"
+msgstr "Image JPEG"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:9
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:107
+msgid "Image PNG"
+msgstr "Image PNG"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:10
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:108
+msgid "Image SVG"
+msgstr "Image SVG"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:11
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:109
+msgid "Print Chart"
+msgstr "Imprimer le graphique"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:12
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:13
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:110
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:111
+msgid "Reset Zoom"
+msgstr "Réinitialiser le zoom"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:14
+msgid "Download CSV"
+msgstr "Télécharger le CSV"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:15
+msgid "Download Excel XLS"
+msgstr "Télécharger Excel XLS"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:16
+msgid "Open in Highcharts Cloud"
+msgstr "Ouvrir dans Highcharts Nuage"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:17
+msgid "Display data table"
+msgstr "Afficher le tableau de données"
+
+#: monitoring/static/js/servicios_angular/highcharts.optiones.js:117
+msgid "All rights reserved LWR"
+msgstr "Tous droits réservés LWR"
