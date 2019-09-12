@@ -86,8 +86,8 @@
                     <label>{% trans 'Project' %}</label>
                     <select id="w2" class="form-control" name="state_10" ng-model="formulario.proyecto"
                             data-s2-options="s2options_d6851687" data-krajee-select2="select2_de559a6a"
-                            style="display:none">
-                        <option value="">{% trans 'Select a project...' %}</option>
+                            style="display:none" data-placeholder="{% trans 'Select a project...' %}">
+                        <option></option>
                         {% for project in projects %}
                             <option value="{{ project.id }}">{{ project.name }}</option>{% endfor %}
                     </select>
