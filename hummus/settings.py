@@ -180,7 +180,7 @@ JET_SIDE_MENU_ITEMS = [
 
     ]},
     {'label': _('Events'), 'items': [
-        {'name': 'monitoring.event', 'label': _('Events')},
+        {'name': 'monitoring.event', 'label': _('Events'), 'permissions':['monitoring.add_event'] }
     ]},
     {'label': _('Reports'), 'items': [
         {'name': '', 'url': '/report/proyectos', 'label': _('Principal')},
