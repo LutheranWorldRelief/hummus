@@ -86,6 +86,9 @@ def paises(request):
 @csrf_exempt
 @login_required
 def rubros(request):
+
+    rubros_todos = request.POST.get('rubros_todos') == 'true'
+    ninguno = False if request.POST.getlist("rubros[]") or rubros_todos else True
     proyecto_id = request.POST.get('proyecto')
     filter_kwargs = {'product__isnull':False}
 
@@ -96,8 +99,8 @@ def rubros(request):
     for row in result:
         row['rubro'] = row[__('product__name')]
         row['id'] = row['product_id']
-        row['active'] = str(row['product_id']) in request.POST.getlist("rubros[]")
-    data = {'rubros': list(result) }
+        row['active'] = True if str(row['product_id']) in request.POST.getlist("rubros[]") or rubros_todos else False
+    data = {'rubros': list(result), 'todos': rubros_todos,  'ninguno': ninguno, }
 
     return JsonResponse(data)
 
