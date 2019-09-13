@@ -86,6 +86,9 @@ def paises(request):
 @csrf_exempt
 @login_required
 def rubros(request):
+
+    rubros_todos = request.POST.get('rubros_todos') == 'true'
+    ninguno = False if request.POST.getlist("rubros[]") or rubros_todos else True
     proyecto_id = request.POST.get('proyecto')
     filter_kwargs = {'product__isnull':False}
 
@@ -96,8 +99,8 @@ def rubros(request):
     for row in result:
         row['rubro'] = row[__('product__name')]
         row['id'] = row['product_id']
-        row['active'] = str(row['product_id']) in request.POST.getlist("rubros[]")
-    data = {'rubros': list(result) }
+        row['active'] = True if str(row['product_id']) in request.POST.getlist("rubros[]") or rubros_todos else False
+    data = {'rubros': list(result), 'todos': rubros_todos,  'ninguno': ninguno, }
 
     return JsonResponse(data)
 
@@ -142,16 +145,10 @@ def graficoOrganizaciones(request):
 @csrf_exempt
 @login_required
 def proyectosMetas(request):
-    proyecto = request.POST.get('proyecto')
-    if isinstance(proyecto, list):
-        # FIXME: can't graph more than 3 projects? say so! and document it!
-        if (len(proyecto) > 3):
-            return JsonResponse({'proyectos_metas': []})
-    if not proyecto:
+    proyecto_id = request.POST.get('proyecto')
+    if not proyecto_id:
         return JsonResponse({'proyectos_metas': []})
-    qs = Project.objects.all().values('id', 'name', 'targetmen', 'targetwomen')
-    if (proyecto):
-        qs = qs.filter(id=proyecto)
+    proyecto = Project.objects.filter(id=proyecto_id).values('id', 'name', 'targetmen', 'targetwomen').first()
     result = []
     categorias = []
     serieMetaH = {'name' : 'Meta Hombres', 'color' : 'rgba(42,123,153,.9)', 'data' : [], 'pointPadding' : 0.3, 'pointPlacement' : -0.2}
@@ -159,18 +156,17 @@ def proyectosMetas(request):
     serieH = {'name' : 'Cantidad Hombres', 'color' : 'rgba(255,205,85,.8)', 'data' : [], 'pointPadding' : 0.4, 'pointPlacement' : -0.2}
     serieF = {'name' : 'Cantidad Mujeres', 'color' : 'rgba(252,110,81,.8)', 'data' : [], 'pointPadding' : 0.4, 'pointPlacement' : 0.2}
     cursor = connection.cursor()
-    for p in qs:
-        categorias.append(p['name'])
-        serieMetaF['data'].append(p['targetwomen'])
-        serieMetaH['data'].append(p['targetmen'])
-        cursor.execute("SELECT COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.id AS product_id FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.id) pc ON pc.project_id = p.id WHERE p.id='%s' GROUP BY c.id) sq) q" % (p['id'],))
-        query_result = dictfetchall(cursor)
-        p['meta_total'] = p['targetmen'] + p['targetwomen']
-        totales = query_result[0]
-        serieF['data'].append(totales['f'])
-        serieH['data'].append(totales['m'])
-        result.append(p)
-        result.append(totales)
+    categorias.append(proyecto['name'])
+    serieMetaF['data'].append(proyecto['targetwomen'])
+    serieMetaH['data'].append(proyecto['targetmen'])
+    cursor.execute("SELECT COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.id AS product_id FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.id) pc ON pc.project_id = p.id WHERE p.id='%s' GROUP BY c.id) sq) q" % (proyecto['id'],))
+    query_result = dictfetchall(cursor)
+    proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
+    totales = query_result[0]
+    serieF['data'].append(totales['f'])
+    serieH['data'].append(totales['m'])
+    result.append(proyecto)
+    result.append(totales)
     series = [serieMetaH, serieH, serieMetaF, serieF]
     agg_result = {'categorias' : categorias, 'series' : series, 'data' : result}
     return JsonResponse({'proyectos_metas': agg_result})
