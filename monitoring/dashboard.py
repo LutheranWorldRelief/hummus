@@ -12,7 +12,12 @@ from .common import  dictfetchall
 @csrf_exempt
 @login_required
 def proyecto(request):
-    data = {'proyecto': None}
+    id = request.POST.get('proyecto')
+    if id:
+        proyecto = Project.objects.values().get(id=id)
+        data = {'proyecto' : proyecto}
+    else:
+        data = {'proyecto' : None }
     return JsonResponse(data)
 
 
@@ -116,6 +121,7 @@ def graficoOrganizaciones(request):
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
     data_dict = {}
     for v in types:
+        # FIXME podriamos documentar / comentar por qué 10 y por qué 8?
         v['color'] = colores[colorNumero % 10]
         colorNumero += 1 if colorNumero<8  else -8
         v['value'] = 0
@@ -132,7 +138,38 @@ def graficoOrganizaciones(request):
 @csrf_exempt
 @login_required
 def proyectosMetas(request):
-    return JsonResponse({'proyectos_metas': []})
+    proyecto = request.POST.get('proyecto')
+    if isinstance(proyecto, list):
+        # FIXME: can't graph more than 3 projects? say so! and document it!
+        if (len(proyecto) > 3):
+            return JsonResponse({'proyectos_metas': []})
+    if not proyecto:
+        return JsonResponse({'proyectos_metas': []})
+    qs = Project.objects.all().values('id', 'name', 'targetmen', 'targetwomen')
+    if (proyecto):
+        qs = qs.filter(id=proyecto)
+    result = []
+    categorias = []
+    serieMetaH = {'name' : 'Meta Hombres', 'color' : 'rgba(42,123,153,.9)', 'data' : [], 'pointPadding' : 0.3, 'pointPlacement' : -0.2}
+    serieMetaF = {'name' : 'Meta Mujeres', 'color' : 'rgba(68,87,113,1)', 'data' : [], 'pointPadding' : 0.3, 'pointPlacement' : 0.2}
+    serieH = {'name' : 'Cantidad Hombres', 'color' : 'rgba(255,205,85,.8)', 'data' : [], 'pointPadding' : 0.4, 'pointPlacement' : -0.2}
+    serieF = {'name' : 'Cantidad Mujeres', 'color' : 'rgba(252,110,81,.8)', 'data' : [], 'pointPadding' : 0.4, 'pointPlacement' : 0.2}
+    cursor = connection.cursor()
+    for p in qs:
+        categorias.append(p['name'])
+        serieMetaF['data'].append(p['targetwomen'])
+        serieMetaH['data'].append(p['targetmen'])
+        cursor.execute("SELECT COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.id AS product_id FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.id) pc ON pc.project_id = p.id WHERE p.id='%s' GROUP BY c.id) sq) q" % (p['id'],))
+        query_result = dictfetchall(cursor)
+        p['meta_total'] = p['targetmen'] + p['targetwomen']
+        totales = query_result[0]
+        serieF['data'].append(totales['f'])
+        serieH['data'].append(totales['m'])
+        result.append(p)
+        result.append(totales)
+    series = [serieMetaH, serieH, serieMetaF, serieF]
+    agg_result = {'categorias' : categorias, 'series' : series, 'data' : result}
+    return JsonResponse({'proyectos_metas': agg_result})
 
 @csrf_exempt
 @login_required
@@ -160,8 +197,8 @@ def graficoEdad(request):
                         LEFT JOIN event e ON a.event_id = e.id \
                    LEFT JOIN structure act ON e.structure_id = act.id \
                    LEFT JOIN project p ON act.project_id = p.id \
-			LEFT JOIN filter ON filter.slug='age' AND date_part('YEAR', age(birthdate)) \
-			BETWEEN CAST( filter.start as INTEGER) AND CAST( filter.end as INTEGER) "+filter+'  GROUP BY filter.name'
+                        LEFT JOIN filter ON filter.slug='age' AND date_part('YEAR', age(birthdate)) \
+                        BETWEEN CAST( filter.start as INTEGER) AND CAST( filter.end as INTEGER) "+filter+'  GROUP BY filter.name'
 
     cursor.execute(query)
     result = dictfetchall(cursor)
