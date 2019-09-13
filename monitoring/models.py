@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -256,6 +257,9 @@ class Project(models.Model):
     def get_absolute_url(self):
         return "/project/%i/" % self.id
 
+    @property
+    def salesforce_url(self):
+        return '%s/%s' % (settings.SALESFORCE_URL, self.salesforce)
 
 class SubProjectQuerySet(models.QuerySet):
     def for_user(self, user):
