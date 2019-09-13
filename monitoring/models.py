@@ -235,8 +235,10 @@ class Project(models.Model):
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
-    targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Men'))
-    targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Target Women'))
+    targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Direct Men'))
+    targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Target Direct Women'))
+    targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
+    targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
 
@@ -279,10 +281,11 @@ class SubProject(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Country'))
+    targetmen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Men'))
+    targetwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Women'))
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
-    targetmen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Men'))
-    targetwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Women'))
 
     class Meta:
         ordering = ['name']

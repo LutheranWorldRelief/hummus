@@ -6,6 +6,10 @@ from simple_salesforce import Salesforce
 from monitoring.models import Project, SubProject, Country, LWRRegion
 
 
+def getCountry(string):
+    return Country.objects.filter(name=string).first()
+
+
 def getCountries(string):
     countries = string.split(', ')
     for country in countries:
@@ -94,6 +98,7 @@ class Command(BaseCommand):
                         hummus_subproject.status = subproject['Status__c']
                         hummus_subproject.start = subproject['Start_Date__c']
                         hummus_subproject.end = subproject['End_Date__c']
+                        hummus_subproject.country = getCountry(subproject['Country__r']['Name'])
                         hummus_subproject.targetmen = subproject['Men_Direct_Target__c']
                         hummus_subproject.targetimen = subproject['Men_Indirect_Target__c']
                         hummus_subproject.targetwomen = subproject['Women_Direct_Target__c']
