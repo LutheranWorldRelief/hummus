@@ -64,17 +64,22 @@ def graficoActividades(request):
 @login_required
 def paises(request):
 
+    paises_todos = request.POST.get('paises_todos') == 'true'
+    ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
     parameters = {'paises[]': 'country__in','proyecto': 'structure__project','desde':'start__gte','hasta':'start__lte'}
     filter_kwargs = filterBy(parameters, request)
-    filter_kwargs['id__isnull']= False
+    filter_kwargs['id__isnull'] = False
 
-    result = Event.objects.filter(**filter_kwargs).order_by('country_id').distinct().values('country_id')
+    # TODO: check if this is really not needed here
+    #result = Event.objects.filter(**filter_kwargs).order_by('country_id').distinct().values('country_id')
+    result = Event.objects.all().order_by('country_id').distinct().values('country_id')
 
     for row in result:
         row['id'] =  row['country_id']
         row['country'] = row['country_id']
-        row['active'] = row['country_id'] in request.POST.getlist("paises[]")
-    data = {'paises': list(result), 'todos': False,  'ninguno': False, }
+        row['active'] = True if row['country_id'] in request.POST.getlist("paises[]") or paises_todos else False
+    data = {'paises': list(result), 'todos': paises_todos,  'ninguno': ninguno, }
+
 
     return JsonResponse(data)
 
