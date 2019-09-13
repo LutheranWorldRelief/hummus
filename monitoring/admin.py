@@ -1,10 +1,13 @@
-from django.contrib import admin
 from django.apps import apps
+from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
+
+from jet.admin import CompactInline
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+
 from .models import *
-from django.utils.translation import gettext_lazy as _
-from jet.admin import CompactInline
 
 
 # Change default query
@@ -149,8 +152,9 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     ordering = ['id']
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
+    readonly_fields = ['show_salesforce_url']
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion']}),
+        (_('General information'), {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion', 'show_salesforce_url']}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
@@ -161,6 +165,11 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
         ('countries', admin.RelatedOnlyFieldListFilter),
         ('lwrregion'),
     ]
+
+    def show_salesforce_url(self, obj):
+        return format_html("<a a target='_blank' href='{url}'>{url}</a>", url=obj.salesforce_url)
+
+    show_salesforce_url.short_description = "Salesforce Link"
 
     def get_countries(self, obj):
         return ', '.join([country.name for country in obj.countries.all()])

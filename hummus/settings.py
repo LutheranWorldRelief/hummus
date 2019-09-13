@@ -212,6 +212,7 @@ JET_INDEX_DASHBOARD = 'monitoring.admin-dashboard.CustomIndexDashboard'
 SALESFORCE_USERNAME = env('SALESFORCE_USERNAME')
 SALESFORCE_PASSWORD = env('SALESFORCE_PASSWORD')
 SALESFORCE_TOKEN = env('SALESFORCE_TOKEN')
+SALESFORCE_URL = env('SALESFORCE_URL', default='https://example.my.salesforce.com')
 
 # Django Constance Dynamic settings
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
