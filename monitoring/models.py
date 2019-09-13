@@ -228,7 +228,7 @@ class Project(models.Model):
         ('Suspended', _('Suspended')),
         ('Terminated', _('Terminated')),
     ]
-    code = models.CharField(max_length=255, verbose_name=_('Code'))
+    code = models.CharField(max_length=255, unique=True, verbose_name=_('Code'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name=_('Salesforce Id'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
     colors = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Colors'))
@@ -242,6 +242,7 @@ class Project(models.Model):
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
+    recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -279,7 +280,7 @@ class SubProject(models.Model):
         ('Closed', _('Closed')),
     ]
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    code = models.CharField(max_length=255, verbose_name=_('Code'))
+    code = models.CharField(max_length=255, unique=False, verbose_name=_('Code'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name=_('Salesforce Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
@@ -290,6 +291,7 @@ class SubProject(models.Model):
     targetwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Women'))
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
+    recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
 
     class Meta:
         ordering = ['name']
