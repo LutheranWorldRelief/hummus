@@ -303,6 +303,10 @@ class SubProject(models.Model):
     def get_absolute_url(self):
         return "/subproject/%i/" % self.id
 
+    @property
+    def salesforce_url(self):
+        return '%s/%s' % (settings.SALESFORCE_URL, self.salesforce)
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))

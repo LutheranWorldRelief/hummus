@@ -303,10 +303,10 @@ class SubprojectAdmin(admin.ModelAdmin):
     ordering = ['project']
     list_per_page = 20
     list_max_show_all = 50
+    readonly_fields = ['show_salesforce_url']
     search_fields = ['name', 'code', 'project__name', 'status']
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'project', 'status', 'country']}),
-        (_('Salesforce'), {'fields': ['salesforce']}),
+        (_('General information'), {'fields': ['code', 'name', 'project', 'status', 'country', 'show_salesforce_url']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
@@ -315,6 +315,11 @@ class SubprojectAdmin(admin.ModelAdmin):
         ('country', admin.RelatedOnlyFieldListFilter),
         ('project__lwrregion'),
     ]
+
+    def show_salesforce_url(self, obj):
+        return format_html("<a a target='_blank' href='{url}'>{url}</a>", url=obj.salesforce_url)
+
+    show_salesforce_url.short_description = "Salesforce Link"
 
 
 class RegionAdmin(admin.ModelAdmin):
