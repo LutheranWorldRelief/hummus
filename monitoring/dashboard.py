@@ -121,6 +121,7 @@ def graficoOrganizaciones(request):
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
     data_dict = {}
     for v in types:
+        # FIXME podriamos documentar / comentar por qué 10 y por qué 8?
         v['color'] = colores[colorNumero % 10]
         colorNumero += 1 if colorNumero<8  else -8
         v['value'] = 0
@@ -158,7 +159,7 @@ def proyectosMetas(request):
         categorias.append(p['name'])
         serieMetaF['data'].append(p['targetwomen'])
         serieMetaH['data'].append(p['targetmen'])
-        cursor.execute("SELECT COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.id AS product_id FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.id) pc ON pc.project_id = p.id WHERE (pc.product_id is null) AND (p.id='8') AND (e.country_id is null) GROUP BY c.id) sq) q")
+        cursor.execute("SELECT COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.id AS product_id FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.id) pc ON pc.project_id = p.id WHERE p.id='%s' GROUP BY c.id) sq) q" % (p['id'],))
         query_result = dictfetchall(cursor)
         p['meta_total'] = p['targetmen'] + p['targetwomen']
         totales = query_result[0]
