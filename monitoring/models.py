@@ -229,7 +229,7 @@ class Project(models.Model):
         ('Terminated', _('Terminated')),
     ]
     code = models.CharField(max_length=255, verbose_name=_('Code'))
-    salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
+    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name=_('Salesforce Id'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
     colors = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Colors'))
     url = models.URLField(blank=True, null=True, verbose_name=_('Url'))
@@ -280,7 +280,7 @@ class SubProject(models.Model):
     ]
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     code = models.CharField(max_length=255, verbose_name=_('Code'))
-    salesforce = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Salesforce Id'))
+    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name=_('Salesforce Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
