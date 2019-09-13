@@ -126,9 +126,8 @@ def graficoOrganizaciones(request):
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
     data_dict = {}
     for v in types:
-        # FIXME podriamos documentar / comentar por qué 10 y por qué 8?
-        v['color'] = colores[colorNumero % 10]
-        colorNumero += 1 if colorNumero<8  else -8
+        v['color'] = colores[colorNumero % len(colores)]
+        colorNumero += 1
         v['value'] = 0
         v['name'] = v[__('organization__organization_type__name')]
         data_dict[v['organization__organization_type_id']] = v
