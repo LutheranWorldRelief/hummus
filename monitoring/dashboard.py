@@ -6,6 +6,7 @@ from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
@@ -144,7 +145,10 @@ def proyectosMetas(request):
     serieMetaH['data'].append(proyecto['targetmen'])
     totales = ProjectContact.objects.filter(project_id=proyecto['id']).aggregate(f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
     totales['total'] = totales['f'] + totales['m']
-    proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
+    if proyecto['targetmen'] and  proyecto['targetwomen']:
+        proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
+    else:
+        proyecto['meta_total'] = None
     serieF['data'].append(totales['f'])
     serieH['data'].append(totales['m'])
     result.append(proyecto)
