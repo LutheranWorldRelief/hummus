@@ -293,6 +293,8 @@ class ProjectContact(models.Model):
         'Yield Field'))  # Field renamed because it was a Python reserved word.
     date_entry_project = models.DateField(blank=True, null=True, verbose_name=_('Date Entry Project'))
     date_end_project = models.DateField(blank=True, null=True, verbose_name=_('Date End Project'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
+                                     verbose_name=_('Organization'))
 
     def __str__(self):
         return "%s: %s" % (self.project.name, self.contact.name)
