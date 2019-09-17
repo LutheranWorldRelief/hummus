@@ -25,9 +25,6 @@
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:monitoring_contact_changelist' %}"><i class="fa fa-users"></i>
                         <span>{% trans 'Participants' %}</span></a></li>
-                    <li><a href="{% url 'admin:monitoring_attendance_changelist' %}"><i class="fa fa-users"></i>
-                        <span>{% trans 'Participants/Event' %}</span></a>
-                    </li>
                     <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Duplicates' %}</span> <span class="pull-right-container"><i
                                 class="fa fa-angle-left pull-right"></i></span></a>
@@ -41,8 +38,6 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="{% url 'admin:monitoring_event_changelist' %}"><i class="fa fa-calendar"></i>
-                <span>{% trans 'Events' %}</span></a></li>
             <li class="header"><span><span>Reportes</span></span></li>
             <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>

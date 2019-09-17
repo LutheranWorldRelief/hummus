@@ -32,6 +32,7 @@ def cantidadProyectos(request):
 @csrf_exempt
 @login_required
 def cantidadEventos(request):
+    return JsonResponse({}) # FIXME
     eventos = Event.objects.count()
     actividades = Event.objects.order_by('structure_id').distinct('structure_id').count()
     data = {"cantidadEventos": {"eventos": eventos ,"actividades": actividades} }
@@ -40,6 +41,7 @@ def cantidadEventos(request):
 @csrf_exempt
 @login_required
 def graficoActividades(request):
+    return JsonResponse({}) # FIXME
     parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte','hasta': 'event__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
@@ -72,12 +74,12 @@ def paises(request):
 
     # TODO: check if this is really not needed here
     #result = Event.objects.filter(**filter_kwargs).order_by('country_id').distinct().values('country_id')
-    result = Event.objects.all().order_by('country_id').distinct().values('country_id')
+    result = Project.objects.all().order_by('countries__id').values('countries__id').distinct()
 
     for row in result:
-        row['id'] =  row['country_id']
-        row['country'] = row['country_id']
-        row['active'] = True if row['country_id'] in request.POST.getlist("paises[]") or paises_todos else False
+        row['id'] =  row['countries__id']
+        row['country'] = row['countries__id']
+        row['active'] = True if row['countries__id'] in request.POST.getlist("paises[]") or paises_todos else False
     data = {'paises': list(result), 'todos': paises_todos,  'ninguno': ninguno, }
 
 
@@ -111,7 +113,7 @@ def graficoOrganizaciones(request):
     parameters = {'proyecto': 'structure__project_id', 'desde': 'start__gte','hasta': 'start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
-    query = Event.objects
+    query = ProjectContact.objects
     if len(filter_kwargs) > 0:
         query = query.filter(**filter_kwargs)
 
@@ -123,7 +125,7 @@ def graficoOrganizaciones(request):
     for row in organizaciones:
         org_list.append({'id': row['organization_id'], 'name': row['organization__name'], 'parent': row['organization__organization_type_id']})
 
-    types = Event.objects.filter(**filter_kwargs).values('organization__organization_type_id', __('organization__organization_type__name'))
+    types = ProjectContact.objects.filter(**filter_kwargs).values('organization__organization_type_id', __('organization__organization_type__name'))
 
     colorNumero = 0
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
@@ -211,7 +213,7 @@ def graficoEducacion(request):
     parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte','hasta': 'event__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
-    query = Attendance.objects
+    query = ProjectContact.objects
     if len(filter_kwargs)>0:
         query = query.filter(**filter_kwargs)
 
@@ -237,7 +239,7 @@ def graficoTipoParticipante(request):
     parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte', 'hasta': 'event__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
-    query = Attendance.objects
+    query = ProjectContact.objects
     if len(filter_kwargs)>0:
         query = query.filter(**filter_kwargs)
 
@@ -256,7 +258,7 @@ def graficoSexoParticipante(request):
     parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte', 'hasta': 'event__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
-    query = Attendance.objects
+    query = ProjectContact.objects
     if len(filter_kwargs)>0:
         query = query.filter(**filter_kwargs)
 
