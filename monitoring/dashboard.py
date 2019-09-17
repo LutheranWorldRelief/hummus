@@ -145,7 +145,7 @@ def proyectosMetas(request):
     serieMetaH['data'].append(proyecto['targetmen'])
     totales = ProjectContact.objects.filter(project_id=proyecto['id']).aggregate(f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
     totales['total'] = totales['f'] + totales['m']
-    if proyecto['targetmen'] and  proyecto['targetwomen']:
+    if proyecto['targetmen'] and proyecto['targetwomen']:
         proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
     else:
         proyecto['meta_total'] = None
