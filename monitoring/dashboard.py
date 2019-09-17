@@ -1,13 +1,15 @@
+from datetime import date
+
+from django.utils.timezone import now
 from django.db.models.functions import Concat
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from monitoring.common import get_localized_name as __
 
 from .models import *
-from .common import  dictfetchall
+from .common import dictfetchall, get_localized_name as __
 
 @csrf_exempt
 @login_required
@@ -166,17 +168,20 @@ def graficoAnioFiscal(request):
 def graficoEdad(request):
 
     filter = getFilters(request)
-    cursor = connection.cursor()
-    query = "SELECT filter.name AS type,\
-                        COUNT(case when contact.sex = 'F' then 1 else NULL end) AS f,\
-                        COUNT(case when contact.sex = 'M' then 1 else NULL end) AS m,\
-                        COUNT(contact.sex) as total\
-                        FROM project_contact LEFT JOIN contact ON project_contact.contact_id = contact.id \
-                        LEFT JOIN filter ON filter.slug='age' AND date_part('YEAR', age(birthdate)) \
-                        BETWEEN filter.start AND filter.end "+filter+'  GROUP BY filter.name'
+    groups = Filter.objects.filter(slug='age', start__gte=0) # FIXME: can we do better? using start=-1 for labels seems...
+    named_groups = []
+    for group in groups:
+        current = now().date()
+        min_date = date(current.year - group.end, current.month, current.day)
+        max_date = date(current.year - group.start, current.month, current.day)
+        row = ProjectContact.objects.filter(contact__birthdate__gte=min_date, contact__birthdate__lte=max_date).aggregate(
+            f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M'))
+            )
+        row['total'] = row['f'] + row['m']
+        row['type'] = group.name
+        named_groups.append(row)
 
-    cursor.execute(query)
-    result = dictfetchall(cursor)
+    result = named_groups
     return JsonResponse({'edad': result})
 
 
