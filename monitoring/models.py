@@ -104,8 +104,8 @@ class Country(models.Model):
 
 class Filter(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    start = models.CharField(max_length=255, verbose_name=_('Start'))
-    end = models.CharField(max_length=255, verbose_name=_('End'))
+    start = models.IntegerField(verbose_name=_('Start'))
+    end = models.IntegerField(verbose_name=_('End'))
     slug = models.CharField(max_length=255, verbose_name=_('Slug'))
     order = models.IntegerField(blank=True, null=True, verbose_name=_('Order'))
     filter = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
