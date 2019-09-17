@@ -151,15 +151,14 @@ def proyectosMetas(request):
     agg_result = {'categorias' : categorias, 'series' : series, 'data' : result}
     return JsonResponse({'proyectos_metas': agg_result})
 
+
 @csrf_exempt
 @login_required
 def graficoAnioFiscal(request):
-    filter = getFilters(request)
 
-    cursor = connection.cursor()
-    cursor.execute("SELECT type, COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT id, CASE WHEN 10<=6 THEN CASE WHEN 10<= date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)-1    END ELSE CASE WHEN 10 > date_part( 'month', start) THEN  date_part( 'year',start)    ELSE  date_part( 'year',start)+1    END END  as type, sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM project_contact a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.name AS product FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.name) pc ON pc.project_id = p.id "+filter+" GROUP BY c.id) sq) q GROUP BY type ORDER BY type")
-    result = dictfetchall(cursor)
-    return JsonResponse({'fiscal': result})
+    filter = getFilters(request)
+    result = ProjectContact.objects.values('project__start__year').order_by('project__start').annotate(f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
+    return JsonResponse({'fiscal': list(result)})
 
 
 @csrf_exempt
@@ -268,15 +267,19 @@ def graficoNacionalidad(request):
 @login_required
 def graficoPaisEventos(request):
     filter = getFilters(request)
-    result = Project.objects.values('countries','countries__x','countries__y','countries__name').order_by('countries')
+    result = Project.objects.values('countries','countries__x','countries__y','countries__name').order_by('countries').annotate(
+        f=Count('projectcontact', filter=Q(projectcontact__contact__sex='F')),
+        m=Count('projectcontact', filter=Q(projectcontact__contact__sex='M')),
+        )
     pais_array = [];
     for row in result:
-        if 'id' in row:
+        if 'countries' in row:
+            row['total'] = row['f'] + row['m']
             pais_array.append([
                 row['countries__name'],
-                0,
-                0,
-                0,
+                row['total'],
+                row['f'],
+                row['m'],
                 row['countries__x'],
                 row['countries__y'],
                 row['countries__name'],
