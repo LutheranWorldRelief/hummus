@@ -40,28 +40,6 @@ class Profile(models.Model):
         verbose_name_plural = _('Profiles')
 
 
-class Attendance(models.Model):
-    event = models.ForeignKey('Event', on_delete=models.CASCADE, verbose_name=_('Event'))
-    contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
-    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Type'))
-    document = models.CharField(max_length=45, blank=True, null=True, verbose_name=_('Document'))
-    sex = models.CharField(max_length=1, blank=True, null=True, verbose_name=_('Sex'))
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
-    community = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Community'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
-                                     verbose_name=_('Organization'))
-    phone_personal = models.CharField(max_length=45, blank=True, null=True, verbose_name=_('Phone Personal'))
-
-    def __str__(self):
-        return "%s: %s" % (self.event.name, self.contact.name)
-
-    class Meta:
-        ordering = ['event', 'contact']
-        db_table = 'attendance'
-        verbose_name = _('Attendance')
-        verbose_name_plural = _('Attendances')
-
-
 class Contact(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     last_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('Last Name'))
@@ -122,31 +100,6 @@ class Country(models.Model):
         db_table = 'country'
         verbose_name = _('Country')
         verbose_name_plural = _('Countries')
-
-
-class Event(models.Model):
-    structure = models.ForeignKey('Structure', on_delete=models.SET_NULL, blank=True, null=True,
-                                  verbose_name=_('Structure'))
-    name = models.CharField(max_length=455, verbose_name=_('Name'))
-    title = models.TextField(blank=True, null=True, verbose_name=_('Title'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
-                                     verbose_name=_('Organization'))
-    organizer = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Organizer'))
-    text = models.TextField(blank=True, null=True, verbose_name=_('Text'))
-    start = models.DateTimeField(blank=True, null=True, verbose_name=_('Start'))
-    end = models.DateTimeField(blank=True, null=True, verbose_name=_('End'))
-    place = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Place'))
-    notes = models.TextField(blank=True, null=True, verbose_name=_('Notes'))
-    country = models.ForeignKey('Country', null=True, on_delete=models.SET_NULL, verbose_name=_('Country'))
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        db_table = 'event'
-        verbose_name = _('Event')
-        verbose_name_plural = _('Events')
 
 
 class Filter(models.Model):
@@ -349,23 +302,6 @@ class ProjectContact(models.Model):
         db_table = 'project_contact'
         verbose_name = _('Project Contact')
         verbose_name_plural = _('Project Contacts')
-
-
-class Structure(models.Model):
-    code = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Code'))
-    description = models.TextField(verbose_name=_('Description'))
-    structure = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
-                                  verbose_name=_('Structure'))
-    notes = models.TextField(blank=True, null=True, verbose_name=_('Notes'))
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
-
-    def __str__(self):
-        return "%s: %s" % (self.project.name, self.description)
-
-    class Meta:
-        ordering = ['project', 'description']
-        db_table = 'structure'
-        verbose_name = _('Structure')
 
 
 class Education(models.Model):
