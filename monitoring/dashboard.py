@@ -140,10 +140,9 @@ def proyectosMetas(request):
     categorias.append(proyecto['name'])
     serieMetaF['data'].append(proyecto['targetwomen'])
     serieMetaH['data'].append(proyecto['targetmen'])
-    cursor.execute("SELECT COUNT(case when sex = 'F' then 1 else NULL end) AS f, COUNT(case when sex = 'M' then 1 else NULL end) AS m, count(sex) as total FROM (SELECT sex FROM (SELECT c.id, min(e.start) as start, c.sex, c.birthdate, education_id FROM attendance a LEFT JOIN contact c ON a.contact_id = c.id LEFT JOIN event e ON a.event_id = e.id LEFT JOIN country pa ON e.country_id= pa.id LEFT JOIN structure act ON e.structure_id = act.id LEFT JOIN project p ON act.project_id = p.id LEFT JOIN (SELECT p.id AS project_id, mp.id AS product_id FROM project p LEFT JOIN project_contact pc ON pc.project_id = p.id LEFT JOIN monitoring_product mp ON pc.product_id = mp.id GROUP BY p.id, mp.id) pc ON pc.project_id = p.id WHERE p.id='%s' GROUP BY c.id) sq) q" % (proyecto['id'],))
-    query_result = dictfetchall(cursor)
+    totales = ProjectContact.objects.filter(project_id=proyecto['id']).aggregate(f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
+    totales['total'] = totales['f'] + totales['m']
     proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
-    totales = query_result[0]
     serieF['data'].append(totales['f'])
     serieH['data'].append(totales['m'])
     result.append(proyecto)
