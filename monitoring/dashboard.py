@@ -33,33 +33,12 @@ def cantidadProyectos(request):
 @login_required
 def cantidadEventos(request):
     return JsonResponse({}) # FIXME
-    eventos = Event.objects.count()
-    actividades = Event.objects.order_by('structure_id').distinct('structure_id').count()
-    data = {"cantidadEventos": {"eventos": eventos ,"actividades": actividades} }
-    return JsonResponse(data)
+
 
 @csrf_exempt
 @login_required
 def graficoActividades(request):
     return JsonResponse({}) # FIXME
-    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte','hasta': 'event__start__lte'}
-    filter_kwargs = filterBy(parameters, request)
-
-    query = Attendance.objects
-    if len(filter_kwargs)>0:
-        query = query.filter(**filter_kwargs)
-
-    result = query.order_by('event__structure_id', 'event__structure__description', 'event__structure__project__name').values(
-        'event__structure_id', 'event__structure__description', 'event__structure__project__name').annotate(
-        m=Count('id', filter=Q(contact__sex='M')),
-        f=Count('id', filter=Q(contact__sex='F')),
-        total=Count('id'))
-
-    for row in result:
-        row['name'] = str(row['event__structure__description']) + ' / ' + str(row['event__structure__project__name'])
-        row['activity_id'] = row['event__structure_id']
-    data = {'actividades': list(result) }
-    return JsonResponse(data)
 
 
 @csrf_exempt
@@ -68,7 +47,7 @@ def paises(request):
 
     paises_todos = request.POST.get('paises_todos') == 'true'
     ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
-    parameters = {'paises[]': 'country__in','proyecto': 'structure__project','desde':'start__gte','hasta':'start__lte'}
+    parameters = {'paises[]': 'country__in','proyecto': 'project','desde':'start__gte','hasta':'start__lte'}
     filter_kwargs = filterBy(parameters, request)
     filter_kwargs['id__isnull'] = False
 
@@ -110,7 +89,7 @@ def rubros(request):
 @csrf_exempt
 @login_required
 def graficoOrganizaciones(request):
-    parameters = {'proyecto': 'structure__project_id', 'desde': 'start__gte','hasta': 'start__lte'}
+    parameters = {'proyecto': 'project_id', 'desde': 'start__gte','hasta': 'start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
     query = ProjectContact.objects
@@ -210,7 +189,7 @@ def graficoEdad(request):
 @csrf_exempt
 @login_required
 def graficoEducacion(request):
-    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte','hasta': 'event__start__lte'}
+    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte','hasta': 'projectcontact__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
     query = ProjectContact.objects
@@ -236,7 +215,7 @@ def graficoEventos(request):
 @csrf_exempt
 @login_required
 def graficoTipoParticipante(request):
-    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte', 'hasta': 'event__start__lte'}
+    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte', 'hasta': 'projectcontact__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
     query = ProjectContact.objects
@@ -255,7 +234,7 @@ def graficoTipoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoSexoParticipante(request):
-    parameters = {'proyecto': 'event__structure__project_id', 'desde': 'event__start__gte', 'hasta': 'event__start__lte'}
+    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte', 'hasta': 'projectcontact__start__lte'}
     filter_kwargs = filterBy(parameters, request)
 
     query = ProjectContact.objects

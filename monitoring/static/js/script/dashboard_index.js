@@ -267,8 +267,8 @@
 
             $scope.proyecto = null;
             $scope.proyectos = null;
-            $scope.eventos.actividades = null;
-            $scope.eventos.eventos = null;
+            //$scope.eventos.actividades = null;
+            //$scope.eventos.eventos = null;
         };
 
         $scope.cargarDatos = function () {
