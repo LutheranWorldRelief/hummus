@@ -169,16 +169,12 @@ def graficoEdad(request):
     filter = getFilters(request)
     cursor = connection.cursor()
     query = "SELECT filter.name AS type,\
-                        COUNT(case when c.sex = 'F' then 1 else NULL end) AS f,\
-                        COUNT(case when c.sex = 'M' then 1 else NULL end) AS m,\
-                        COUNT(c.sex) as total\
-                        FROM attendance a \
-                        LEFT JOIN contact c ON a.contact_id = c.id \
-                        LEFT JOIN event e ON a.event_id = e.id \
-                   LEFT JOIN structure act ON e.structure_id = act.id \
-                   LEFT JOIN project p ON act.project_id = p.id \
+                        COUNT(case when contact.sex = 'F' then 1 else NULL end) AS f,\
+                        COUNT(case when contact.sex = 'M' then 1 else NULL end) AS m,\
+                        COUNT(contact.sex) as total\
+                        FROM project_contact LEFT JOIN contact ON project_contact.contact_id = contact.id \
                         LEFT JOIN filter ON filter.slug='age' AND date_part('YEAR', age(birthdate)) \
-                        BETWEEN CAST( filter.start as INTEGER) AND CAST( filter.end as INTEGER) "+filter+'  GROUP BY filter.name'
+                        BETWEEN filter.start AND filter.end "+filter+'  GROUP BY filter.name'
 
     cursor.execute(query)
     result = dictfetchall(cursor)
