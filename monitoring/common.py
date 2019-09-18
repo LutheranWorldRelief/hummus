@@ -1,3 +1,4 @@
+from django.db.models import Func, Value
 from django.http import JsonResponse
 from django.utils import translation as trans
 from django.utils.translation import gettext_lazy as _
@@ -54,14 +55,16 @@ class JSONResponseMixin:
         # -- can be serialized as JSON.
         return context
 
-from django.db.models import Func, Value
-
 
 # credit to https://code.djangoproject.com/ticket/28805
 class RegexpReplace(Func):
     function = 'REGEXP_REPLACE'
 
-    def __init__(self, expression, pattern, replacement, **extra):
+    def __init__(self, expression, pattern, replacement, flags, **extra):
+        if not hasattr(flags, 'resolve_expression'):
+            if not isinstance(flags, str):
+                raise TypeError("'flags' must be a string")
+            flags = Value(flags)
         if not hasattr(pattern, 'resolve_expression'):
             if not isinstance(pattern, str):
                 raise TypeError("'pattern' must be a string")
@@ -70,5 +73,5 @@ class RegexpReplace(Func):
             if not isinstance(replacement, str):
                 raise TypeError("'replacement' must be a string")
             replacement = Value(replacement)
-        expressions = [expression, pattern, replacement]
+        expressions = [expression, pattern, replacement, flags]
         super().__init__(*expressions, **extra)

@@ -41,7 +41,7 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
 
     def get_data(self, context, **kwargs):
         context = {}
-        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' '))))
+        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
         for row in queryset:
             row['name'] = row['name_uc']
