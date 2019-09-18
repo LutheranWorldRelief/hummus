@@ -1,8 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'nobase.html' %}
 {% load static %}
 {% load i18n %}
 {% block extra_header %}
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'js/lib/select2/select2.css' %}" rel="stylesheet">
+    <link href="{% static 'js/lib/select2/css/select2-addl.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
+	<link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
+	<link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
+	<link href="{% static '/js/lib/alertify1.11.1/css/alertify.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo_user.png' %}">
 {% endblock %}
 {% block content %}
 <div id="app" v-cloak data-baseurl="/">

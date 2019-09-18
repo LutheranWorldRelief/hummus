@@ -51,4 +51,4 @@ class JSONResponseMixin:
         # to do much more complex handling to ensure that arbitrary
         # objects -- such as Django model instances or querysets
         # -- can be serialized as JSON.
-return context
+        return context
