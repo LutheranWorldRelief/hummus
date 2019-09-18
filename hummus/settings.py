@@ -141,8 +141,10 @@ LOCALE_PATHS = (
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, '../static/')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media/')
 
 SESSION_COOKIE_DOMAIN = env('SESSION_COOKIE_DOMAIN', default='localhost')
 
@@ -184,7 +186,7 @@ JET_SIDE_MENU_ITEMS = [
     ]},
     {'label': _('Reports'), 'items': [
         {'name': '', 'url': '/report/proyectos', 'label': _('Principal')},
-        {'name': '', 'url': LEGACY_URL + 'report/template-clean', 'label': _('Clean Template')},
+        {'name': '', 'url': '/report/template-clean', 'label': _('Clean Template')},
     ]},
     {'label': _('Graphics'), 'items': [
         {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},

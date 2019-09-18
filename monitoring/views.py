@@ -1,13 +1,22 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.views import View
+from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django_tables2 import RequestConfig
 
 from .tables import *
 from .models import *
 from .common import months
+from .common import get_localized_name as __
+
+
+class DownloadTemplate(LoginRequiredMixin, View):
+    def get(self, request):
+        obj = Template.objects.get(id='clean-template')
+        link = getattr(obj, __('file'))
+        return redirect("%s/%s" % (settings.MEDIA_URL, link))
 
 
 class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):

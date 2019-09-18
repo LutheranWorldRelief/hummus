@@ -4,6 +4,25 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
 
+class Template(models.Model):
+    id = models.CharField(primary_key=True, max_length=32, verbose_name=_('Filename'))
+    name = models.CharField(max_length=50, verbose_name=_('Name'))
+    name_fr = models.CharField(max_length=50, verbose_name=_('Name FR'))
+    name_es = models.CharField(max_length=50, verbose_name=_('Name ES'))
+    file = models.FileField(upload_to='templates/', verbose_name=_('File'))
+    file_fr = models.FileField(upload_to='templates/', verbose_name=_('File FR'))
+    file_es = models.FileField(upload_to='templates/', verbose_name=_('File ES'))
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _('Template')
+        verbose_name_plural = _('Templates')
+        db_table = 'template'
+
+
 class LWRRegion(models.Model):
     id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
     name = models.CharField(max_length=20, verbose_name=_('Name'))
