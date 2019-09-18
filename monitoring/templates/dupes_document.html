@@ -23,9 +23,11 @@
         <div class="col-md-12 ">
             <div class="panel panel-default">
                 <div class="panel-body table-responsive" style="font-size: 12px">
+                {% verbatim %}
                     <h2 class="text-maroon">{{ modelsAll.length }} Casos Duplicados por Documento</h2>
+                {% endverbatim %}
                     <div class="row">
-                        <div class="col-lg-12"><?= $this->render('_filter_form'); ?></div>
+                        <div class="col-lg-12">{% include "_filter_form.html" %}</div>
                     </div>
 
                     <div class="col-md-6">
@@ -39,9 +41,10 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% verbatim %}
                             <template v-for="(model, index) in modelsAll">
                                 <tr v-if="(index <= parseInt( modelsAll.length/2))">
-                                    <td> {{index}}</td>
+                                    <td>{{index}}</td>
                                     <td>{{model.document}} <span class="badge">{{model.cuenta}}</span></td>
                                     <td>
                                         <div v-html="model.name"></div>
@@ -57,6 +60,7 @@
                                     </td>
                                 </tr>
                             </template>
+                            {% endverbatim %}
                             </tbody>
                         </table>
                     </div>
@@ -71,9 +75,10 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% verbatim %}
                             <template v-for="(model, index) in modelsAll">
                                 <tr v-if="(index > parseInt( modelsAll.length/2))">
-                                    <td> {{index}}</td>
+                                    <td> {{index+1}}</td>
                                     <td>{{model.document}} <span class="badge">{{model.cuenta}}</span></td>
                                     <td>
                                         <div v-html="model.name"></div>
@@ -89,6 +94,7 @@
                                     </td>
                                 </tr>
                             </template>
+                            {% endverbatim %}
                             </tbody>
                         </table>
                     </div>
@@ -96,7 +102,7 @@
             </div>
         </div>
     </div>
-    <?= $this->render('_contact_merge_modal'); ?>
+    {% include "_contact_merge_modal.html" %}
 </div>
 {% endblock %}
 {% block extra_body %}
