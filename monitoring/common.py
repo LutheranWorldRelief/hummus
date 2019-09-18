@@ -1,5 +1,7 @@
+from django.http import JsonResponse
 from django.utils import translation as trans
 from django.utils.translation import gettext_lazy as _
+
 
 def get_localized_name(column):
     return column if trans.get_language() in ['en'] else column+'_'+trans.get_language()
@@ -26,3 +28,27 @@ months = [('1', 'January'),
           ('10', _('October')),
           ('11', _('November')),
           ('12', _('December')), ]
+
+
+class JSONResponseMixin:
+    """
+    A mixin that can be used to render a JSON response.
+    """
+    def render_to_json_response(self, context, **response_kwargs):
+        """
+        Returns a JSON response, transforming 'context' to make the payload.
+        """
+        return JsonResponse(
+            self.get_data(context),
+            **response_kwargs
+        )
+
+    def get_data(self, context):
+        """
+        Returns an object that will be serialized as JSON by json.dumps().
+        """
+        # Note: This is *EXTREMELY* naive; in reality, you'll need
+        # to do much more complex handling to ensure that arbitrary
+        # objects -- such as Django model instances or querysets
+        # -- can be serialized as JSON.
+return context
