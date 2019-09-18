@@ -10,3 +10,4 @@ django-jet==1.0.8
 django-constance==2.4.0
 django-picklefield==2.0
 simple-salesforce==0.74.3
+djangorestframework==3.10.3

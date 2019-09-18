@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'microsoft_auth',
     'constance',
     'constance.backends.database',
+    'rest_framework',
     # my apps
     'legacy',
     'monitoring',
