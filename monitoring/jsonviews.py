@@ -46,7 +46,19 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
         context = list(queryset)
         return context
 
-class JsonListView(JSONResponseMixin, TemplateView):
+
+class ContactDocDupesDetails(JSONResponseMixin, TemplateView):
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_data(self, context, **kwargs):
+        context = {}
+        queryset = Contact.objects.filter(document=self.kwargs['document']).values()
+        context = {'models': list(queryset) }
+        return context
+
+
+class JsonIdName(JSONResponseMixin, TemplateView):
 
     queryset = None
 
@@ -58,3 +70,5 @@ class JsonListView(JSONResponseMixin, TemplateView):
         for row in self.queryset:
             result[row.id] = row.name
         return self.render_to_response(result)
+
+

@@ -38,9 +38,10 @@ urlpatterns = [
     path('opt/api-empty/', jsonviews.ContactEmpty.as_view(), ),
     path('opt/api-labels/', jsonviews.ContactLabels.as_view(), ),
     path('opt/api-docs/', jsonviews.ContactDocDupes.as_view(), ),
-    path('opt/api-organizations/', jsonviews.JsonListView.as_view(queryset=models.Organization.objects.filter(projectcontact__isnull=False).distinct())),
-    path('opt/api-countries/', jsonviews.JsonListView.as_view(queryset=models.Country.objects.filter(project__isnull=False).distinct())),
-    path('opt/api-projects/', jsonviews.JsonListView.as_view(queryset=models.Project.objects.filter(status='Active'))),
-    path('opt/api-types/', jsonviews.JsonListView.as_view(queryset=models.ContactType.objects.all())),
-    path('opt/api-education/', jsonviews.JsonListView.as_view(queryset=models.Education.objects.all()),)
+    path('opt/api-doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
+    path('opt/api-organizations/', jsonviews.JsonIdName.as_view(queryset=models.Organization.objects.filter(projectcontact__isnull=False).distinct())),
+    path('opt/api-countries/', jsonviews.JsonIdName.as_view(queryset=models.Country.objects.filter(project__isnull=False).distinct())),
+    path('opt/api-projects/', jsonviews.JsonIdName.as_view(queryset=models.Project.objects.filter(status='Active'))),
+    path('opt/api-types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
+    path('opt/api-education/', jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()),)
 ]

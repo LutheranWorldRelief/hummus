@@ -43,7 +43,7 @@ var MergeUrls = {
         getUrlDoc: function (doc) {
             if (!doc)
                 return null;
-            return this.createUrl('opt/api-doc?doc=' + doc);
+            return this.createUrl('opt/api-doc/' + doc + '/');
         },
         getUrlDocValues: function () {
             return this.createUrl('opt/api-doc-values/');
