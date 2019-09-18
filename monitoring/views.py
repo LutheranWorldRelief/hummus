@@ -19,6 +19,10 @@ class DownloadTemplate(LoginRequiredMixin, View):
         return redirect("%s/%s" % (settings.MEDIA_URL, link))
 
 
+class ValidateDupesId(LoginRequiredMixin, TemplateView):
+    template_name = 'dupes_id.html'
+
+
 class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = SubProject
     table_class = SubProjectTable

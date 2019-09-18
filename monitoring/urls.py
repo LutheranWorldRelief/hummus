@@ -32,4 +32,5 @@ urlpatterns = [
     path('import/beneficiarios', TemplateView.as_view(template_name='import.html'), name='iframe_import'),
     path('report/proyectos', TemplateView.as_view(template_name='report.html'), name='iframe_report'),
     path('report/template-clean', views.DownloadTemplate.as_view(), name='template-clean'),
+    path('validate/dupes-id', views.ValidateDupesId.as_view(), name='validate-dupes-ids'),
 ]
