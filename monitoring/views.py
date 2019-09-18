@@ -24,6 +24,10 @@ class ValidateDupesDoc(LoginRequiredMixin, TemplateView):
     template_name = 'dupes_document.html'
 
 
+class ValidateDupesName(LoginRequiredMixin, TemplateView):
+    template_name = 'dupes_name.html'
+
+
 class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = SubProject
     table_class = SubProjectTable

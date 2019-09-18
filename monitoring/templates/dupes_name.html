@@ -24,7 +24,7 @@
             <div class="panel panel-default">
                 <div class="panel-body table-responsive" style="font-size: 12px">
                 {% verbatim %}
-                    <h2 class="text-maroon">{{ modelsAll.length }} Casos Duplicados por Documento</h2>
+                    <h2 class="text-maroon">{{ modelsNames.length }} Casos Duplicados por Nombre</h2>
                 {% endverbatim %}
                     <div class="row">
                         <div class="col-lg-12">{% include "_filter_form.html" %}</div>
@@ -35,20 +35,16 @@
                             <thead>
                             <tr>
 <th>{% trans 'Caso N°' %}</th>
-<th>{% trans 'Documento' %}</th>
-<th>{% trans 'Nombres' %}</th>
+<th>{% trans 'Nombre' %}</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             {% verbatim %}
-                            <template v-for="(model, index) in modelsAll">
-                                <tr v-if="(index <= parseInt( modelsAll.length/2))">
+                            <template v-for="(model, index) in modelsNames">
+                                <tr v-if="(index <= parseInt( modelsNames.length/2))">
                                     <td>{{index+1}}</td>
-                                    <td>{{model.document}} <span class="badge">{{model.cuenta}}</span></td>
-                                    <td>
-                                        <div v-html="model.name"></div>
-                                    </td>
+                                    <td>{{model.name}} <span class="badge">{{model.cuenta}}</span></td>
                                     <td>
                                         <button
                                                 class="btn btn-xs btn-primary pull-right"
@@ -69,20 +65,16 @@
                             <thead>
                             <tr>
 				<th>{% trans 'Caso N°' %}</th>
-				<th>{% trans 'Documento' %}</th>
-				<th>{% trans 'Nombres' %}</th>
+				<th>{% trans 'Nombre' %}</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             {% verbatim %}
-                            <template v-for="(model, index) in modelsAll">
-                                <tr v-if="(index > parseInt( modelsAll.length/2))">
+                            <template v-for="(model, index) in modelsNames">
+                                <tr v-if="(index > parseInt( modelsNames.length/2))">
                                     <td> {{index+1}}</td>
-                                    <td>{{model.document}} <span class="badge">{{model.cuenta}}</span></td>
-                                    <td>
-                                        <div v-html="model.name"></div>
-                                    </td>
+                                    <td>{{model.name}} <span class="badge">{{model.cuenta}}</span></td>
                                     <td>
                                         <button
                                                 class="btn btn-xs btn-primary pull-right"
@@ -115,7 +107,7 @@
     <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
     <script src="{% static 'js/vue/comp.select2.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
-    <script src="{% static 'js/vue/contact.merge.document.js' %}"></script>
+    <script src="{% static 'js/vue/contact.merge.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
 
 {% endblock %}

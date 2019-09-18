@@ -29,7 +29,7 @@ var MergeUrls = {
         getUrlName: function (name) {
             if (!name)
                 return null;
-            return this.createUrl('opt/api-name?name=' + name);
+            return this.createUrl('opt/api-name/' + name + '/');
         },
         getUrlNameValues: function () {
             return this.createUrl('opt/api-name-values/');
