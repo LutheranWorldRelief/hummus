@@ -1,5 +1,5 @@
 from django.db.models import Sum, Count, Q, Value, CharField, F
-from django.db.models.functions import Upper
+from django.db.models.functions import Upper, Lower, Trim
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView
 
 from .tables import *
 from .models import *
-from .common import months, JSONResponseMixin
+from .common import months, JSONResponseMixin, RegexpReplace
 from .common import get_localized_name as __
 
 
@@ -41,7 +41,7 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
 
     def get_data(self, context, **kwargs):
         context = {}
-        qs = Contact.objects.annotate(name_uc=Upper('name'))
+        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
         for row in queryset:
             row['name'] = row['name_uc']
@@ -55,7 +55,8 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
 
     def get_data(self, context, **kwargs):
         context = {}
-        queryset = Contact.objects.filter(name__iexact=self.kwargs['name']).values()
+        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
+        queryset = qs.filter(name_uc=self.kwargs['name']).values()
         context = {'models': list(queryset) }
         return context
 
