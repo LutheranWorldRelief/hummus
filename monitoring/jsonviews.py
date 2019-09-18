@@ -1,4 +1,5 @@
 from django.db.models import Sum, Count, Q, Value, CharField, F
+from django.db.models.functions import Upper
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -31,6 +32,31 @@ class ContactLabels(JSONResponseMixin, TemplateView):
         context = {}
         for f in Contact._meta.fields:
             context[f.name] = f.verbose_name
+        return context
+
+
+class ContactNameDupes(JSONResponseMixin, TemplateView):
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_data(self, context, **kwargs):
+        context = {}
+        qs = Contact.objects.annotate(name_uc=Upper('name'))
+        queryset = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
+        for row in queryset:
+            row['name'] = row['name_uc']
+        context = list(queryset)
+        return context
+
+
+class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_data(self, context, **kwargs):
+        context = {}
+        queryset = Contact.objects.filter(name__iexact=self.kwargs['name']).values()
+        context = {'models': list(queryset) }
         return context
 
 
