@@ -30,6 +30,7 @@ months = [('1', 'January'),
           ('12', _('December')), ]
 
 
+# credit to https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#jsonresponsemixin-example
 class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
@@ -52,3 +53,22 @@ class JSONResponseMixin:
         # objects -- such as Django model instances or querysets
         # -- can be serialized as JSON.
         return context
+
+from django.db.models import Func, Value
+
+
+# credit to https://code.djangoproject.com/ticket/28805
+class RegexpReplace(Func):
+    function = 'REGEXP_REPLACE'
+
+    def __init__(self, expression, pattern, replacement, **extra):
+        if not hasattr(pattern, 'resolve_expression'):
+            if not isinstance(pattern, str):
+                raise TypeError("'pattern' must be a string")
+            pattern = Value(pattern)
+        if not hasattr(replacement, 'resolve_expression'):
+            if not isinstance(replacement, str):
+                raise TypeError("'replacement' must be a string")
+            replacement = Value(replacement)
+        expressions = [expression, pattern, replacement]
+        super().__init__(*expressions, **extra)
