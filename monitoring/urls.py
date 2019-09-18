@@ -1,23 +1,14 @@
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-from rest_framework import routers
-
 from . import views
+from . import jsonviews
 from . import dashboard
-from . import api
-
-router = routers.DefaultRouter()
-router.register(r'opt/api-countries', api.CountryViewSet)
-router.register(r'opt/api-types', api.ContactTypeViewSet)
-router.register(r'opt/api-education', api.EducationViewSet)
-router.register(r'opt/api-organizations', api.OrganizationViewSet)
-router.register(r'opt/api-projects', api.ProjectViewSet)
+from . import models
 
 app_name = 'monitoring'
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
     path('subproject/', views.SubProjectTableView.as_view()),
@@ -43,8 +34,14 @@ urlpatterns = [
     path('import/beneficiarios', TemplateView.as_view(template_name='import.html'), name='iframe_import'),
     path('report/proyectos', TemplateView.as_view(template_name='report.html'), name='iframe_report'),
     path('report/template-clean', views.DownloadTemplate.as_view(), name='template-clean'),
-    path('validate/dupes-id', views.ValidateDupesId.as_view(), name='validate-dupes-ids'),
-    path('opt/api-empty/', views.ContactEmpty.as_view(), ),
-    path('opt/api-labels/', views.ContactLabels.as_view(), ),
-    path('opt/api-docs/', views.ContactDocDupes.as_view(), ),
+    path('validate/dupes-doc', views.ValidateDupesDoc.as_view(), name='validate-dupes-doc'),
+    path('opt/api-empty/', jsonviews.ContactEmpty.as_view(), ),
+    path('opt/api-labels/', jsonviews.ContactLabels.as_view(), ),
+    path('opt/api-docs/', jsonviews.ContactDocDupes.as_view(), ),
+    path('opt/api-doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
+    path('opt/api-organizations/', jsonviews.JsonIdName.as_view(queryset=models.Organization.objects.filter(projectcontact__isnull=False).distinct())),
+    path('opt/api-countries/', jsonviews.JsonIdName.as_view(queryset=models.Country.objects.filter(project__isnull=False).distinct())),
+    path('opt/api-projects/', jsonviews.JsonIdName.as_view(queryset=models.Project.objects.filter(status='Active'))),
+    path('opt/api-types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
+    path('opt/api-education/', jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()),)
 ]

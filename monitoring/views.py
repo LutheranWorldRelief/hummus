@@ -20,8 +20,8 @@ class DownloadTemplate(LoginRequiredMixin, View):
         return redirect("%s/%s" % (settings.MEDIA_URL, link))
 
 
-class ValidateDupesId(LoginRequiredMixin, TemplateView):
-    template_name = 'dupes_id.html'
+class ValidateDupesDoc(LoginRequiredMixin, TemplateView):
+    template_name = 'dupes_document.html'
 
 
 class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
@@ -74,37 +74,4 @@ class ProjectDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        return context
-
-
-class ContactEmpty(JSONResponseMixin, TemplateView):
-    def render_to_response(self, context, **response_kwargs):
-        return self.render_to_json_response(context, **response_kwargs)
-
-    def get_data(self, context, **kwargs):
-        context = {}
-        for f in Contact._meta.fields:
-            context[f.name] = None
-        return context
-
-
-class ContactLabels(JSONResponseMixin, TemplateView):
-    def render_to_response(self, context, **response_kwargs):
-        return self.render_to_json_response(context, **response_kwargs)
-
-    def get_data(self, context, **kwargs):
-        context = {}
-        for f in Contact._meta.fields:
-            context[f.name] = f.verbose_name
-        return context
-
-
-class ContactDocDupes(JSONResponseMixin, TemplateView):
-    def render_to_response(self, context, **response_kwargs):
-        return self.render_to_json_response(context, safe=False, **response_kwargs)
-
-    def get_data(self, context, **kwargs):
-        context = {}
-        queryset = Contact.objects.values('name', 'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
-        context = list(queryset)
         return context
