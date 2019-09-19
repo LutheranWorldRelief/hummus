@@ -8,7 +8,6 @@
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
 	<link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
 	<link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
-	<link href="{% static '/js/lib/alertify1.11.1/css/alertify.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
@@ -109,5 +108,7 @@
     <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
-
+<script>jQuery(function ($) {
+jQuery('#modal-merge').modal({"show":false});
+});</script>
 {% endblock %}

@@ -1,15 +1,19 @@
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.db.models.functions import Upper, Lower, Trim
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 
 from .tables import *
 from .models import *
-from .common import months, JSONResponseMixin, RegexpReplace
+from .common import months, JSONResponseMixin, RegexpReplace, getPostArray
 from .common import get_localized_name as __
 
 
@@ -83,6 +87,81 @@ class ContactDocDupesDetails(JSONResponseMixin, TemplateView):
         queryset = Contact.objects.filter(document=self.kwargs['document']).values()
         context = {'models': list(queryset) }
         return context
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContactNameValues(JSONResponseMixin, TemplateView):
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def post(self, request, *args, **kwargs):
+        ids = request.POST.getlist('ids[]')
+        queryset = Contact.objects.filter(id__in=ids).values()
+
+        values = {}
+        for f in Contact._meta.fields:
+            if f.column == 'id':
+                continue
+            values[f.column] = []
+            for row in queryset:
+                if row[f.column] and row[f.column] not in values[f.column]: #TODO strip if string
+                    values[f.column].append(row[f.column])
+
+        resolve = {}
+        for value in values:
+            if len(values[value]) == 1:
+                values[value] = values[value][0]
+            elif len(values[value]) == 0:
+                values[value] = None
+            else:
+                resolve[value] = values[value]
+
+        context = {}
+        context['ids'] = ids
+        context['values'] = values
+        context['resolve'] = resolve
+        return self.render_to_response(context)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ContactFusion(JSONResponseMixin, TemplateView):
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def post(self, request, *args, **kwargs):
+        id = request.POST.get('id')
+        ids = request.POST.getlist('ids[]')
+        values = getPostArray('values', request.POST)
+        context = {}
+
+        contacts = Contact.objects.filter(id__in=ids).exclude(id=id)
+        contact = Contact.objects.get(id=id)
+
+        if len(contacts) < 1:
+            context['error'] = _('Not enough records to merge.')
+            return self.render_to_response(context, status=500)
+
+        if not id in ids:
+            context['error'] = _('Selected record not found.')
+            return self.render_to_response(context, status=500)
+
+        contact.name = contact.name.strip().replace('  ', ' ')
+        contact.first_name = contact.first_name.strip().replace('  ', ' ')
+        contact.last_name = contact.last_name.strip().replace('  ', ' ')
+
+        #contact.save()
+
+        for row in contacts:
+            #result['Proyectos-Contactos'][row.id] = ProjectContact.filter(contact_id=row.id).update(contact_id=contact.id)
+            print("DELETE %s", (row.id,))
+            #result['Eliminado'][row.id] = row.delete()
+
+        #context['save'] = saved
+        #context['result'] = result
+        context['id'] = id
+        context['model'] = model_to_dict(contact)
+        context['models'] = list(contacts.values())
+        return self.render_to_response(context)
 
 
 class JsonIdName(JSONResponseMixin, TemplateView):

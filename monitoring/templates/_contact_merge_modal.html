@@ -97,7 +97,9 @@
             <div class="callout callout-danger" v-if="errorFlags.finish">
 		<h4>{% trans 'El proceso de fusión ha terminado pero con errores.' %}</h4>
 		<h5>{% trans 'Por favor contacte al desarrollador del sistema e indique la siguiente información' %}</h5>
+        {{ verbatim }}
                 <pre>{{errorMessage.finish}}</pre>
+        {{ endverbatim }}
             </div>
             <div class="callout callout-info" v-if="!errorFlags.finish">
 		<h4>{% trans 'Se ha finalizado el proceso de fusión. Presione Finalizar para recargar los datos de usuarios.' %}</h4>
@@ -108,7 +110,9 @@
                 <span v-if="fusionFlags.result">Ocultar</span> resultado
             </button>
             <br>
+        {{ verbatim }}
             <pre v-if="fusionFlags.result">{{fusionResult}}</pre>
+        {{ endverbatim }}
             -->
         </div>
         <hr>

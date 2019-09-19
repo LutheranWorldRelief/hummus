@@ -3,9 +3,30 @@ from django.http import JsonResponse
 from django.utils import translation as trans
 from django.utils.translation import gettext_lazy as _
 
+import re
+
 
 def get_localized_name(column):
     return column if trans.get_language() in ['en'] else column+'_'+trans.get_language()
+
+
+def getPostArray(string, request):
+    """
+    evaluates POST array in the form varible[0]['name']='value'
+    returns dictionary variable {0: {'name': 'value'}, 1: {'name': 'othervalue'} }
+    """
+
+    dictionary = {}
+    for var in request:
+        m = re.search("(\w+)\[(\d+)\]\[(\w+)\]", var)
+        if m and m.group(1) == string:
+            integer_index = m.group(2)
+            sub_index = m.group(3)
+            value = request.get(var)
+            if not integer_index in dictionary:
+                dictionary[integer_index] = {}
+            dictionary[integer_index][sub_index] = value
+    return dictionary
 
 
 def dictfetchall(cursor):
