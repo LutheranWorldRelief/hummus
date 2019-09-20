@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'hummus.urls'
@@ -175,15 +175,9 @@ JET_SIDE_MENU_ITEMS = [
     {'label': _('Import Beneficiaries'), 'items': [
         {'name': '', 'url': '/import/beneficiarios',
          'label': _('Import Beneficiaries')},
-
     ]},
     {'label': _('Participants'), 'items': [
         {'name': 'monitoring.contact', 'label': _('Participants')},
-        {'name': 'monitoring.attendance', 'label': _('Participants/Event')},
-
-    ]},
-    {'label': _('Events'), 'items': [
-        {'name': 'monitoring.event', 'label': _('Events'), 'permissions':['monitoring.add_event'] }
     ]},
     {'label': _('Reports'), 'items': [
         {'name': '', 'url': '/report/proyectos', 'label': _('Principal')},
@@ -204,8 +198,6 @@ JET_SIDE_MENU_ITEMS = [
     {'label': _('Security'), 'items': [
         {'name': 'auth.user', 'label': _('Users')},
         {'name': 'auth.group', 'label': _('Roles')},
-        {'name': '', 'url': LEGACY_URL + 'seguridad/rutas', 'label': _('Routes')},
-        {'name': '', 'url': LEGACY_URL + 'audit', 'label': _('Binnacle')},
     ]}
 ]
 
