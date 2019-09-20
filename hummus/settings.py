@@ -178,6 +178,8 @@ JET_SIDE_MENU_ITEMS = [
     ]},
     {'label': _('Participants'), 'items': [
         {'name': 'monitoring.contact', 'label': _('Participants')},
+        {'name': '', 'url': '/validate/dupes-name', 'label': _('Duplicates by Name')},
+        {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document')},
     ]},
     {'label': _('Reports'), 'items': [
         {'name': '', 'url': '/report/proyectos', 'label': _('Principal')},
