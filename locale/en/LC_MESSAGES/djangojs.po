@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-12 17:33+0000\n"
+"POT-Creation-Date: 2019-09-20 22:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -330,4 +330,74 @@ msgstr ""
 
 #: monitoring/static/js/servicios_angular/highcharts.optiones.js:117
 msgid "All rights reserved LWR"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:85
+msgid "Problem loading tags"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:86
+msgid "Error loading tag information"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:97
+msgid "Problem loading save data"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:98
+msgid "Error loading empty model information"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:109
+msgid "Problem loading organizations data"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:110
+msgid "Error loading organizations information"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:121
+msgid "Problem loading country data"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:122
+msgid "Problem loading country information"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:133
+#: monitoring/static/js/vue/contact.merge.document.js:134
+msgid "Problem loading project data"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:145
+#: monitoring/static/js/vue/contact.merge.document.js:146
+msgid "Problem loading data on beneficiary types"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:157
+#: monitoring/static/js/vue/contact.merge.document.js:158
+msgid "Problem loading the type of education catalog"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:169
+#: monitoring/static/js/vue/contact.merge.document.js:187
+msgid "Problem at "
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:170
+#: monitoring/static/js/vue/contact.merge.document.js:188
+msgid "Error loading contact information"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:239
+msgid "Problem loading records"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:268
+msgid "Problem merging contact records"
+msgstr ""
+
+#: monitoring/static/js/vue/contact.merge.document.js:302
+#: monitoring/static/js/vue/contact.merge.document.js:312
+msgid "The URL could not be generated to get the contact information"
 msgstr ""
