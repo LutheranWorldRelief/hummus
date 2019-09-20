@@ -146,18 +146,19 @@ class ContactFusion(JSONResponseMixin, TemplateView):
             return self.render_to_response(context, status=500)
 
         contact.name = contact.name.strip().replace('  ', ' ')
-        contact.first_name = contact.first_name.strip().replace('  ', ' ')
-        contact.last_name = contact.last_name.strip().replace('  ', ' ')
+        if contact.first_name:
+            contact.first_name = contact.first_name.strip().replace('  ', ' ')
+        if contact.last_name:
+            contact.last_name = contact.last_name.strip().replace('  ', ' ')
 
-        #contact.save()
+        contact.save()
 
         for row in contacts:
-            #result['Proyectos-Contactos'][row.id] = ProjectContact.filter(contact_id=row.id).update(contact_id=contact.id)
-            print("DELETE %s", (row.id,))
-            #result['Eliminado'][row.id] = row.delete()
+            result['Proyectos-Contactos'][row.id] = ProjectContact.filter(contact_id=row.id).update(contact_id=contact.id)
+            result['Eliminado'][row.id] = row.delete()
 
-        #context['save'] = saved
-        #context['result'] = result
+        context['save'] = saved
+        context['result'] = result
         context['id'] = id
         context['model'] = model_to_dict(contact)
         context['models'] = list(contacts.values())
