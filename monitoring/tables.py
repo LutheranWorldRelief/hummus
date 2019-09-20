@@ -1,9 +1,10 @@
 from django.utils.safestring import mark_safe
 
-from django_tables2 import Table, SingleTableView, RequestConfig
-from django_filters import NumberFilter, FilterSet, CharFilter
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+from django_filters import NumberFilter, FilterSet, CharFilter, ModelChoiceFilter
+from django_select2.forms import Select2Widget
+from django_tables2 import Table, SingleTableView, RequestConfig
 
 from .models import *
 
@@ -54,6 +55,10 @@ class ProjectContactTable(Table):
 
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
+    project = ModelChoiceFilter(queryset=Project.objects.all(), widget=Select2Widget)
+    contact__country = ModelChoiceFilter(queryset=Country.objects.all(), widget=Select2Widget)
+    organization = ModelChoiceFilter(queryset=Organization.objects.all(), widget=Select2Widget)
+
     class Meta:
         model = ProjectContact
         fields = ('contact__country', 'project', 'organization', 'contact__name')

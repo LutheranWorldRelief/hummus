@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'constance',
     'constance.backends.database',
     'rest_framework',
+    'django_select2',
     # my apps
     'legacy',
     'monitoring',

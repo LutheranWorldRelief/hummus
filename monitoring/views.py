@@ -13,8 +13,8 @@ from .common import months, JSONResponseMixin
 from .common import get_localized_name as __
 
 
-class ReportExport(LoginRequiredMixin, ListView):
-    model = ProjectContact
+class ReportExport(LoginRequiredMixin, TemplateView):
+    template_name = 'report_export.html'
 
 
 class DownloadTemplate(LoginRequiredMixin, View):
