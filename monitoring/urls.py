@@ -12,6 +12,7 @@ urlpatterns = [
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
     path('subproject/', views.SubProjectTableView.as_view()),
+    path('projectcontact/', views.ProjectContactTableView.as_view()),
     path('contact/<int:pk>/', views.ContactDetailView.as_view(), name='contact'),
     path('project/<int:pk>/', views.ProjectDetailView.as_view(), name='project'),
     path('subproject/<int:pk>/', views.SubProjectDetailView.as_view(), name='subproject'),

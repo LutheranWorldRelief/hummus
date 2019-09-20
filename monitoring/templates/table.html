@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load django_tables2 crispy_forms_tags %}
 {% block content %}
+{% for format in export_formats %}
+    <a href="{% export_url format %}">
+        download  <code>.{{ format }}</code>
+    </a>
+{% endfor %}
 {% crispy filter.form filter.form.helper %}
 {% render_table table %}
 {% endblock %}

@@ -32,11 +32,44 @@ class PagedFilteredTableView(SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(PagedFilteredTableView, self).get_context_data()
         context[self.context_filter_name] = self.filter
+        context['export_formats'] = ('csv', 'xlsx', 'json')
         return context
 
 
 #
 # Specific tables
+#
+
+
+# ProjectContact
+
+class ProjectContactTable(Table):
+    def render_name(self, value, record):
+        url = record.get_absolute_url()
+        return mark_safe('<a href="%s">%s</a>' % (url, record))
+
+    class Meta:
+        model = ProjectContact
+        fields = ('contact.name', 'project', 'organization', 'contact.country.name')
+
+class ProjectContactFilter(FilterSet):
+    contact__name = CharFilter(lookup_expr='icontains')
+    class Meta:
+        model = ProjectContact
+        fields = ('contact__country', 'project', 'organization', 'contact__name')
+
+class ProjectContactFilterFormHelper(FormHelper):
+    form_method = 'GET'
+    layout = Layout(
+        'contact__country',
+        'project',
+        'organization',
+        'contact__name',
+        Submit('submit', 'Apply Filter'),
+    )
+
+
+# Contact
 
 class ContactTable(Table):
     def render_name(self, value, record):
@@ -62,6 +95,8 @@ class ContactFilterFormHelper(FormHelper):
     )
 
 
+# Project
+
 class ProjectTable(Table):
     def render_name(self, value, record):
         url = record.get_absolute_url()
@@ -85,6 +120,8 @@ class ProjectFilterFormHelper(FormHelper):
         Submit('submit', 'Apply Filter'),
     )
 
+
+# SubProject
 
 class SubProjectTable(ProjectTable):
     class Meta:

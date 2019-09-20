@@ -3,9 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import TemplateView
-from django.views.generic.detail import DetailView
+from django.views.generic import TemplateView, DetailView, ListView
 from django_tables2 import RequestConfig
+from django_tables2.export.views import ExportMixin
 
 from .tables import *
 from .models import *
@@ -13,11 +13,8 @@ from .common import months, JSONResponseMixin
 from .common import get_localized_name as __
 
 
-class ReportExport(LoginRequiredMixin, View):
-    def get(self, request):
-        obj = Template.objects.get(id='clean-template')
-        link = getattr(obj, __('file'))
-        return redirect("%s/%s" % (settings.MEDIA_URL, link))
+class ReportExport(LoginRequiredMixin, ListView):
+    model = ProjectContact
 
 
 class DownloadTemplate(LoginRequiredMixin, View):
@@ -38,7 +35,7 @@ class ValidateDupesName(LoginRequiredMixin, TemplateView):
 class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = SubProject
     table_class = SubProjectTable
-    template_name = 'contact_table.html'
+    template_name = 'table.html'
     paginate_by = 50
     filter_class = SubProjectFilter
     formhelper_class = SubProjectFilterFormHelper
@@ -47,7 +44,7 @@ class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
 class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = Project
     table_class = ProjectTable
-    template_name = 'contact_table.html'
+    template_name = 'table.html'
     paginate_by = 50
     filter_class = ProjectFilter
     formhelper_class = ProjectFilterFormHelper
@@ -56,10 +53,19 @@ class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
 class ContactTableView(LoginRequiredMixin, PagedFilteredTableView):
     model = Contact
     table_class = ContactTable
-    template_name = 'contact_table.html'
+    template_name = 'table.html'
     paginate_by = 50
     filter_class = ContactFilter
     formhelper_class = ContactFilterFormHelper
+
+
+class ProjectContactTableView(LoginRequiredMixin, ExportMixin, PagedFilteredTableView):
+    model = ProjectContact
+    table_class = ProjectContactTable
+    template_name = 'table.html'
+    paginate_by = 50
+    filter_class = ProjectContactFilter
+    formhelper_class = ProjectContactFilterFormHelper
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
