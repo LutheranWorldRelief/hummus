@@ -13,6 +13,13 @@ from .common import months, JSONResponseMixin
 from .common import get_localized_name as __
 
 
+class ReportExport(LoginRequiredMixin, View):
+    def get(self, request):
+        obj = Template.objects.get(id='clean-template')
+        link = getattr(obj, __('file'))
+        return redirect("%s/%s" % (settings.MEDIA_URL, link))
+
+
 class DownloadTemplate(LoginRequiredMixin, View):
     def get(self, request):
         obj = Template.objects.get(id='clean-template')
@@ -75,6 +82,14 @@ class SubProjectDetailView(DetailView):
 
 class ProjectDetailView(DetailView):
     model = Project
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class ContactDetailView(DetailView):
+    model = Contact
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
