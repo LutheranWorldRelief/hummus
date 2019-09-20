@@ -198,6 +198,7 @@ JET_SIDE_MENU_ITEMS = [
     {'label': _('Security'), 'items': [
         {'name': 'auth.user', 'label': _('Users')},
         {'name': 'auth.group', 'label': _('Roles')},
+        {'name': 'monitoring.profile', 'label': _('Profiles')},
     ]}
 ]
 
