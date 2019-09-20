@@ -15,8 +15,8 @@
         </div>
 
         <ul class="sidebar-menu tree" data-widget="tree">
-            <li class="header"><span><span>Menú</span></span></li>
-            <li><a href="{{ LEGACY_URL }}import/beneficiarios-paso1"><i class="fa fa-upload"></i>
+            <li class="header"><span><span>{% trans 'Menú' %}</span></span></li>
+            <li><a href="{% url 'monitoring:iframe_import' %}"><i class="fa fa-upload"></i>
                 <span>{% trans 'Import Beneficiaries' %}</span></a>
             </li>
             <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-users"></i>
@@ -29,27 +29,28 @@
                         <span>{% trans 'Duplicates' %}</span> <span class="pull-right-container"><i
                                 class="fa fa-angle-left pull-right"></i></span></a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ LEGACY_URL }}opt/debug-contact-name"><i class="fa fa-user"></i>
+                            <li><a href="{% url 'monitoring:validate-dupes-name' %}"><i class="fa fa-user"></i>
                                 <span>{% trans 'Name' %}</span></a>
                             </li>
-                            <li><a href="{{ LEGACY_URL }}opt/debug-contact-doc"><i class="fa fa-id-card"></i>
+                            <li><a href="{% url 'monitoring:validate-dupes-doc' %}"><i class="fa fa-id-card"></i>
                                 <span>{% trans 'Document' %}</span></a></li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li class="header"><span><span>Reportes</span></span></li>
+            <li class="header"><span><span>{% trans 'Reportes' %}</span></span></li>
             <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ LEGACY_URL }}report/index"><i class="fa fa-file-excel-o"></i>
+                    <li><a href="{% url 'monitoring:iframe_report' %}"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Principal' %}</span></a></li>
-                    <li><a href="/report/template-clean"><i class="fa fa-file-excel-o"></i>
+                    <li><a href="{% url 'monitoring:template-clean' %}"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Clean template' %}</span></a>
                     </li>
                 </ul>
             </li>
-            <li><a href="/graphic/dashboard"><i class="fa fa-bar-chart"></i> <span>{% trans 'Graphics' %}</span></a>
+            <li><a href="{% url 'monitoring:dashboard' %}"><i class="fa fa-bar-chart"></i>
+                <span>{% trans 'Graphics' %}</span></a>
             </li>
             <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
             <li class="treeview"><a href="#"><i class="fa fa-sitemap"></i> <span>{% trans 'Configurations' %}</span>
@@ -99,7 +100,8 @@
                         <span>{% trans 'Roles' %}</span></a></li>
                     <li><a href="{{ LEGACY_URL }}seguridad/rutas"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Routes' %}</span></a></li>
-                    <li><a href="{{ LEGACY_URL }}audit"><i class="fa fa-circle-o"></i> <span>{% trans 'Binnacle' %}</span></a>
+                    <li><a href="{{ LEGACY_URL }}audit"><i class="fa fa-circle-o"></i>
+                        <span>{% trans 'Binnacle' %}</span></a>
                     </li>
                 </ul>
             </li>
