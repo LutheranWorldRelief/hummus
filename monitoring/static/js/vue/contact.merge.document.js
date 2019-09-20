@@ -82,8 +82,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar las etiquetas");
-                console.log("Error al cargar la información de los etiquetas");
+                alertify.error(gettext("Problem loading tags"));
+                console.log(gettext("Error loading tag information"));
             });
             // ------------------------------------------------------------------------------ Getting Empty Model
             // @ts-ignore
@@ -94,8 +94,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar los datos de guardado");
-                console.log("Error al cargar la información del modelo vacío");
+                alertify.error(gettext("Problem loading save data"));
+                console.log(gettext("Error loading empty model information"));
             });
             // ------------------------------------------------------------------------------ Getting Organization List
             // @ts-ignore
@@ -106,8 +106,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar los datos de organizaciones");
-                console.log("Error al cargar la información de las organizaciones");
+                alertify.error(gettext("Problem loading organizations data"));
+                console.log(gettext("Error loading organizations information"));
             });
             // ------------------------------------------------------------------------------ Getting Countries List
             // @ts-ignore
@@ -118,8 +118,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar los datos de los países");
-                console.log("Problema al cargar la información de los países");
+                alertify.error(gettext("Problem loading country data"));
+                console.log(gettext("Problem loading country information"));
             });
             // ------------------------------------------------------------------------------ Getting Projects List
             // @ts-ignore
@@ -130,8 +130,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar los datos de los proyectos");
-                console.log("Problema al cargar los datos de los proyectos");
+                alertify.error(gettext("Problem loading project data"));
+                console.log(gettext("Problem loading project data"));
             });
             // ------------------------------------------------------------------------------ Getting Types List
             // @ts-ignore
@@ -142,8 +142,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar los datos de los tipos de beneficiarios");
-                console.log("Problema al cargar los datos de los tipos de beneficiarios");
+                alertify.error(gettext("Problem loading data on beneficiary types"));
+                console.log(gettext("Problem loading data on beneficiary types"));
             });
             // ------------------------------------------------------------------------------ Getting Types List
             // @ts-ignore
@@ -154,8 +154,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar el catalogo de tipo de educacion");
-                console.log("Problema al cargar el catalogo de tipo de educacion");
+                alertify.error(gettext("Problem loading the type of education catalog"));
+                console.log(gettext("Problem loading the type of education catalog"));
             });
             // ------------------------------------------------------------------------------ Getting Models
             // @ts-ignore
@@ -166,8 +166,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al ");
-                console.log("Error al cargar la información de los contactos");
+                alertify.error(gettext("Problem at "));
+                console.log(gettext("Error loading contact information"));
             })
                 .always(function () {
                 self.loading.all = false;
@@ -184,8 +184,8 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al ");
-                console.log("Error al cargar la información de los contactos");
+                alertify.error(gettext("Problem at "));
+                console.log(gettext("Error loading contact information"));
             })
                 .always(function () {
                 self.loading.all = false;
@@ -236,7 +236,7 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al cargar los registros");
+                alertify.error(gettext("Problem loading records"));
             });
         },
         fusionResolve: function () {
@@ -265,7 +265,7 @@ var app = new Vue({
             })
                 .fail(function () {
                 // @ts-ignore
-                alertify.error("Problema al fusionar los registros de contacto.");
+                alertify.error(gettext("Problem merging contact records"));
                 self.loading.modal = false;
                 self.loading.fusion = false;
             });
@@ -299,7 +299,7 @@ var app = new Vue({
             var url = self.getUrlDoc(self.name);
             if (!url) {
                 self.loading.modal = false;
-                console.log("No se logró generar la URL para obtener la información del contacto");
+                console.log(gettext("The URL could not be generated to get the contact information"));
             }
             else {
                 // @ts-ignore
@@ -309,7 +309,7 @@ var app = new Vue({
                     self.models = data.models;
                 })
                     .fail(function () {
-                    console.log("No se logró generar la URL para obtener la información del contacto");
+                    console.log(gettext("The URL could not be generated to get the contact information"));
                 })
                     .always(function () {
                     self.loading.modal = false;
