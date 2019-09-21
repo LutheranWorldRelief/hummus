@@ -59,7 +59,7 @@ class ContactTableView(LoginRequiredMixin, PagedFilteredTableView):
     formhelper_class = ContactFilterFormHelper
 
 
-class ProjectContactTableView(LoginRequiredMixin, ExportMixin, PagedFilteredTableView):
+class ProjectContactTableView(LoginRequiredMixin, ReportExportMixin, PagedFilteredTableView):
     model = ProjectContact
     table_class = ProjectContactTable
     template_name = 'table.html'
