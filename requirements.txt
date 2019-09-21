@@ -12,3 +12,6 @@ django-picklefield==2.0
 simple-salesforce==0.74.3
 djangorestframework==3.10.3
 django-select2==7.1.1
+django-excel==0.0.10
+pyexcel-xlsx==0.5.7
+openpyxl==2.5.14

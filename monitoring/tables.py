@@ -1,12 +1,66 @@
 from django.utils.safestring import mark_safe
+from django.http import HttpResponse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
 from django_filters import NumberFilter, FilterSet, CharFilter, ModelChoiceFilter
 from django_select2.forms import Select2Widget
 from django_tables2 import Table, SingleTableView, RequestConfig
+from openpyxl import load_workbook
+from openpyxl.writer.excel import save_virtual_workbook
 
 from .models import *
+from .common import get_localized_name as __
+
+
+class ReportExportMixin:
+
+    export_name = "table"
+    export_trigger_param = "_export"
+    exclude_columns = ()
+
+    def table_to_dataset(self, table, exclude_columns):
+        dataset = []
+        for i, row in enumerate(table.as_values(exclude_columns=exclude_columns)):
+            dataset.append(row)
+        return dataset
+
+    def get_export_filename(self, export_format):
+        return "{}.{}".format(self.export_name, export_format)
+
+    def create_export(self, export_format):
+
+        # get table and create dataset
+        table = self.get_table(**self.get_table_kwargs())
+        dataset = self.table_to_dataset(table, self.exclude_columns)
+
+        # get localized excel tempalte
+        obj = Template.objects.get(id='clean-template')
+        template = "%s/%s" % (settings.MEDIA_ROOT, getattr(obj, __('file')))
+
+        # loads 'datos' sheet # TODO rename to 'data'?
+        wb = load_workbook(filename = template)
+        ws = wb.get_active_sheet()
+        #ws = wb.get_sheet_by_name("datos")
+
+        # adds rows
+        max = ws.max_row
+        for row, row_entry in enumerate(dataset,start=1):
+            for col, col_entry in enumerate(row_entry, start=1):
+                ws.cell(row=row+max, column=col, value=col_entry)
+
+        # resposne
+        response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=myexport.xlsx'
+        return response
+
+
+    def render_to_response(self, context, **kwargs):
+        export_format = self.request.GET.get(self.export_trigger_param, None)
+        if export_format == "xlsx":
+            return self.create_export(export_format)
+
+        return super().render_to_response(context, **kwargs)
 
 
 class PagedFilteredTableView(SingleTableView):
