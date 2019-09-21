@@ -2,10 +2,10 @@
     'use strict';
 
     var app = angular.module("App", ["ngGrid"])
-                     .service('DatosService', DatosService)
-                     .constant('UrlsAcciones', UrlsAcciones)
-                     .constant('highchartsOpciones', highchartsOpciones)
-                     .controller('AppCtrl', DatosCtrl);
+        .service('DatosService', DatosService)
+        .constant('UrlsAcciones', UrlsAcciones)
+        .constant('highchartsOpciones', highchartsOpciones)
+        .controller('AppCtrl', DatosCtrl);
 
     DatosCtrl.$inject = ['$scope', 'UrlsAcciones', 'DatosService', 'highchartsOpciones', '$timeout'];
 
@@ -68,17 +68,6 @@
                     } else {
                         highchartsOpciones.theme.colors = highchartsOpciones.theme.colorsDefault;
                     }
-                })
-                .catch(function (mensaje, codigo) {
-                    console.log(codigo + ' => ' + mensaje);
-                });
-        }
-
-        function cargarDatosCantidadProyectos(data) {
-            DatosService
-                .Enviar(UrlsAcciones.UrlDatosCantidadProyectos, data)
-                .then(function (result) {
-                    $scope.proyectos = result.data.proyectos;
                 })
                 .catch(function (mensaje, codigo) {
                     console.log(codigo + ' => ' + mensaje);
@@ -267,8 +256,6 @@
 
             $scope.proyecto = null;
             $scope.proyectos = null;
-            //$scope.eventos.actividades = null;
-            //$scope.eventos.eventos = null;
         };
 
         $scope.cargarDatos = function () {
@@ -301,10 +288,6 @@
 
             $timeout(function () {
                 cargarDatosGraficoAnioFiscal(data);
-            }, 1);
-
-            $timeout(function () {
-                cargarDatosCantidadProyectos(data);
             }, 1);
 
             $timeout(function () {
@@ -383,7 +366,7 @@
                     },
                     tooltip: {
                         headerFormat: gettext('<b>Participants</b><br/>'),
-                        pointFormat: '{series.name}: {point.y}<br/>'+gettext('Total:')+'{point.stackTotal}'
+                        pointFormat: '{series.name}: {point.y}<br/>' + gettext('Total:') + '{point.stackTotal}'
                     },
                     legend: {enabled: true},
                     plotOptions: {
@@ -432,7 +415,7 @@
                     },
                     tooltip: {
                         headerFormat: gettext('<b>Participants</b><br/>'),
-                        pointFormat: '{series.name}: {point.y}<br/>'+gettext('Total:')+'{point.stackTotal}'
+                        pointFormat: '{series.name}: {point.y}<br/>' + gettext('Total:') + '{point.stackTotal}'
                     },
                     legend: {enabled: true},
                     plotOptions: {
@@ -475,7 +458,7 @@
                     },
                     tooltip: {
                         headerFormat: '<b>Participants</b><br/>',
-                        pointFormat: '{series.name}: {point.y}<br/>'+gettext('Total:')+'{point.stackTotal}'
+                        pointFormat: '{series.name}: {point.y}<br/>' + gettext('Total:') + '{point.stackTotal}'
                     },
                     legend: {enabled: true},
                     plotOptions: {
@@ -520,7 +503,7 @@
                     },
                     tooltip: {
                         headerFormat: gettext('<b>Participants</b><br/>'),
-                        pointFormat: '{series.name}: {point.y}<br/>'+gettext('Total:')+'{point.stackTotal}'
+                        pointFormat: '{series.name}: {point.y}<br/>' + gettext('Total:') + '{point.stackTotal}'
                     },
                     legend: {enabled: true},
                     plotOptions: {
@@ -563,7 +546,7 @@
                     },
                     tooltip: {
                         headerFormat: gettext('<b>Participants</b><br/>'),
-                        pointFormat: '{series.name}: {point.y}<br/>'+gettext('Total:')+'{point.stackTotal}'
+                        pointFormat: '{series.name}: {point.y}<br/>' + gettext('Total:') + '{point.stackTotal}'
                     },
                     legend: {enabled: true},
                     plotOptions: {
@@ -605,38 +588,38 @@
                 states: {hover: {halo: {size: 5}}},
                 dataLabels: {enabled: false}
             }, {
-                                      getCenter: function () {
-                                          var options = this.options,
-                                              chart = this.chart,
-                                              slicingRoom = 2 * (options.slicedOffset || 0);
-                                          if (!options.center) {
-                                              options.center = [null, null]; // Do the default here instead
-                                          }
-                                          // Handle lat/lon support
-                                          if (options.center.lat !== undefined) {
-                                              var point = chart.fromLatLonToPoint(options.center);
-                                              options.center = [
-                                                  chart.xAxis[0].toPixels(point.x, true),
-                                                  chart.yAxis[0].toPixels(point.y, true)
-                                              ];
-                                          }
-                                          // Handle dynamic size
-                                          if (options.sizeFormatter) {
-                                              options.size = options.sizeFormatter.call(this);
-                                          }
-                                          // Call parent function
-                                          var result = Highcharts.seriesTypes.pie.prototype.getCenter.call(this);
-                                          // Must correct for slicing room to get exact pixel pos
-                                          result[0] -= slicingRoom;
-                                          result[1] -= slicingRoom;
-                                          return result;
-                                      },
-                                      translate: function (p) {
-                                          this.options.center = this.userOptions.center;
-                                          this.center = this.getCenter();
-                                          return Highcharts.seriesTypes.pie.prototype.translate.call(this, p);
-                                      }
-                                  });
+                getCenter: function () {
+                    var options = this.options,
+                        chart = this.chart,
+                        slicingRoom = 2 * (options.slicedOffset || 0);
+                    if (!options.center) {
+                        options.center = [null, null]; // Do the default here instead
+                    }
+                    // Handle lat/lon support
+                    if (options.center.lat !== undefined) {
+                        var point = chart.fromLatLonToPoint(options.center);
+                        options.center = [
+                            chart.xAxis[0].toPixels(point.x, true),
+                            chart.yAxis[0].toPixels(point.y, true)
+                        ];
+                    }
+                    // Handle dynamic size
+                    if (options.sizeFormatter) {
+                        options.size = options.sizeFormatter.call(this);
+                    }
+                    // Call parent function
+                    var result = Highcharts.seriesTypes.pie.prototype.getCenter.call(this);
+                    // Must correct for slicing room to get exact pixel pos
+                    result[0] -= slicingRoom;
+                    result[1] -= slicingRoom;
+                    return result;
+                },
+                translate: function (p) {
+                    this.options.center = this.userOptions.center;
+                    this.center = this.getCenter();
+                    return Highcharts.seriesTypes.pie.prototype.translate.call(this, p);
+                }
+            });
 
             var data = [];
             //País en ingles, total, mujeres, hombres, coordenada x, cooredenada y, pais en español, alfa2
@@ -693,9 +676,9 @@
                             var hoverVotes = this.hoverVotes; // Used by pie only
                             var tooltip = gettext('<b>Participants ') + this.pais + '</b><br/>' +
                                 Highcharts.map([
-                                                   [gettext('Men'), this.hombres, hombresColor],
-                                                   [gettext('Women'), this.mujeres, mujeresColor]
-                                               ].sort(function (a, b) {
+                                    [gettext('Men'), this.hombres, hombresColor],
+                                    [gettext('Women'), this.mujeres, mujeresColor]
+                                ].sort(function (a, b) {
                                     return b[1] - a[1]; // Sort tooltip by most votes
                                 }), function (line) {
                                     return '<span style="color:' + line[2] +
@@ -740,62 +723,62 @@
 
                 // Add the pie for this state
                 chart.addSeries({
-                                    type: 'mappie',
-                                    zIndex: 6, // Keep pies above connector lines
-                                    sizeFormatter: function () {
-                                        var yAxis = this.chart.yAxis[0],
-                                            zoomFactor = (yAxis.dataMax - yAxis.dataMin) /
-                                                (yAxis.max - yAxis.min);
-                                        return Math.max(
-                                            this.chart.chartWidth / 250 * zoomFactor, // Min size
-                                            this.chart.chartWidth / 200 * zoomFactor * state.total / maxTotal
-                                        );
-                                    },
-                                    tooltip: {
-                                        // Use the state tooltip for the pies as well
-                                        pointFormatter: function () {
-                                            return state.series.tooltipOptions.pointFormatter.call({
-                                                                                                       id: state.id,
-                                                                                                       hoverVotes: this.name,
-                                                                                                       pais: state.pais,
-                                                                                                       mujeres: state.mujeres,
-                                                                                                       hombres: state.hombres,
-                                                                                                       total: state.total,
-                                                                                                       eventos: state.eventos
-                                                                                                   });
-                                        }
-                                    },
+                    type: 'mappie',
+                    zIndex: 6, // Keep pies above connector lines
+                    sizeFormatter: function () {
+                        var yAxis = this.chart.yAxis[0],
+                            zoomFactor = (yAxis.dataMax - yAxis.dataMin) /
+                                (yAxis.max - yAxis.min);
+                        return Math.max(
+                            this.chart.chartWidth / 250 * zoomFactor, // Min size
+                            this.chart.chartWidth / 200 * zoomFactor * state.total / maxTotal
+                        );
+                    },
+                    tooltip: {
+                        // Use the state tooltip for the pies as well
+                        pointFormatter: function () {
+                            return state.series.tooltipOptions.pointFormatter.call({
+                                id: state.id,
+                                hoverVotes: this.name,
+                                pais: state.pais,
+                                mujeres: state.mujeres,
+                                hombres: state.hombres,
+                                total: state.total,
+                                eventos: state.eventos
+                            });
+                        }
+                    },
 
-                                    data: [{
-                                        name: gettext('Men'),
-                                        y: state.hombres,
-                                        color: hombresColor
-                                    }, {
-                                        name: gettext('Women'),
-                                        y: state.mujeres,
-                                        color: mujeresColor
-                                    }],
-                                    center: {
-                                        lat: centerLat + (pieOffset.lat || 0),
-                                        lon: centerLon + (pieOffset.lon || 0)
-                                    }
-                                }, false);
+                    data: [{
+                        name: gettext('Men'),
+                        y: state.hombres,
+                        color: hombresColor
+                    }, {
+                        name: gettext('Women'),
+                        y: state.mujeres,
+                        color: mujeresColor
+                    }],
+                    center: {
+                        lat: centerLat + (pieOffset.lat || 0),
+                        lon: centerLon + (pieOffset.lon || 0)
+                    }
+                }, false);
 
                 // Draw connector to state center if the pie has been offset
                 if (pieOffset.drawConnector !== false) {
                     var centerPoint = chart.fromLatLonToPoint({
-                                                                  lat: centerLat,
-                                                                  lon: centerLon
-                                                              }),
+                            lat: centerLat,
+                            lon: centerLon
+                        }),
                         offsetPoint = chart.fromLatLonToPoint({
-                                                                  lat: centerLat + (pieOffset.lat || 0),
-                                                                  lon: centerLon + (pieOffset.lon || 0)
-                                                              });
+                            lat: centerLat + (pieOffset.lat || 0),
+                            lon: centerLon + (pieOffset.lon || 0)
+                        });
                     chart.series[2].addPoint({
-                                                 name: state.id,
-                                                 path: 'M' + offsetPoint.x + ' ' + offsetPoint.y +
-                                                     'L' + centerPoint.x + ' ' + centerPoint.y
-                                             }, false);
+                        name: state.id,
+                        path: 'M' + offsetPoint.x + ' ' + offsetPoint.y +
+                            'L' + centerPoint.x + ' ' + centerPoint.y
+                    }, false);
                 }
             });
             // Only redraw once all pies and connectors have been added
@@ -814,7 +797,7 @@
                         type: 'pie'
                     },
                     title: highchartsOpciones.title(gettext('Participants reached, by sex')),
-                    subtitle: {text: gettext('Total amount')+' '+$scope.dataTotales.total},
+                    subtitle: {text: gettext('Total amount') + ' ' + $scope.dataTotales.total},
                     tooltip: {pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'},
                     plotOptions: {
                         pie: {
@@ -855,7 +838,7 @@
                 var opciones = {
 
                     title: highchartsOpciones.title(gettext('ORGANIZATIONS')),
-                    subtitle: {text: $scope.organizacionesObj.total +' '+gettext('total, in')+' '+ $scope.organizacionesObj.total_categorias + ' '+gettext('Categories')},
+                    subtitle: {text: $scope.organizacionesObj.total + ' ' + gettext('total, in') + ' ' + $scope.organizacionesObj.total_categorias + ' ' + gettext('Categories')},
 
                     series: [{
                         type: 'treemap',
@@ -975,10 +958,6 @@
         $scope.cambioRubros = function () {
             $scope.cambioRubrosCantidad++;
             $scope.formulario.rubros = $scope.getDataRubros();
-        };
-
-        $scope.CantidadRubros = function () {
-            return $scope.rubros.length;
         };
 
         $scope.classChecked = function (obj) {
