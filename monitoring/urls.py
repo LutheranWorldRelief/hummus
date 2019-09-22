@@ -9,6 +9,9 @@ from . import models
 app_name = 'monitoring'
 
 urlpatterns = [
+    #path('',TemplateView.as_view(template_name='index.html')),
+    path('', views.DashboardView.as_view(), name='dashboard'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
     path('subproject/', views.SubProjectTableView.as_view()),
@@ -16,7 +19,6 @@ urlpatterns = [
     path('contact/<int:pk>/', views.ContactDetailView.as_view(), name='contact'),
     path('project/<int:pk>/', views.ProjectDetailView.as_view(), name='project'),
     path('subproject/<int:pk>/', views.SubProjectDetailView.as_view(), name='subproject'),
-    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('graphic/proyecto/', dashboard.proyecto, name='graphic-proyecto'),
     path('graphic/cantidad-proyectos/', dashboard.cantidadProyectos, name='cantidad-proyectos'),
     path('graphic/cantidad-eventos/', dashboard.cantidadEventos, name='cantidad-eventos'),
