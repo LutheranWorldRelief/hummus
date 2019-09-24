@@ -351,9 +351,6 @@ def graficoPaisEventos(request):
         m=Count('contact', filter=Q(contact__sex='M')),
     )
 
-    print(result.query)
-
-
     pais_array = []
     paisesDetalles = []
     for row in result:
