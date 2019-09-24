@@ -275,14 +275,38 @@ def graficoSexoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoNacionalidad(request):
-    filter = getFilters(request)
-    result = ProjectContact.objects.values('contact__country', 'contact__country__x', 'contact__country__y',
-                                           'contact__country__name').order_by('contact__country').annotate(
-        f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
-    pais_array = [];
+    parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+
+    filter_kwargs = filterBy(parameters, request)
+    result = ProjectContact.objects.filter(**filter_kwargs) \
+        .values('contact__country', 'contact__country__x',
+                'contact__country__y',
+                'contact__country__name',
+                'contact__country__name_es',
+                'contact__country__name_fr') \
+        .order_by('contact__country') \
+        .annotate(
+        f=Count('contact', filter=Q(contact__sex='F')),
+        m=Count('contact', filter=Q(contact__sex='M')))
+
+    pais_array = []
+    paisesDetalles = []
     for row in result:
         if 'contact__country' in row:
             row['total'] = row['f'] + row['m']
+            paisesDetalles.append({
+                'pais_en_ingles': row['contact__country__name'],
+                'total': row['total'],
+                'f': row['f'],
+                'm': row['m'],
+                'coordenada_x': row['contact__country__x'],
+                'coordenada_y': row['contact__country__y'],
+                'pais_en_espaniol': row['contact__country__name_es'],
+                'pais_en_frances': row['contact__country__name_fr'],
+                'country': row['contact__country'],
+                'eventos': "123",
+            })
             pais_array.append([
                 row['contact__country__name'],
                 row['total'],
@@ -290,11 +314,11 @@ def graficoNacionalidad(request):
                 row['m'],
                 row['contact__country__x'],
                 row['contact__country__y'],
-                row['contact__country__name'],
+                row['contact__country__name_es'],
                 str(row['contact__country']).lower(),
             ])
 
-    return JsonResponse({'pais': list(result), 'paisArray': pais_array})
+    return JsonResponse({'pais': list(paisesDetalles), 'paisArray': pais_array})
 
 
 @csrf_exempt
