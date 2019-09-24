@@ -300,49 +300,12 @@ def graficoNacionalidad(request):
 @csrf_exempt
 @login_required
 def graficoPaisEventos(request):
-    rubrosTodos = request.POST['rubros_todos']
-    paisesTodos = request.POST['paises_todos']
-    paisesNinguno = request.POST['paises_ninguno']
-    rubrosNinguno = request.POST['rubros_ninguno']
-    desde = None
-    hasta = None
-    proyectoId = None
-    rubros = []
-    paises = []
+    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
 
-    result = ProjectContact.objects
+    filter_kwargs = filterBy(parameters, request)
 
-    if 'desde' in request.POST:
-        desde = request.POST['desde']
-
-    if 'hasta' in request.POST:
-        hasta = request.POST['hasta']
-
-    if 'proyecto' in request.POST:
-        proyectoId = int(request.POST['proyecto'])
-
-    if 'rubros[]' in request.POST:
-        rubros = request.POST.getlist('rubros[]')
-
-    if 'paises[]' in request.POST:
-        paises = request.POST.getlist('paises[]')
-
-    if proyectoId is not None:
-        result = result.filter(project=proyectoId)
-
-    if len(rubros) > 0:
-        result = result.filter(product__in=rubros)
-
-    if len(paises) > 0:
-        result = result.filter(project__countries__in=paises)
-
-    if desde is not None:
-        result = result.filter(date_entry_project__gte=desde)
-    
-    if hasta is not None:
-        result = result.filter(date_entry_project__lte=hasta)
-
-    result = result.order_by('project__countries') \
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by('project__countries') \
         .values('project__countries', 'project__countries__x', 'project__countries__y',
                 'project__countries__name', 'project__countries__name_es',
                 'project__countries__name_fr') \
@@ -386,12 +349,18 @@ def graficoPaisEventos(request):
 
 
 def filterBy(parameters, request):
-    paises = request.POST.getlist("paises[]")
+    paises = request.POST.getlist('paises[]')
+    rubros = request.POST.getlist('rubros[]')
     filter_kwargs = {}
 
     for key, value in request.POST.items():
         if key in parameters:
-            filter_kwargs[parameters[key]] = value if key != 'paises[]' else paises
+            if key == 'paises[]':
+                filter_kwargs[parameters[key]] = paises
+            elif key == 'rubros[]':
+                filter_kwargs[parameters[key]] = rubros
+            else:
+                filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
 
