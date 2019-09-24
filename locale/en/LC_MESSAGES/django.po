@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-20 22:30+0000\n"
+"POT-Creation-Date: 2019-09-23 21:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "French"
 msgstr ""
 
-#: hummus/settings.py:175 hummus/settings.py:177
+#: hummus/settings.py:176 hummus/settings.py:178
 #: monitoring/templates/sidebar.html:20
 msgid "Import Beneficiaries"
 msgstr ""
@@ -41,93 +41,88 @@ msgid "Participants"
 msgstr ""
 
 #: hummus/settings.py:182
-msgid "Participants/Event"
+msgid "Duplicates by Name"
 msgstr ""
 
-#: hummus/settings.py:185 hummus/settings.py:186
-#: monitoring/templates/dashboard/resumen.html:49
-msgid "Events"
+#: hummus/settings.py:183
+msgid "Duplicates per document"
 msgstr ""
 
-#: hummus/settings.py:188 monitoring/templates/sidebar.html:42
+#: hummus/settings.py:185 monitoring/templates/sidebar.html:42
 msgid "Reports"
 msgstr ""
 
-#: hummus/settings.py:189 monitoring/templates/sidebar.html:46
+#: hummus/settings.py:186 monitoring/templates/sidebar.html:46
 msgid "Principal"
 msgstr ""
 
-#: hummus/settings.py:190
+#: hummus/settings.py:187
 msgid "Clean Template"
 msgstr ""
 
-#: hummus/settings.py:192 monitoring/templates/sidebar.html:52
+#: hummus/settings.py:189 monitoring/templates/sidebar.html:53
 msgid "Graphics"
 msgstr ""
 
-#: hummus/settings.py:193
+#: hummus/settings.py:190
 msgid "Dashboard"
 msgstr ""
 
-#: hummus/settings.py:195 monitoring/templates/sidebar.html:55
+#: hummus/settings.py:192 monitoring/templates/sidebar.html:56
 msgid "Configurations"
 msgstr ""
 
-#: hummus/settings.py:196 monitoring/models.py:51 monitoring/models.py:228
+#: hummus/settings.py:193 monitoring/models.py:51 monitoring/models.py:228
 #: monitoring/templates/_filter_form.html:13
 #: monitoring/templates/dashboard/resumen.html:21
-#: monitoring/templates/sidebar.html:60
+#: monitoring/templates/sidebar.html:61
 msgid "Projects"
 msgstr ""
 
-#: hummus/settings.py:197 monitoring/models.py:161
+#: hummus/settings.py:194 monitoring/models.py:161
 #: monitoring/templates/_filter_form.html:21
-#: monitoring/templates/sidebar.html:61
+#: monitoring/templates/sidebar.html:62
 msgid "Organizations"
 msgstr ""
 
-#: hummus/settings.py:198 monitoring/templates/sidebar.html:70
+#: hummus/settings.py:195 monitoring/templates/sidebar.html:71
 msgid "Types"
 msgstr ""
 
-#: hummus/settings.py:199 monitoring/admin.py:127 monitoring/admin.py:146
+#: hummus/settings.py:196 monitoring/admin.py:127 monitoring/admin.py:146
 #: monitoring/models.py:50 monitoring/models.py:121 monitoring/models.py:215
 #: monitoring/templates/dashboard/paises_rubros.html:6
-#: monitoring/templates/sidebar.html:80
+#: monitoring/templates/sidebar.html:81
 msgid "Countries"
 msgstr ""
 
-#: hummus/settings.py:200 monitoring/templates/sidebar.html:83
+#: hummus/settings.py:197 monitoring/templates/sidebar.html:84
 msgid "Contact Types"
 msgstr ""
 
-#: hummus/settings.py:201 monitoring/models.py:339
-#: monitoring/templates/sidebar.html:86
+#: hummus/settings.py:198 monitoring/models.py:339
+#: monitoring/templates/sidebar.html:87
 msgid "Educations"
 msgstr ""
 
-#: hummus/settings.py:202 monitoring/templates/sidebar.html:90
+#: hummus/settings.py:199 monitoring/templates/sidebar.html:91
 msgid "Segmentation"
 msgstr ""
 
-#: hummus/settings.py:204 monitoring/templates/sidebar.html:93
+#: hummus/settings.py:201 monitoring/templates/sidebar.html:94
 msgid "Security"
 msgstr ""
 
-#: hummus/settings.py:205 monitoring/templates/sidebar.html:97
+#: hummus/settings.py:202 monitoring/templates/sidebar.html:98
 msgid "Users"
 msgstr ""
 
-#: hummus/settings.py:206 monitoring/templates/sidebar.html:99
+#: hummus/settings.py:203 monitoring/templates/sidebar.html:100
 msgid "Roles"
 msgstr ""
 
-#: hummus/settings.py:207 monitoring/templates/sidebar.html:101
-msgid "Routes"
-msgstr ""
-
-#: hummus/settings.py:208 monitoring/templates/sidebar.html:102
-msgid "Binnacle"
+#: hummus/settings.py:204 monitoring/models.py:59
+msgid "Profiles"
 msgstr ""
 
 #: monitoring/admin-dashboard.py:11
@@ -163,11 +158,11 @@ msgid "Goal"
 msgstr ""
 
 #: monitoring/admin.py:151
-msgid "M"
+msgid "Women"
 msgstr ""
 
 #: monitoring/admin.py:156
-msgid "H"
+msgid "Men"
 msgstr ""
 
 #: monitoring/admin.py:161
@@ -222,20 +217,20 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: monitoring/dashboard.py:138
-msgid "Meta Hombres"
+#: monitoring/dashboard.py:147
+msgid "Goal Men"
 msgstr ""
 
-#: monitoring/dashboard.py:139
-msgid "Meta Mujeres"
+#: monitoring/dashboard.py:149
+msgid "Goal Women"
 msgstr ""
 
-#: monitoring/dashboard.py:140
-msgid "Cantidad Hombres"
+#: monitoring/dashboard.py:151
+msgid "Amount Men"
 msgstr ""
 
-#: monitoring/dashboard.py:141
-msgid "Cantidad Mujeres"
+#: monitoring/dashboard.py:153
+msgid "Amount Women"
 msgstr ""
 
 #: monitoring/jsonviews.py:141
@@ -315,10 +310,6 @@ msgstr ""
 
 #: monitoring/models.py:58 monitoring/templates/header.html:39
 msgid "Profile"
-msgstr ""
-
-#: monitoring/models.py:59
-msgid "Profiles"
 msgstr ""
 
 #: monitoring/models.py:64
@@ -725,7 +716,7 @@ msgstr ""
 msgid "Clean"
 msgstr ""
 
-#: monitoring/templates/base.html:17
+#: monitoring/templates/base.html:9 monitoring/templates/base.html:17
 msgid "Hummus"
 msgstr ""
 
@@ -737,7 +728,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: monitoring/templates/dashboard.html:108
+#: monitoring/templates/dashboard.html:105
 msgid "PARTICIPANTS BY ACTIVITY"
 msgstr ""
 
@@ -803,16 +794,16 @@ msgid "Implementing Organizations, Participants by Sex and Fiscal Year"
 msgstr ""
 
 #: monitoring/templates/dashboard/paises_rubros.html:9
-#: monitoring/templates/dashboard/paises_rubros.html:50
+#: monitoring/templates/dashboard/paises_rubros.html:49
 msgid "All"
 msgstr ""
 
 #: monitoring/templates/dashboard/paises_rubros.html:12
-#: monitoring/templates/dashboard/paises_rubros.html:53
+#: monitoring/templates/dashboard/paises_rubros.html:52
 msgid "None"
 msgstr ""
 
-#: monitoring/templates/dashboard/paises_rubros.html:47
+#: monitoring/templates/dashboard/paises_rubros.html:46
 #: monitoring/templates/dashboard/resumen.html:62
 msgid "Areas"
 msgstr ""
@@ -823,6 +814,10 @@ msgstr ""
 
 #: monitoring/templates/dashboard/resumen.html:35
 msgid "Activities"
+msgstr ""
+
+#: monitoring/templates/dashboard/resumen.html:49
+msgid "Events"
 msgstr ""
 
 #: monitoring/templates/dupes_document.html:26
@@ -865,24 +860,40 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: monitoring/templates/sidebar.html:18
+msgid "Menú"
+msgstr ""
+
 #: monitoring/templates/sidebar.html:29
 msgid "Duplicates"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:41
+msgid "Reportes"
 msgstr ""
 
 #: monitoring/templates/sidebar.html:48
 msgid "Clean template"
 msgstr ""
 
-#: monitoring/templates/sidebar.html:54
+#: monitoring/templates/sidebar.html:55
 msgid "Catalogs and Configurations"
 msgstr ""
 
-#: monitoring/templates/sidebar.html:67
+#: monitoring/templates/sidebar.html:68
 msgid "List"
 msgstr ""
 
-#: monitoring/templates/sidebar.html:74
+#: monitoring/templates/sidebar.html:75
 msgid "Catalogs"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:102
+msgid "Routes"
+msgstr ""
+
+#: monitoring/templates/sidebar.html:104
+msgid "Binnacle"
 msgstr ""
 
 #: templates/admin/base.html:77

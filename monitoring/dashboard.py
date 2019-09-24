@@ -144,13 +144,13 @@ def proyectosMetas(request):
     proyecto = Project.objects.filter(id=proyecto_id).values('id', 'name', 'targetmen', 'targetwomen').first()
     result = []
     categorias = []
-    serieMetaH = {'name': _('Meta Hombres'), 'color': 'rgba(42,123,153,.9)', 'data': [], 'pointPadding': 0.3,
+    serieMetaH = {'name': _('Goal Men'), 'color': 'rgba(42,123,153,.9)', 'data': [], 'pointPadding': 0.3,
                   'pointPlacement': -0.2}
-    serieMetaF = {'name': _('Meta Mujeres'), 'color': 'rgba(68,87,113,1)', 'data': [], 'pointPadding': 0.3,
+    serieMetaF = {'name': _('Goal Women'), 'color': 'rgba(68,87,113,1)', 'data': [], 'pointPadding': 0.3,
                   'pointPlacement': 0.2}
-    serieH = {'name': _('Cantidad Hombres'), 'color': 'rgba(255,205,85,.8)', 'data': [], 'pointPadding': 0.4,
+    serieH = {'name': _('Amount Men'), 'color': 'rgba(255,205,85,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': -0.2}
-    serieF = {'name': _('Cantidad Mujeres'), 'color': 'rgba(252,110,81,.8)', 'data': [], 'pointPadding': 0.4,
+    serieF = {'name': _('Amount Women'), 'color': 'rgba(252,110,81,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': 0.2}
     cursor = connection.cursor()
     categorias.append(proyecto['name'])

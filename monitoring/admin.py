@@ -148,12 +148,12 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     def get_women(self, obj):
         return 0
 
-    get_women.short_description = _('M')
+    get_women.short_description = _('Women')
 
     def get_men(self, obj):
         return 0
 
-    get_men.short_description = _('H')
+    get_men.short_description = _('Men')
 
     def get_total(self, obj):
         return self.get_men(obj) + self.get_women(obj)
