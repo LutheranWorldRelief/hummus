@@ -62,7 +62,7 @@ def paises(request):
         .filter(countries__isnull=False) \
         .all() \
         .order_by('countries__id') \
-        .values('countries__id', 'countries__name')\
+        .values('countries__id', 'countries__name') \
         .distinct()
 
     for row in result:
@@ -100,7 +100,7 @@ def rubros(request):
 @login_required
 def graficoOrganizaciones(request):
     parameters = {'proyecto': 'project_id', 'desde': 'start__gte', 'hasta': 'start__lte'}
-    filter_kwargs = {}#filterBy(parameters, request)
+    filter_kwargs = {}  # filterBy(parameters, request)
 
     query = ProjectContact.objects
     if len(filter_kwargs) > 0:
@@ -192,7 +192,6 @@ def graficoAnioFiscal(request):
 def graficoEdad(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
-
     groups = Filter.objects.filter(slug='age', start__gte=0)
     named_groups = []
     for group in groups:
@@ -217,7 +216,7 @@ def graficoEdad(request):
 def graficoEducacion(request):
     parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
                   'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = {}#filterBy(parameters, request)
+    filter_kwargs = {}  # filterBy(parameters, request)
 
     query = ProjectContact.objects
     if len(filter_kwargs) > 0:
@@ -244,7 +243,6 @@ def graficoEventos(request):
 def graficoTipoParticipante(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
-
     result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
         type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'), output_field = CharField()),
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
@@ -262,7 +260,7 @@ def graficoTipoParticipante(request):
 def graficoSexoParticipante(request):
     parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
                   'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = {}#filterBy(parameters, request)
+    filter_kwargs = {}  # filterBy(parameters, request)
 
     query = ProjectContact.objects
     if len(filter_kwargs) > 0:
@@ -278,13 +276,39 @@ def graficoSexoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoNacionalidad(request):
-    result = ProjectContact.objects.values('contact__country', 'contact__country__x', 'contact__country__y',
-                                           'contact__country__name').order_by('contact__country').annotate(
-        f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
-    pais_array = [];
+    parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+
+    filter_kwargs = filterBy(parameters, request)
+    result = ProjectContact.objects.filter(**filter_kwargs) \
+        .values('contact__country', 'contact__country__x',
+                'contact__country__y',
+                'contact__country__name',
+                'contact__country__name_es',
+                'contact__country__name_fr') \
+        .order_by('contact__country') \
+        .annotate(
+        f=Count('contact', filter=Q(contact__sex='F')),
+        m=Count('contact', filter=Q(contact__sex='M')))
+
+    pais_array = []
+    paisesDetalles = []
+
     for row in result:
         if 'contact__country' in row:
             row['total'] = row['f'] + row['m']
+            paisesDetalles.append({
+                'pais_en_ingles': row['contact__country__name'],
+                'total': row['total'],
+                'f': row['f'],
+                'm': row['m'],
+                'coordenada_x': row['contact__country__x'],
+                'coordenada_y': row['contact__country__y'],
+                'pais_en_espaniol': row['contact__country__name_es'],
+                'pais_en_frances': row['contact__country__name_fr'],
+                'country': row['contact__country'],
+                'eventos': "123",
+            })
             pais_array.append([
                 row['contact__country__name'],
                 row['total'],
@@ -292,46 +316,77 @@ def graficoNacionalidad(request):
                 row['m'],
                 row['contact__country__x'],
                 row['contact__country__y'],
-                row['contact__country__name'],
+                row['contact__country__name_es'],
                 str(row['contact__country']).lower(),
             ])
 
-    return JsonResponse({'pais': list(result), 'paisArray': pais_array})
+    return JsonResponse({'pais': list(paisesDetalles), 'paisArray': pais_array})
 
 
 @csrf_exempt
 @login_required
 def graficoPaisEventos(request):
-    result = Project.objects.values('countries', 'countries__x', 'countries__y', 'countries__name').order_by(
-        'countries').annotate(
-        f=Count('projectcontact', filter=Q(projectcontact__contact__sex='F')),
-        m=Count('projectcontact', filter=Q(projectcontact__contact__sex='M')),
-    )
-    pais_array = [];
-    for row in result:
-        if 'countries' in row:
-            row['total'] = row['f'] + row['m']
-            pais_array.append([
-                row['countries__name'],
-                row['total'],
-                row['f'],
-                row['m'],
-                row['countries__x'],
-                row['countries__y'],
-                row['countries__name'],
-                str(row['countries']).lower(),
-                0
-            ])
+    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
 
-    return JsonResponse({'pais': list(result), 'paisArray': pais_array})
+    filter_kwargs = filterBy(parameters, request)
+
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by('project__countries') \
+        .values('project__countries', 'project__countries__x', 'project__countries__y',
+                'project__countries__name', 'project__countries__name_es',
+                'project__countries__name_fr') \
+        .annotate(
+        f=Count('contact', filter=Q(contact__sex='F')),
+        m=Count('contact', filter=Q(contact__sex='M')),
+    )
+
+    pais_array = []
+    paisesDetalles = []
+    for row in result:
+        if 'project__countries' in row and row['project__countries__name'] is not None:
+            row['total'] = row['f'] + row['m']
+            if row['total'] > 0:
+                paisesDetalles.append({
+                    'pais_en_ingles': row['project__countries__name'],
+                    'total': row['total'],
+                    'f': row['f'],
+                    'm': row['m'],
+                    'coordenada_x': row['project__countries__x'],
+                    'coordenada_y': row['project__countries__y'],
+                    'pais_en_espaniol': row['project__countries__name_es'],
+                    'pais_en_frances': row['project__countries__name_fr'],
+                    'country': row['project__countries'],
+                    'eventos': "123",
+                })
+                pais_array.append([
+                    row['project__countries__name'],
+                    row['total'],
+                    row['f'],
+                    row['m'],
+                    row['project__countries__x'],
+                    row['project__countries__y'],
+                    row['project__countries__name'],
+                    str(row['project__countries']).lower(),
+                    123
+                ])
+
+    return JsonResponse({'pais': list(paisesDetalles), 'paisArray': pais_array})
 
 
 def filterBy(parameters, request):
-    paises = request.POST.getlist("paises[]")
+    paises = request.POST.getlist('paises[]')
+    rubros = request.POST.getlist('rubros[]')
+    paisesTodos = True if request.POST['paises_todos'] == '1' else False
+    rubrosTodos = True if request.POST['rubros_todos'] == '1' else False
     filter_kwargs = {}
 
     for key, value in request.POST.items():
         if key in parameters:
-            filter_kwargs[parameters[key]] = value if key != 'paises[]' else paises
+            if key == 'paises[]' and paisesTodos == False:
+                filter_kwargs[parameters[key]] = paises
+            elif key == 'rubros[]' and rubrosTodos == False:
+                filter_kwargs[parameters[key]] = rubros
+            elif key != 'paises[]' and key != 'rubros[]':
+                filter_kwargs[parameters[key]] = value
 
     return filter_kwargs

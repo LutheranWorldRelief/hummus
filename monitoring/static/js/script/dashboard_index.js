@@ -61,13 +61,13 @@
                     $scope.proyecto = result.data.proyecto;
                     var urlDefault = 'https://lwr.org/';
                     highchartsOpciones.credits.href = highchartsOpciones.getCreditHref(urlDefault);
-                    if (result.data.proyecto !== null) {
-                        highchartsOpciones.theme.colors = result.data.proyecto.colores;
-                        if (result.data.proyecto.url !== null)
-                            highchartsOpciones.credits.href = highchartsOpciones.getCreditHref(result.data.proyecto.url);
-                    } else {
+                    // if (result.data.proyecto !== null) {
+                    //     highchartsOpciones.theme.colors = result.data.proyecto.colores;
+                    //     if (result.data.proyecto.url !== null)
+                    //         highchartsOpciones.credits.href = highchartsOpciones.getCreditHref(result.data.proyecto.url);
+                    // } else {
                         highchartsOpciones.theme.colors = highchartsOpciones.theme.colorsDefault;
-                    }
+                    // }
                 })
                 .catch(function (mensaje, codigo) {
                     console.log(codigo + ' => ' + mensaje);
