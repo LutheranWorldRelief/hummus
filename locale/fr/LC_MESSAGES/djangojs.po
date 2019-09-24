@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-12 17:33+0000\n"
+"POT-Creation-Date: 2019-09-20 22:34+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -333,3 +333,74 @@ msgstr "Afficher le tableau de données"
 #: monitoring/static/js/servicios_angular/highcharts.optiones.js:117
 msgid "All rights reserved LWR"
 msgstr "Tous droits réservés LWR"
+
+#: monitoring/static/js/vue/contact.merge.document.js:85
+msgid "Problem loading tags"
+msgstr "Problème de chargement des tags"
+
+#: monitoring/static/js/vue/contact.merge.document.js:86
+msgid "Error loading tag information"
+msgstr "Erreur lors du chargement des informations sur la balise"
+
+#: monitoring/static/js/vue/contact.merge.document.js:97
+msgid "Problem loading save data"
+msgstr "Problème de chargement des données sauvegardées"
+
+#: monitoring/static/js/vue/contact.merge.document.js:98
+msgid "Error loading empty model information"
+msgstr "Erreur lors du chargement d'informations de modèle vides"
+
+#: monitoring/static/js/vue/contact.merge.document.js:109
+msgid "Problem loading organizations data"
+msgstr "Problème de chargement des données d'organisations"
+
+#: monitoring/static/js/vue/contact.merge.document.js:110
+msgid "Error loading organizations information"
+msgstr "Erreur lors du chargement des informations sur les organisations"
+
+#: monitoring/static/js/vue/contact.merge.document.js:121
+msgid "Problem loading country data"
+msgstr "Problème de chargement des données du pays"
+
+#: monitoring/static/js/vue/contact.merge.document.js:122
+msgid "Problem loading country information"
+msgstr "Problème de chargement des informations sur le pays"
+
+#: monitoring/static/js/vue/contact.merge.document.js:133
+#: monitoring/static/js/vue/contact.merge.document.js:134
+msgid "Problem loading project data"
+msgstr "Problème de chargement des données du projet"
+
+#: monitoring/static/js/vue/contact.merge.document.js:145
+#: monitoring/static/js/vue/contact.merge.document.js:146
+msgid "Problem loading data on beneficiary types"
+msgstr "Problème de chargement des données sur les types de bénéficiaires"
+
+#: monitoring/static/js/vue/contact.merge.document.js:157
+#: monitoring/static/js/vue/contact.merge.document.js:158
+msgid "Problem loading the type of education catalog"
+msgstr "Problème de chargement du type de catalogue d'éducation"
+
+#: monitoring/static/js/vue/contact.merge.document.js:169
+#: monitoring/static/js/vue/contact.merge.document.js:187
+msgid "Problem at "
+msgstr "Problème à"
+
+#: monitoring/static/js/vue/contact.merge.document.js:170
+#: monitoring/static/js/vue/contact.merge.document.js:188
+msgid "Error loading contact information"
+msgstr "Erreur lors du chargement des informations de contact"
+
+#: monitoring/static/js/vue/contact.merge.document.js:239
+msgid "Problem loading records"
+msgstr "Problème de chargement des enregistrements"
+
+#: monitoring/static/js/vue/contact.merge.document.js:268
+msgid "Problem merging contact records"
+msgstr "Problème de fusion des enregistrements de contact"
+
+#: monitoring/static/js/vue/contact.merge.document.js:302
+#: monitoring/static/js/vue/contact.merge.document.js:312
+msgid "The URL could not be generated to get the contact information"
+msgstr ""
+"L'URL n'a pas pu être générée pour obtenir les informations de contact."
