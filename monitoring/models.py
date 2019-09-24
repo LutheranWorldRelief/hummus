@@ -59,6 +59,21 @@ class Profile(models.Model):
         verbose_name_plural = _('Profiles')
 
 
+class Sex(models.Model):
+    id = models.CharField(primary_key=True, max_length=1, verbose_name=_('Id'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    name_es = models.CharField(max_length=255, verbose_name=_('Name'))
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name'))
+
+    def __str__(self):
+        return "%s" % (self.id)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = _('Sex')
+        verbose_name_plural = _('Sex')
+
+
 class Contact(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     last_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('Last Name'))
