@@ -345,21 +345,22 @@ def graficoPaisEventos(request):
                 ])
 
     return JsonResponse({'pais': list(paisesDetalles), 'paisArray': pais_array})
-    # return JsonResponse({})
 
 
 def filterBy(parameters, request):
     paises = request.POST.getlist('paises[]')
     rubros = request.POST.getlist('rubros[]')
+    paisesTodos = True if request.POST['paises_todos'] == '1' else False
+    rubrosTodos = True if request.POST['rubros_todos'] == '1' else False
     filter_kwargs = {}
 
     for key, value in request.POST.items():
         if key in parameters:
-            if key == 'paises[]':
+            if key == 'paises[]' and paisesTodos == False:
                 filter_kwargs[parameters[key]] = paises
-            elif key == 'rubros[]':
+            elif key == 'rubros[]' and rubrosTodos == False:
                 filter_kwargs[parameters[key]] = rubros
-            else:
+            elif key != 'paises[]' and key != 'rubros[]':
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
