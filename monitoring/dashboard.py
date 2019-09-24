@@ -3,6 +3,8 @@ from datetime import date
 from django.utils.timezone import now
 from django.db.models.functions import Concat
 from django.db.models import Sum, Count, Q, Value, CharField, F
+from django.db.models.functions import ExtractYear
+from django.db.models import CharField, Case, Value, When
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -63,7 +65,6 @@ def paises(request):
         .values('countries__id', 'countries__name')\
         .distinct()
 
-    print(result)
     for row in result:
         row['id'] = row['countries__id']
         row['country'] = row['countries__id']
@@ -99,7 +100,7 @@ def rubros(request):
 @login_required
 def graficoOrganizaciones(request):
     parameters = {'proyecto': 'project_id', 'desde': 'start__gte', 'hasta': 'start__lte'}
-    filter_kwargs = filterBy(parameters, request)
+    filter_kwargs = {}#filterBy(parameters, request)
 
     query = ProjectContact.objects
     if len(filter_kwargs) > 0:
@@ -150,9 +151,10 @@ def proyectosMetas(request):
                   'pointPlacement': 0.2}
     serieH = {'name': _('Amount Men'), 'color': 'rgba(255,205,85,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': -0.2}
+
     serieF = {'name': _('Amount Women'), 'color': 'rgba(252,110,81,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': 0.2}
-    cursor = connection.cursor()
+    
     categorias.append(proyecto['name'])
     serieMetaF['data'].append(proyecto['targetwomen'])
     serieMetaH['data'].append(proyecto['targetmen'])
@@ -175,25 +177,31 @@ def proyectosMetas(request):
 @csrf_exempt
 @login_required
 def graficoAnioFiscal(request):
-    filter = getFilters(request)
-    result = ProjectContact.objects.values('project__start__year').order_by('project__start').annotate(
-        f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
-    return JsonResponse({'fiscal': list(result)})
+    parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+    filter_kwargs =  filterBy(parameters, request)
+    result = ProjectContact.objects.filter(**filter_kwargs).values(type=ExtractYear('project__start')).order_by('type').annotate(
+        f=Count('contact', filter=Q(contact__sex='F')),
+        m=Count('contact', filter=Q(contact__sex='M')),
+        total=Count('contact__sex')
+    )
 
+    return JsonResponse({'fiscal':list(result)})
 
 @csrf_exempt
 @login_required
 def graficoEdad(request):
-    filter = getFilters(request)
-    groups = Filter.objects.filter(slug='age',
-                                   start__gte=0)  # FIXME: can we do better? using start=-1 for labels seems...
+    parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filterBy(parameters, request)
+
+    groups = Filter.objects.filter(slug='age', start__gte=0)
     named_groups = []
     for group in groups:
         current = now().date()
         min_date = date(current.year - group.end, current.month, current.day)
         max_date = date(current.year - group.start, current.month, current.day)
-        row = ProjectContact.objects.filter(contact__birthdate__gte=min_date,
-                                            contact__birthdate__lte=max_date).aggregate(
+        filter_kwargs['contact__birthdate__gte'] = min_date
+        filter_kwargs['contact__birthdate__lte'] = max_date
+        row = ProjectContact.objects.filter(**filter_kwargs).aggregate(
             f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M'))
         )
         row['total'] = row['f'] + row['m']
@@ -209,7 +217,7 @@ def graficoEdad(request):
 def graficoEducacion(request):
     parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
                   'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = filterBy(parameters, request)
+    filter_kwargs = {}#filterBy(parameters, request)
 
     query = ProjectContact.objects
     if len(filter_kwargs) > 0:
@@ -234,21 +242,17 @@ def graficoEventos(request):
 @csrf_exempt
 @login_required
 def graficoTipoParticipante(request):
-    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
-                  'hasta': 'projectcontact__start__lte'}
+    parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
 
-    query = ProjectContact.objects
-    if len(filter_kwargs) > 0:
-        query = query.filter(**filter_kwargs)
-
-    result = query.order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
+        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'), output_field = CharField()),
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
 
     for row in result:
-        row['type'] = row[__('contact__type__name')]
+        row['type'] = row['type']
     data = list(result)
     return JsonResponse(data, safe=False)
 
@@ -258,7 +262,7 @@ def graficoTipoParticipante(request):
 def graficoSexoParticipante(request):
     parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
                   'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = filterBy(parameters, request)
+    filter_kwargs = {}#filterBy(parameters, request)
 
     query = ProjectContact.objects
     if len(filter_kwargs) > 0:
@@ -274,7 +278,6 @@ def graficoSexoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoNacionalidad(request):
-    filter = getFilters(request)
     result = ProjectContact.objects.values('contact__country', 'contact__country__x', 'contact__country__y',
                                            'contact__country__name').order_by('contact__country').annotate(
         f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
@@ -299,7 +302,6 @@ def graficoNacionalidad(request):
 @csrf_exempt
 @login_required
 def graficoPaisEventos(request):
-    filter = getFilters(request)
     result = Project.objects.values('countries', 'countries__x', 'countries__y', 'countries__name').order_by(
         'countries').annotate(
         f=Count('projectcontact', filter=Q(projectcontact__contact__sex='F')),
@@ -333,17 +335,3 @@ def filterBy(parameters, request):
             filter_kwargs[parameters[key]] = value if key != 'paises[]' else paises
 
     return filter_kwargs
-
-
-def getFilters(request):
-    filter = ''
-    if request.POST.get('proyecto') and request.POST.get('desde'):
-        filter = " WHERE e.start>='" + request.POST.get('desde') + "' and e.start<='" + request.POST.get(
-            'hasta') + "' and p.id=" + request.POST.get('proyecto')
-
-    elif request.POST.get('proyecto'):
-        filter = " WHERE p.id=" + request.POST.get('proyecto')
-    elif request.POST.get('desde'):
-        filter = " WHERE e.start>='" + request.POST.get('desde') + "' and e.start<='" + request.POST.get('hasta')
-
-    return filter
