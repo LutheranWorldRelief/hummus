@@ -62,8 +62,8 @@ class Profile(models.Model):
 class Sex(models.Model):
     id = models.CharField(primary_key=True, max_length=1, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=255, verbose_name=_('Name'))
-    name_fr = models.CharField(max_length=255, verbose_name=_('Name'))
+    name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
 
     def __str__(self):
         return "%s" % (self.id)
