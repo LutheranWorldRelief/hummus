@@ -566,11 +566,11 @@
             }, 10);
         });
 
-        // $scope.$watchCollection('nacionalidad', function () {
-        //     $timeout(function () {
-        //         $scope.mapaPaises($scope.nacionalidad, 'participantes-nacionalidad', gettext('Participants by Nationality'));
-        //     }, 10);
-        // });
+        $scope.$watchCollection('nacionalidad', function () {
+            $timeout(function () {
+                $scope.mapaPaises($scope.nacionalidad, 'participantes-nacionalidad', gettext('Participants by Nationality'));
+            }, 10);
+        });
 
         $scope.$watchCollection('paisEventos', function () {
             $timeout(function () {
