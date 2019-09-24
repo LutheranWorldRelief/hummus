@@ -1,4 +1,5 @@
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse
 
 from crispy_forms.helper import FormHelper
