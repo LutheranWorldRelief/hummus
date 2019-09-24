@@ -4,6 +4,7 @@ from django.utils.timezone import now
 from django.db.models.functions import Concat
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.db.models.functions import ExtractYear
+from django.db.models import CharField, Case, Value, When
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -144,15 +145,16 @@ def proyectosMetas(request):
     proyecto = Project.objects.filter(id=proyecto_id).values('id', 'name', 'targetmen', 'targetwomen').first()
     result = []
     categorias = []
-    serieMetaH = {'name': _('Meta Hombres'), 'color': 'rgba(42,123,153,.9)', 'data': [], 'pointPadding': 0.3,
+    serieMetaH = {'name': _('Goal Men'), 'color': 'rgba(42,123,153,.9)', 'data': [], 'pointPadding': 0.3,
                   'pointPlacement': -0.2}
-    serieMetaF = {'name': _('Meta Mujeres'), 'color': 'rgba(68,87,113,1)', 'data': [], 'pointPadding': 0.3,
+    serieMetaF = {'name': _('Goal Women'), 'color': 'rgba(68,87,113,1)', 'data': [], 'pointPadding': 0.3,
                   'pointPlacement': 0.2}
-    serieH = {'name': _('Cantidad Hombres'), 'color': 'rgba(255,205,85,.8)', 'data': [], 'pointPadding': 0.4,
+    serieH = {'name': _('Amount Men'), 'color': 'rgba(255,205,85,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': -0.2}
-    serieF = {'name': _('Cantidad Mujeres'), 'color': 'rgba(252,110,81,.8)', 'data': [], 'pointPadding': 0.4,
+
+    serieF = {'name': _('Amount Women'), 'color': 'rgba(252,110,81,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': 0.2}
-    cursor = connection.cursor()
+    
     categorias.append(proyecto['name'])
     serieMetaF['data'].append(proyecto['targetwomen'])
     serieMetaH['data'].append(proyecto['targetmen'])
@@ -176,21 +178,21 @@ def proyectosMetas(request):
 @login_required
 def graficoAnioFiscal(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
-    filter_kwargs = filterBy(parameters, request)
-    result = ProjectContact.objects.filter(**filter_kwargs).values(type=ExtractYear('project__start')).order_by(
-        'project__start').annotate(
-        f=Count('contact', filter=Q(contact__sex='F')), m=Count('contact', filter=Q(contact__sex='M')))
-    return JsonResponse({'fiscal': list(result)})
+    filter_kwargs =  filterBy(parameters, request)
+    result = ProjectContact.objects.filter(**filter_kwargs).values(type=ExtractYear('project__start')).order_by('type').annotate(
+        f=Count('contact', filter=Q(contact__sex='F')),
+        m=Count('contact', filter=Q(contact__sex='M')),
+        total=Count('contact__sex')
+    )
 
+    return JsonResponse({'fiscal':list(result)})
 
 @csrf_exempt
 @login_required
 def graficoEdad(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
-
-    groups = Filter.objects.filter(slug='age',
-                                   start__gte=0)  # FIXME: can we do better? using start=-1 for labels seems...
+    groups = Filter.objects.filter(slug='age', start__gte=0)
     named_groups = []
     for group in groups:
         current = now().date()
@@ -241,15 +243,14 @@ def graficoEventos(request):
 def graficoTipoParticipante(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
-
-    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(
-        __('contact__type__name')).annotate(
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
+        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'), output_field = CharField()),
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
 
     for row in result:
-        row['type'] = row[__('contact__type__name')]
+        row['type'] = row['type']
     data = list(result)
     return JsonResponse(data, safe=False)
 
@@ -292,6 +293,7 @@ def graficoNacionalidad(request):
 
     pais_array = []
     paisesDetalles = []
+
     for row in result:
         if 'contact__country' in row:
             row['total'] = row['f'] + row['m']
@@ -388,17 +390,3 @@ def filterBy(parameters, request):
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
-
-
-def getFilters(request):
-    filter = ''
-    if request.POST.get('proyecto') and request.POST.get('desde'):
-        filter = " WHERE e.start>='" + request.POST.get('desde') + "' and e.start<='" + request.POST.get(
-            'hasta') + "' and p.id=" + request.POST.get('proyecto')
-
-    elif request.POST.get('proyecto'):
-        filter = " WHERE p.id=" + request.POST.get('proyecto')
-    elif request.POST.get('desde'):
-        filter = " WHERE e.start>='" + request.POST.get('desde') + "' and e.start<='" + request.POST.get('hasta')
-
-    return filter

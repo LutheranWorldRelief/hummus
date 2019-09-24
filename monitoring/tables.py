@@ -36,22 +36,23 @@ class ReportExportMixin:
 
         # get localized excel tempalte
         obj = Template.objects.get(id='clean-template')
-        template = "%s/%s" % (settings.MEDIA_ROOT, getattr(obj, __('file')))
+        filename = getattr(obj, __('file'))
+        template = "%s/%s" % (settings.MEDIA_ROOT, filename)
 
         # loads 'datos' sheet # TODO rename to 'data'?
         wb = load_workbook(filename = template)
-        ws = wb.get_active_sheet()
-        #ws = wb.get_sheet_by_name("datos")
+        ws = wb.get_sheet_by_name(_('data'))
 
         # adds rows
-        max = ws.max_row
+        #max = ws.max_row
+        max = 3 # Force start at row 3
         for row, row_entry in enumerate(dataset,start=1):
             for col, col_entry in enumerate(row_entry, start=1):
                 ws.cell(row=row+max, column=col, value=col_entry)
 
         # resposne
         response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=myexport.xlsx'
+        response['Content-Disposition'] = 'attachment; filename=m%s' % (filename,)
         return response
 
 
