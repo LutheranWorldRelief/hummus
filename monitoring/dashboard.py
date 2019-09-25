@@ -99,14 +99,11 @@ def rubros(request):
 @csrf_exempt
 @login_required
 def graficoOrganizaciones(request):
-    parameters = {'proyecto': 'project_id', 'desde': 'start__gte', 'hasta': 'start__lte'}
-    filter_kwargs = {}  # filterBy(parameters, request)
+    parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filterBy(parameters, request)  # filterBy(parameters, request)
 
-    query = ProjectContact.objects
-    if len(filter_kwargs) > 0:
-        query = query.filter(**filter_kwargs)
-
-    organizaciones = query.order_by('organization_id', 'organization__name', 'organization__organization_type_id'). \
+    organizaciones = ProjectContact.objects.filter(**filter_kwargs).order_by('organization_id'). \
         values('organization_id', 'organization__name', 'organization__organization_type_id').distinct()
 
     org_list = []
@@ -115,8 +112,8 @@ def graficoOrganizaciones(request):
         org_list.append({'id': row['organization_id'], 'name': row['organization__name'],
                          'parent': row['organization__organization_type_id']})
 
-    types = ProjectContact.objects.filter(**filter_kwargs).values('organization__organization_type_id',
-                                                                  __('organization__organization_type__name'))
+    types = ProjectContact.objects.filter(**filter_kwargs).order_by('organization__organization_type_id') \
+        .values('organization__organization_type_id', __('organization__organization_type__name')).distinct()
 
     colorNumero = 0
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
@@ -127,13 +124,14 @@ def graficoOrganizaciones(request):
         v['value'] = 0
         v['name'] = v[__('organization__organization_type__name')]
         data_dict[v['organization__organization_type_id']] = v
+
     for v in organizaciones:
         data_dict[v['organization__organization_type_id']]['value'] += 1
 
     result = list(data_dict.values()) + org_list
-    data = {"organizaciones": {"data": result, "total": len(organizaciones), "tipos": data_dict,
-                               'total_categorias': len(data_dict)}}
-    return JsonResponse(data)
+
+    return JsonResponse({'organizaciones': {'data': result, 'total': len(organizaciones), 'tipos': data_dict,
+                                            'total_categorias': len(data_dict)}})
 
 
 @csrf_exempt
@@ -154,7 +152,7 @@ def proyectosMetas(request):
 
     serieF = {'name': _('Amount Women'), 'color': 'rgba(252,110,81,.8)', 'data': [], 'pointPadding': 0.4,
               'pointPlacement': 0.2}
-    
+
     categorias.append(proyecto['name'])
     serieMetaF['data'].append(proyecto['targetwomen'])
     serieMetaH['data'].append(proyecto['targetmen'])
@@ -178,14 +176,16 @@ def proyectosMetas(request):
 @login_required
 def graficoAnioFiscal(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
-    filter_kwargs =  filterBy(parameters, request)
-    result = ProjectContact.objects.filter(**filter_kwargs).values(type=ExtractYear('project__start')).order_by('type').annotate(
+    filter_kwargs = filterBy(parameters, request)
+    result = ProjectContact.objects.filter(**filter_kwargs).values(type=ExtractYear('project__start')).order_by(
+        'type').annotate(
         f=Count('contact', filter=Q(contact__sex='F')),
         m=Count('contact', filter=Q(contact__sex='M')),
         total=Count('contact__sex')
     )
 
-    return JsonResponse({'fiscal':list(result)})
+    return JsonResponse({'fiscal': list(result)})
+
 
 @csrf_exempt
 @login_required
@@ -243,8 +243,10 @@ def graficoEventos(request):
 def graficoTipoParticipante(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
-    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(__('contact__type__name')).annotate(
-        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'), output_field = CharField()),
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(
+        __('contact__type__name')).annotate(
+        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'),
+                  output_field=CharField()),
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
@@ -258,15 +260,11 @@ def graficoTipoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoSexoParticipante(request):
-    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
-                  'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = {}  # filterBy(parameters, request)
+    parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filterBy(parameters, request)  # filterBy(parameters, request)
 
-    query = ProjectContact.objects
-    if len(filter_kwargs) > 0:
-        query = query.filter(**filter_kwargs)
-
-    result = query.aggregate(
+    result = ProjectContact.objects.filter(**filter_kwargs).aggregate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
@@ -386,7 +384,7 @@ def filterBy(parameters, request):
                 filter_kwargs[parameters[key]] = paises
             elif key == 'rubros[]' and rubrosTodos == False:
                 filter_kwargs[parameters[key]] = rubros
-            elif key != 'paises[]' and key != 'rubros[]':
+            elif key != 'paises[]' and key != 'rubros[]' and value!='':
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
