@@ -1,10 +1,11 @@
+import re
+
 from django.conf import settings
 from django.db.models import Func, Value
 from django.http import JsonResponse
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
-import re
 
 def language_no_region(language):
     if '-' in language:

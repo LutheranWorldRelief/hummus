@@ -180,6 +180,18 @@ class Filter(models.Model):
         verbose_name_plural = _('Filters')
 
 
+class OrganizationQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if hasattr(user, 'profile'):
+            if user.profile.lwrregions.exists():
+                return self.filter(country__lwrregion__in=user.profile.lwrregions.all())
+            elif user.profile.countries.exists():
+                return self.filter(country__in=user.profile.countries.all())
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
+
+
 class Organization(models.Model):
     name = models.TextField(verbose_name=_('Name'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
@@ -190,6 +202,8 @@ class Organization(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
     country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
     is_implementer = models.BooleanField(verbose_name=_('Is Implementer'))
+
+    objects = OrganizationQuerySet.as_manager()
 
     def __str__(self):
         return self.name
