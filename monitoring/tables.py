@@ -49,7 +49,7 @@ class ReportExportMixin:
         max = 3 # Force start at row 3
         for row, row_entry in enumerate(dataset,start=1):
             for col, col_entry in enumerate(row_entry, start=1):
-                ws.cell(row=row+max, column=col, value=col_entry)
+                ws.cell(row=row+max-1, column=col, value=col_entry)
 
         # resposne
         response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
