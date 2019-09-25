@@ -99,7 +99,7 @@ class PagedFilteredTableView(SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(PagedFilteredTableView, self).get_context_data()
         context[self.context_filter_name] = self.filter
-        context['export_formats'] = ('csv', 'xlsx', 'json')
+        context['export_formats'] = ('xlsx', )
         return context
 
 
