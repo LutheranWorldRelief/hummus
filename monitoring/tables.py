@@ -23,6 +23,8 @@ class ReportExportMixin:
     def table_to_dataset(self, table, exclude_columns):
         dataset = []
         for i, row in enumerate(table.as_values(exclude_columns=exclude_columns)):
+            if i == 0:
+                continue
             dataset.append(row)
         return dataset
 
@@ -107,7 +109,7 @@ class ProjectContactTable(Table):
 
     class Meta:
         model = ProjectContact
-        fields = ('contact.name', 'project', 'organization', 'contact.country.name')
+        fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name', 'contact.sex', 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men', 'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment', 'contact.community', 'contact.startdate', 'product')
 
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
