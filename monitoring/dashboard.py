@@ -1,18 +1,16 @@
 from datetime import date
 
 from django.utils.timezone import now
-from django.db.models.functions import Concat
-from django.db.models import Sum, Count, Q, Value, CharField, F
+from django.db.models import Count, Q
 from django.db.models.functions import ExtractYear
 from django.db.models import CharField, Case, Value, When
-from django.db import connection
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
-from .common import dictfetchall, get_localized_name as __
+from .common import get_localized_name as __
 
 
 @csrf_exempt
@@ -33,18 +31,6 @@ def cantidadProyectos(request):
     proyectos = Project.objects.count()
     data = {'proyectos': proyectos}
     return JsonResponse(data)
-
-
-@csrf_exempt
-@login_required
-def cantidadEventos(request):
-    return JsonResponse({})  # FIXME
-
-
-@csrf_exempt
-@login_required
-def graficoActividades(request):
-    return JsonResponse({})  # FIXME
 
 
 @csrf_exempt
@@ -384,7 +370,7 @@ def filterBy(parameters, request):
                 filter_kwargs[parameters[key]] = paises
             elif key == 'rubros[]' and rubrosTodos == False:
                 filter_kwargs[parameters[key]] = rubros
-            elif key != 'paises[]' and key != 'rubros[]' and value!='':
+            elif key != 'paises[]' and key != 'rubros[]' and value != '':
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
