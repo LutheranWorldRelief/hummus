@@ -214,29 +214,23 @@ def graficoEdad(request):
 @csrf_exempt
 @login_required
 def graficoEducacion(request):
-    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
-                  'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = {}  # filterBy(parameters, request)
+    parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filterBy(parameters, request)
 
-    query = ProjectContact.objects
-    if len(filter_kwargs) > 0:
-        query = query.filter(**filter_kwargs)
-
-    result = query.order_by(__('contact__education__name')).values(__('contact__education__name')).annotate(
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__education__name')).values(__('contact__education__name')).annotate(
         m=Count('id', filter=Q(contact__sex='M')),
         f=Count('id', filter=Q(contact__sex='F')),
         total=Count('id'))
+
     for row in result:
-        row['type'] = str(row[__('contact__education__name')])
+        row['type'] = str(row[__('contact__education__name')]) if row[__('contact__education__name')] is not None else 'N/E'
     data = {'educacion': list(result)}
     return JsonResponse(data)
-
 
 @csrf_exempt
 @login_required
 def graficoEventos(request):
     return JsonResponse({'foo': 'bar'})
-
 
 @csrf_exempt
 @login_required
@@ -245,17 +239,13 @@ def graficoTipoParticipante(request):
     filter_kwargs = filterBy(parameters, request)
     result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(
         __('contact__type__name')).annotate(
-        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'),
-                  output_field=CharField()),
+        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'),output_field=CharField()),
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
 
-    for row in result:
-        row['type'] = row['type']
     data = list(result)
     return JsonResponse(data, safe=False)
-
 
 @csrf_exempt
 @login_required
@@ -269,7 +259,6 @@ def graficoSexoParticipante(request):
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
     return JsonResponse(result)
-
 
 @csrf_exempt
 @login_required
