@@ -1,16 +1,17 @@
+{% load i18n %}
 <div class="row">
     <div class="col-lg-3">
         <input
                 class="form-control"
                 v-model="modelFilter.nameSearch"
-                placeholder="--" {% trans 'name' %} "--"
+                placeholder="--{% trans 'name' %}--"
         />
     </div>
     <div class="col-lg-3">
         <combo-select2
                 :options="list_projects"
                 :value="modelFilter.projectId"
-                prompt="--" {% trans 'Projects' %} "--"
+                prompt="--{% trans 'Projects' %}--"
                 @input="modelFilter.projectId = $event">
         </combo-select2>
     </div>
@@ -18,7 +19,7 @@
         <combo-select2
                 :options="list_organizations"
                 :value="modelFilter.organizationId"
-                prompt="--" {% trans 'Organizations' %} "--"
+                prompt="--{% trans 'Organizations' %}--"
                 @input="modelFilter.organizationId = $event">
         </combo-select2>
     </div>
@@ -26,7 +27,7 @@
         <combo-select2
                 :options="list_countries"
                 :value="modelFilter.countryCode"
-                prompt="--" {% trans 'Country of the person' %} "--"
+                prompt="--{% trans 'Country of the person' %}--"
                 @input="modelFilter.countryCode = $event">
         </combo-select2>
     </div>
