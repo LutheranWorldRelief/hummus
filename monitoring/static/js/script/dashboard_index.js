@@ -66,39 +66,8 @@
                     //     if (result.data.proyecto.url !== null)
                     //         highchartsOpciones.credits.href = highchartsOpciones.getCreditHref(result.data.proyecto.url);
                     // } else {
-                        highchartsOpciones.theme.colors = highchartsOpciones.theme.colorsDefault;
+                    highchartsOpciones.theme.colors = highchartsOpciones.theme.colorsDefault;
                     // }
-                })
-                .catch(function (mensaje, codigo) {
-                    console.log(codigo + ' => ' + mensaje);
-                });
-        }
-
-        function cargarDatosCantidadEventos(data) {
-            DatosService
-                .Enviar(UrlsAcciones.UrlDatosCantidadEventos, data)
-                .then(function (result) {
-                    $scope.eventos = result.data.cantidadEventos;
-                })
-                .catch(function (mensaje, codigo) {
-                    console.log(codigo + ' => ' + mensaje);
-                });
-        }
-
-        function cargarDatosGraficoActividades(data) {
-            DatosService
-                .Enviar(UrlsAcciones.UrlDatosGraficoActividades, data)
-                .then(function (result) {
-                    var hombres = {name: gettext('Men'), data: []};
-                    var mujeres = {name: gettext('Women'), data: []};
-
-                    angular.forEach(result.data.actividades, function (value, key) {
-                        hombres.data.push(objetoDataSerie(value, value.m));
-                        mujeres.data.push(objetoDataSerie(value, value.f));
-                    });
-
-
-                    $scope.series = [hombres, mujeres];
                 })
                 .catch(function (mensaje, codigo) {
                     console.log(codigo + ' => ' + mensaje);
@@ -283,10 +252,6 @@
             }, 1);
 
             $timeout(function () {
-                cargarDatosCantidadEventos(data);
-            }, 1);
-
-            $timeout(function () {
                 cargarDatosGraficoAnioFiscal(data);
             }, 1);
 
@@ -302,7 +267,6 @@
                 cargarDatosGraficoEducacion(data);
             }, 1);
 
-
             $timeout(function () {
                 cargarDatosGraficoPaisEventos(data);
             }, 1);
@@ -311,17 +275,12 @@
                 cargarDatosProyecto(data);
             }, 1);
 
-
             $timeout(function () {
                 cargarDatosGraficoNacionalidad(data);
             }, 1);
 
             $timeout(function () {
                 cargarDatosGraficoEventos(data);
-            }, 1);
-
-            $timeout(function () {
-                cargarDatosGraficoActividades(data);
             }, 1);
 
             $timeout(function () {
@@ -388,7 +347,6 @@
                         series: $scope.drilldownSeries,
                     }
                 };
-                $scope.Graficar('participantes', opciones);
             }, 10);
         });
 

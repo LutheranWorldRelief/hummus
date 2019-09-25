@@ -37,18 +37,6 @@ def cantidadProyectos(request):
 
 @csrf_exempt
 @login_required
-def cantidadEventos(request):
-    return JsonResponse({})  # FIXME
-
-
-@csrf_exempt
-@login_required
-def graficoActividades(request):
-    return JsonResponse({})  # FIXME
-
-
-@csrf_exempt
-@login_required
 def paises(request):
     paises_todos = request.POST.get('paises_todos') == 'true'
     ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
@@ -384,7 +372,7 @@ def filterBy(parameters, request):
                 filter_kwargs[parameters[key]] = paises
             elif key == 'rubros[]' and rubrosTodos == False:
                 filter_kwargs[parameters[key]] = rubros
-            elif key != 'paises[]' and key != 'rubros[]' and value!='':
+            elif key != 'paises[]' and key != 'rubros[]' and value != '':
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
