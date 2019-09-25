@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import Func, Value
 from django.http import JsonResponse
 from django.utils import translation
@@ -5,12 +6,15 @@ from django.utils.translation import gettext_lazy as _
 
 import re
 
+def language_no_region(language):
+    if '-' in language:
+        language, _, region = language.lower().partition('-')
+    return language
 
 def get_localized_name(column):
-    language = translation.get_language()
-    if '-' in language:
-        language, _, country = language.lower().partition('-')
-    return column if language in ['en'] else "%s_%s" % (column, language)
+    language = language_no_region(translation.get_language())
+    default_language = language_no_region(settings.LANGUAGE_CODE)
+    return column if language in default_language else "%s_%s" % (column, language)
 
 
 def getPostArray(string, request):
