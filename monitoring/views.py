@@ -1,3 +1,5 @@
+from os.path import basename
+
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
@@ -26,10 +28,12 @@ class DownloadTemplate(LoginRequiredMixin, View):
     def get(self, request):
         # get localized excel tempalte
         obj = Template.objects.get(id='clean-template')
-        filename = getattr(obj, __('file'))
+        tfile = getattr(obj, __('file'))
+        tfilename = tfile.name
+
 
         # loads 'catalogo'
-        wb = load_workbook(filename = filename)
+        wb = load_workbook(filename = tfile)
         ws = wb.create_sheet(__('catalog'))
 
         # initializes data validations
@@ -43,14 +47,13 @@ class DownloadTemplate(LoginRequiredMixin, View):
             ws.cell(row=row_start, column=col, value=col_value.__name__)
         row_start = 2
         for col, col_value in enumerate(catalog_cols, start=col_start):
-            if hasattr(col_value, 'for_user'):
-                rows = col_value.objects.for_user(request.user)
+            if hasattr(col_value.objects, 'for_user'):
+                rows = col_value.objects.for_user(request.user).all()
             else:
                 rows = col_value.objects.all()
             for row, row_value in enumerate(rows, start=row_start):
                 ws.cell(row=row, column=col, value=getattr(row_value, __('name')))
             letter = get_column_letter(col)
-            print("catalog!$%s$2:$%s$%s" % (letter, letter, row))
             dvs[col_value.__name__] = DataValidation(type="list", allow_blank=True, showDropDown=False, formula1="catalog!$%s$2:$%s$%s" % (letter, letter, row), )
             col += 1
 
@@ -73,7 +76,7 @@ class DownloadTemplate(LoginRequiredMixin, View):
 
         # resposne
         response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=m%s' % (filename,)
+        response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
 
 
