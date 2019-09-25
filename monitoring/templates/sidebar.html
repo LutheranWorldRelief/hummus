@@ -15,7 +15,7 @@
         </div>
 
         <ul class="sidebar-menu tree" data-widget="tree">
-            <li class="header"><span><span>{% trans 'Menú' %}</span></span></li>
+            <li class="header"><span><span>{% trans 'Menu' %}</span></span></li>
             <li><a href="{% url 'monitoring:iframe_import' %}"><i class="fa fa-upload"></i>
                 <span>{% trans 'Import Beneficiaries' %}</span></a>
             </li>
@@ -38,7 +38,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="header"><span><span>{% trans 'Reportes' %}</span></span></li>
+            <li class="header"><span><span>{% trans 'Reports' %}</span></span></li>
             <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
@@ -91,7 +91,7 @@
                         <span>{% trans 'Segmentation' %}</span></a></li>
                 </ul>
             </li>
-            <li class="treeview"><a href="#"><i class="fa fa-lock"></i> <span>i{% trans 'Security' %}</span> <span
+            <li class="treeview"><a href="#"><i class="fa fa-lock"></i> <span>{% trans 'Security' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:auth_user_changelist' %}"><i class="fa fa-circle-o"></i>
