@@ -40,26 +40,26 @@ def cantidadProyectos(request):
 def paises(request):
     paises_todos = request.POST.get('paises_todos') == 'true'
     ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
-    parameters = {'paises[]': 'country__in', 'proyecto': 'project', 'desde': 'start__gte', 'hasta': 'start__lte'}
+    parameters = {'paises[]': 'project__countries__in', 'proyecto': 'project', 'desde': 'start__gte',
+                  'hasta': 'start__lte'}
     filter_kwargs = filterBy(parameters, request)
-    filter_kwargs['id__isnull'] = False
+    filter_kwargs['project__countries__isnull'] = False
 
+    TodosPaises = ProjectContact.objects.values('project__countries', 'project__countries__name').order_by(
+        'project__countries').distinct()
     # TODO: check if this is really not needed here
-    # result = Event.objects.filter(**filter_kwargs).order_by('country_id').distinct().values('country_id')
-    result = Project.objects \
-        .filter(countries__isnull=False) \
-        .all() \
-        .order_by('countries__id') \
-        .values('countries__id', 'countries__name') \
-        .distinct()
+    result = ProjectContact.objects.filter(**filter_kwargs).values('project__countries', 'project__countries__name').order_by(
+        'project__countries').distinct()
 
+    paises = []
     for row in result:
-        row['id'] = row['countries__id']
-        row['country'] = row['countries__id']
-        row['active'] = True if row['countries__id'] in request.POST.getlist("paises[]") or paises_todos else False
-    data = {'paises': list(result), 'todos': paises_todos, 'ninguno': ninguno, }
+        paises.append({
+            'id': row['project__countries'],
+            'country': row['project__countries__name'],
+            'active': True if row['project__countries'] in request.POST.getlist("paises[]") or paises_todos else False,
+        })
 
-    return JsonResponse(data)
+    return JsonResponse({'paises': paises, 'todos': paises_todos, 'ninguno': ninguno, })
 
 
 @csrf_exempt
@@ -205,20 +205,24 @@ def graficoEducacion(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
 
-    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__education__name')).values(__('contact__education__name')).annotate(
+    result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__education__name')).values(
+        __('contact__education__name')).annotate(
         m=Count('id', filter=Q(contact__sex='M')),
         f=Count('id', filter=Q(contact__sex='F')),
         total=Count('id'))
 
     for row in result:
-        row['type'] = str(row[__('contact__education__name')]) if row[__('contact__education__name')] is not None else 'N/E'
+        row['type'] = str(row[__('contact__education__name')]) if row[__(
+            'contact__education__name')] is not None else 'N/E'
     data = {'educacion': list(result)}
     return JsonResponse(data)
+
 
 @csrf_exempt
 @login_required
 def graficoEventos(request):
     return JsonResponse({'foo': 'bar'})
+
 
 @csrf_exempt
 @login_required
@@ -227,13 +231,15 @@ def graficoTipoParticipante(request):
     filter_kwargs = filterBy(parameters, request)
     result = ProjectContact.objects.filter(**filter_kwargs).order_by(__('contact__type__name')).values(
         __('contact__type__name')).annotate(
-        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'),output_field=CharField()),
+        type=Case(When(contact__type__name=None, then=Value('NE')), default=__('contact__type__name'),
+                  output_field=CharField()),
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
 
     data = list(result)
     return JsonResponse(data, safe=False)
+
 
 @csrf_exempt
 @login_required
@@ -247,6 +253,7 @@ def graficoSexoParticipante(request):
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
     return JsonResponse(result)
+
 
 @csrf_exempt
 @login_required
