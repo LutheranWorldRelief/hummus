@@ -105,7 +105,6 @@ class PagedFilteredTableView(SingleTableView):
 class ProjectContactTable(Table):
     class Meta:
         model = ProjectContact
-        print(__('contact.sex.name'))
         fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name', __('contact.sex.name'), 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men', 'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment', 'contact.community', 'contact.startdate', 'product')
 
 class ProjectContactFilter(FilterSet):
