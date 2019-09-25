@@ -260,15 +260,11 @@ def graficoTipoParticipante(request):
 @csrf_exempt
 @login_required
 def graficoSexoParticipante(request):
-    parameters = {'proyecto': 'project_id', 'desde': 'projectcontact__start__gte',
-                  'hasta': 'projectcontact__start__lte'}
-    filter_kwargs = {}  # filterBy(parameters, request)
+    parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
+                  'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filterBy(parameters, request)  # filterBy(parameters, request)
 
-    query = ProjectContact.objects
-    if len(filter_kwargs) > 0:
-        query = query.filter(**filter_kwargs)
-
-    result = query.aggregate(
+    result = ProjectContact.objects.filter(**filter_kwargs).aggregate(
         total=Count('contact_id', distinct=True), f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
         m=Count('contact_id', distinct=True, filter=Q(contact__sex='M'))
     )
