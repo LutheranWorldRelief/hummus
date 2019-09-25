@@ -83,7 +83,7 @@ class Contact(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Title'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
                                      verbose_name=_('Organization'))
-    sex = models.CharField(max_length=1, blank=True, null=True, verbose_name=_('Sex'))
+    sex = models.ForeignKey('Sex', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Sex'))
     type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Type'))
     community = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Community'))
     municipality = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Municipality'))

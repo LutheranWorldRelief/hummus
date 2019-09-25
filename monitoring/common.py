@@ -1,13 +1,16 @@
 from django.db.models import Func, Value
 from django.http import JsonResponse
-from django.utils import translation as trans
+from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 import re
 
 
 def get_localized_name(column):
-    return column if trans.get_language() in ['en'] else column+'_'+trans.get_language()
+    language = translation.get_language()
+    if '-' in language:
+        language, _, country = language.lower().partition('-')
+    return column if language in ['en'] else "%s_%s" % (column, language)
 
 
 def getPostArray(string, request):

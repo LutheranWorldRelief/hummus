@@ -103,13 +103,10 @@ class PagedFilteredTableView(SingleTableView):
 # ProjectContact
 
 class ProjectContactTable(Table):
-    def render_name(self, value, record):
-        url = record.get_absolute_url()
-        return mark_safe('<a href="%s">%s</a>' % (url, record))
-
     class Meta:
         model = ProjectContact
-        fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name', 'contact.sex', 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men', 'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment', 'contact.community', 'contact.startdate', 'product')
+        print(__('contact.sex.name'))
+        fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name', __('contact.sex.name'), 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men', 'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment', 'contact.community', 'contact.startdate', 'product')
 
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
