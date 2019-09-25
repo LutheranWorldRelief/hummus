@@ -384,7 +384,7 @@ def filterBy(parameters, request):
                 filter_kwargs[parameters[key]] = paises
             elif key == 'rubros[]' and rubrosTodos == False:
                 filter_kwargs[parameters[key]] = rubros
-            elif key != 'paises[]' and key != 'rubros[]':
+            elif key != 'paises[]' and key != 'rubros[]' and value!='':
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
