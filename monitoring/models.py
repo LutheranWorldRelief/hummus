@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
+from django.utils.translation import gettext_lazy as _
 
 
 class Template(models.Model):
@@ -23,10 +24,22 @@ class Template(models.Model):
         db_table = 'template'
 
 
+class LWRRegionQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if hasattr(user, 'profile'):
+            if user.profile.lwrregions.exists():
+                return user.profile.lwrregions
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
+
+
 class LWRRegion(models.Model):
     id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
     name = models.CharField(max_length=20, verbose_name=_('Name'))
     subregions = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Subregions'))
+
+    objects = LWRRegionQuerySet.as_manager()
 
     def __str__(self):
         return "%s" % (self.name)
@@ -111,6 +124,16 @@ class Contact(models.Model):
         verbose_name_plural = _('Contacts')
 
 
+class CountryQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if hasattr(user, 'profile'):
+            if user.profile.countries.exists():
+                return user.profile.countries
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
+
+
 class Country(models.Model):
     id = models.CharField(primary_key=True, max_length=2, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
@@ -124,6 +147,8 @@ class Country(models.Model):
     subregion = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Sub Region'))
     phonecode = models.CharField(max_length=5, blank=True, null=True, verbose_name=_('Phone Code'))
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
+
+    objects = CountryQuerySet.as_manager()
 
     def __str__(self):
         return self.name
@@ -202,6 +227,8 @@ class ProjectQuerySet(models.QuerySet):
                 return self.filter(countries__in=user.profile.countries.all())
             elif user.profile.projects.exists():
                 return self.filter(profile=user.profile)
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
         return self
 
 
@@ -251,10 +278,16 @@ class Project(models.Model):
 
 class SubProjectQuerySet(models.QuerySet):
     def for_user(self, user):
-        if user.profile.projects.exists():
-            return self.filter(project__profile=user.profile)
+        if hasattr(user, 'profile'):
+            if user.profile.lwrregions.exists():
+                return self.filter(project__lwrregion__in=user.profile.lwrregions.all())
+            elif user.profile.countries.exists():
+                return self.filter(project__countries__in=user.profile.countries.all())
+            elif user.profile.projects.exists():
+                return self.filter(project__profile=user.profile)
         else:
-            return self
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
 
 
 class SubProject(models.Model):
@@ -279,6 +312,8 @@ class SubProject(models.Model):
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
+
+    objects = SubProjectQuerySet.as_manager()
 
     class Meta:
         ordering = ['name']

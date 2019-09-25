@@ -214,7 +214,7 @@ class ProfileAdmin(admin.ModelAdmin):
     ]
 
 
-class SubprojectAdmin(admin.ModelAdmin):
+class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = ('name', 'code', 'project')
     list_display_links = ('name',)
     ordering = ['project']
@@ -239,7 +239,11 @@ class SubprojectAdmin(admin.ModelAdmin):
     show_salesforce_url.short_description = "Salesforce Link"
 
 
-class RegionAdmin(admin.ModelAdmin):
+class CountryAdmin(AdminForUserMixin, admin.ModelAdmin):
+    list_display = ('id', 'name', 'name_es', 'name_fr')
+
+
+class LWRRegionAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = ('name', 'subregions')
     list_display_links = ('name',)
     list_per_page = 20
@@ -259,7 +263,8 @@ admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(SubProject, SubprojectAdmin)
-admin.site.register(LWRRegion, RegionAdmin)
+admin.site.register(LWRRegion, LWRRegionAdmin)
+admin.site.register(Country, CountryAdmin)
 
 models = apps.get_models()
 for model in models:
