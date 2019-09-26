@@ -86,6 +86,17 @@
                 });
         }
 
+        function cargarDatosCantidadProyectos(data) {
+            DatosService
+                .Enviar(UrlsAcciones.UrlDatosCantidadProyectos, data)
+                .then(function (result) {
+                    $scope.proyectos = result.data.proyectos;
+                })
+                .catch(function (mensaje, codigo) {
+                    console.log(codigo + ' => ' + mensaje);
+                });
+        }
+
         function cargarDatosRubros(data) {
             DatosService
                 .Enviar(UrlsAcciones.UrlDatosRubros, data)
@@ -253,6 +264,10 @@
 
             $timeout(function () {
                 cargarDatosGraficoAnioFiscal(data);
+            }, 1);
+
+            $timeout(function () {
+                cargarDatosCantidadProyectos(data);
             }, 1);
 
             $timeout(function () {
