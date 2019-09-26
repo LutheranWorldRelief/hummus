@@ -38,18 +38,17 @@ def cantidadProyectos(request):
 @csrf_exempt
 @login_required
 def paises(request):
-    paises_todos = request.POST.get('paises_todos') == 'true'
+    paises_todos = (request.POST.get('paises_todos') == 'true')
     ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
-    parameters = {'paises[]': 'project__countries__in', 'proyecto': 'project', 'desde': 'start__gte',
+    parameters = {'proyecto': 'project', 'desde': 'start__gte',
                   'hasta': 'start__lte'}
     filter_kwargs = filterBy(parameters, request)
     filter_kwargs['project__countries__isnull'] = False
 
-    TodosPaises = ProjectContact.objects.values('project__countries', 'project__countries__name').order_by(
-        'project__countries').distinct()
-    # TODO: check if this is really not needed here
-    result = ProjectContact.objects.filter(**filter_kwargs).values('project__countries', 'project__countries__name').order_by(
-        'project__countries').distinct()
+    result = ProjectContact.objects.filter(**filter_kwargs) \
+        .values('project__countries', 'project__countries__name') \
+        .order_by('project__countries') \
+        .distinct()
 
     paises = []
     for row in result:
