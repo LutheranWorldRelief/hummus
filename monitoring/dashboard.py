@@ -264,9 +264,7 @@ def graficoNacionalidad(request):
     result = ProjectContact.objects.filter(**filter_kwargs) \
         .values('contact__country', 'contact__country__x',
                 'contact__country__y',
-                'contact__country__name',
-                'contact__country__name_es',
-                'contact__country__name_fr') \
+                __('contact__country__name')) \
         .order_by('contact__country') \
         .annotate(
         f=Count('contact', filter=Q(contact__sex='F')),
@@ -279,25 +277,22 @@ def graficoNacionalidad(request):
         if 'contact__country' in row:
             row['total'] = row['f'] + row['m']
             paisesDetalles.append({
-                'pais_en_ingles': row['contact__country__name'],
+                'pais_en_ingles': row[__('contact__country__name')],
                 'total': row['total'],
                 'f': row['f'],
                 'm': row['m'],
                 'coordenada_x': row['contact__country__x'],
                 'coordenada_y': row['contact__country__y'],
-                'pais_en_espaniol': row['contact__country__name_es'],
-                'pais_en_frances': row['contact__country__name_fr'],
                 'country': row['contact__country'],
                 'eventos': "123",
             })
             pais_array.append([
-                row['contact__country__name'],
+                row[__('contact__country__name')],
                 row['total'],
                 row['f'],
                 row['m'],
                 row['contact__country__x'],
                 row['contact__country__y'],
-                row['contact__country__name_es'],
                 str(row['contact__country']).lower(),
             ])
 
@@ -314,8 +309,7 @@ def graficoPaisEventos(request):
 
     result = ProjectContact.objects.filter(**filter_kwargs).order_by('project__countries') \
         .values('project__countries', 'project__countries__x', 'project__countries__y',
-                'project__countries__name', 'project__countries__name_es',
-                'project__countries__name_fr') \
+                __('project__countries__name')) \
         .annotate(
         f=Count('contact', filter=Q(contact__sex='F')),
         m=Count('contact', filter=Q(contact__sex='M')),
@@ -324,29 +318,26 @@ def graficoPaisEventos(request):
     pais_array = []
     paisesDetalles = []
     for row in result:
-        if 'project__countries' in row and row['project__countries__name'] is not None:
+        if 'project__countries' in row and row[__('project__countries__name')] is not None:
             row['total'] = row['f'] + row['m']
             if row['total'] > 0:
                 paisesDetalles.append({
-                    'pais_en_ingles': row['project__countries__name'],
+                    'pais_en_ingles': row[__('project__countries__name')],
                     'total': row['total'],
                     'f': row['f'],
                     'm': row['m'],
                     'coordenada_x': row['project__countries__x'],
                     'coordenada_y': row['project__countries__y'],
-                    'pais_en_espaniol': row['project__countries__name_es'],
-                    'pais_en_frances': row['project__countries__name_fr'],
                     'country': row['project__countries'],
                     'eventos': "123",
                 })
                 pais_array.append([
-                    row['project__countries__name'],
+                    row[__('project__countries__name')],
                     row['total'],
                     row['f'],
                     row['m'],
                     row['project__countries__x'],
                     row['project__countries__y'],
-                    row['project__countries__name'],
                     str(row['project__countries']).lower(),
                     123
                 ])
