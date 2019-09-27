@@ -1,19 +1,22 @@
-{% extends 'admin/base.html' %}
+{% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-    {% block object-tools %}{% endblock %}
-    <style>
-        object {
-            border: none;
-            padding: 0;
-            margin: 0;
-            height: 100vh;
-            width: 100%;
-        }
-
-    </style>
-    <object data="{{ LEGACY_URL }}import/beneficiarios-paso1" id="object">
-        <p>{% trans 'Your browser does not support objects.' %}</p>
-    </object>
-
+<form action="{% url 'monitoring:import-step1' %}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <label for="excel_file">Your file: </label>
+    <input id="excel_file" type="file" name="excel_file" >
+    <input type="submit" value="Submit">
+</form>
+<table border="1">
+{% for col in columns %}
+<th>{{ col.value }}</th>
+{% endfor %}
+{% for row in data %}
+<tr>
+    {% for cell in row %}
+        <td>{{ cell.value }}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
 {% endblock %}
