@@ -25,6 +25,7 @@
         <link rel="stylesheet" type="text/css" href="
                 {% static "jet/css/themes/"|add:THEME|add:"/jquery-ui.theme.css" as url %}{{ url|jet_append_version }}"
               class="jquery-ui-stylesheet"/>
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/main_css.css' %}">
 
         {% block extrastyle %}{% endblock %}
@@ -189,15 +190,15 @@
             <div class="sidebar sidebar-dependent">
                 <div class="sidebar-wrapper scrollable">
                     <div class="sidebar-section">
-                        {% if user.is_active and user.is_staff %}
+                        {% if user.is_active and user.is_superuser %}
                             <a href="{% url 'admin:index' %}" class="sidebar-link icon">
                             <span class="sidebar-link-label">
                                 <span class="sidebar-link-icon icon-data"></span>
-                                {% trans 'Home' %}
+                                {% trans 'ADMIN Home' %}
                             </span>
                             </a>
                         {% endif %}
-                        {% if site_url %}
+                        {% if site_url and user.is_superuser %}
                             <a href="{{ site_url }}" class="sidebar-link icon">
                             <span class="sidebar-link-label">
                                 <span class="sidebar-link-icon icon-open-external"></span>
@@ -207,7 +208,7 @@
                         {% endif %}
 
                         {% if user.is_active %}
-                            <a href="{{ LEGACY_URL }}" class="sidebar-link icon">
+                            <a href="{% url 'monitoring:dashboard' %}" class="sidebar-link icon">
                             <span class="sidebar-link-label">
                                  <span class="sidebar-link-icon icon-star"></span>
                                 {% trans 'DASHBOARD' %}
@@ -311,18 +312,32 @@
                                                                data-popup-section-class="sidebar-popup-section-{{ app.app_label }}"
                                                                data-order="{{ forloop.counter }}"{% if app.url_blank %}
                                                                target="_blank"{% endif %}>
-                                            <span class="sidebar-left collapsible">
-                                                <span class="sidebar-left-pin icon-star pin-toggle"></span>
-                                                <span class="sidebar-left-unpin icon-cross pin-toggle"></span>
-                                            </span>
+                                                <span class="sidebar-left collapsible">
+{#                                                    <span class="sidebar-left-pin icon-star pin-toggle"></span>#}
+                                                    <span class="sidebar-left-unpin icon-cross pin-toggle"></span>
+                                                </span>
 
                                                 <span class="sidebar-right">
-                                                <span class="sidebar-right-arrow icon-arrow-right"></span>
-                                            </span>
-
+                                                    <span class="sidebar-right-arrow icon-arrow-right"></span>
+                                                </span>
                                                 <span class="sidebar-link-label">
-                                                {{ app.label }}
-                                            </span>
+                                                    {% if app.label == _('Import Beneficiaries') %}
+                                                        <i class="fa fa-upload"></i>
+                                                    {% elif app.label == _('Participants') %}
+                                                        <i class="fa fa-users"></i>
+                                                    {% elif app.label == _('Reports') %}
+                                                        <i class="fa fa-print"></i>
+                                                    {% elif app.label == _('Graphics') %}
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    {% elif app.label == _('Configurations') %}
+                                                        <i class="fa fa-sitemap"></i>
+                                                    {% elif app.label == _('Security') %}
+                                                        <i class="fa fa-lock"></i>
+                                                    {% else %}
+                                                        <i class="fa fa-square"></i>
+                                                    {% endif %}
+                                                    {{ app.label }}
+                                                </span>
                                             </a>
                                         {% endif %}
                                     {% endfor %}
