@@ -25,6 +25,7 @@
         <link rel="stylesheet" type="text/css" href="
                 {% static "jet/css/themes/"|add:THEME|add:"/jquery-ui.theme.css" as url %}{{ url|jet_append_version }}"
               class="jquery-ui-stylesheet"/>
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/main_css.css' %}">
 
         {% block extrastyle %}{% endblock %}
