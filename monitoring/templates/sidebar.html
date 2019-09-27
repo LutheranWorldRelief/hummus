@@ -16,7 +16,7 @@
 
         <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header"><span><span>{% trans 'Menu' %}</span></span></li>
-            <li><a href="{% url 'monitoring:iframe_import' %}"><i class="fa fa-upload"></i>
+            <li><a href="{% url 'monitoring:import' %}"><i class="fa fa-upload"></i>
                 <span>{% trans 'Import Beneficiaries' %}</span></a>
             </li>
             <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-users"></i>
@@ -42,7 +42,7 @@
             <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
-                    <li><a href="{% url 'monitoring:iframe_report' %}"><i class="fa fa-file-excel-o"></i>
+                    <li><a href="{% url 'monitoring:export' %}"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Principal' %}</span></a></li>
                     <li><a href="{% url 'monitoring:template-clean' %}"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Clean template' %}</span></a>
