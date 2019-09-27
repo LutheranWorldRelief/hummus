@@ -2,16 +2,18 @@ from os.path import basename
 
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
-from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic import TemplateView, DetailView, ListView, FormView
 
 from django_tables2 import RequestConfig
 from django_tables2.export.views import ExportMixin
 from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
+import pandas as pd
 
 from .tables import *
 from .models import *
@@ -20,13 +22,39 @@ from .common import get_localized_name as __
 from .catalog import create_catalog
 
 
-class ReportExport(LoginRequiredMixin, TemplateView):
-    template_name = 'report_export.html'
+class ImportParticipants(LoginRequiredMixin, FormView):
+    def post(self, request):
+        excel_file = request.FILES['excel_file']
+        uploaded_wb = load_workbook(filename = excel_file)
+        uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
+
+        # check headers
+        obj = Template.objects.get(id='clean-template')
+        tfile = getattr(obj, __('file'))
+        wb = load_workbook(filename = tfile)
+        ws = wb.get_sheet_by_name(_('data'))
+
+        # FIXME: There shouldn't be two rows of headers
+        header_row = 2
+        for cell in uploaded_ws[header_row]:
+            if cell.value != ws[header_row][cell.col_idx-1].value:
+                print(cell.value)
+                print(ws[header_row][cell.col_idx-1].value)
+                raise Exception('Headers are not the same as in template!')
+
+        context = {}
+        context['columns'] = uploaded_ws[header_row]
+        uploaded_ws.delete_rows(0, amount=header_row)
+        context['data'] = uploaded_ws
+
+        return render(request, self.template_name, context)
+
+    template_name = 'import.html'
 
 
 class DownloadTemplate(LoginRequiredMixin, View):
     def get(self, request):
-        # get localized excel tempalte
+        # get localized excel template
         obj = Template.objects.get(id='clean-template')
         tfile = getattr(obj, __('file'))
         tfilename = tfile.name
