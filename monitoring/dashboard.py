@@ -40,8 +40,8 @@ def cantidadProyectos(request):
 def paises(request):
     paises_todos = (request.POST.get('paises_todos') == 'true')
     ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
-    parameters = {'proyecto': 'project', 'desde': 'start__gte',
-                  'hasta': 'start__lte'}
+    parameters = {'proyecto': 'project', 'desde': 'date_entry_project__gte',
+                  'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
     filter_kwargs['project__countries__isnull'] = False
 
