@@ -2,17 +2,21 @@
 {% load i18n %}
 {% block content %}
 <form action="{% url 'monitoring:import-step1' %}" method="post" enctype="multipart/form-data">
-{% csrf_token %}
-    <label for="excel_file">Your file: </label>
-    <input id="excel_file" type="file" name="excel_file" >
+    {% csrf_token %}
+    {% if not data %}
+        <label for="excel_file">Your file: </label>
+        <input id="excel_file" type="file" name="excel_file" >
+    {% endif %}
     <input type="submit" value="Submit">
 </form>
 <table border="1">
+<th>Select</th>
 {% for col in columns %}
 <th>{{ col.value }}</th>
 {% endfor %}
 {% for row in data %}
 <tr>
+<td><input type="checkbox" checked="checked" value="{{ row.0.row }}"></td>
     {% for cell in row %}
         <td>{{ cell.value }}</td>
     {% endfor %}
