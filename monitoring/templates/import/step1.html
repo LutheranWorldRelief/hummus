@@ -3,14 +3,15 @@
 {% load i18n %}
 {% block extra_header %}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
     <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify1.11.1/css/alertify.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static 'img/logo_user.png' %}">
 
 {% endblock %}
@@ -92,7 +93,7 @@
                                                     class="hidden-xs">{% trans 'Examine' %} …</span>
                                                 <input type="file"
                                                        id="w1"
-                                                       class=""
+                                                       class="file"
                                                        name="excel_file"
                                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values"
                                                        data-krajee-fileinput="fileinput_d08ef975">
@@ -125,15 +126,21 @@
 {% endblock %}
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/assets/yii.js' %}"></script>
-    <script src="{% static 'js/lib/select2/js/select2.full.js' %}"></script>
-    <script src="{% static 'js/lib/select2/js/select2-krajee.js' %}"></script>
-    <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
-    <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
-    <script src="{% static 'js/vue/comp.select2.js' %}"></script>
-    <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
-    <script src="{% static 'js/vue/contact.merge.document.js' %}"></script>
+    <script src="{% static 'js/fileinput.min.js' %}"></script>
+    <script src="{% static 'js/kv-widgets.min.js' %}"></script>
+    <script src="{% static 'js/yii.activeForm.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
+    <script>jQuery(function ($) {
+        inputFile = $('#w1');
+        jQuery && jQuery.pjax && (jQuery.pjax.defaults.maxCacheLength = 0);
+        if (inputFile.data('fileinput')) {
+            inputFile.fileinput('destroy');
+        }
+        inputFile.fileinput();
+
+        jQuery('#w0').yiiActiveForm([], []);
+    });</script>
 
 {% endblock %}
