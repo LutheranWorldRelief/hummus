@@ -34,7 +34,7 @@ urlpatterns = [
     path('graphic/grafico-pais-eventos/', dashboard.graficoPaisEventos, name='grafico-pais-eventos'),
     #path('import/beneficiarios/', TemplateView.as_view(template_name='import.html'), name='iframe_import'),
     #path('report/proyectos/', TemplateView.as_view(template_name='report.html'), name='iframe_report'),
-    path('import/participants/', TemplateView.as_view(template_name='import.html'), name='import'),
+    path('import/participants/', TemplateView.as_view(template_name='import/step1.html'), name='import'),
     path('import/participants/step1', views.ImportParticipants.as_view(), name='import-step1'),
     path('export/participants', views.ProjectContactTableView.as_view(), name='export'),
     path('report/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
