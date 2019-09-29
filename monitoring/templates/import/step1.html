@@ -24,8 +24,9 @@
 
             <div class="tab-content">
                 <div class="tab-pane active container-fluid" role="tabpanel" id="step">
-                    <form id="w0" action="." method="post" enctype="multipart/form-data">
-
+                    <form id="w0" action="{% url 'monitoring:import-step1' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-lg-10 col-lg-offset-1">
                                 <h3 class="text-info pull-left">{% trans 'Step 1' %}: {% trans 'Upload File' %}</h3>
