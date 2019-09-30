@@ -3,12 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: monitoring/templates/dashboard/resumen.html:35
+#: monitoring/templates/dashboard/resumen.html:49
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-25 20:37+0000\n"
+"POT-Creation-Date: 2019-09-30 14:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,12 +33,13 @@ msgid "French"
 msgstr ""
 
 #: hummus/settings.py:176 hummus/settings.py:178
-#: monitoring/templates/sidebar.html:20
+#: monitoring/templates/sidebar.html:20 templates/admin/base.html:324
 msgid "Import Beneficiaries"
 msgstr ""
 
 #: hummus/settings.py:180 hummus/settings.py:181
 #: monitoring/templates/sidebar.html:23 monitoring/templates/sidebar.html:27
+#: templates/admin/base.html:326
 msgid "Participants"
 msgstr ""
 
@@ -49,7 +52,7 @@ msgid "Duplicates per document"
 msgstr ""
 
 #: hummus/settings.py:185 monitoring/templates/sidebar.html:41
-#: monitoring/templates/sidebar.html:42
+#: monitoring/templates/sidebar.html:42 templates/admin/base.html:328
 msgid "Reports"
 msgstr ""
 
@@ -62,6 +65,7 @@ msgid "Clean Template"
 msgstr ""
 
 #: hummus/settings.py:189 monitoring/templates/sidebar.html:53
+#: templates/admin/base.html:330
 msgid "Graphics"
 msgstr ""
 
@@ -70,6 +74,7 @@ msgid "Dashboard"
 msgstr ""
 
 #: hummus/settings.py:192 monitoring/templates/sidebar.html:56
+#: templates/admin/base.html:332
 msgid "Configurations"
 msgstr ""
 
@@ -111,6 +116,7 @@ msgid "Segmentation"
 msgstr ""
 
 #: hummus/settings.py:201 monitoring/templates/sidebar.html:94
+#: templates/admin/base.html:334
 msgid "Security"
 msgstr ""
 
@@ -174,7 +180,8 @@ msgstr ""
 msgid "Goals"
 msgstr ""
 
-#: monitoring/catalog.py:37 monitoring/tables.py:51
+#: monitoring/catalog.py:37 monitoring/tables.py:51 monitoring/views.py:29
+#: monitoring/views.py:35
 msgid "data"
 msgstr ""
 
@@ -222,19 +229,19 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: monitoring/dashboard.py:134
+#: monitoring/dashboard.py:133
 msgid "Goal Men"
 msgstr ""
 
-#: monitoring/dashboard.py:136
+#: monitoring/dashboard.py:135
 msgid "Goal Women"
 msgstr ""
 
-#: monitoring/dashboard.py:138
+#: monitoring/dashboard.py:137
 msgid "Amount Men"
 msgstr ""
 
-#: monitoring/dashboard.py:141
+#: monitoring/dashboard.py:140
 msgid "Amount Women"
 msgstr ""
 
@@ -346,7 +353,7 @@ msgstr ""
 msgid "Document"
 msgstr ""
 
-#: monitoring/models.py:96 templates/admin/base.html:337
+#: monitoring/models.py:96 templates/admin/base.html:352
 msgid "Title"
 msgstr ""
 
@@ -740,7 +747,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: monitoring/templates/dashboard.html:105
+#: monitoring/templates/dashboard.html:108
 msgid "PARTICIPANTS BY ACTIVITY"
 msgstr ""
 
@@ -824,14 +831,6 @@ msgstr ""
 msgid "Summary Cards"
 msgstr ""
 
-#: monitoring/templates/dashboard/resumen.html:35
-msgid "Activities"
-msgstr ""
-
-#: monitoring/templates/dashboard/resumen.html:49
-msgid "Events"
-msgstr ""
-
 #: monitoring/templates/dupes_document.html:26
 msgid "Cases Duplicated by Document"
 msgstr ""
@@ -856,12 +855,33 @@ msgstr ""
 msgid "Toggle navigation"
 msgstr ""
 
-#: monitoring/templates/header.html:42 templates/admin/base.html:93
+#: monitoring/templates/header.html:42 templates/admin/base.html:94
 msgid "Log out"
 msgstr ""
 
-#: monitoring/templates/import.html:16
-msgid "Your browser does not support objects."
+#: monitoring/templates/import/step1.html:32
+msgid "Step 1"
+msgstr ""
+
+#: monitoring/templates/import/step1.html:32
+msgid "Upload File"
+msgstr ""
+
+#: monitoring/templates/import/step1.html:34
+msgid "Download Template"
+msgstr ""
+
+#: monitoring/templates/import/step1.html:42
+#, python-brace-format
+msgid "Select {files} for upload"
+msgstr ""
+
+#: monitoring/templates/import/step1.html:51
+msgid "Import and continue"
+msgstr ""
+
+#: monitoring/templates/import/wizard.html:8
+msgid "Import Beneficiaries from Excel"
 msgstr ""
 
 #: monitoring/templates/sidebar.html:12
@@ -904,79 +924,83 @@ msgstr ""
 msgid "Binnacle"
 msgstr ""
 
-#: templates/admin/base.html:77
+#: templates/admin/base.html:78
 msgid "Welcome,"
 msgstr ""
 
-#: templates/admin/base.html:82 templates/admin/base.html:204
+#: templates/admin/base.html:83 templates/admin/base.html:205
 msgid "View site"
 msgstr ""
 
-#: templates/admin/base.html:87 templates/admin/base.html:223
+#: templates/admin/base.html:88 templates/admin/base.html:224
 msgid "Documentation"
 msgstr ""
 
-#: templates/admin/base.html:91
+#: templates/admin/base.html:92
 msgid "Change password"
 msgstr ""
 
-#: templates/admin/base.html:103 templates/admin/base.html:196
+#: templates/admin/base.html:104
 msgid "Home"
 msgstr ""
 
-#: templates/admin/base.html:176
+#: templates/admin/base.html:177
 msgid "back"
 msgstr ""
 
-#: templates/admin/base.html:213
+#: templates/admin/base.html:197
+msgid "ADMIN Home"
+msgstr ""
+
+#: templates/admin/base.html:214
 msgid "DASHBOARD"
 msgstr ""
 
-#: templates/admin/base.html:273
+#: templates/admin/base.html:274
 msgid "Applications"
 msgstr ""
 
-#: templates/admin/base.html:302
+#: templates/admin/base.html:303
 msgid "Hide applications"
 msgstr ""
 
-#: templates/admin/base.html:303
+#: templates/admin/base.html:304
 msgid "Show hidden"
 msgstr ""
 
-#: templates/admin/base.html:334 templates/admin/base.html:354
+#: templates/admin/base.html:349 templates/admin/base.html:369
 msgid "Add bookmark"
 msgstr ""
 
-#: templates/admin/base.html:339
+#: templates/admin/base.html:354
 msgid "URL"
 msgstr ""
 
-#: templates/admin/base.html:348
+#: templates/admin/base.html:363
 msgid "Delete bookmark"
 msgstr ""
 
-#: templates/admin/base.html:349
+#: templates/admin/base.html:364
 msgid "Are you sure want to delete this bookmark?"
 msgstr ""
 
-#: templates/admin/base.html:358
+#: templates/admin/base.html:373
 msgid "bookmarks"
 msgstr ""
 
-#: templates/admin/base.html:367 templates/admin/base.html:374
+#: templates/admin/base.html:382 templates/admin/base.html:389
 msgid "Remove"
 msgstr ""
 
-#: templates/admin/base.html:396
+#: templates/admin/base.html:411
 msgid "Search"
 msgstr ""
 
-#: templates/admin/base.html:403
+#: templates/admin/base.html:418
 msgid "Application page"
 msgstr ""
 
-#: templates/admin/base.html:431
+#: templates/admin/base.html:446
 msgid "current theme"
 msgstr ""
 
