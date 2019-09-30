@@ -5,6 +5,12 @@ from django.core.exceptions import PermissionDenied
 from django.utils.translation import gettext_lazy as _
 
 
+
+class Request(models.Model):
+    meta = models.TextField()
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Template(models.Model):
     id = models.CharField(primary_key=True, max_length=32, verbose_name=_('Filename'))
     name = models.CharField(max_length=50, verbose_name=_('Name'))
