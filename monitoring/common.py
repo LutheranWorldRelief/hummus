@@ -1,16 +1,54 @@
 import re
+from functools import wraps
 
 from django.conf import settings
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Func, Value
 from django.http import JsonResponse
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 
+def domain_required(function=None):
+
+    def check_domain(user):
+            # domain required
+            domain = user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN) )
+
+            # super user can always get int
+            superuser = user.is_superuser
+
+            # if you can view projects, you can view this...
+            permission = user.has_perm('monitoring.project.can_view')
+
+            return domain or superuser or permission
+
+    return user_passes_test(check_domain)
+
+
+class DomainRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        if not self.request.user.is_authenticated:
+            return False
+
+        # domain required
+        domain = self.request.user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN) )
+
+        # super user can always get int
+        superuser = self.request.user.is_superuser
+
+        # if you can view projects, you can view this...
+        permission = self.request.user.has_perm('monitoring.project.can_view')
+
+        return domain or superuser or permission
+
+
 def language_no_region(language):
     if '-' in language:
         language, _, region = language.lower().partition('-')
     return language
+
 
 def get_localized_name(column):
     language = language_no_region(translation.get_language())

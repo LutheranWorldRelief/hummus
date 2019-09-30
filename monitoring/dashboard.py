@@ -12,11 +12,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
-from .common import dictfetchall, get_localized_name as __
+from .common import domain_required, DomainRequiredMixin, dictfetchall, get_localized_name as __
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def proyecto(request):
     id = request.POST.get('proyecto')
     if id:
@@ -28,7 +28,7 @@ def proyecto(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def cantidadProyectos(request):
     proyectos = Project.objects.count()
     data = {'proyectos': proyectos}
@@ -36,7 +36,7 @@ def cantidadProyectos(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def paises(request):
     paises_todos = (request.POST.get('paises_todos') == 'true')
     ninguno = False if request.POST.getlist("paises[]") or paises_todos else True
@@ -62,7 +62,7 @@ def paises(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def rubros(request):
     rubros_todos = request.POST.get('rubros_todos') == 'true'
     ninguno = False if request.POST.getlist("rubros[]") or rubros_todos else True
@@ -84,7 +84,7 @@ def rubros(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoOrganizaciones(request):
     parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
                   'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
@@ -122,7 +122,7 @@ def graficoOrganizaciones(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def proyectosMetas(request):
     proyecto_id = request.POST.get('proyecto')
     if not proyecto_id:
@@ -160,7 +160,7 @@ def proyectosMetas(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoAnioFiscal(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
@@ -175,7 +175,7 @@ def graficoAnioFiscal(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoEdad(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
@@ -199,7 +199,7 @@ def graficoEdad(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoEducacion(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
@@ -218,13 +218,13 @@ def graficoEducacion(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoEventos(request):
     return JsonResponse({'foo': 'bar'})
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoTipoParticipante(request):
     parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
     filter_kwargs = filterBy(parameters, request)
@@ -241,7 +241,7 @@ def graficoTipoParticipante(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoSexoParticipante(request):
     parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
                   'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
@@ -255,7 +255,7 @@ def graficoSexoParticipante(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoNacionalidad(request):
     parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
                   'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}
@@ -300,7 +300,7 @@ def graficoNacionalidad(request):
 
 
 @csrf_exempt
-@login_required
+@domain_required()
 def graficoPaisEventos(request):
     parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'product__in',
                   'proyecto': 'project', 'desde': 'date_entry_project__gte', 'hasta': 'date_entry_project__lte'}

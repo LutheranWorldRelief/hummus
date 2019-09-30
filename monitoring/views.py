@@ -19,8 +19,7 @@ import pandas as pd
 
 from .tables import *
 from .models import *
-from .common import months, JSONResponseMixin
-from .common import get_localized_name as __
+from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __
 from .catalog import create_catalog
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -46,7 +45,7 @@ class Capture(TemplateView):
 
 
 
-class ImportParticipants(LoginRequiredMixin, FormView):
+class ImportParticipants(DomainRequiredMixin, FormView):
     def post(self, request):
         excel_file = request.FILES['excel_file']
         uploaded_wb = load_workbook(filename = excel_file)
@@ -76,7 +75,7 @@ class ImportParticipants(LoginRequiredMixin, FormView):
     template_name = 'import.html'
 
 
-class DownloadTemplate(LoginRequiredMixin, View):
+class DownloadTemplate(DomainRequiredMixin, View):
     def get(self, request):
         # get localized excel template
         obj = Template.objects.get(id='clean-template')
@@ -92,15 +91,15 @@ class DownloadTemplate(LoginRequiredMixin, View):
         return response
 
 
-class ValidateDupesDoc(LoginRequiredMixin, TemplateView):
+class ValidateDupesDoc(DomainRequiredMixin, TemplateView):
     template_name = 'dupes_document.html'
 
 
-class ValidateDupesName(LoginRequiredMixin, TemplateView):
+class ValidateDupesName(DomainRequiredMixin, TemplateView):
     template_name = 'dupes_name.html'
 
 
-class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
+class SubProjectTableView(DomainRequiredMixin, PagedFilteredTableView):
     model = SubProject
     table_class = SubProjectTable
     template_name = 'table.html'
@@ -109,7 +108,7 @@ class SubProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     formhelper_class = SubProjectFilterFormHelper
 
 
-class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
+class ProjectTableView(DomainRequiredMixin, PagedFilteredTableView):
     model = Project
     table_class = ProjectTable
     template_name = 'table.html'
@@ -118,7 +117,7 @@ class ProjectTableView(LoginRequiredMixin, PagedFilteredTableView):
     formhelper_class = ProjectFilterFormHelper
 
 
-class ContactTableView(LoginRequiredMixin, PagedFilteredTableView):
+class ContactTableView(DomainRequiredMixin, PagedFilteredTableView):
     model = Contact
     table_class = ContactTable
     template_name = 'table.html'
@@ -127,7 +126,7 @@ class ContactTableView(LoginRequiredMixin, PagedFilteredTableView):
     formhelper_class = ContactFilterFormHelper
 
 
-class ProjectContactTableView(LoginRequiredMixin, ReportExportMixin, PagedFilteredTableView):
+class ProjectContactTableView(DomainRequiredMixin, ReportExportMixin, PagedFilteredTableView):
     model = ProjectContact
     table_class = ProjectContactTable
     template_name = 'table.html'
@@ -136,7 +135,7 @@ class ProjectContactTableView(LoginRequiredMixin, ReportExportMixin, PagedFilter
     formhelper_class = ProjectContactFilterFormHelper
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(DomainRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
     def get_context_data(self, *args, **kwargs):
