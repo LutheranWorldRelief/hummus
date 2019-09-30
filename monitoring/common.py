@@ -1,4 +1,5 @@
 import re
+from functools import wraps
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
@@ -15,7 +16,7 @@ def domain_required(login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             # domain required
-            domain = request.user.email.endswith('{}%s'.format(MICROSOFT_DOMAIN) )
+            domain = request.user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN) )
 
             # super user can always get int
             superuser = request.user.is_superuser
@@ -43,14 +44,17 @@ def domain_required(login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
 
 class DomainRequiredMixin(UserPassesTestMixin):
     def test_func(self):
+        if not self.request.user.is_authenticated:
+            return False
+
         # domain required
-        domain = self.request.user.email.endswith('{}%s'.format(MICROSOFT_DOMAIN) )
+        domain = self.request.user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN) )
 
         # super user can always get int
         superuser = self.request.user.is_superuser
 
         # if you can view projects, you can view this...
-        permission = request.user.has_perm('monitoring.project.can_view')
+        permission = self.request.user.has_perm('monitoring.project.can_view')
 
         return domain or superuser or permission
 
