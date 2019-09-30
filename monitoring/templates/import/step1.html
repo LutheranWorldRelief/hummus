@@ -24,7 +24,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane active container-fluid" role="tabpanel" id="step">
-                    <form id="w0" action="{% url 'monitoring:import-step1' %}" method="post"
+                    <form id="w0" action="{% url 'monitoring:import-step2' %}" method="post"
                           enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
@@ -37,7 +37,7 @@
 
                         <div class="row">
                             <div class="col-lg-10 col-lg-offset-1">
-                                <input id="input-b3" name="input-b3[]" type="file" class="file" multiple
+                                <input id="input-b3" name="excel_file" type="file" class="file" multiple
                                        data-show-upload="false" data-show-caption="true"
                                        data-msg-placeholder="{% trans 'Select {files} for upload' %}...">
                             </div>

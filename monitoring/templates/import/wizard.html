@@ -14,7 +14,7 @@
             <div class="wizard-inner">
                 <div class="connecting-line"></div>
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
+                    <li role="presentation" class="{% if 'step1' in request.path %} active {% endif %}">
                         <a href="#step" data-toggle="tab" aria-controls="step1" role="tab" title=""
                            data-original-title="Step 1" aria-expanded="true">
                             <span class="round-tab">
@@ -23,7 +23,7 @@
                         </a>
                     </li>
 
-                    <li role="presentation" class="">
+                    <li role="presentation" class="{% if 'step2' in request.path %} active {% endif %}">
                         <a href="#" data-toggle="tab" aria-controls="" role="tab" title=""
                            data-original-title="Step 2" aria-expanded="false">
                             <span class="round-tab">
@@ -32,7 +32,7 @@
                         </a>
                     </li>
 
-                    <li role="presentation" class="">
+                    <li role="presentation" class="{% if 'step3' in request.path %} active {% endif %}">
                         <a href="#" data-toggle="tab" aria-controls="" role="tab" title=""
                            data-original-title="Complete" aria-expanded="false">
                             <span class="round-tab">

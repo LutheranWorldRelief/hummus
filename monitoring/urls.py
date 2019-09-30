@@ -9,9 +9,9 @@ from . import models
 app_name = 'monitoring'
 
 urlpatterns = [
+  
+    # misc
     #path('',TemplateView.as_view(template_name='index.html')),
-    path('', views.DashboardView.as_view(), name='dashboard'),
-    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
     path('subproject/', views.SubProjectTableView.as_view()),
@@ -19,6 +19,9 @@ urlpatterns = [
     path('project/<int:pk>/', views.ProjectDetailView.as_view(), name='project'),
     path('subproject/<int:pk>/', views.SubProjectDetailView.as_view(), name='subproject'),
 
+    # dashboard
+    path('', views.DashboardView.as_view(), name='dashboard'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('graphic/proyecto/', dashboard.proyecto, name='graphic-proyecto'),
     path('graphic/cantidad-proyectos/', dashboard.cantidadProyectos, name='cantidad-proyectos'),
     path('graphic/paises/', dashboard.paises, name='graphic-paises'),
@@ -33,17 +36,23 @@ urlpatterns = [
     path('graphic/grafico-sexo-participante/', dashboard.graficoSexoParticipante, name='grafico-sexo-participante'),
     path('graphic/grafico-nacionalidad/', dashboard.graficoNacionalidad, name='grafico-nacionalidad'),
     path('graphic/grafico-pais-eventos/', dashboard.graficoPaisEventos, name='grafico-pais-eventos'),
-
+  
+    # import
+    path('import/participants/step1', TemplateView.as_view(template_name='import/step1.html'), name='import-step1'),
+    path('import/participants/step2', views.ImportParticipants.as_view(), name='import-step2'),
     path('import/capture/', views.Capture.as_view(), name='capture'),
     path('import/capture/<int:pk>', DetailView.as_view(model=models.Request)),
     path('import/participants/', TemplateView.as_view(template_name='import/step1.html'), name='import'),
-    path('import/participants/step1', views.ImportParticipants.as_view(), name='import-step1'),
+  
+    # export
     path('export/participants', views.ProjectContactTableView.as_view(), name='export'),
     path('export/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
 
+    # dupes
     path('validate/dupes-doc/', views.ValidateDupesDoc.as_view(), name='validate-dupes-doc'),
     path('validate/dupes-name/', views.ValidateDupesName.as_view(), name='validate-dupes-name'),
 
+    # APIs misc
     path('opt/api-fusion/', jsonviews.ContactFusion.as_view(), ),
     path('opt/api-name-values/', jsonviews.ContactNameValues.as_view(), ),
     path('opt/api-doc-values/', jsonviews.ContactNameValues.as_view(), ),
