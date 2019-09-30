@@ -1,5 +1,5 @@
 from django.urls import include, path
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 
 from . import views
 from . import jsonviews
@@ -18,6 +18,7 @@ urlpatterns = [
     path('contact/<int:pk>/', views.ContactDetailView.as_view(), name='contact'),
     path('project/<int:pk>/', views.ProjectDetailView.as_view(), name='project'),
     path('subproject/<int:pk>/', views.SubProjectDetailView.as_view(), name='subproject'),
+
     path('graphic/proyecto/', dashboard.proyecto, name='graphic-proyecto'),
     path('graphic/cantidad-proyectos/', dashboard.cantidadProyectos, name='cantidad-proyectos'),
     path('graphic/paises/', dashboard.paises, name='graphic-paises'),
@@ -32,14 +33,17 @@ urlpatterns = [
     path('graphic/grafico-sexo-participante/', dashboard.graficoSexoParticipante, name='grafico-sexo-participante'),
     path('graphic/grafico-nacionalidad/', dashboard.graficoNacionalidad, name='grafico-nacionalidad'),
     path('graphic/grafico-pais-eventos/', dashboard.graficoPaisEventos, name='grafico-pais-eventos'),
-    #path('import/beneficiarios/', TemplateView.as_view(template_name='import.html'), name='iframe_import'),
-    #path('report/proyectos/', TemplateView.as_view(template_name='report.html'), name='iframe_report'),
+
+    path('import/capture/', views.Capture.as_view(), name='capture'),
+    path('import/capture/<int:pk>', DetailView.as_view(model=models.Request)),
     path('import/participants/', TemplateView.as_view(template_name='import/step1.html'), name='import'),
     path('import/participants/step1', views.ImportParticipants.as_view(), name='import-step1'),
     path('export/participants', views.ProjectContactTableView.as_view(), name='export'),
-    path('report/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
+    path('export/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
+
     path('validate/dupes-doc/', views.ValidateDupesDoc.as_view(), name='validate-dupes-doc'),
     path('validate/dupes-name/', views.ValidateDupesName.as_view(), name='validate-dupes-name'),
+
     path('opt/api-fusion/', jsonviews.ContactFusion.as_view(), ),
     path('opt/api-name-values/', jsonviews.ContactNameValues.as_view(), ),
     path('opt/api-doc-values/', jsonviews.ContactNameValues.as_view(), ),
@@ -54,4 +58,5 @@ urlpatterns = [
     path('opt/api-projects/', jsonviews.JsonIdName.as_view(queryset=models.Project.objects.filter(status='Active'))),
     path('opt/api-types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
     path('opt/api-education/', jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()),)
+
 ]

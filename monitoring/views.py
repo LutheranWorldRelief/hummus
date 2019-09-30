@@ -5,9 +5,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, FormView
+from django.views.decorators.csrf import csrf_exempt
 
 from django_tables2 import RequestConfig
 from django_tables2.export.views import ExportMixin
@@ -20,6 +22,28 @@ from .models import *
 from .common import months, JSONResponseMixin
 from .common import get_localized_name as __
 from .catalog import create_catalog
+
+@method_decorator(csrf_exempt, name='dispatch')
+class Capture(TemplateView):
+
+    template_name = 'capture.html'
+
+    def get(self, request):
+        context = {}
+        context['meta'] = request.META
+        context['body'] = request.body
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = {}
+        context['meta'] = request.META
+        context['body'] = request.body
+        row = Request()
+        row.meta = request.META
+        row.body = request.body
+        row.save()
+        return render(request, self.template_name, context)
+
 
 
 class ImportParticipants(LoginRequiredMixin, FormView):
