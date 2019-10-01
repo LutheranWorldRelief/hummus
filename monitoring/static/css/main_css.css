@@ -1,7 +1,7 @@
 /*css class for td */
 .field-structure, .field-organization, .field-project, .field-getStartEvent,
 .field-getEndEvent, .field-contact, .field-event, .field-project,
-.field-name {
+.field-name, .column-name {
     white-space: normal !important;
 }
 
@@ -116,12 +116,13 @@ p.help {
 
 @media screen and (max-width: 1097px) {
     .related-widget-wrapper span.select2 {
-         width: 60% !important;
+        width: 60% !important;
     }
 }
+
 @media screen and (max-width: 740px) {
     .related-widget-wrapper span.select2 {
-         width: 100% !important;
+        width: 100% !important;
     }
 }
 
