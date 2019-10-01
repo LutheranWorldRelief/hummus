@@ -336,6 +336,8 @@ class SubProject(models.Model):
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
+                                     verbose_name=_('Organization'))
 
     objects = SubProjectQuerySet.as_manager()
 

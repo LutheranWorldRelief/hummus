@@ -53,9 +53,48 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
 
         # import
+        header_rows = 2
+        project_cols = 2
+        uploaded_ws.delete_rows(0, amount=header_rows)
         for row in uploaded_ws.iter_rows():
-            for cell in row:
-                print(cell.value)
+
+            # get SubProject, validates project columns
+            project = row[0].value
+            organization = row[1].value
+            subproject = SubProject.objects.filter(project__name=project, organization__name=organization).first()
+            if not subproject:
+                raise Exception('Subproject with Project "{}" and Organization "{}" does not exist!'.format(project, organization))
+
+            project = Project.objects.get(name=project)
+            document = row[project_cols + 0].value
+            first_name = row[project_cols + 1].value
+            last_name = row[project_cols + 2].value
+            sex = row[project_cols + 3].value
+            birthdate = row[project_cols + 4].value
+            education = row[project_cols + 5].value
+            phone = row[project_cols + 6].value
+            men_home = row[project_cols + 7].value
+            women_home = row[project_cols + 8].value
+            organization = row[project_cols + 9].value
+            country = row[project_cols + 10].value
+            contact = Contact.objects.filter(document=document, first_name=first_name, last_name=last_name).first()
+            if not contact:
+                print('Create contact! {} {}'.format(first_name, last_name))
+                contact = Contact()
+                contact.first_name = first_name
+                contact.last_name = last_name
+                contact.document = document
+                contact.save()
+            project_contact = ProjectContact.objects.filter(project__name=project, contact=contact).first()
+            if not project_contact:
+                print('Create project contact! {} {}'.format(project, contact.first_name))
+                project_contact = ProjectContact()
+                project_contact.contact = contact
+                project_contact.project = project
+                project_contact.save()
+
+            #for i, col in enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
+            #    print(row[i+project_cols].value)
 
         context = {}
         context['excel_file'] = tmp_excel
