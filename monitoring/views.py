@@ -47,6 +47,15 @@ class Capture(TemplateView):
 
 class ImportParticipants(DomainRequiredMixin, FormView):
     def post(self, request):
+        excel_file = request.POST.get('excel_file')
+        print(excel_file)
+        return render(request, self.template_name, context)
+
+    template_name = 'import/step3.html'
+
+
+class ValidateExcel(DomainRequiredMixin, FormView):
+    def post(self, request):
         excel_file = request.FILES['excel_file']
         uploaded_wb = load_workbook(filename = excel_file)
         uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
@@ -61,9 +70,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         header_row = 2
         for cell in uploaded_ws[header_row]:
             if cell.value != ws[header_row][cell.col_idx-1].value:
-                print(cell.value)
-                print(ws[header_row][cell.col_idx-1].value)
-                raise Exception('Headers are not the same as in template!')
+                raise Exception('Headers are not the same as in template! {} != {}'.format(cell.value, ws[header_row][cell.col_idx-1].value))
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
@@ -72,7 +79,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         return render(request, self.template_name, context)
 
-    template_name = 'import.html'
+    template_name = 'import/step2.html'
 
 
 class DownloadTemplate(DomainRequiredMixin, View):
