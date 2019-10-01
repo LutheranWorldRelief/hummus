@@ -9,7 +9,7 @@ from . import models
 app_name = 'monitoring'
 
 urlpatterns = [
-  
+
     # misc
     #path('',TemplateView.as_view(template_name='index.html')),
     path('contact/', views.ContactTableView.as_view()),
@@ -36,14 +36,14 @@ urlpatterns = [
     path('graphic/grafico-sexo-participante/', dashboard.graficoSexoParticipante, name='grafico-sexo-participante'),
     path('graphic/grafico-nacionalidad/', dashboard.graficoNacionalidad, name='grafico-nacionalidad'),
     path('graphic/grafico-pais-eventos/', dashboard.graficoPaisEventos, name='grafico-pais-eventos'),
-  
+
     # import
     path('import/participants/step1', TemplateView.as_view(template_name='import/step1.html'), name='import-step1'),
     path('import/participants/step2', views.ImportParticipants.as_view(), name='import-step2'),
     path('import/capture/', views.Capture.as_view(), name='capture'),
     path('import/capture/<int:pk>', DetailView.as_view(model=models.Request)),
     path('import/participants/', TemplateView.as_view(template_name='import/step1.html'), name='import'),
-  
+
     # export
     path('export/participants', views.ProjectContactTableView.as_view(), name='export'),
     path('export/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
