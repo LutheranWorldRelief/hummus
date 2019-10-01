@@ -123,7 +123,8 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     date_hierarchy = 'start'
     readonly_fields = ['show_salesforce_url']
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion', 'show_salesforce_url']}),
+        (_('General information'),
+         {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion', 'show_salesforce_url']}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
@@ -215,7 +216,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
-    list_display = ('name', 'code', 'project')
+    list_display = ('name', 'code', 'project', 'organization')
     list_display_links = ('name',)
     ordering = ['project']
     list_per_page = 20
@@ -223,7 +224,8 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     readonly_fields = ['show_salesforce_url']
     search_fields = ['name', 'code', 'project__name', 'status']
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'project', 'status', 'country', 'show_salesforce_url']}),
+        (_('General information'),
+         {'fields': ['code', 'name', 'project', 'status', 'organization', 'country', 'show_salesforce_url']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
