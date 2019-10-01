@@ -224,7 +224,8 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     readonly_fields = ['show_salesforce_url']
     search_fields = ['name', 'code', 'project__name', 'status']
     fieldsets = [
-        (_('General information'), {'fields': ['code', 'name', 'project', 'status', 'country', 'show_salesforce_url']}),
+        (_('General information'),
+         {'fields': ['code', 'name', 'project', 'status', 'organization', 'country', 'show_salesforce_url']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
