@@ -48,10 +48,17 @@ class Capture(TemplateView):
 class ImportParticipants(DomainRequiredMixin, FormView):
     def post(self, request):
         tmp_excel = request.POST.get('excel_file')
-        excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel)).read()
+        excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
+        uploaded_wb = load_workbook(excel_file)
+        uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
+
+        # import
+        for row in uploaded_ws.iter_rows():
+            for cell in row:
+                print(cell.value)
+
         context = {}
         context['excel_file'] = tmp_excel
-        #context['data'] = excel_file
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
