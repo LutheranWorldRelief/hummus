@@ -41,6 +41,10 @@ def updateSubProject(hummus_record, salesforce_record):
     hummus_record.end = salesforce_record['End_Date__c']
     hummus_record.recordtype = salesforce_record['RecordType']['Name']
     hummus_record.country = getCountry(salesforce_record['Country__r']['Name'])
+    hummus_record.actualmen = salesforce_record['Men_Direct_Actual__c']
+    hummus_record.actualimen = salesforce_record['Men_Indirect_Actual__c']
+    hummus_record.actualwomen = salesforce_record['Women_Direct_Actual__c']
+    hummus_record.actualiwomen = salesforce_record['Women_Indirect_Actual__c']
     hummus_record.targetmen = salesforce_record['Men_Direct_Target__c']
     hummus_record.targetimen = salesforce_record['Men_Indirect_Target__c']
     hummus_record.targetwomen = salesforce_record['Women_Direct_Target__c']
@@ -92,14 +96,14 @@ class Command(BaseCommand):
                     new_project.name = project['Name']
                     new_project.code = project['Project_Identifier__c']
                     new_project.save()
-                    updateProject(hummus_project, project)
+                    updateProject(new_project, project)
                     self.stdout.write(self.style.SUCCESS('Successfully created project %s: "%s"' % (project['Id'], project['Name'])))
 
         # Get Sub Projects
 
         if not options['skip_subprojects']:
             hummus_subprojects = SubProject.objects.all()
-            sf_fields = "Id, Name, RecordType.Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c"
+            sf_fields = "Id, Name, RecordType.Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c, Men_Direct_Actual__c, Men_Indirect_Actual__c, Women_Direct_Actual__c, Women_Indirect_Actual__c"
             if options['project_ids']:
                 subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
             else:
