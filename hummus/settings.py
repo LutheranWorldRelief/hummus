@@ -175,7 +175,7 @@ LOGIN_URL = '/admin/login/'
 # Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
     {'label': _('Import Beneficiaries'), 'items': [
-        {'name': '', 'url': '/import/beneficiarios',
+        {'name': '', 'url': '/import/participants',
          'label': _('Import Beneficiaries')},
     ]},
     {'label': _('Participants'), 'items': [
@@ -184,7 +184,7 @@ JET_SIDE_MENU_ITEMS = [
         {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document')},
     ]},
     {'label': _('Reports'), 'items': [
-        {'name': '', 'url': '/report/proyectos', 'label': _('Principal')},
+        {'name': '', 'url': '/export/participants', 'label': _('Principal')},
         {'name': '', 'url': '/report/template-clean', 'label': _('Clean Template')},
     ]},
     {'label': _('Graphics'), 'items': [
