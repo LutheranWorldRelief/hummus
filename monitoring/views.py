@@ -2,7 +2,7 @@ from os.path import basename
 
 from django.db.models import Sum, Count, Q, Value, CharField, F
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
@@ -47,8 +47,11 @@ class Capture(TemplateView):
 
 class ImportParticipants(DomainRequiredMixin, FormView):
     def post(self, request):
-        excel_file = request.POST.get('excel_file')
-        print(excel_file)
+        tmp_excel = request.POST.get('excel_file')
+        excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel)).read()
+        context = {}
+        context['excel_file'] = tmp_excel
+        #context['data'] = excel_file
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
@@ -57,6 +60,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 class ValidateExcel(DomainRequiredMixin, FormView):
     def post(self, request):
         excel_file = request.FILES['excel_file']
+        tmp_excel = default_storage.save('{}/{}'.format('tmp', excel_file.name), excel_file)
+
         uploaded_wb = load_workbook(filename = excel_file)
         uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
 
@@ -76,6 +81,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         context['columns'] = uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=header_row)
         context['data'] = uploaded_ws
+        context['excel_file'] = excel_file
 
         return render(request, self.template_name, context)
 

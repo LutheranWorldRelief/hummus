@@ -27,6 +27,7 @@
                     <form id="w0" action="{% url 'monitoring:import-step3' %}" method="post"
                           enctype="multipart/form-data">
                         {% csrf_token %}
+                        <input type="hidden" name="excel_file" value="{{ excel_file }}">
                         <div class="row">
                             <div class="col-lg-4 col-lg-offset-1">
                                 <h3 class="text-info pull-left">{% trans 'Step 2' %}: {% trans 'Adjust Data' %}</h3>
