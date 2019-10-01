@@ -73,7 +73,14 @@
                                             </td>
                                             {% for cell in row %}
                                                 {% if cell.value != None %}
-                                                    <td>{{ cell.value }}</td>
+                                                    <td>
+                                                        {% if cell.value|length > 45 %}
+                                                            <span tabindex="0" data-toggle="tooltip"
+                                                                  title="{{ cell.value }}">{{ cell.value|truncatechars:25 }}</span>
+                                                        {% else %}
+                                                            {{ cell.value }}
+                                                        {% endif %}
+                                                    </td>
                                                 {% else %}
                                                     <td></td>
                                                 {% endif %}
@@ -111,4 +118,9 @@
     <script src="{% static 'js/yii.activeForm.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}
