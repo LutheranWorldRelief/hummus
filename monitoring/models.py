@@ -5,11 +5,11 @@ from django.core.exceptions import PermissionDenied
 from django.utils.translation import gettext_lazy as _
 
 
-
 class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
 
 class Template(models.Model):
     id = models.CharField(primary_key=True, max_length=32, verbose_name=_('Filename'))
@@ -152,7 +152,8 @@ class Country(models.Model):
     region = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Region'))
     subregion = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Sub Region'))
     phonecode = models.CharField(max_length=5, blank=True, null=True, verbose_name=_('Phone Code'))
-    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
+    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
+                                  verbose_name=_('LWR Region'))
 
     objects = CountryQuerySet.as_manager()
 
@@ -271,11 +272,13 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
     targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Direct Men'))
-    targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women', verbose_name=_('Target Direct Women'))
+    targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women',
+                                      verbose_name=_('Target Direct Women'))
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
-    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('LWR Region'))
+    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
+                                  verbose_name=_('LWR Region'))
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
 
     objects = ProjectQuerySet.as_manager()
@@ -295,6 +298,7 @@ class Project(models.Model):
     @property
     def salesforce_url(self):
         return '%s/%s' % (settings.SALESFORCE_URL, self.salesforce)
+
 
 class SubProjectQuerySet(models.QuerySet):
     def for_user(self, user):
@@ -336,6 +340,8 @@ class SubProject(models.Model):
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
+    organization = models.ForeignKey('Organization', on_delete=models.CASCADE, null=True, blank=True,
+                                     verbose_name=_('Implementing Organization'))
 
     objects = SubProjectQuerySet.as_manager()
 
