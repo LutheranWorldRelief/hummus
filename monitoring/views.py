@@ -46,11 +46,28 @@ class Capture(TemplateView):
 
 
 class ImportParticipants(DomainRequiredMixin, FormView):
+
+    def updateContact(self, contact, row):
+        contact.first_name = row['first_name']
+        contact.last_name = row['last_name']
+        contact.document = row['document']
+        # TODO : complete fields
+        contact.save()
+
+
+    def updateProjectContact(self, project_contact, row):
+        # TODO : complete fields
+        project_contact.save()
+
+
     def post(self, request):
+
+        messages = []
+
         tmp_excel = request.POST.get('excel_file')
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
         uploaded_wb = load_workbook(excel_file)
-        uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
+        uploaded_ws = uploaded_wb[_('data')]
 
         # import
         header_rows = 2
@@ -59,45 +76,61 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         for row in uploaded_ws.iter_rows():
 
             # get SubProject, validates project columns
-            project = row[0].value
-            organization = row[1].value
-            subproject = SubProject.objects.filter(project__name=project, organization__name=organization).first()
+            project_name = row[0].value
+            organization_name = row[1].value
+            subproject = SubProject.objects.filter(project__name=project_name, organization__name=organization_name).first()
             if not subproject:
-                raise Exception('Subproject with Project "{}" and Organization "{}" does not exist!'.format(project, organization))
+                raise Exception('Row # {} : Subproject with Project "{}" and Organization "{}" does not exist!'.format(row[0].row, project_name, organization_name))
 
-            project = Project.objects.get(name=project)
-            document = row[project_cols + 0].value
-            first_name = row[project_cols + 1].value
-            last_name = row[project_cols + 2].value
-            sex = row[project_cols + 3].value
-            birthdate = row[project_cols + 4].value
-            education = row[project_cols + 5].value
-            phone = row[project_cols + 6].value
-            men_home = row[project_cols + 7].value
-            women_home = row[project_cols + 8].value
-            organization = row[project_cols + 9].value
-            country = row[project_cols + 10].value
-            contact = Contact.objects.filter(document=document, first_name=first_name, last_name=last_name).first()
+            row_dict = {}
+            project = Project.objects.get(name=project_name)
+            row_dict['document'] = row[project_cols + 0].value
+            row_dict['first_name'] = row[project_cols + 1].value
+            row_dict['last_name'] = row[project_cols + 2].value
+            row_dict['sex'] = row[project_cols + 3].value
+            row_dict['birthdate'] = row[project_cols + 4].value
+            row_dict['education'] = row[project_cols + 5].value
+            row_dict['phone'] = row[project_cols + 6].value
+            row_dict['men_home'] = row[project_cols + 7].value
+            row_dict['women_home'] = row[project_cols + 8].value
+            row_dict['organization'] = row[project_cols + 9].value
+            row_dict['country'] = row[project_cols + 10].value
+            contact = Contact.objects.filter(document=row_dict['document'], first_name=row_dict['first_name'], last_name=row_dict['last_name']).first()
+            contact_organization = Organization.objects.filter(name=row_dict['organization']).first()
+            if not contact_organization:
+                messages.append('Create organization: {}'.format(row_dict['organization']))
+                if row_dict['organization']:
+                    contact_organization = Organization()
+                    # TODO : complete fields
+                    contact_organization.name = row_dict['organization']
+                    contact_organization.save()
+
             if not contact:
-                print('Create contact! {} {}'.format(first_name, last_name))
+                messages.append('Create contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
                 contact = Contact()
-                contact.first_name = first_name
-                contact.last_name = last_name
-                contact.document = document
-                contact.save()
-            project_contact = ProjectContact.objects.filter(project__name=project, contact=contact).first()
+                if contact_organization:
+                    contact.organization = contact_organization
+                self.updateContact(contact, row_dict)
+            else:
+                messages.append('Update contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
+                self.updateContact(contact, row_dict)
+
+            project_contact = ProjectContact.objects.filter(project__name=project_name, contact=contact).first()
             if not project_contact:
-                print('Create project contact! {} {}'.format(project, contact.first_name))
+                messages.append('Create project contact: {} {}'.format(project.name, row_dict['first_name']))
                 project_contact = ProjectContact()
                 project_contact.contact = contact
                 project_contact.project = project
-                project_contact.save()
+                self.updateProjectContact(project_contact, row_dict)
+            else:
+                messages.append('Update project contact: {} {}'.format(project.name, row_dict['first_name']))
+                self.updateProjectContact(project_contact, row_dict)
 
-            #for i, col in enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
-            #    print(row[i+project_cols].value)
+            # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
 
         context = {}
         context['excel_file'] = tmp_excel
+        context['messages'] = messages
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
@@ -109,13 +142,13 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         tmp_excel = default_storage.save('{}/{}'.format('tmp', excel_file.name), excel_file)
 
         uploaded_wb = load_workbook(filename = excel_file)
-        uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
+        uploaded_ws = uploaded_wb[_('data')]
 
         # check headers
         obj = Template.objects.get(id='clean-template')
         tfile = getattr(obj, __('file'))
         wb = load_workbook(filename = tfile)
-        ws = wb.get_sheet_by_name(_('data'))
+        ws = wb[_('data')]
 
         # FIXME: There shouldn't be two rows of headers
         header_row = 2
