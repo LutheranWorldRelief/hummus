@@ -97,7 +97,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['country'] = row[project_cols + 10].value
             contact = Contact.objects.filter(document=row_dict['document'], first_name=row_dict['first_name'], last_name=row_dict['last_name']).first()
             contact_organization = Organization.objects.filter(name=row_dict['organization']).first()
-            if not contact_organization:
+            if not contact_organization and row_dict['organization']:
                 messages.append('Create organization: {}'.format(row_dict['organization']))
                 if row_dict['organization']:
                     contact_organization = Organization()
