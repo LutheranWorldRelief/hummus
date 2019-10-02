@@ -48,7 +48,7 @@ class ReportExportMixin:
         # loads 'datos' sheet # TODO rename to 'data'?
         wb = load_workbook(filename = tfile)
         create_catalog(wb, self.request)
-        ws = wb.get_sheet_by_name(_('data'))
+        ws = wb[_('data')]
 
         # adds rows
         #max = ws.max_row

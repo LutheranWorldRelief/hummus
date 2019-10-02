@@ -67,7 +67,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         tmp_excel = request.POST.get('excel_file')
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
         uploaded_wb = load_workbook(excel_file)
-        uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
+        uploaded_ws = uploaded_wb[_('data')]
 
         # import
         header_rows = 2
@@ -80,7 +80,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             organization_name = row[1].value
             subproject = SubProject.objects.filter(project__name=project_name, organization__name=organization_name).first()
             if not subproject:
-                raise Exception('Subproject with Project "{}" and Organization "{}" does not exist!'.format(project_name, organization_name))
+                raise Exception('Row # {} : Subproject with Project "{}" and Organization "{}" does not exist!'.format(row[0].row, project_name, organization_name))
 
             row_dict = {}
             project = Project.objects.get(name=project_name)
@@ -142,13 +142,13 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         tmp_excel = default_storage.save('{}/{}'.format('tmp', excel_file.name), excel_file)
 
         uploaded_wb = load_workbook(filename = excel_file)
-        uploaded_ws = uploaded_wb.get_sheet_by_name(_('data'))
+        uploaded_ws = uploaded_wb[_('data')]
 
         # check headers
         obj = Template.objects.get(id='clean-template')
         tfile = getattr(obj, __('file'))
         wb = load_workbook(filename = tfile)
-        ws = wb.get_sheet_by_name(_('data'))
+        ws = wb[_('data')]
 
         # FIXME: There shouldn't be two rows of headers
         header_row = 2

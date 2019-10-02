@@ -34,7 +34,7 @@ def create_catalog(wb, request):
 
 
     # applies validations
-    ws = wb.get_sheet_by_name(_('data'))
+    ws = wb[_('data')]
     ws = wb.active
     validation_cols = {'A': 'SubProject', 'B': 'Organization', 'F': 'Sex', 'H': 'Education', 'M': 'Country', 'Q': 'Product'}
     row_start = 3
