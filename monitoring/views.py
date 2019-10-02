@@ -76,14 +76,14 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         for row in uploaded_ws.iter_rows():
 
             # get SubProject, validates project columns
-            project = row[0].value
-            organization = row[1].value
-            subproject = SubProject.objects.filter(project__name=project, organization__name=organization).first()
+            project_name = row[0].value
+            organization_name = row[1].value
+            subproject = SubProject.objects.filter(project__name=project_name, organization__name=organization_name).first()
             if not subproject:
-                raise Exception('Subproject with Project "{}" and Organization "{}" does not exist!'.format(project, organization))
+                raise Exception('Subproject with Project "{}" and Organization "{}" does not exist!'.format(project_name, organization_name))
 
             row_dict = {}
-            row_dict['project'] = Project.objects.get(name=project)
+            project = Project.objects.get(name=project_name)
             row_dict['document'] = row[project_cols + 0].value
             row_dict['first_name'] = row[project_cols + 1].value
             row_dict['last_name'] = row[project_cols + 2].value
@@ -115,15 +115,15 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 messages.append('Update contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
                 self.updateContact(contact, row_dict)
 
-            project_contact = ProjectContact.objects.filter(project__name=project, contact=contact).first()
+            project_contact = ProjectContact.objects.filter(project__name=project_name, contact=contact).first()
             if not project_contact:
-                messages.append('Create project contact: {} {}'.format(row_dict['project'], row_dict['first_name']))
+                messages.append('Create project contact: {} {}'.format(project.name, row_dict['first_name']))
                 project_contact = ProjectContact()
                 project_contact.contact = contact
                 project_contact.project = project
                 self.updateProjectContact(project_contact, row_dict)
             else:
-                messages.append('Update project contact: {} {}'.format(row_dict['project'], row_dict['first_name']))
+                messages.append('Update project contact: {} {}'.format(project.name, row_dict['first_name']))
                 self.updateProjectContact(project_contact, row_dict)
 
             # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
