@@ -185,7 +185,7 @@ JET_SIDE_MENU_ITEMS = [
     ]},
     {'label': _('Reports'), 'items': [
         {'name': '', 'url': '/export/participants', 'label': _('Principal')},
-        {'name': '', 'url': '/report/template-clean', 'label': _('Clean Template')},
+        {'name': '', 'url': '/export/template-clean/', 'label': _('Clean Template')},
     ]},
     {'label': _('Graphics'), 'items': [
         {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},
