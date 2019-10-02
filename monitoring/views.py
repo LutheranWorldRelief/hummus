@@ -47,7 +47,7 @@ class Capture(TemplateView):
 
 class ImportParticipants(DomainRequiredMixin, FormView):
 
-    def updateContact(contact, row):
+    def updateContact(self, contact, row):
         contact.first_name = row['first_name']
         contact.last_name = row['last_name']
         contact.document = row['document']
@@ -55,9 +55,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         contact.save()
 
 
-    def updateProjectContact(project_contact, row):
-        project_contact.contact = contact
-        project_contact.project = project
+    def updateProjectContact(self, project_contact, row):
         # TODO : complete fields
         project_contact.save()
 
@@ -100,19 +98,22 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             contact = Contact.objects.filter(document=row_dict['document'], first_name=row_dict['first_name'], last_name=row_dict['last_name']).first()
             contact_organization = Organization.objects.filter(name=row_dict['organization']).first()
             if not contact_organization:
-                messages.append('Create organization: {} {}'.format(row_dict['organization']))
+                messages.append('Create organization: {}'.format(row_dict['organization']))
                 contact_organization = Organization()
-                contact_organization.name = row_dict['organization']
-                contact_organization.save()
+                if row_dict['organization']:
+                    # TODO : complete fields
+                    contact_organization.name = row_dict['organization']
+                    contact_organization.save()
 
             if not contact:
                 messages.append('Create contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
                 contact = Contact()
-                contact.organization = contact_organization
+                if contact_organization:
+                    contact.organization = contact_organization
                 self.updateContact(contact, row_dict)
             else:
                 messages.append('Update contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
-                self.update(project_contact)
+                self.updateContact(contact, row_dict)
 
             project_contact = ProjectContact.objects.filter(project__name=project, contact=contact).first()
             if not project_contact:
@@ -123,13 +124,13 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 self.updateProjectContact(project_contact, row_dict)
             else:
                 messages.append('Update project contact: {} {}'.format(row_dict['project'], row_dict['first_name']))
-                self.update(project_contact)
+                self.updateProjectContact(project_contact, row_dict)
 
             # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
 
         context = {}
         context['excel_file'] = tmp_excel
-        context['messaged'] = messages
+        context['messages'] = messages
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
