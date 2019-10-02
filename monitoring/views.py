@@ -1,3 +1,4 @@
+import time
 from os.path import basename
 
 from django.db.models import Sum, Count, Q, Value, CharField, F
@@ -139,7 +140,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 class ValidateExcel(DomainRequiredMixin, FormView):
     def post(self, request):
         excel_file = request.FILES['excel_file']
-        tmp_excel = default_storage.save('{}/{}'.format('tmp', excel_file.name), excel_file)
+        tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"), excel_file.name)
+        tmp_excel = default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
 
         uploaded_wb = load_workbook(filename = excel_file)
         uploaded_ws = uploaded_wb[_('data')]
@@ -160,7 +162,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         context['columns'] = uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=header_row)
         context['data'] = uploaded_ws
-        context['excel_file'] = excel_file
+        context['excel_file'] = tmp_excel_name
 
         return render(request, self.template_name, context)
 
