@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class Template(models.Model):
@@ -114,8 +114,8 @@ class Contact(models.Model):
     phone_work = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Phone Work'))
     men_home = models.IntegerField(blank=True, null=True, verbose_name=_('Men Home'))
     women_home = models.IntegerField(blank=True, null=True, verbose_name=_('Women Home'))
-    created = models.DateField(blank=True, null=True, verbose_name=_('Created'))
-    modified = models.DateField(blank=True, null=True, verbose_name=_('Modified'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
 
     def get_absolute_url(self):
         return "/contact/%i/" % self.id
@@ -209,6 +209,8 @@ class Organization(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
     country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
     is_implementer = models.BooleanField(verbose_name=_('Is Implementer'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
 
     objects = OrganizationQuerySet.as_manager()
 
@@ -280,6 +282,8 @@ class Project(models.Model):
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
                                   verbose_name=_('LWR Region'))
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -342,6 +346,8 @@ class SubProject(models.Model):
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
                                      verbose_name=_('Implementing Organization'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
 
     objects = SubProjectQuerySet.as_manager()
 
@@ -394,6 +400,8 @@ class ProjectContact(models.Model):
     date_end_project = models.DateField(blank=True, null=True, verbose_name=_('Date End Project'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
                                      verbose_name=_('Organization'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
 
     def __str__(self):
         return "%s: %s" % (self.project.name, self.contact.name)
