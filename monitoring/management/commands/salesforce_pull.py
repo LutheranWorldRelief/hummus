@@ -16,6 +16,7 @@ def getCountries(string):
         if " and " in country:
             countries.remove(country)
             countries.extend(country.split(' and '))
+    countries.sort()
     real_countries = []
     for country in countries:
         real_country = Country.objects.filter(name=country).first()
@@ -24,32 +25,58 @@ def getCountries(string):
     return real_countries
 
 
-def updateProject(hummus_record, salesforce_record):
-    if salesforce_record['LWR_Region__c']:
-        hummus_record.lwrregion = LWRRegion.objects.get(name=salesforce_record['LWR_Region__c'])
-    hummus_record.status = salesforce_record['Status__c']
-    hummus_record.start = salesforce_record['Start_Date__c']
-    hummus_record.end = salesforce_record['End_Date__c']
-    hummus_record.recordtype = salesforce_record['RecordType']['Name']
-    hummus_record.countries.set(getCountries(salesforce_record['Search_Strings__c']))
-    hummus_record.save()
+def updateProject(hummus_record, salesforce_record, options):
+    fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType', 'Name'], 'lwrregion': 'LWR_Region__c', 'countries': 'Search_Strings__c'}
+    update = False
+    for field in fields_map:
+        if isinstance(fields_map[field],list):
+            salesforce_value = salesforce_record[fields_map[field][0]][fields_map[field][1]]
+        else:
+            salesforce_value = salesforce_record[fields_map[field]]
+        if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
+            salesforce_value = int(salesforce_value)
+        if field  == 'countries':
+            countries = getCountries(salesforce_record['Search_Strings__c'])
+            if countries != list(hummus_record.countries.all()):
+                print(countries)
+                print(hummus_record.countries.all())
+                update = True
+                hummus_record.countries.set(countries)
+                import pdb; pdb.set_trace()
+            continue
+        if str(getattr(hummus_record, field)) != str(salesforce_value):
+            if options['verbose']:
+                print("field {} : {} != {}".format(field, getattr(hummus_record, field), salesforce_value))
+            print(field)
+            setattr(hummus_record, field, salesforce_value)
+            update = True
+    if update:
+        hummus_record.save()
+    return update
 
 
-def updateSubProject(hummus_record, salesforce_record):
-    hummus_record.status = salesforce_record['Status__c']
-    hummus_record.start = salesforce_record['Start_Date__c']
-    hummus_record.end = salesforce_record['End_Date__c']
-    hummus_record.recordtype = salesforce_record['RecordType']['Name']
-    hummus_record.country = getCountry(salesforce_record['Country__r']['Name'])
-    hummus_record.actualmen = salesforce_record['Men_Direct_Actual__c']
-    hummus_record.actualimen = salesforce_record['Men_Indirect_Actual__c']
-    hummus_record.actualwomen = salesforce_record['Women_Direct_Actual__c']
-    hummus_record.actualiwomen = salesforce_record['Women_Indirect_Actual__c']
-    hummus_record.targetmen = salesforce_record['Men_Direct_Target__c']
-    hummus_record.targetimen = salesforce_record['Men_Indirect_Target__c']
-    hummus_record.targetwomen = salesforce_record['Women_Direct_Target__c']
-    hummus_record.targetiwomen = salesforce_record['Women_Indirect_Target__c']
-    hummus_record.save()
+def updateSubProject(hummus_record, salesforce_record, options):
+    fields_map = { 'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType','Name'], 'country': ['Country__r','Name'],
+        'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c', 'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c', 
+        'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c', 'targetimen': 'Men_Indirect_Target__c', 'targetiwomen': 'Women_Indirect_Target__c', }
+    update = False
+    for field in fields_map:
+        if isinstance(fields_map[field],list):
+            salesforce_value = salesforce_record[fields_map[field][0]][fields_map[field][1]]
+        else:
+            salesforce_value = salesforce_record[fields_map[field]]
+        if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
+            salesforce_value = int(salesforce_value)
+        if field  == 'country':
+            salesforce_value = getCountry(salesforce_value)
+        if str(getattr(hummus_record, field)) != str(salesforce_value):
+            if options['verbose']:
+                print("field {} : {} != {}".format(field, getattr(hummus_record, field), salesforce_value))
+            setattr(hummus_record, field, salesforce_value)
+            update = True
+    if update:
+        hummus_record.save()
+    return update
 
 
 class Command(BaseCommand):
@@ -60,6 +87,7 @@ class Command(BaseCommand):
         parser.add_argument('project_ids', nargs='*', type=int)
 
         # Named (optional) arguments
+        parser.add_argument('--verbose', action='store_true', help='Be verbose about changes',)
         parser.add_argument('--skip-projects', action='store_true', help='Skips Projects sync',)
         parser.add_argument('--skip-subprojects', action='store_true', help='Skips SubProjects sync',)
 
@@ -87,8 +115,8 @@ class Command(BaseCommand):
                         hummus_project.code = project['Project_Identifier__c']
                     # double check we are referring to the same subproject
                     if hummus_project.code == project['Project_Identifier__c']:
-                        updateProject(hummus_project, project)
-                        self.stdout.write(self.style.SUCCESS('Successfully updated project %s: "%s"' % (project['Id'], project['Name'])))
+                        if updateProject(hummus_project, project, options):
+                            self.stdout.write(self.style.SUCCESS('Successfully updated project %s: "%s"' % (project['Id'], project['Name'])))
                 else:
                     # new project
                     new_project = Project()
@@ -96,7 +124,7 @@ class Command(BaseCommand):
                     new_project.name = project['Name']
                     new_project.code = project['Project_Identifier__c']
                     new_project.save()
-                    updateProject(new_project, project)
+                    updateProject(new_project, project, options)
                     self.stdout.write(self.style.SUCCESS('Successfully created project %s: "%s"' % (project['Id'], project['Name'])))
 
         # Get Sub Projects
@@ -116,8 +144,8 @@ class Command(BaseCommand):
                         hummus_subproject.code = subproject['Sub_Project_Identifier__c']
                     # double check we are referring to the same subproject
                     if hummus_subproject.code == subproject['Sub_Project_Identifier__c']:
-                        updateSubProject(hummus_subproject, subproject)
-                        self.stdout.write(self.style.SUCCESS('Successfully updated subproject %s: "%s"' % (subproject['Id'], subproject['Name'])))
+                        if updateSubProject(hummus_subproject, subproject, options):
+                            self.stdout.write(self.style.SUCCESS('Successfully updated subproject %s: "%s"' % (subproject['Id'], subproject['Name'])))
                 else:
                     # new subproject
                     if hummus_projects.filter(salesforce=subproject['Project__r']['Id']).exists():
@@ -128,6 +156,6 @@ class Command(BaseCommand):
                         new_subproject.code = subproject['Sub_Project_Identifier__c']
                         new_subproject.project = project
                         new_subproject.save()
-                        updateSubProject(new_subproject, subproject)
+                        updateSubProject(new_subproject, subproject, options)
                         self.stdout.write(self.style.SUCCESS('Successfully created subproject %s: "%s"' % (subproject['Id'], subproject['Name'])))
 
