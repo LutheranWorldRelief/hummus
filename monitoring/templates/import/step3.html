@@ -17,26 +17,116 @@
 {% endblock %}
 {% block content %}
 
-HELLO {{ excel_file }} !
+    <div class="container-fluid" style="margin-top: 5px">
 
-<br/>
-{% for message in messages %}
-  {{ message }} <br/>
-{% endfor %}
-<br/>
+        <div class="row">
+
+            {% include 'import/wizard.html' %}
+
+            <div class="col-lg-9 col-lg-offset-1">
+                <h3 class="text-info pull-left">{% trans 'Process Completed Successfully' %}</h3>
+            </div>
+
+            <div class="col-lg-1">
+                <a href="{% url 'monitoring:import-step1' %}"
+                   class="btn btn-primary"><i class="fa fa-reply"></i>{% trans 'Go Back' %}</a>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-9 col-lg-offset-1">
+
+                {% verbatim %}
+                <div id="app" v-cloak class="row">
+                    {% endverbatim %}
+                    <div class="col-lg-10 col-lg-offset-1 table-responsive">
+
+                        <h3> {% verbatim %}
+                            {{ modelsNames.length }}
+                            {% endverbatim %}
+                            {% trans 'Possibly Duplicated Persons Regarding Imported' %}
+                        </h3>
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>{% trans 'N°' %}</th>
+                                <th>{% trans 'ID' %}</th>
+                                <th>{% trans 'Full Name' %}</th>
+                                <th>{% trans 'Sex' %}</th>
+                                <th>{% trans 'Document' %}</th>
+                                <th>{% trans 'Organization' %}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% verbatim %}
+                            <tr v-for="(model, index) in modelsNames">
+                                <td>{{ index + 1}}</td>
+                                <td>{{ model.contact_id }}</td>
+                                <td>
+                                    <a :href=""
+                                       target="_blank">{{ model.contact_name }}</a>
+                                </td>
+                                <td>{{ model.contact_sex }}</td>
+                                <td>{{ model.contact_document }}</td>
+                                <td>{{ model.contact_organization }}</td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-xs btn-primary pull-right"
+                                            @click="preparingFusionForm(model)"
+                                            data-toggle="modal"
+                                            data-target="#modal-merge">
+                                        Fusionar
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endverbatim %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                {% include "_contact_merge_modal.html" %}
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    HELLO {{ excel_file }} !
+
+    <br/>
+    {% for message in messages %}
+        {{ message }} <br/>
+    {% endfor %}
+    <br/>
 
 {% endblock %}
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
     <script src="{% static 'js/assets/yii.js' %}"></script>
     <script src="{% static 'js/fileinput.min.js' %}"></script>
+    <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
+    <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
+    <script src="{% static 'js/vue/comp.select2.js' %}"></script>
+{#    <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>#}
+{#    <script src="{% static 'js/vue/contact.merge.document.js' %}"></script>#}
+    <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script src="{% static 'js/kv-widgets.min.js' %}"></script>
     <script src="{% static 'js/yii.activeForm.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
+
+
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+    let a = [];
+    a.push({
+        id:1,
+        name:'asds',
+        lol:'sdfasds',
+    })
+        var gModel = JSON.stringify({{ model }});
+
+        console.log(gModel)
     </script>
 {% endblock %}
