@@ -78,36 +78,6 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ['name', 'country__name', 'document', 'organization__name', 'title']
 
 
-class EventAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'project_name', 'structure', 'country', 'organization', 'start',
-                    'men', 'women', 'total')
-    list_display_links = ['name']
-    list_per_page = 20
-    list_max_show_all = 50
-    ordering = ['-start']
-    date_hierarchy = 'start'
-    list_filter = [
-        ('country'),
-        ('organization'),
-    ]
-    search_fields = ['id', 'name', 'project__name', 'structure__name', 'organization__name', 'country__name']
-
-    def project_name(self, obj):
-        if obj.structure:
-            return obj.structure.project
-        else:
-            return ''
-
-    def men(self, obj):
-        return obj.attendance_set.filter(contact__sex='M').count()
-
-    def women(self, obj):
-        return obj.attendance_set.filter(contact__sex='F').count()
-
-    def total(self, obj):
-        return self.men(obj) + self.women(obj)
-
-
 class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     inlines = [
         SubProjectsInline,
