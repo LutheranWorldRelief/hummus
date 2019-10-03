@@ -23,9 +23,9 @@ from .models import *
 from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __
 from .catalog import create_catalog
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 class Capture(TemplateView):
-
     template_name = 'capture.html'
 
     def get(self, request):
@@ -45,7 +45,6 @@ class Capture(TemplateView):
         return render(request, self.template_name, context)
 
 
-
 class ImportParticipants(DomainRequiredMixin, FormView):
 
     def updateContact(self, contact, row):
@@ -55,15 +54,14 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # TODO : complete fields
         contact.save()
 
-
     def updateProjectContact(self, project_contact, row):
         # TODO : complete fields
         project_contact.save()
 
-
     def post(self, request):
 
         messages = []
+        contacts = []
 
         tmp_excel = request.POST.get('excel_file')
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
@@ -79,9 +77,13 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             # get SubProject, validates project columns
             project_name = row[0].value
             organization_name = row[1].value
-            subproject = SubProject.objects.filter(project__name=project_name, organization__name=organization_name).first()
+            subproject = SubProject.objects.filter(project__name=project_name,
+                                                   organization__name=organization_name).first()
             if not subproject:
-                raise Exception('Row # {} : Subproject with Project "{}" and Organization "{}" does not exist!'.format(row[0].row, project_name, organization_name))
+                raise Exception(
+                    'Row # {} : Subproject with Project "{}" and Organization "{}" does not exist!'.format(row[0].row,
+                                                                                                           project_name,
+                                                                                                           organization_name))
 
             row_dict = {}
             project = Project.objects.get(name=project_name)
@@ -96,7 +98,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['women_home'] = row[project_cols + 8].value
             row_dict['organization'] = row[project_cols + 9].value
             row_dict['country'] = row[project_cols + 10].value
-            contact = Contact.objects.filter(document=row_dict['document'], first_name=row_dict['first_name'], last_name=row_dict['last_name']).first()
+            contact = Contact.objects.filter(document=row_dict['document'], first_name=row_dict['first_name'],
+                                             last_name=row_dict['last_name']).first()
             contact_organization = Organization.objects.filter(name=row_dict['organization']).first()
             if not contact_organization and row_dict['organization']:
                 messages.append('Create organization: {}'.format(row_dict['organization']))
@@ -116,6 +119,14 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 messages.append('Update contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
                 self.updateContact(contact, row_dict)
 
+            contacts.append({
+                'contact_id': contact.id,
+                'contact_name': contact.first_name + ' ' + contact.last_name,
+                'contact_sex': contact.sex,
+                'contact_document': contact.document,
+                'contact_organization': contact.organization,
+            })
+
             project_contact = ProjectContact.objects.filter(project__name=project_name, contact=contact).first()
             if not project_contact:
                 messages.append('Create project contact: {} {}'.format(project.name, row_dict['first_name']))
@@ -132,6 +143,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         context = {}
         context['excel_file'] = tmp_excel
         context['messages'] = messages
+        context['model'] = contacts
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
@@ -143,20 +155,21 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"), excel_file.name)
         tmp_excel = default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
 
-        uploaded_wb = load_workbook(filename = excel_file)
+        uploaded_wb = load_workbook(filename=excel_file)
         uploaded_ws = uploaded_wb[_('data')]
 
         # check headers
         obj = Template.objects.get(id='clean-template')
         tfile = getattr(obj, __('file'))
-        wb = load_workbook(filename = tfile)
+        wb = load_workbook(filename=tfile)
         ws = wb[_('data')]
 
         # FIXME: There shouldn't be two rows of headers
         header_row = 2
         for cell in uploaded_ws[header_row]:
-            if cell.value != ws[header_row][cell.col_idx-1].value:
-                raise Exception('Headers are not the same as in template! {} != {}'.format(cell.value, ws[header_row][cell.col_idx-1].value))
+            if cell.value != ws[header_row][cell.col_idx - 1].value:
+                raise Exception('Headers are not the same as in template! {} != {}'.format(cell.value, ws[header_row][
+                    cell.col_idx - 1].value))
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
@@ -176,11 +189,12 @@ class DownloadTemplate(DomainRequiredMixin, View):
         tfile = getattr(obj, __('file'))
         tfilename = tfile.name
 
-        wb = load_workbook(filename = tfile)
+        wb = load_workbook(filename=tfile)
         create_catalog(wb, request)
 
         # response
-        response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(content=save_virtual_workbook(wb),
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
 
