@@ -37,11 +37,10 @@
             <div class="col-lg-9 col-lg-offset-1">
 
                 {% verbatim %}
-                <div id="app" v-cloak class="row">
-                    {% endverbatim %}
+                <div id="app" v-cloak data-baseurl="/" class="row">
                     <div class="col-lg-10 col-lg-offset-1 table-responsive">
 
-                        <h3> {% verbatim %}
+                        <h3>
                             {{ modelsNames.length }}
                             {% endverbatim %}
                             {% trans 'Possibly Duplicated Persons Regarding Imported' %}
@@ -108,9 +107,11 @@
     <script src="{% static 'js/fileinput.min.js' %}"></script>
     <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
     <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
-    <script src="{% static 'js/vue/comp.select2.js' %}"></script>
-{#    <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>#}
-{#    <script src="{% static 'js/vue/contact.merge.document.js' %}"></script>#}
+    <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
+    <script>
+        var gModel = {{ model|safe }};
+    </script>
+    <script src="{% static 'js/vue/contact.merge.import.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script src="{% static 'js/kv-widgets.min.js' %}"></script>
     <script src="{% static 'js/yii.activeForm.js' %}"></script>
@@ -118,15 +119,5 @@
     <script src="{% static 'js/adminlte.min.js' %}"></script>
 
 
-    <script>
-    let a = [];
-    a.push({
-        id:1,
-        name:'asds',
-        lol:'sdfasds',
-    })
-        var gModel = JSON.stringify({{ model }});
 
-        console.log(gModel)
-    </script>
 {% endblock %}
