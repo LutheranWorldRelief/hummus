@@ -2,6 +2,7 @@ import time
 from os.path import basename
 
 from django.db.models import Sum, Count, Q, Value, CharField, F
+from django.db.models.functions import Upper, Trim
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
@@ -22,7 +23,7 @@ import json
 
 from .tables import *
 from .models import *
-from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __
+from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __, RegexpReplace
 from .catalog import create_catalog
 
 
@@ -123,13 +124,13 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 self.updateContact(contact, row_dict)
 
             imported_ids.append(contact.id)
-            contacts.append({
-                'contact_id': contact.id,
-                'contact_name': '{} {}'.format(contact.first_name, contact.last_name),
-                'contact_sex': contact.sex_id,
-                'contact_document': contact.document,
-                'contact_organization': contact.organization.name if contact.organization != None else '',
-            })
+            # contacts.append({
+            #     'contact_id': contact.id,
+            #     'contact_name': '{} {}'.format(contact.first_name, contact.last_name),
+            #     'contact_sex': contact.sex_id,
+            #     'contact_document': contact.document,
+            #     'contact_organization': contact.organization.name if contact.organization != None else '',
+            # })
 
             project_contact = ProjectContact.objects.filter(project__name=project_name, contact=contact).first()
             if not project_contact:
@@ -145,17 +146,18 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
 
         # gets dupes
-        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g')))).filter(id__in=imported_ids)
+        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g')))).filter(
+            id__in=imported_ids)
         queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
-        for row in queryset:
-            row['name'] = row['name_uc']
+        for row in queryset1:
+            row['contact_name'] = row['name_uc']
 
         queryset2 = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
-        for row in queryset:
-            row['name'] = ','.join(Contact.objects.filter(document=row['document']).values_list('name', flat=True))
+        for row in queryset2:
+            row['contact_name'] = ','.join(Contact.objects.filter(document=row['document']).values_list('name', flat=True))
 
-        contacts = list(queryset1) + list(queeryset2)
+        contacts = list(queryset1) + list(queryset2)
 
         context = {}
         context['excel_file'] = tmp_excel
