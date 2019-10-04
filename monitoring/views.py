@@ -18,6 +18,8 @@ from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
 import pandas as pd
 
+import json
+
 from .tables import *
 from .models import *
 from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __
@@ -122,9 +124,9 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             contacts.append({
                 'contact_id': contact.id,
                 'contact_name': contact.first_name + ' ' + contact.last_name,
-                'contact_sex': contact.sex,
+                'contact_sex': contact.sex_id,
                 'contact_document': contact.document,
-                'contact_organization': contact.organization,
+                'contact_organization': contact.organization.name if contact.organization != None else '',
             })
 
             project_contact = ProjectContact.objects.filter(project__name=project_name, contact=contact).first()
@@ -143,7 +145,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         context = {}
         context['excel_file'] = tmp_excel
         context['messages'] = messages
-        context['model'] = contacts
+        context['model'] = json.dumps(contacts)
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
