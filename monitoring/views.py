@@ -64,6 +64,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         messages = []
         contacts = []
+        imported_ids = []
 
         tmp_excel = request.POST.get('excel_file')
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
@@ -121,6 +122,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 messages.append('Update contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
                 self.updateContact(contact, row_dict)
 
+            imported_ids.append(contact.id)
             contacts.append({
                 'contact_id': contact.id,
                 'contact_name': '{} {}'.format(contact.first_name, contact.last_name),
@@ -141,6 +143,19 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 self.updateProjectContact(project_contact, row_dict)
 
             # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
+
+        # gets dupes
+        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g')))).filter(id__in=imported_ids)
+        queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
+        for row in queryset:
+            row['name'] = row['name_uc']
+
+        queryset2 = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
+            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
+        for row in queryset:
+            row['name'] = ','.join(Contact.objects.filter(document=row['document']).values_list('name', flat=True))
+
+        contacts = list(queryset1) + list(queeryset2)
 
         context = {}
         context['excel_file'] = tmp_excel
