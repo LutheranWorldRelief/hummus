@@ -123,7 +123,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
             contacts.append({
                 'contact_id': contact.id,
-                'contact_name': contact.first_name + ' ' + contact.last_name,
+                'contact_name': '{} {}'.format(contact.first_name, contact.last_name),
                 'contact_sex': contact.sex_id,
                 'contact_document': contact.document,
                 'contact_organization': contact.organization.name if contact.organization != None else '',
