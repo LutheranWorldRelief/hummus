@@ -149,15 +149,19 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g')))).filter(
             id__in=imported_ids)
         queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
+        queryset1_array = []
         for row in queryset1:
-            row['contact_name'] = row['name_uc']
+            queryset1_array.append(rows['name_uc'])
 
         queryset2 = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
+        queryset2_array = []
         for row in queryset2:
-            row['contact_name'] = ','.join(Contact.objects.filter(document=row['document']).values_list('name', flat=True))
+            queryset2_array.append(rows['document'])
 
-        contacts = list(queryset1) + list(queryset2)
+        contacts = Contact.objects.filter(Q(name__in=queryset1_array) | Q(document__in=queryset2_array))
+
+        contacts = list(contacts)
 
         context = {}
         context['excel_file'] = tmp_excel
