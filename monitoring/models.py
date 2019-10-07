@@ -123,6 +123,17 @@ class Contact(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self):
+        # if 'name' is null or empty
+        if not self.name:
+            self.first_name = self.first_name.strip()
+            self.last_name = self.last_name.strip()
+            self.name = "{} {}".format(self.first_name, self.last_name)
+            self.name = self.name.strip()
+            if not self.name:
+                raise ValueError(_("We need a name!"))
+            super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['name']
         db_table = 'contact'
