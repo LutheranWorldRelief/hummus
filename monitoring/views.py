@@ -150,17 +150,16 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
 
         # gets dupes
-        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g')))).filter(
-            id__in=imported_ids)
+        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
         names_uc = [row['name_uc'] for row in queryset1]
         contacts_names_ids = qs.values_list('id', flat=True).filter(name_uc__in=names_uc)
 
         queryset2 = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
-            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
+            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
         documents = [row['document'] for row in queryset2]
 
-        contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
+        contacts = Contact.objects.filter(id__in=imported_ids, Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
             contact_id=F('id'),
             contact_name=Coalesce(F('name'), Value('')),
             contact_sex=Coalesce(F('sex_id'), Value('')),
