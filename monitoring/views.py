@@ -68,7 +68,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
     def post(self, request):
 
         messages = []
-        contacts = []
         imported_ids = []
 
         tmp_excel = request.POST.get('excel_file')
@@ -128,13 +127,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 self.updateContact(contact, row_dict)
 
             imported_ids.append(contact.id)
-            # contacts.append({
-            #     'contact_id': contact.id,
-            #     'contact_name': '{} {}'.format(contact.first_name, contact.last_name),
-            #     'contact_sex': contact.sex_id,
-            #     'contact_document': contact.document,
-            #     'contact_organization': contact.organization.name if contact.organization != None else '',
-            # })
 
             project_contact = ProjectContact.objects.filter(project__name=project_name, contact=contact).first()
             if not project_contact:
