@@ -150,20 +150,20 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             id__in=imported_ids)
         queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
         names_uc = [row['name_uc'] for row in queryset1]
-        contacts_names_ids = qs.values_list('id', flat=True).filter(name_uc__in=queryset1_array)
+        contacts_names_ids = qs.values_list('id', flat=True).filter(name_uc__in=names_uc)
 
         queryset2 = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
         documents = [row['document'] for row in queryset2]
 
-        contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents))
+        contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)).values()
 
-        contacts = list(contacts)
+        # contacts = list(contacts)
 
         context = {}
         context['excel_file'] = tmp_excel
         context['messages'] = messages
-        context['model'] = json.dumps(contacts)
+        context['model'] = list(contacts)
         return render(request, self.template_name, context)
 
     template_name = 'import/step3.html'
