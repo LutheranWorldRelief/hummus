@@ -149,17 +149,14 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g')))).filter(
             id__in=imported_ids)
         queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count('name_uc')).filter(cuenta__gt=1)
-        queryset1_array = []
-        for row in queryset1:
-            queryset1_array.append(rows['name_uc'])
+        names_uc = [row['name_uc'] for row in queryset1]
+        contacts_names_ids = qs.values_list('id', flat=True).filter(name_uc__in=queryset1_array)
 
         queryset2 = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
-        queryset2_array = []
-        for row in queryset2:
-            queryset2_array.append(rows['document'])
+        documents = [row['document'] for row in queryset2]
 
-        contacts = Contact.objects.filter(Q(name__in=queryset1_array) | Q(document__in=queryset2_array))
+        contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents))
 
         contacts = list(contacts)
 
