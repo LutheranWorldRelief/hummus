@@ -59,8 +59,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% verbatim %}
+
                             <tr v-for="(model, index) in modelsNames">
+                                {% verbatim %}
                                 <td>{{ index + 1}}</td>
                                 <td>{{ model.contact_id }}</td>
                                 <td>
@@ -69,23 +70,28 @@
                                 <td>{{ model.contact_sex }}</td>
                                 <td>{{ model.contact_document }}</td>
                                 <td>{{ model.contact_organization }}</td>
+                                {% endverbatim %}
                                 <td>
+                                    {% verbatim %}
                                     <button type="button"
                                             class="btn btn-xs btn-primary pull-right"
                                             @click="preparingFusionForm(model)"
                                             data-toggle="modal"
                                             data-target="#modal-merge">
-                                        Fusionar
+                                        {% endverbatim %}
+                                        {% trans 'Fuse' %}
+                                        {% verbatim %}
                                     </button>
+                                    {% endverbatim %}
                                 </td>
                             </tr>
-                            {% endverbatim %}
+
                             </tbody>
                         </table>
                     </div>
 
+                    {% include '_contact_merge_modal.html' %}
                 </div>
-                {% include "_contact_merge_modal.html" %}
             </div>
         </div>
         <div style="clear: both;"></div>
