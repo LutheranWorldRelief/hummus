@@ -130,6 +130,9 @@ class Contact(models.Model):
             self.last_name = self.last_name.strip()
             self.name = "{} {}".format(self.first_name, self.last_name)
             self.name = self.name.strip()
+            if not self.name:
+                raise ValueError(_("We need a name!"))
+            super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']
