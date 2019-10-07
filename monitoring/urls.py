@@ -55,7 +55,7 @@ urlpatterns = [
 
     # APIs misc
     path('opt/api-fusion/', jsonviews.ContactFusion.as_view(), ),
-    path('opt/api-contact/<int:id>/', jsonviews.ContactImportDupes.as_view, ),
+    path('opt/api-contact/<int:id>/', jsonviews.ContactImportDupes.as_view(), ),
     path('opt/api-name-values/', jsonviews.ContactNameValues.as_view(), ),
     path('opt/api-doc-values/', jsonviews.ContactNameValues.as_view(), ),
     path('opt/api-empty/', jsonviews.ContactEmpty.as_view(), ),
