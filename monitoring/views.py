@@ -23,7 +23,7 @@ import json
 
 from .tables import *
 from .models import *
-from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __, RegexpReplace
+from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __, RegexpReplace, Coalesce
 from .catalog import create_catalog
 
 
