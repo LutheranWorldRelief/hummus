@@ -2,7 +2,7 @@ import time
 from os.path import basename
 
 from django.db.models import Sum, Count, Q, Value, CharField, F
-from django.db.models.functions import Upper, Trim
+from django.db.models.functions import Upper, Trim, Coalesce
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
@@ -157,7 +157,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         documents = [row['document'] for row in queryset2]
 
         contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
-            contact_id=F('id'), contact_sex=F('sex_id'))
+            contact_id=F('id'),
+            contact_name=Coalesce(F('name'), ''),
+            contact_sex=Coalesce(F('sex_id'), Value('')),
+            contact_document=Coalesce(F('document'), Value('')),
+            contact_organization=F('organization__name'),
+        )
 
         # contacts = list(contacts)
 
