@@ -156,7 +156,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1).filter(id__in=imported_ids)
         documents = [row['document'] for row in queryset2]
 
-        contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)).values()
+        contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
+            contact_id=F('id'), contact_sex=F('sex_id'))
 
         # contacts = list(contacts)
 
