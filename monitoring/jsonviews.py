@@ -167,7 +167,7 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class ContactDuples(JSONResponseMixin, TemplateView):
+class ContactImportDupes(JSONResponseMixin, TemplateView):
     def render_to_response(self, context, **response_kwargs):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
@@ -178,13 +178,13 @@ class ContactDuples(JSONResponseMixin, TemplateView):
 
         if not contact:
             context['models'] = {}
-            return self.render_to_response(context)
+            return context
 
         contactsDuples = Contact.objects.filter(Q(name=contact.name) | Q(document=contact.document)).exclude(id=id)
 
         context['models'] = contactsDuples
 
-        return self.render_to_response(context)
+        return context
 
 
 class JsonIdName(JSONResponseMixin, TemplateView):
