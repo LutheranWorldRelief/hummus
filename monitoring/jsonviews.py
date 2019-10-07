@@ -180,9 +180,9 @@ class ContactDuples(JSONResponseMixin, TemplateView):
             context['models'] = {}
             return self.render_to_response(context)
 
-        contactDuples = Contact.objects.filter(Q(name=contact.name) | Q(document=contact.document)).exclude(id=id)
+        contactsDuples = Contact.objects.filter(Q(name=contact.name) | Q(document=contact.document)).exclude(id=id)
 
-        context['models'] = contactDuples
+        context['models'] = contactsDuples
 
         return self.render_to_response(context)
 
