@@ -158,7 +158,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         contacts = Contact.objects.filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
             contact_id=F('id'),
-            contact_name=Coalesce(F('name'), ''),
+            contact_name=Coalesce(F('name'), Value('')),
             contact_sex=Coalesce(F('sex_id'), Value('')),
             contact_document=Coalesce(F('document'), Value('')),
             contact_organization=F('organization__name'),
