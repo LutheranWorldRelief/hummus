@@ -167,20 +167,22 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         return self.render_to_response(context)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class ContactDuples(JSONResponseMixin, TemplateView):
     def render_to_response(self, context, **response_kwargs):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
-    def post(self, request, *args, **kwargs):
-        id = request.POST.get('id')
-
+    def get_data(self, context, **kwargs):
+        id = self.kwargs['id']
         context = {}
         contact = Contact.objects.filter(id=id).first()
 
         if not contact:
             context['models'] = {}
             return self.render_to_response(context)
+
+        contactDuples = Contact.objects.filter(Q(name=contact.name) | Q(document=contact.document)).exclude(id=id)
+
+        context['models'] = contactDuples
 
         return self.render_to_response(context)
 

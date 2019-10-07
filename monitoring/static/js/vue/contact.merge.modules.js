@@ -24,7 +24,7 @@ var MergeUrls = {
         getUrlId: function (id) {
             if (!id)
                 return null;
-            return this.createUrl('opt/api-contact?id=' + id);
+            return this.createUrl('opt/api-contact/' + id + '/');
         },
         getUrlName: function (name) {
             if (!name)
