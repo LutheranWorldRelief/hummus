@@ -51,8 +51,12 @@ class Capture(TemplateView):
 class ImportParticipants(DomainRequiredMixin, FormView):
 
     def updateContact(self, contact, row):
-        contact.first_name = row['first_name']
-        contact.last_name = row['last_name']
+        first_name = row['first_name'].strip()
+        last_name = row['last_name'].strip()
+        name = "{} {}".format(first_name, last_name)
+        contact.first_name = first_name
+        contact.last_name = last_name
+        contact.name = name
         contact.document = row['document']
         # TODO : complete fields
         contact.save()
