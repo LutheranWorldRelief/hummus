@@ -123,6 +123,10 @@ class JSONResponseMixin:
         return context
 
 
+class Coalesce(Func):
+    function = 'COALESCE'
+
+
 # credit to https://code.djangoproject.com/ticket/28805
 class RegexpReplace(Func):
     function = 'REGEXP_REPLACE'

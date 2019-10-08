@@ -11,7 +11,7 @@ app_name = 'monitoring'
 urlpatterns = [
 
     # misc
-    #path('',TemplateView.as_view(template_name='index.html')),
+    # path('',TemplateView.as_view(template_name='index.html')),
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
     path('subproject/', views.SubProjectTableView.as_view()),
@@ -55,6 +55,7 @@ urlpatterns = [
 
     # APIs misc
     path('opt/api-fusion/', jsonviews.ContactFusion.as_view(), ),
+    path('opt/api-contact/<int:id>/', jsonviews.ContactImportDupes.as_view(), ),
     path('opt/api-name-values/', jsonviews.ContactNameValues.as_view(), ),
     path('opt/api-doc-values/', jsonviews.ContactNameValues.as_view(), ),
     path('opt/api-empty/', jsonviews.ContactEmpty.as_view(), ),
@@ -63,10 +64,12 @@ urlpatterns = [
     path('opt/api-names/', jsonviews.ContactNameDupes.as_view(), ),
     path('opt/api-doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
     path('opt/api-name/<str:name>/', jsonviews.ContactNameDupesDetails.as_view(), ),
-    path('opt/api-organizations/', jsonviews.JsonIdName.as_view(queryset=models.Organization.objects.filter(projectcontact__isnull=False).distinct())),
-    path('opt/api-countries/', jsonviews.JsonIdName.as_view(queryset=models.Country.objects.filter(project__isnull=False).distinct())),
+    path('opt/api-organizations/', jsonviews.JsonIdName.as_view(
+        queryset=models.Organization.objects.filter(projectcontact__isnull=False).distinct())),
+    path('opt/api-countries/',
+         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.filter(project__isnull=False).distinct())),
     path('opt/api-projects/', jsonviews.JsonIdName.as_view(queryset=models.Project.objects.filter(status='Active'))),
     path('opt/api-types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
-    path('opt/api-education/', jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()),)
+    path('opt/api-education/', jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), )
 
 ]

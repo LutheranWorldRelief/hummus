@@ -1,110 +1,114 @@
 {% load static %}
 {% load i18n %}
 <div id="modal-merge" class="fade modal" role="dialog" tabindex="-1">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-<h4>{% trans 'FUSIONING' %} / {% verbatim %} {{name}} {% endverbatim %}</h4>
-</div>
-<div class="modal-body">
-    <div v-if="loading.modal">
-        <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="">
-        <div class="callout callout-warning" v-if="loading.fusion">
-	    <h4>{% trans 'Merging Contact Records...' %}</h4>
-        </div>
-    </div>
-    <div v-if="!loading.modal && models.length > 0">
-        <!-- ---------------------------------------------------------------------------- SELECT -->
-        <div v-if="modalState=='select'">
-            <div class="callout callout-danger" v-cloak v-if="models.length <= 1">
-		<h4>{% trans 'It is not possible to merge only one record' %}</h4>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>{% trans 'FUSIONING' %} / {% verbatim %} {{name}} {% endverbatim %}</h4>
             </div>
-            <div class="callout callout-info" v-cloak v-if="models.length > 1">
-		<h4>{% trans 'Select the record to be used as principal' %}</h4>
-            </div>
-            {% verbatim %}
-            <table class="table">
-                <tr v-for="(model, index) in models">
-                    <td><input type="radio" :value="model.id" v-model="modelSelected"></td>
-                    <td>{{index+1}}</td>
-                    <td>{{model.id}}</td>
-                    <td><a :href="'/contact/' + model.id" target="_blank">{{model.name}}</a>
-                    </td>
-                    <td>{{model.document}}</td>
-                    <td>{{list_countries[model.country]}}</td>
-                    <td>
-                        <button type="button" class="btn btn-xs btn-primary pull-right"
-                                v-if="models.length > 1"
-                                @click="fusionExclude(model, index)">
-                                {% endverbatim %}
-                            {% trans 'Exclude' %}
-                            {% verbatim %}
-                        </button>
-                    </td>
-                </tr>
-            </table>
-            {% endverbatim %}
-        </div>
+            <div class="modal-body">
+                <div v-if="loading.modal">
+                    <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="">
+                    <div class="callout callout-warning" v-if="loading.fusion">
+                        <h4>{% trans 'Merging Contact Records...' %}</h4>
+                    </div>
+                </div>
+                <div v-if="!loading.modal && models.length > 0">
+                    <!-- ---------------------------------------------------------------------------- SELECT -->
+                    <div v-if="modalState=='select'">
+                        <div class="callout callout-danger" v-cloak v-if="models.length <= 1">
+                            <h4>{% trans 'It is not possible to merge only one record' %}</h4>
+                        </div>
+                        <div class="callout callout-info" v-cloak v-if="models.length > 1">
+                            <h4>{% trans 'Select the record to be used as principal' %}</h4>
+                        </div>
+                        {% verbatim %}
+                        <table class="table">
+                            <tr v-for="(model, index) in models">
+                                <td><input type="radio" :value="model.id" v-model="modelSelected"></td>
+                                <td>{{index+1}}</td>
+                                <td>{{model.id}}</td>
+                                <td><a :href="'/contact/' + model.id" target="_blank">{{model.name}}</a>
+                                </td>
+                                <td>{{model.document}}</td>
+                                <td>{{list_countries[model.country]}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-xs btn-primary pull-right"
+                                            v-if="models.length > 1"
+                                            @click="fusionExclude(model, index)">
+                                        {% endverbatim %}
+                                        {% trans 'Exclude' %}
+                                        {% verbatim %}
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        {% endverbatim %}
+                    </div>
 
-        <!-- ---------------------------------------------------------------------------- RESOLVE -->
-        <div v-if="modalState=='resolve'">
-            <div class="callout callout-info" v-if="Object.keys(modelsResolve).length > 0">
-		<h4>{% trans 'You must select an option from the following fields to set it in the final record' %}</h4>
-            </div>
-            {% verbatim %}
-            <table class="table" style="display: block; overflow-y: scroll; max-height: 500px;">
-                <tr v-for="(values, key) in modelsResolve" v-if="showAttribute(key)">
-                    <th>{{ modelLabels[key] }}</th>
-                    <td>
-                        <select class="form-control" v-model="modelMerge[key]" v-if="showField(key)">
-                            <option v-for="value in values">{{ value }}</option>
-                        </select>
-                        <select class="form-control" v-model="modelMerge[key]" v-if="'country' == key">
-                            <option v-for="value in values" :value="value">{{ list_countries[value] }}</option>
-                        </select>
-                        <select class="form-control" v-model="modelMerge[key]" v-if="'organization_id' == key">
-                            <option v-for="value in values" :value="value">{{ list_organizations[value] }}</option>
-                        </select>
-                        <select class="form-control" v-model="modelMerge[key]" v-if="'type_id' == key">
-                            <option v-for="value in values" :value="value">{{ list_types[value] }}</option>
-                        </select>
-                        <select class="form-control" v-model="modelMerge[key]" v-if="'education_id' == key">
-                            <option v-for="value in values" :value="value">{{ list_education[value] }}</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            {% endverbatim %}
-            <div class="callout callout-info" v-if="modelsResolve.length == 0">
-		<h4>{% trans 'There is no data to solve. Please press the "Solved" button to proceed to the next step.' %}</h4>
-            </div>
-        </div>
+                    <!-- ---------------------------------------------------------------------------- RESOLVE -->
+                    <div v-if="modalState=='resolve'">
+                        <div class="callout callout-info" v-if="Object.keys(modelsResolve).length > 0">
+                            <h4>{% trans 'You must select an option from the following fields to set it in the final record' %}</h4>
+                        </div>
+                        {% verbatim %}
+                        <table class="table" style="display: block; overflow-y: scroll; max-height: 500px;">
+                            <tr v-for="(values, key) in modelsResolve" v-if="showAttribute(key)">
+                                <th>{{ modelLabels[key] }}</th>
+                                <td>
+                                    <select class="form-control" v-model="modelMerge[key]" v-if="showField(key)">
+                                        <option v-for="value in values">{{ value }}</option>
+                                    </select>
+                                    <select class="form-control" v-model="modelMerge[key]" v-if="'country' == key">
+                                        <option v-for="value in values" :value="value">{{ list_countries[value] }}
+                                        </option>
+                                    </select>
+                                    <select class="form-control" v-model="modelMerge[key]"
+                                            v-if="'organization_id' == key">
+                                        <option v-for="value in values" :value="value">{{ list_organizations[value] }}
+                                        </option>
+                                    </select>
+                                    <select class="form-control" v-model="modelMerge[key]" v-if="'type_id' == key">
+                                        <option v-for="value in values" :value="value">{{ list_types[value] }}</option>
+                                    </select>
+                                    <select class="form-control" v-model="modelMerge[key]" v-if="'education_id' == key">
+                                        <option v-for="value in values" :value="value">{{ list_education[value] }}
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        {% endverbatim %}
+                        <div class="callout callout-info" v-if="modelsResolve.length == 0">
+                            <h4>{% trans 'There is no data to solve. Please press the "Solved" button to proceed to the next step.' %}</h4>
+                        </div>
+                    </div>
 
-        <!-- ---------------------------------------------------------------------------- FUSION -->
-        <div v-if="modalState=='fusion'">
-            <div class="callout callout-danger" v-if="errorFlags.fusion">
-		<h4>{% trans 'It was not possible to merge the record. Try again' %}</h4>
-		<h5>{% trans 'If the problem persists, contact the system developer' %}</h5>
-            </div>
-            <div class="callout callout-info" v-if="!loading.fusion && !errorFlags.fusion">
-		<h4>{% trans 'The process will begin by pressing the "Merge" button' %}</h4>
-            </div>
-        </div>
+                    <!-- ---------------------------------------------------------------------------- FUSION -->
+                    <div v-if="modalState=='fusion'">
+                        <div class="callout callout-danger" v-if="errorFlags.fusion">
+                            <h4>{% trans 'It was not possible to merge the record. Try again' %}</h4>
+                            <h5>{% trans 'If the problem persists, contact the system developer' %}</h5>
+                        </div>
+                        <div class="callout callout-info" v-if="!loading.fusion && !errorFlags.fusion">
+                            <h4>{% trans 'The process will begin by pressing the "Merge" button' %}</h4>
+                        </div>
+                    </div>
 
-        <!-- ---------------------------------------------------------------------------- FINISH -->
-        <div v-if="modalState=='finish'">
-            <div class="callout callout-danger" v-if="errorFlags.finish">
-		<h4>{% trans 'The merger process is over but with errors.' %}</h4>
-		<h5>{% trans 'Please contact the system developer and indicate the following information' %}</h5>
-        {{ verbatim }}
-                <pre>{{errorMessage.finish}}</pre>
-        {{ endverbatim }}
-            </div>
-            <div class="callout callout-info" v-if="!errorFlags.finish">
-		<h4>{% trans 'The merger process has been completed. Press Finish to reload user data' %}</h4>
-            </div>
-            <!--
+                    <!-- ---------------------------------------------------------------------------- FINISH -->
+                    <div v-if="modalState=='finish'">
+                        <div class="callout callout-danger" v-if="errorFlags.finish">
+                            <h4>{% trans 'The merger process is over but with errors.' %}</h4>
+                            <h5>{% trans 'Please contact the system developer and indicate the following information' %}</h5>
+                            {{ verbatim }}
+                            <pre>{{ errorMessage.finish }}</pre>
+                            {{ endverbatim }}
+                        </div>
+                        <div class="callout callout-info" v-if="!errorFlags.finish">
+                            <h4>{% trans 'The merger process has been completed. Press Finish to reload user data' %}</h4>
+                        </div>
+                        <!--
             <button class="btn btn-sm btn-info" @click="fusionFlags.result = !fusionFlags.result">
                 <span v-if="!fusionFlags.result">Ver</span>
                 <span v-if="fusionFlags.result">Ocultar</span> resultado
@@ -114,49 +118,50 @@
             <pre v-if="fusionFlags.result">{{fusionResult}}</pre>
         {{ endverbatim }}
             -->
-        </div>
-        <hr>
-        <!-- ---------------------------------------------------------------------------- BUTTONS -->
-        <button type="button" class="btn btn-large btn-danger" v-if="!loading.modal"
-                @click="fusionCancelar('#modal-merge')">
+                    </div>
+                    <hr>
+                    <!-- ---------------------------------------------------------------------------- BUTTONS -->
+                    <button type="button" class="btn btn-large btn-danger" v-if="!loading.modal"
+                            @click="fusionCancelar('#modal-merge')">
             <span v-if="modalState != 'finish'">
                 <i class="fa fa-ban"></i> {% trans 'Cancel' %}
             </span>
-            <span v-if="modalState == 'finish'">
+                        <span v-if="modalState == 'finish'">
                 <i class="fa fa-times"></i> {% trans 'Closed' %}
             </span>
-        </button>
+                    </button>
 
 
-        <button type="button" class="btn btn-large btn-primary pull-right"
-                @click="fusionSelect"
-                v-if="models.length > 1 && modalState == 'select' && modelSelected">
-            <i class="fa fa-check"></i> {% trans 'Select' %}
-        </button>
-        <button type="button" class="btn btn-large btn-primary pull-right"
-                @click="fusionResolve"
-                v-if="models.length > 1 && modalState == 'resolve'">
-            <i class="fa fa-check"></i> {% trans 'Resolved' %}
-        </button>
-        <button type="button" class="btn btn-large btn-warning pull-right"
-                @click="fusionStart"
-                v-if="models.length > 1 && modalState == 'fusion'">
-            <i class="fa fa-hand-o-right"></i> {% trans 'Fuse' %}
-        </button>
+                    <button type="button" class="btn btn-large btn-primary pull-right"
+                            @click="fusionSelect"
+                            v-if="models.length > 1 && modalState == 'select' && modelSelected">
+                        <i class="fa fa-check"></i> {% trans 'Select' %}
+                    </button>
+                    <button type="button" class="btn btn-large btn-primary pull-right"
+                            @click="fusionResolve"
+                            v-if="models.length > 1 && modalState == 'resolve'">
+                        <i class="fa fa-check"></i> {% trans 'Resolved' %}
+                    </button>
+                    <button type="button" class="btn btn-large btn-warning pull-right"
+                            @click="fusionStart"
+                            v-if="models.length > 1 && modalState == 'fusion'">
+                        <i class="fa fa-hand-o-right"></i> {% trans 'Fuse' %}
+                    </button>
 
-        <button type="button" class="btn btn-large btn-primary pull-right"
-                v-if="models.length > 1 && modalState == 'finish'"
-                @click="fusionFinish"
-                data-toggle="modal"
-                data-target="#modal-merge">
-            <i class="fa fa-check"></i> {% trans 'Finalize' %}
-        </button>
+                    <button type="button" class="btn btn-large btn-primary pull-right"
+                            v-if="models.length > 1 && modalState == 'finish'"
+                            @click="fusionFinish"
+                            data-toggle="modal"
+                            data-target="#modal-merge">
+                        <i class="fa fa-check"></i> {% trans 'Finalize' %}
+                    </button>
 
-        <a class="btn btn-large btn-primary pull-right"
-           v-if="models.length > 1 && modalState == 'finish'"
-           target="_blank"
-           :href="'/contact/' + modelSelected">{% trans 'See Merged Record' %}></a>
+                    <a class="btn btn-large btn-primary pull-right"
+                       v-if="models.length > 1 && modalState == 'finish'"
+                       target="_blank"
+                       :href="'/contact/' + modelSelected">{% trans 'See Merged Record' %}></a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
-</div></div>

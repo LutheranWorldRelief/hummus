@@ -61,7 +61,7 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
         context = {}
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.filter(name_uc=self.kwargs['name']).values()
-        context = {'models': list(queryset) }
+        context = {'models': list(queryset)}
         return context
 
 
@@ -71,7 +71,8 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
 
     def get_data(self, context, **kwargs):
         context = {}
-        queryset = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by('document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
+        queryset = Contact.objects.filter(document__isnull=False).exclude(document='').values('document').order_by(
+            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
         for row in queryset:
             row['name'] = ','.join(Contact.objects.filter(document=row['document']).values_list('name', flat=True))
         context = list(queryset)
@@ -85,7 +86,7 @@ class ContactDocDupesDetails(JSONResponseMixin, TemplateView):
     def get_data(self, context, **kwargs):
         context = {}
         queryset = Contact.objects.filter(document=self.kwargs['document']).values()
-        context = {'models': list(queryset) }
+        context = {'models': list(queryset)}
         return context
 
 
@@ -104,7 +105,7 @@ class ContactNameValues(JSONResponseMixin, TemplateView):
                 continue
             values[f.column] = []
             for row in queryset:
-                if row[f.column] and row[f.column] not in values[f.column]: #TODO strip if string
+                if row[f.column] and row[f.column] not in values[f.column]:  # TODO strip if string
                     values[f.column].append(row[f.column])
 
         resolve = {}
@@ -152,12 +153,12 @@ class ContactFusion(JSONResponseMixin, TemplateView):
             contact.last_name = contact.last_name.strip().replace('  ', ' ')
 
         contact.save()
-
         result = {}
         result['Proyectos-Contactos'] = {}
         result['Eliminado'] = {}
         for row in contacts:
-            result['Proyectos-Contactos'][row.id] = ProjectContact.filter(contact_id=row.id).update(contact_id=contact.id)
+            result['Proyectos-Contactos'][row.id] = ProjectContact.objects.filter(contact_id=row.id).update(
+                contact_id=contact.id)
             result['Eliminado'][row.id] = row.delete()
 
         context['save'] = saved
@@ -168,8 +169,27 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class JsonIdName(JSONResponseMixin, TemplateView):
+class ContactImportDupes(JSONResponseMixin, TemplateView):
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
 
+    def get_data(self, context, **kwargs):
+        id = self.kwargs['id']
+        context = {}
+        contact = Contact.objects.filter(id=id).first()
+
+        if not contact:
+            context['models'] = {}
+            return context
+
+        contactsDuples = Contact.objects.filter(Q(name=contact.name) | Q(document=contact.document)).exclude(id=id).values()
+
+        context['models'] = list(contactsDuples)
+
+        return context
+
+
+class JsonIdName(JSONResponseMixin, TemplateView):
     queryset = None
 
     def render_to_response(self, context, **response_kwargs):
@@ -180,5 +200,3 @@ class JsonIdName(JSONResponseMixin, TemplateView):
         for row in self.queryset:
             result[row.id] = row.name
         return self.render_to_response(result)
-
-
