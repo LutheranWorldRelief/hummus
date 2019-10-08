@@ -12,6 +12,14 @@ from .models import *
 
 # Change default query
 class AdminForUserMixin(object):
+
+    def save_model(self, request, obj, form, change):
+        if obj.id and hasattr(obj, 'created_user'):
+            obj.created_user = request.user.username
+        elif hasattr(obj, 'updated_user'):
+            obj.updated_user = request.user.username
+        super().save_model(request, obj, form, change)
+
     def get_queryset(self, request):
         if request.user:
             return self.model.objects.for_user(request.user)
@@ -61,7 +69,7 @@ class SubProjectsInline(CompactInline):
 
 
 # Admin Class
-class ContactAdmin(admin.ModelAdmin):
+class ContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
     list_display_links = ['name', 'country', 'type']
     list_per_page = 20
@@ -155,7 +163,7 @@ class OrganizationAdmin(admin.ModelAdmin):
             return ''
 
 
-class ProjectContactAdmin(admin.ModelAdmin):
+class ProjectContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = (
         'id', 'project', 'contact', 'getCountryContact', 'product', 'area', 'date_entry_project', 'date_end_project',
         'yield_field')

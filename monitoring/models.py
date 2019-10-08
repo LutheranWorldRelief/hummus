@@ -9,6 +9,7 @@ class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
 
 
 class Template(models.Model):
@@ -93,6 +94,18 @@ class Sex(models.Model):
         verbose_name_plural = _('Sex')
 
 
+class ContactQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if hasattr(user, 'profile'):
+            if user.profile.lwrregions.exists():
+                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
+            elif user.profile.countries.exists():
+                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
+
+
 class Contact(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     last_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('Last Name'))
@@ -116,6 +129,11 @@ class Contact(models.Model):
     women_home = models.IntegerField(blank=True, null=True, verbose_name=_('Women Home'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
+    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+
+    objects = ContactQuerySet.as_manager()
+
 
     def get_absolute_url(self):
         return "/contact/%i/" % self.id
@@ -125,13 +143,13 @@ class Contact(models.Model):
 
     def save(self, *args, **kwargs):
         # if 'name' is null or empty
-        if not self.name:
+        if not self.name and (self.first_name or self.last_name):
             self.first_name = self.first_name.strip()
             self.last_name = self.last_name.strip()
             self.name = "{} {}".format(self.first_name, self.last_name)
             self.name = self.name.strip()
-            if not self.name:
-                raise ValueError(_("We need a name!"))
+        else:
+            raise ValueError(_("We need a name! name, first_name and last_name seem to be empty."))
         super().save(*args, **kwargs)
 
     class Meta:
@@ -222,6 +240,8 @@ class Organization(models.Model):
     is_implementer = models.BooleanField(default=False, verbose_name=_('Is Implementer'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
+    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
 
     objects = OrganizationQuerySet.as_manager()
 
@@ -295,6 +315,8 @@ class Project(models.Model):
     recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
+    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -359,6 +381,8 @@ class SubProject(models.Model):
                                      verbose_name=_('Implementing Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
+    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
 
     objects = SubProjectQuerySet.as_manager()
 
@@ -393,6 +417,18 @@ class Product(models.Model):
         verbose_name_plural = _('Products')
 
 
+class ProjectContactQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if hasattr(user, 'profile'):
+            if user.profile.lwrregions.exists():
+                return self.filter(project__countries__lwrregion__in=user.profile.lwrregions.all())
+            elif user.profile.countries.exists():
+                return self.filter(project__countries__in=user.profile.countries.all())
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
+
+
 class ProjectContact(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
@@ -413,6 +449,10 @@ class ProjectContact(models.Model):
                                      verbose_name=_('Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
+    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+
+    objects = ProjectContactQuerySet.as_manager()
 
     def __str__(self):
         return "%s: %s" % (self.project.name, self.contact.name)
