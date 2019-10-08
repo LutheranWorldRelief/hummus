@@ -1,11 +1,13 @@
 .wizard {
-    margin: 20px auto;
+    margin: 15px auto;
     background: #fff;
 }
 
 .wizard .nav-tabs {
     position: relative;
-    margin: 40px auto;
+    margin-top: 0;
+    margin-right: 15px;
+    margin-left: 15px;
     margin-bottom: 0;
     border-bottom-color: #e0e0e0;
 }
@@ -173,6 +175,19 @@ span.round-tab:hover {
     outline: 0;
     font-weight: normal;
 }
+
+.box {
+    margin-bottom: 0;
+}
+
+form#w0 {
+    background-color: white;
+}
+
+.cursor- {
+    cursor: pointer;
+}
+
 
 @media ( max-width: 585px ) {
 
