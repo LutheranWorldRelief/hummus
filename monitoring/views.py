@@ -50,7 +50,7 @@ class Capture(TemplateView):
 
 class ImportParticipants(DomainRequiredMixin, FormView):
 
-    def updateContact(self, contact, row):
+    def updateContact(self, request, contact, row):
         first_name = row['first_name'].strip()
         last_name = row['last_name'].strip()
         name = "{} {}".format(first_name, last_name)
@@ -65,7 +65,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # TODO : complete fields
         contact.save()
 
-    def updateProjectContact(self, project_contact, row):
+    def updateProjectContact(self, request, project_contact, row):
         if project_contact.id:
             project_contact.updated_user = request.user.username
         else:
@@ -130,10 +130,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 contact = Contact()
                 if contact_organization:
                     contact.organization = contact_organization
-                self.updateContact(contact, row_dict)
+                self.updateContact(request, contact, row_dict)
             else:
                 messages.append('Update contact: {} {}'.format(row_dict['first_name'], row_dict['last_name']))
-                self.updateContact(contact, row_dict)
+                self.updateContact(request, contact, row_dict)
 
             imported_ids.append(contact.id)
 
@@ -143,10 +143,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 project_contact = ProjectContact()
                 project_contact.contact = contact
                 project_contact.project = project
-                self.updateProjectContact(project_contact, row_dict)
+                self.updateProjectContact(request, project_contact, row_dict)
             else:
                 messages.append('Update project contact: {} {}'.format(project.name, row_dict['first_name']))
-                self.updateProjectContact(project_contact, row_dict)
+                self.updateProjectContact(request, project_contact, row_dict)
 
             # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex', 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family', 'Organization belonging', 'Country Department', 'Community', 'Project entry date', 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in Development (years)', 'Production Area (hectares)', 'Planting Age in Production (years)', 'Yields (qq)']):
 
