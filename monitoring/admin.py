@@ -67,6 +67,7 @@ class ContactAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_max_show_all = 50
     ordering = ['name']
+    readonly_fields = ['created', 'updated', ]
     list_filter = [
         ('country'),
         ('organization__name'),
@@ -91,10 +92,10 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     ordering = ['id']
     search_fields = ['code', 'name', ]
     date_hierarchy = 'start'
-    readonly_fields = ['show_salesforce_url']
+    readonly_fields = ['created', 'updated', 'show_salesforce_url']
     fieldsets = [
         (_('General information'),
-         {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion', 'show_salesforce_url']}),
+         {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion', 'show_salesforce_url', 'created', 'updated',]}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
@@ -138,6 +139,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_max_show_all = 50
     ordering = ['id']
+    readonly_fields = ['created', 'updated', ]
     list_filter = [
         ('name'),
         ('country'),
@@ -159,6 +161,7 @@ class ProjectContactAdmin(admin.ModelAdmin):
         'yield_field')
     list_display_links = ['id', 'project']
     ordering = ['-date_entry_project']
+    readonly_fields = ['created', 'updated', ]
     list_per_page = 20
     list_max_show_all = 50
     search_fields = ['id', 'project__name', 'contact__name', 'product__name']
@@ -191,12 +194,12 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     ordering = ['project']
     list_per_page = 20
     list_max_show_all = 50
-    readonly_fields = ['show_salesforce_url']
+    readonly_fields = ['created', 'updated', 'show_salesforce_url']
     search_fields = ['name', 'code', 'project__name', 'status']
     fieldsets = [
         (_('General information'),
-         {'fields': ['code', 'name', 'project', 'status', 'organization', 'country', 'show_salesforce_url']}),
-        (_('Date information'), {'fields': ['start', 'end']}),
+         {'fields': ['code', 'name', 'project', 'status', 'organization', 'country', 'show_salesforce_url', 'created', 'updated', ]}),
+        (_('Date information'), {'fields': ['start', 'end',]}),
         (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
     list_filter = [

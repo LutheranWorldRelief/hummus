@@ -31,19 +31,18 @@ from .catalog import create_catalog
 class Capture(TemplateView):
     template_name = 'capture.html'
 
+    # TODO: GET should be removed
     def get(self, request):
         context = {}
         context['meta'] = request.META
-        context['body'] = request.body
+        context['body'] = request.body.decode('utf-8')
         return render(request, self.template_name, context)
 
     def post(self, request):
         context = {}
-        context['meta'] = request.META
-        context['body'] = request.body
         row = Request()
         row.meta = request.META
-        row.body = request.body
+        row.body = request.body.decode('utf-8')
         row.save()
         return render(request, self.template_name, context)
 

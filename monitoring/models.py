@@ -123,6 +123,17 @@ class Contact(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self):
+        # if 'name' is null or empty
+        if not self.name:
+            self.first_name = self.first_name.strip()
+            self.last_name = self.last_name.strip()
+            self.name = "{} {}".format(self.first_name, self.last_name)
+            self.name = self.name.strip()
+            if not self.name:
+                raise ValueError(_("We need a name!"))
+            super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['name']
         db_table = 'contact'
@@ -200,7 +211,7 @@ class OrganizationQuerySet(models.QuerySet):
 
 
 class Organization(models.Model):
-    name = models.TextField(verbose_name=_('Name'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
     organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True, null=True,
                                           verbose_name=_('Organization Type'))
@@ -229,7 +240,7 @@ class OrganizationType(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
     name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
-    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
+    description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
 
     def __str__(self):
         return self.name
