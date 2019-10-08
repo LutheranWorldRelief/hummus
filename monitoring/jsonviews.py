@@ -161,7 +161,7 @@ class ContactFusion(JSONResponseMixin, TemplateView):
                 contact_id=contact.id)
             result['Eliminado'][row.id] = row.delete()
 
-        context['save'] = saved
+        context['save'] = True
         context['result'] = result
         context['id'] = id
         context['model'] = model_to_dict(contact)
