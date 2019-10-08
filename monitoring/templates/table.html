@@ -1,18 +1,64 @@
-{% extends 'base.html' %}
+{% extends 'dashboard_base.html' %}
 {% load static %}
+{% load i18n %}
 {% load django_tables2 crispy_forms_tags %}
-{% block extra_header  %}
+{% block extra_header %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
     <script src="{% static 'js/assets/jquery.js' %}"></script>
+    <style>
+        table#tbPreview {
+            border: 1px solid #000 !important;
+        }
+
+        #tbPreview tr th, #tbPreview tr td {
+            border: 1px solid #000 !important;
+        }
+
+
+    </style>
     {{ filter.form.media }}
 {% endblock %}
 {% block content %}
-    {% for format in export_formats %}
-        <a href="{% export_url format %}">
-            download  <code>.{{ format }}</code>
-        </a>
-    {% endfor %}
-{% crispy filter.form filter.form.helper %}
-{% render_table table %}
+    <div class="content-wrapper">
+        <section class="content">
+            <nav id="w0" class="navbar navbar-default">
+                <div class="container" style="padding:0; width: 97%; margin: 0 25px">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse">
+                            <span class="sr-only">{% trans 'Toggle navigation' %}</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span></button>
+                        <a class="navbar-brand" href="{% url 'monitoring:export' %}">{% trans 'Reports' %}</a></div>
+                    <div id="w0-collapse" class="collapse navbar-collapse"></div>
+                </div>
+            </nav>
+
+            <div class="container-fluid" style="background-color: white">
+                {% for format in export_formats %}
+                    <a href="{% export_url format %}" class="btn btn-primary" style="margin-top: 5px">
+                        <i class="fa fa-download"></i> {% trans 'download' %} <code>.{{ format }}</code>
+                    </a>
+                {% endfor %}
+
+                {% crispy filter.form filter.form.helper %}
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
+                         style="width: calc(100% - 50px);margin-top: 5px">
+                        {% render_table table %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 {% endblock %}
 {% block extra_body %}
     {{ filter.form.js }}
