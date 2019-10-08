@@ -123,7 +123,7 @@ class Contact(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self):
+    def save(self, *args, **kwargs):
         # if 'name' is null or empty
         if not self.name:
             self.first_name = self.first_name.strip()
