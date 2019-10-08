@@ -140,12 +140,15 @@ def organizations(request):
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
     project = ModelChoiceFilter(queryset=projects, widget=Select2Widget)
-    contact__country = ModelChoiceFilter(queryset=countries, widget=Select2Widget)
-    organization = ModelChoiceFilter(queryset=organizations, widget=Select2Widget)
+    contact__country = ModelChoiceFilter(
+        queryset=countries, widget=Select2Widget)
+    organization = ModelChoiceFilter(
+        queryset=organizations, widget=Select2Widget)
 
     class Meta:
         model = ProjectContact
-        fields = ('contact__country', 'project', 'organization', 'contact__name')
+        fields = ('contact__country', 'project',
+                  'organization', 'contact__name')
 
 
 class ProjectContactFilterFormHelper(FormHelper):
