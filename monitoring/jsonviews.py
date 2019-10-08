@@ -153,6 +153,9 @@ class ContactFusion(JSONResponseMixin, TemplateView):
 
         contact.save()
 
+        result = {}
+        result['Proyectos-Contactos'] = {}
+        result['Eliminado'] = {}
         for row in contacts:
             result['Proyectos-Contactos'][row.id] = ProjectContact.filter(contact_id=row.id).update(contact_id=contact.id)
             result['Eliminado'][row.id] = row.delete()
