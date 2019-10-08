@@ -21,7 +21,6 @@ class AdminForUserMixin(object):
         super().save_model(request, obj, form, change)
 
     def get_queryset(self, request):
-        print("Filter {} for {}".format(self.model, request.user.username))
         if request.user:
             return self.model.objects.for_user(request.user)
         else:
