@@ -18,7 +18,6 @@ from .catalog import create_catalog
 
 
 class ReportExportMixin:
-
     export_name = "table"
     export_trigger_param = "_export"
     exclude_columns = ()
@@ -46,22 +45,22 @@ class ReportExportMixin:
         tfilename = tfile.name
 
         # loads 'datos' sheet # TODO rename to 'data'?
-        wb = load_workbook(filename = tfile)
+        wb = load_workbook(filename=tfile)
         create_catalog(wb, self.request)
         ws = wb[_('data')]
 
         # adds rows
-        #max = ws.max_row
-        max = 3 # Force start at row 3
-        for row, row_entry in enumerate(dataset,start=1):
+        # max = ws.max_row
+        max = 3  # Force start at row 3
+        for row, row_entry in enumerate(dataset, start=1):
             for col, col_entry in enumerate(row_entry, start=1):
-                ws.cell(row=row+max-1, column=col, value=col_entry)
+                ws.cell(row=row + max - 1, column=col, value=col_entry)
 
         # resposne
-        response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(content=save_virtual_workbook(wb),
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
-
 
     def render_to_response(self, context, **kwargs):
         export_format = self.request.GET.get(self.export_trigger_param, None)
@@ -89,17 +88,17 @@ class PagedFilteredTableView(SingleTableView):
     def get_table(self, **kwargs):
         table = super(PagedFilteredTableView, self).get_table()
         if 'page' in self.kwargs:
-            page =  self.kwargs['page']
+            page = self.kwargs['page']
         else:
             page = 1
         RequestConfig(self.request, paginate={'page': page,
-                            "per_page": self.paginate_by}).configure(table)
+                                              "per_page": self.paginate_by}).configure(table)
         return table
 
     def get_context_data(self, **kwargs):
         context = super(PagedFilteredTableView, self).get_context_data()
         context[self.context_filter_name] = self.filter
-        context['export_formats'] = ('xlsx', )
+        context['export_formats'] = ('xlsx',)
         return context
 
 
@@ -113,32 +112,44 @@ class PagedFilteredTableView(SingleTableView):
 class ProjectContactTable(Table):
     class Meta:
         model = ProjectContact
-        fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name', __('contact.sex.name'), 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men', 'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment', 'contact.community', 'contact.startdate', 'product')
+        attrs = {'class': 'table table-bordered', 'id': 'tbPreview'}
+        fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name',
+                  __('contact.sex.name'), 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men',
+                  'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment',
+                  'contact.community', 'contact.startdate', 'product')
+
 
 def projects(request):
     if request is None:
         return Project.objects.none()
     return Project.objects.for_user(request.user).all()
 
+
 def countries(request):
     if request is None:
         return Country.objects.none()
     return Country.objects.for_user(request.user).all()
+
 
 def organizations(request):
     if request is None:
         return Organization.objects.none()
     return Organization.objects.for_user(request.user).all()
 
+
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
     project = ModelChoiceFilter(queryset=projects, widget=Select2Widget)
-    contact__country = ModelChoiceFilter(queryset=countries, widget=Select2Widget)
-    organization = ModelChoiceFilter(queryset=organizations, widget=Select2Widget)
+    contact__country = ModelChoiceFilter(
+        queryset=countries, widget=Select2Widget)
+    organization = ModelChoiceFilter(
+        queryset=organizations, widget=Select2Widget)
 
     class Meta:
         model = ProjectContact
-        fields = ('contact__country', 'project', 'organization', 'contact__name')
+        fields = ('contact__country', 'project',
+                  'organization', 'contact__name')
+
 
 class ProjectContactFilterFormHelper(FormHelper):
     form_method = 'GET'
@@ -162,10 +173,12 @@ class ContactTable(Table):
         model = Contact
         fields = ('name', 'country', 'sex')
 
+
 class ContactFilter(FilterSet):
     class Meta:
         model = Contact
         fields = ('name', 'country', 'sex')
+
 
 class ContactFilterFormHelper(FormHelper):
     form_method = 'GET'
@@ -188,12 +201,14 @@ class ProjectTable(Table):
         model = Project
         fields = ('name',)
 
+
 class ProjectFilter(FilterSet):
     name = CharFilter(lookup_expr='icontains')
 
     class Meta:
         fields = ('name',)
         model = Project
+
 
 class ProjectFilterFormHelper(FormHelper):
     form_method = 'GET'
@@ -210,10 +225,12 @@ class SubProjectTable(ProjectTable):
         fields = ('name',)
         model = SubProject
 
+
 class SubProjectFilter(ProjectFilter):
     class Meta:
         fields = ('name',)
         model = SubProject
+
 
 class SubProjectFilterFormHelper(ProjectFilterFormHelper):
     pass
