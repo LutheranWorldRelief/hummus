@@ -219,7 +219,7 @@ class Organization(models.Model):
                                      verbose_name=_('Organization'))
     description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
     country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
-    is_implementer = models.BooleanField(verbose_name=_('Is Implementer'))
+    is_implementer = models.BooleanField(default=False, verbose_name=_('Is Implementer'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
 
