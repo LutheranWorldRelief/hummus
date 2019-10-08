@@ -1,4 +1,4 @@
-{% extends 'nobase.html' %}
+{% extends 'dashboard_base.html' %}
 {% load static %}
 {% load i18n %}
 {% block extra_header %}
@@ -12,95 +12,99 @@
     <link href="{% static '/js/lib/alertify1.11.1/css/alertify.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo_user.png' %}">
+    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
 
 {% endblock %}
 {% block content %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
 
-    <div class="container-fluid" style="margin-top: 5px">
+                <div class="row">
+                    {% include 'import/wizard.html' %}
+                    <div class="tab-content">
+                        <div class="tab-pane active container-fluid" role="tabpanel" id="step">
+                            <form id="w0">
+                                <div class="row">
+                                    <div class="col-lg-9 col-lg-offset-1" >
+                                        <h3 class="text-info pull-left">{% trans 'Process Completed Successfully' %}</h3>
+                                    </div>
 
-        <div class="row">
+                                    <div class="col-lg-1">
+                                        <a href="{% url 'monitoring:import-step1' %}"
+                                           class="btn btn-primary"><i class="fa fa-reply"></i>{% trans 'Go Back' %}</a>
+                                    </div>
+                                    <div class="col-lg-10 col-lg-offset-1">
 
-            {% include 'import/wizard.html' %}
+                                        <div id="app" v-cloak data-baseurl="/" class="row">
+                                            <div class="col-lg-10 col-lg-offset-1 table-responsive">
 
-            <div class="col-lg-9 col-lg-offset-1">
-                <h3 class="text-info pull-left">{% trans 'Process Completed Successfully' %}</h3>
-            </div>
+                                                <h3>
+                                                    {% verbatim %}
+                                                    {{ modelsNames.length }}
+                                                    {% endverbatim %}
+                                                    {% trans 'Possibly Duplicated Persons Regarding Imported' %}
+                                                </h3>
 
-            <div class="col-lg-1">
-                <a href="{% url 'monitoring:import-step1' %}"
-                   class="btn btn-primary"><i class="fa fa-reply"></i>{% trans 'Go Back' %}</a>
-            </div>
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>{% trans 'N°' %}</th>
+                                                        <th>{% trans 'ID' %}</th>
+                                                        <th>{% trans 'Full Name' %}</th>
+                                                        <th>{% trans 'Sex' %}</th>
+                                                        <th>{% trans 'Document' %}</th>
+                                                        <th>{% trans 'Organization' %}</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
 
-        </div>
-        <div class="row">
-            <div class="col-lg-9 col-lg-offset-1">
+                                                    <tr v-for="(model, index) in modelsNames">
+                                                        {% verbatim %}
+                                                        <td>{{ index + 1}}</td>
+                                                        <td>{{ model.contact_id }}</td>
+                                                        <td>
+                                                            {{ model.contact_name }}
+                                                        </td>
+                                                        <td>{{ model.contact_sex }}</td>
+                                                        <td>{{ model.contact_document }}</td>
+                                                        <td>{{ model.contact_organization }}</td>
+                                                        {% endverbatim %}
+                                                        <td>
+                                                            {% verbatim %}
+                                                            <button type="button"
+                                                                    class="btn btn-xs btn-primary pull-right"
+                                                                    @click="preparingFusionForm(model)"
+                                                                    data-toggle="modal"
+                                                                    data-target="#modal-merge">
+                                                                {% endverbatim %}
+                                                                {% trans 'Fuse' %}
+                                                                {% verbatim %}
+                                                            </button>
+                                                            {% endverbatim %}
+                                                        </td>
+                                                    </tr>
 
-                <div id="app" v-cloak data-baseurl="/" class="row">
-                    <div class="col-lg-10 col-lg-offset-1 table-responsive">
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
-                        <h3>
-                            {% verbatim %}
-                            {{ modelsNames.length }}
-                            {% endverbatim %}
-                            {% trans 'Possibly Duplicated Persons Regarding Imported' %}
-                        </h3>
-
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>{% trans 'N°' %}</th>
-                                <th>{% trans 'ID' %}</th>
-                                <th>{% trans 'Full Name' %}</th>
-                                <th>{% trans 'Sex' %}</th>
-                                <th>{% trans 'Document' %}</th>
-                                <th>{% trans 'Organization' %}</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr v-for="(model, index) in modelsNames">
-                                {% verbatim %}
-                                <td>{{ index + 1}}</td>
-                                <td>{{ model.contact_id }}</td>
-                                <td>
-                                    {{ model.contact_name }}
-                                </td>
-                                <td>{{ model.contact_sex }}</td>
-                                <td>{{ model.contact_document }}</td>
-                                <td>{{ model.contact_organization }}</td>
-                                {% endverbatim %}
-                                <td>
-                                    {% verbatim %}
-                                    <button type="button"
-                                            class="btn btn-xs btn-primary pull-right"
-                                            @click="preparingFusionForm(model)"
-                                            data-toggle="modal"
-                                            data-target="#modal-merge">
-                                        {% endverbatim %}
-                                        {% trans 'Fuse' %}
-                                        {% verbatim %}
-                                    </button>
-                                    {% endverbatim %}
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
+                                            {% include '_contact_merge_modal.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-
-                    {% include '_contact_merge_modal.html' %}
                 </div>
+                <div style="clear: both;"></div>
             </div>
-        </div>
-        <div style="clear: both;"></div>
+        </section>
     </div>
-
 {% endblock %}
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
-    <script src="{% static 'js/assets/yii.js' %}"></script>
     <script src="{% static 'js/fileinput.min.js' %}"></script>
     <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
     <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
@@ -111,7 +115,6 @@
     <script src="{% static 'js/vue/contact.merge.import.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script src="{% static 'js/kv-widgets.min.js' %}"></script>
-    <script src="{% static 'js/yii.activeForm.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
 

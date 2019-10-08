@@ -1,4 +1,4 @@
-{% extends 'nobase.html' %}
+{% extends 'dashboard_base.html' %}
 {% load static %}
 {% load i18n %}
 {% block extra_header %}
@@ -7,67 +7,65 @@
     <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
     <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
-    <link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
-    <link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static '/js/lib/alertify1.11.1/css/alertify.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo_user.png' %}">
-
+    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
 
-    <div class="container-fluid" style="margin-top: 5px">
-        <div class="row mt-2">
+                    {% include 'import/wizard.html' %}
 
-            {% include 'import/wizard.html' %}
+                    <div class="tab-content" >
+                        <div class="tab-pane active container-fluid" role="tabpanel" id="step">
+                            <form id="w0" action="{% url 'monitoring:import-step2' %}" method="post"
+                                  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-10 col-lg-offset-1">
+                                        <h3 class="text-info pull-left">{% trans 'Step 1' %}: {% trans 'Upload File' %}</h3>
+                                        <a href="{% url 'monitoring:template-clean' %}"
+                                           class="btn btn-info pull-right"><i
+                                                class="fa fa-download"></i>{% trans 'Download Template' %}</a>
+                                    </div>
+                                </div>
 
-            <div class="tab-content">
-                <div class="tab-pane active container-fluid" role="tabpanel" id="step">
-                    <form id="w0" action="{% url 'monitoring:import-step2' %}" method="post"
-                          enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-lg-10 col-lg-offset-1">
-                                <h3 class="text-info pull-left">{% trans 'Step 1' %}: {% trans 'Upload File' %}</h3>
-                                <a href="{% url 'monitoring:template-clean' %}" class="btn btn-info pull-right"><i
-                                        class="fa fa-download"></i>{% trans 'Download Template' %}</a>
-                            </div>
+                                <div class="row">
+                                    <div class="col-lg-10 col-lg-offset-1">
+                                        <input id="input-b3" name="excel_file" type="file" class="file" multiple
+                                               data-show-upload="false" data-show-caption="true"
+                                               data-msg-placeholder="{% trans 'Select {files} for upload' %}...">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <ul class="list-inline pull-right">
+                                    <li>
+                                        <button type="submit" class="btn btn-success btn-block"><i
+                                                class="fa fa-upload fa-w-16"></i>
+                                            {% trans 'Import and continue' %}
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div style="clear: both;"></div>
+                            </form>
                         </div>
 
-                        <div class="row">
-                            <div class="col-lg-10 col-lg-offset-1">
-                                <input id="input-b3" name="excel_file" type="file" class="file" multiple
-                                       data-show-upload="false" data-show-caption="true"
-                                       data-msg-placeholder="{% trans 'Select {files} for upload' %}...">
-                            </div>
-                        </div>
-                        <br>
 
-                        <ul class="list-inline pull-right">
-                            <li>
-                                <button type="submit" class="btn btn-success btn-block"><i
-                                        class="fa fa-upload fa-w-16"></i>
-                                    {% trans 'Import and continue' %}
-                                </button>
-                            </li>
-                        </ul>
-                        <div style="clear: both;"></div>
-                    </form>
+                    </div>
+
                 </div>
-
-
             </div>
-        </div>
+        </section>
     </div>
-
 {% endblock %}
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
-    <script src="{% static 'js/assets/yii.js' %}"></script>
     <script src="{% static 'js/fileinput.min.js' %}"></script>
     <script src="{% static 'js/kv-widgets.min.js' %}"></script>
-    <script src="{% static 'js/yii.activeForm.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
 {% endblock %}
