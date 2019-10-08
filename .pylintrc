@@ -1,0 +1,6 @@
+[MASTER]
+load-plugins=pylint_django
+disable=W:279
+
+[BASIC]
+good-names=_,dt,e,f,default_app_config,logger,env
