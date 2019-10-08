@@ -132,7 +132,7 @@ class Contact(models.Model):
             self.name = self.name.strip()
             if not self.name:
                 raise ValueError(_("We need a name!"))
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']
