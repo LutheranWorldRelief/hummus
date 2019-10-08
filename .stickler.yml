@@ -2,6 +2,7 @@ linters:
   csslint: {  }
   flake8:
     fixer: true
+    max-line-length: 100
   tslint: {  }
 files:
   ignore:
