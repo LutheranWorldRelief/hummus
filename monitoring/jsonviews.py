@@ -152,7 +152,9 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         if contact.last_name:
             contact.last_name = contact.last_name.strip().replace('  ', ' ')
 
+        contact.updated_user = request.user.username
         contact.save()
+
         result = {}
         result['Proyectos-Contactos'] = {}
         result['Eliminado'] = {}

@@ -43,6 +43,7 @@ class Capture(TemplateView):
         row = Request()
         row.meta = request.META
         row.body = request.body.decode('utf-8')
+        row.created_user = request.user.username
         row.save()
         return render(request, self.template_name, context)
 
@@ -57,10 +58,18 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         contact.last_name = last_name
         contact.name = name
         contact.document = row['document']
+        if contact.id:
+            contact.updated_user = request.user.username
+        else:
+            contact.created_user = request.user.username
         # TODO : complete fields
         contact.save()
 
     def updateProjectContact(self, project_contact, row):
+        if project_contact.id:
+            project_contact.updated_user = request.user.username
+        else:
+            project_contact.created_user = request.user.username
         # TODO : complete fields
         project_contact.save()
 
@@ -113,6 +122,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact_organization = Organization()
                     # TODO : complete fields
                     contact_organization.name = row_dict['organization']
+                    contact_organization.created_user = request.user.username
                     contact_organization.save()
 
             if not contact:
