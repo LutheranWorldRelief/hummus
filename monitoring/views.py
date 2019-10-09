@@ -202,6 +202,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         excel_file = request.FILES['excel_file']
         tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
                                            excel_file.name)
+        default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
         uploaded_wb = load_workbook(filename=excel_file)
         uploaded_ws = uploaded_wb[_('data')]
 
