@@ -32,7 +32,8 @@ def create_catalog(book, request):
             rows = col_value.objects.all()
         row = 0
         for row, row_value in enumerate(rows, start=row_start):
-            sheet.cell(row=row, column=col, value=getattr(row_value, __('name')))
+            name = __('name') if hasattr(row_value, __('name')) else 'name'
+            sheet.cell(row=row, column=col, value=getattr(row_value, name))
         letter = get_column_letter(col)
         dvs[col_value.__name__] = DataValidation(
             type="list", allow_blank=True, showDropDown=False,
