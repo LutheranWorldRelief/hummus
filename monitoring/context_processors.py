@@ -1,3 +1,6 @@
+"""
+context processors for 'monitoring'
+"""
 from django.conf import settings  # import the settings file
 
 
