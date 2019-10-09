@@ -1,6 +1,9 @@
+"""
+Custom Dashboard configuration for JET admin interface
+"""
 from django.utils.translation import ugettext_lazy as _
 from jet.dashboard import modules
-from jet.dashboard.dashboard import Dashboard, AppIndexDashboard
+from jet.dashboard.dashboard import Dashboard
 
 
 class CustomIndexDashboard(Dashboard):
@@ -9,7 +12,8 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         self.children.append(modules.AppList(
             _('List Applications'),
-            exclude=('auth.*','legacy.*','microsoft_auth.*','jet.*', 'contenttypes.*','sessions.*','sites.*','databse.*','constance.*','admin.*','database.*'),
+            exclude=('auth.*', 'legacy.*', 'microsoft_auth.*', 'jet.*', 'contenttypes.*',
+                     'sessions.*', 'sites.*', 'databse.*', 'constance.*', 'admin.*', 'database.*'),
             column=0,
             order=0
         ))
