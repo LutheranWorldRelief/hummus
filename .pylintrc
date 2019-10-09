@@ -4,3 +4,6 @@ disable=C0116,C0115
 
 [BASIC]
 good-names=_,dt,e,f,default_app_config,logger,env
+
+[DESIGN]
+max-parents=15
