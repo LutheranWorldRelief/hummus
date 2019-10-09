@@ -1,3 +1,6 @@
+"""
+django-tables2 and django-filter views or definitions
+"""
 from os.path import basename
 
 from django.utils.safestring import mark_safe
@@ -5,14 +8,14 @@ from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
-from django_filters import NumberFilter, FilterSet, CharFilter, ModelChoiceFilter
+from crispy_forms.layout import Layout, Submit
+from django_filters import FilterSet, CharFilter, ModelChoiceFilter
 from django_select2.forms import Select2Widget
 from django_tables2 import Table, SingleTableView, RequestConfig
 from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
 
-from .models import *
+from .models import Template, Project, Country, Organization, Contact, ProjectContact, SubProject
 from .common import get_localized_name as __
 from .catalog import create_catalog
 
@@ -24,8 +27,8 @@ class ReportExportMixin:
 
     def table_to_dataset(self, table, exclude_columns):
         dataset = []
-        for i, row in enumerate(table.as_values(exclude_columns=exclude_columns)):
-            if i == 0:
+        for row_num, row in enumerate(table.as_values(exclude_columns=exclude_columns)):
+            if row_num == 0:
                 continue
             dataset.append(row)
         return dataset
@@ -34,6 +37,9 @@ class ReportExportMixin:
         return "{}.{}".format(self.export_name, export_format)
 
     def create_export(self, export_format):
+
+        if export_format != 'csv':
+            raise ValueError(_('Unsupported export format.'))
 
         # get table and create dataset
         table = self.get_table(**self.get_table_kwargs())
@@ -45,20 +51,20 @@ class ReportExportMixin:
         tfilename = tfile.name
 
         # loads 'datos' sheet # TODO rename to 'data'?
-        wb = load_workbook(filename=tfile)
-        create_catalog(wb, self.request)
-        ws = wb[_('data')]
+        book = load_workbook(filename=tfile)
+        create_catalog(book, self.request)
+        sheet = book[_('data')]
 
         # adds rows
-        # max = ws.max_row
-        max = 3  # Force start at row 3
+        cur = 3  # Force start at row 3
         for row, row_entry in enumerate(dataset, start=1):
             for col, col_entry in enumerate(row_entry, start=1):
-                ws.cell(row=row + max - 1, column=col, value=col_entry)
+                sheet.cell(row=row + cur - 1, column=col, value=col_entry)
 
         # resposne
-        response = HttpResponse(content=save_virtual_workbook(wb),
-                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response = HttpResponse(content=save_virtual_workbook(book),
+                                content_type='application/vnd.openxmlformats-officedocument.'\
+                                'spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
 
@@ -75,7 +81,7 @@ class PagedFilteredTableView(SingleTableView):
     formhelper_class = None
     context_filter_name = 'filter'
 
-    def get_queryset(self, **kwargs):
+    def get_queryset(self):
         if hasattr(self.model.objects, 'for_user'):
             qs = self.model.objects.for_user(self.request.user)
         else:
@@ -113,9 +119,10 @@ class ProjectContactTable(Table):
     class Meta:
         model = ProjectContact
         attrs = {'class': 'table table-bordered', 'id': 'tbPreview'}
-        fields = ('project', 'organization', 'contact.document', 'contact.first_name', 'contact.last_name',
-                  __('contact.sex.name'), 'contact.birthdate', 'contact.education', 'contact.phone', 'contact.men',
-                  'contact.women', 'contact.organization', 'contact.country.name', 'contact.deparment',
+        fields = ('project', 'organization', 'contact.document', 'contact.first_name',
+                  'contact.last_name', __('contact.sex.name'), 'contact.birthdate',
+                  'contact.education', 'contact.phone', 'contact.men', 'contact.women',
+                  'contact.organization', 'contact.country.name', 'contact.deparment',
                   'contact.community', 'contact.startdate', 'product')
 
 
