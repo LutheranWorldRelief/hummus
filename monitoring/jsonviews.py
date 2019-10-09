@@ -13,7 +13,7 @@ from django.views.generic.detail import DetailView
 
 from .tables import *
 from .models import *
-from .common import months, JSONResponseMixin, RegexpReplace, getPostArray
+from .common import JSONResponseMixin, RegexpReplace, get_post_array
 from .common import get_localized_name as __
 
 
@@ -132,7 +132,7 @@ class ContactFusion(JSONResponseMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         id = request.POST.get('id')
         ids = request.POST.getlist('ids[]')
-        values = getPostArray('values', request.POST)
+        values = get_post_array('values', request.POST)
         context = {}
 
         contacts = Contact.objects.filter(id__in=ids).exclude(id=id)

@@ -23,7 +23,7 @@ import json
 
 from .tables import *
 from .models import *
-from .common import DomainRequiredMixin, months, JSONResponseMixin, get_localized_name as __, RegexpReplace, Coalesce
+from .common import DomainRequiredMixin, MONTHS, JSONResponseMixin, get_localized_name as __, RegexpReplace
 from .catalog import create_catalog
 
 
@@ -164,10 +164,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             .filter(
             Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
             contact_id=F('id'),
-            contact_name=Coalesce(F('name'), Value('')),
-            contact_sex=Coalesce(F('sex_id'), Value('')),
-            contact_document=Coalesce(F('document'), Value('')),
-            contact_organization=Coalesce(F('organization__name'), Value('')),
+            contact_name=Coalesce('name', Value('')),
+            contact_sex=Coalesce('sex_id', Value('')),
+            contact_document=Coalesce('document', Value('')),
+            contact_organization=Coalesce('organization__name', Value('')),
         )
 
         # contacts = list(contacts)
@@ -280,7 +280,7 @@ class DashboardView(DomainRequiredMixin, TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['months'] = months
+        context['months'] = MONTHS
         context['projects'] = Project.objects.values('id', 'name')
         return context
 
