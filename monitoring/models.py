@@ -1,3 +1,7 @@
+"""
+participant tracking data models
+"""
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -9,7 +13,8 @@ class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
+    created_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Created by'))
 
 
 class Template(models.Model):
@@ -44,7 +49,8 @@ class LWRRegionQuerySet(models.QuerySet):
 class LWRRegion(models.Model):
     id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
     name = models.CharField(max_length=20, verbose_name=_('Name'))
-    subregions = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Subregions'))
+    subregions = models.CharField(max_length=200, blank=True, null=True,
+                                  verbose_name=_('Subregions'))
 
     objects = LWRRegionQuerySet.as_manager()
 
@@ -65,7 +71,8 @@ class Profile(models.Model):
         ('es', _('Spanish')),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_('User'))
-    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, verbose_name=_('Language'), default='en')
+    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES,
+                                verbose_name=_('Language'), default='en')
     lwrregions = models.ManyToManyField('LWRRegion', verbose_name=_('LWR Regions'), blank=True)
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
     projects = models.ManyToManyField('Project', verbose_name=_('Projects'), blank=True)
@@ -98,9 +105,11 @@ class ContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
-                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
-            elif user.profile.countries.exists():
-                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
+                return self.filter(projectcontact__project__countries__lwrregion__in=
+                                   user.profile.lwrregions.all())
+            if user.profile.countries.exists():
+                return self.filter(projectcontact__project__countries__in=
+                                   user.profile.countries.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -109,28 +118,37 @@ class ContactQuerySet(models.QuerySet):
 class Contact(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     last_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('Last Name'))
-    first_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('First Name'))
+    first_name = models.CharField(max_length=80, blank=True, null=True,
+                                  verbose_name=_('First Name'))
     birthdate = models.DateField(blank=True, null=True, verbose_name=_('Birthdate'))
     document = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Document'))
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Title'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
-                                     verbose_name=_('Organization'))
-    sex = models.ForeignKey('Sex', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Sex'))
-    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Type'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
+                                     null=True, verbose_name=_('Organization'))
+    sex = models.ForeignKey('Sex', on_delete=models.SET_NULL, blank=True, null=True,
+                            verbose_name=_('Sex'))
+    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True,
+                             verbose_name=_('Type'))
     community = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Community'))
-    municipality = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Municipality'))
+    municipality = models.CharField(max_length=40, blank=True, null=True,
+                                    verbose_name=_('Municipality'))
     city = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('City'))
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True,
+                                verbose_name=_('Country'))
     education = models.ForeignKey('Education', on_delete=models.SET_NULL, blank=True, null=True,
                                   verbose_name=_('Education'))
-    phone_personal = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Phone Personal'))
-    phone_work = models.CharField(max_length=20, blank=True, null=True, verbose_name=_('Phone Work'))
+    phone_personal = models.CharField(max_length=20, blank=True, null=True,
+                                      verbose_name=_('Phone Personal'))
+    phone_work = models.CharField(max_length=20, blank=True, null=True,
+                                  verbose_name=_('Phone Work'))
     men_home = models.IntegerField(blank=True, null=True, verbose_name=_('Men Home'))
     women_home = models.IntegerField(blank=True, null=True, verbose_name=_('Women Home'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+    created_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Modified by'))
 
     objects = ContactQuerySet.as_manager()
 
@@ -179,7 +197,8 @@ class Country(models.Model):
     x = models.CharField(max_length=255, verbose_name=_('X'))
     y = models.CharField(max_length=255, verbose_name=_('Y'))
     region = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Region'))
-    subregion = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Sub Region'))
+    subregion = models.CharField(max_length=255, blank=True, null=True,
+                                 verbose_name=_('Sub Region'))
     phonecode = models.CharField(max_length=5, blank=True, null=True, verbose_name=_('Phone Code'))
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
                                   verbose_name=_('LWR Region'))
@@ -221,7 +240,7 @@ class OrganizationQuerySet(models.QuerySet):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
                 return self.filter(country__lwrregion__in=user.profile.lwrregions.all())
-            elif user.profile.countries.exists():
+            if user.profile.countries.exists():
                 return self.filter(country__in=user.profile.countries.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
@@ -230,18 +249,22 @@ class OrganizationQuerySet(models.QuerySet):
 
 class Organization(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, verbose_name=_('Country'))
-    organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True, null=True,
-                                          verbose_name=_('Organization Type'))
-    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="parent",
-                                     verbose_name=_('Organization'))
-    description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True,
+                                verbose_name=_('Country'))
+    organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True,
+                                          null=True, verbose_name=_('Organization Type'))
+    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True,
+                                     related_name="parent", verbose_name=_('Organization'))
+    description = models.CharField(max_length=255, blank=True, null=True,
+                                   verbose_name=_('Description'))
     country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
     is_implementer = models.BooleanField(default=False, verbose_name=_('Is Implementer'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+    created_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Modified by'))
 
     objects = OrganizationQuerySet.as_manager()
 
@@ -260,7 +283,8 @@ class OrganizationType(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
     name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
-    description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
+    description = models.CharField(max_length=255, blank=True, null=True,
+                                   verbose_name=_('Description'))
 
     def __str__(self):
         return self.name
@@ -277,9 +301,9 @@ class ProjectQuerySet(models.QuerySet):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
                 return self.filter(lwrregion__in=user.profile.lwrregions.all())
-            elif user.profile.countries.exists():
+            if user.profile.countries.exists():
                 return self.filter(countries__in=user.profile.countries.all())
-            elif user.profile.projects.exists():
+            if user.profile.projects.exists():
                 return self.filter(profile=user.profile)
         else:
             raise PermissionDenied(_("Current user has no profile."))
@@ -297,26 +321,33 @@ class Project(models.Model):
         ('Terminated', _('Terminated')),
     ]
     code = models.CharField(max_length=255, unique=True, verbose_name=_('Code'))
-    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name=_('Salesforce Id'))
+    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
+                                  verbose_name=_('Salesforce Id'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
     colors = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Colors'))
     url = models.URLField(blank=True, null=True, verbose_name=_('Url'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
-    targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men', verbose_name=_('Target Direct Men'))
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
+                              verbose_name=_('Status'))
+    targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men',
+                                    verbose_name=_('Target Direct Men'))
     targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women',
                                       verbose_name=_('Target Direct Women'))
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
-    targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
+    targetiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Target Indirect Women'))
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
                                   verbose_name=_('LWR Region'))
-    recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
+    recordtype = models.CharField(max_length=100, null=True, blank=True,
+                                  verbose_name=_('Record Type'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+    created_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Modified by'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -342,9 +373,9 @@ class SubProjectQuerySet(models.QuerySet):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
                 return self.filter(project__lwrregion__in=user.profile.lwrregions.all())
-            elif user.profile.countries.exists():
+            if user.profile.countries.exists():
                 return self.filter(project__countries__in=user.profile.countries.all())
-            elif user.profile.projects.exists():
+            if user.profile.projects.exists():
                 return self.filter(project__profile=user.profile)
         else:
             raise PermissionDenied(_("Current user has no profile."))
@@ -362,27 +393,35 @@ class SubProject(models.Model):
     ]
     name = models.CharField(max_length=255, verbose_name=_('Name'))
     code = models.CharField(max_length=255, unique=False, verbose_name=_('Code'))
-    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True, verbose_name=_('Salesforce Id'))
+    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
+                                  verbose_name=_('Salesforce Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True, verbose_name=_('Status'))
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
+                              verbose_name=_('Status'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Country'))
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name=_('Country'))
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
-    actualiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Women'))
+    actualiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Actual Indirect Women'))
     targetmen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Men'))
     targetwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Women'))
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
-    targetiwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Women'))
-    recordtype = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Record Type'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
-                                     verbose_name=_('Implementing Organization'))
+    targetiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Target Indirect Women'))
+    recordtype = models.CharField(max_length=100, null=True, blank=True,
+                                  verbose_name=_('Record Type'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
+                                     null=True, verbose_name=_('Implementing Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+    created_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Modified by'))
 
     objects = SubProjectQuerySet.as_manager()
 
@@ -422,7 +461,7 @@ class ProjectContactQuerySet(models.QuerySet):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
                 return self.filter(project__countries__lwrregion__in=user.profile.lwrregions.all())
-            elif user.profile.countries.exists():
+            if user.profile.countries.exists():
                 return self.filter(project__countries__in=user.profile.countries.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
@@ -432,25 +471,31 @@ class ProjectContactQuerySet(models.QuerySet):
 class ProjectContact(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
-    product = models.ForeignKey('Product', on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Product'))
-    area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, verbose_name=_('Area'))
+    product = models.ForeignKey('Product', on_delete=models.SET_NULL, blank=True, null=True,
+                                verbose_name=_('Product'))
+    area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True,
+                               verbose_name=_('Area'))
     development_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True,
                                            verbose_name=_('Development Area'))
     productive_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True,
                                           verbose_name=_('Productive Area'))
     age_development_plantation = models.IntegerField(blank=True, null=True,
                                                      verbose_name=_('Age Development Plantation'))
-    age_productive_plantation = models.IntegerField(blank=True, null=True, verbose_name=_('Age Productive Plantation'))
-    yield_field = models.FloatField(db_column='yield', blank=True, null=True, verbose_name=_(
-        'Yield Field'))  # Field renamed because it was a Python reserved word.
-    date_entry_project = models.DateField(blank=True, null=True, verbose_name=_('Date Entry Project'))
+    age_productive_plantation = models.IntegerField(blank=True, null=True,
+                                                    verbose_name=_('Age Productive Plantation'))
+    yield_field = models.FloatField(db_column='yield', blank=True, null=True,
+                                    verbose_name=_('Yield Field'))  # renamed: Python reserved word
+    date_entry_project = models.DateField(blank=True, null=True,
+                                          verbose_name=_('Date Entry Project'))
     date_end_project = models.DateField(blank=True, null=True, verbose_name=_('Date End Project'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True, null=True,
-                                     verbose_name=_('Organization'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
+                                     null=True, verbose_name=_('Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True, verbose_name=_('Modified by'))
+    created_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Created by'))
+    updated_user = models.CharField(max_length=20, null=True, blank=True,
+                                    verbose_name=_('Modified by'))
 
     objects = ProjectContactQuerySet.as_manager()
 

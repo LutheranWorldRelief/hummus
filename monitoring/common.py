@@ -1,5 +1,8 @@
+"""
+common or frequently used tools
+"""
+
 import re
-from functools import wraps
 
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -10,19 +13,19 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 
-def domain_required(function=None):
+def domain_required():
 
     def check_domain(user):
-            # domain required
-            domain = user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN) )
+        # domain required
+        domain = user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN))
 
-            # super user can always get int
-            superuser = user.is_superuser
+        # super user can always get int
+        superuser = user.is_superuser
 
-            # if you can view projects, you can view this...
-            permission = user.has_perm('monitoring.project.can_view')
+        # if you can view projects, you can view this...
+        permission = user.has_perm('monitoring.project.can_view')
 
-            return domain or superuser or permission
+        return domain or superuser or permission
 
     return user_passes_test(check_domain)
 
@@ -33,7 +36,7 @@ class DomainRequiredMixin(UserPassesTestMixin):
             return False
 
         # domain required
-        domain = self.request.user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN) )
+        domain = self.request.user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN))
 
         # super user can always get int
         superuser = self.request.user.is_superuser
@@ -46,7 +49,7 @@ class DomainRequiredMixin(UserPassesTestMixin):
 
 def language_no_region(language):
     if '-' in language:
-        language, _, region = language.lower().partition('-')
+        language = language.lower().partition('-')[0]
     return language
 
 
@@ -56,7 +59,7 @@ def get_localized_name(column):
     return column if language in default_language else "%s_%s" % (column, language)
 
 
-def getPostArray(string, request):
+def get_post_array(string, request):
     """
     evaluates POST array in the form varible[0]['name']='value'
     returns dictionary variable {0: {'name': 'value'}, 1: {'name': 'othervalue'} }
@@ -64,10 +67,10 @@ def getPostArray(string, request):
 
     dictionary = {}
     for var in request:
-        m = re.search("(\w+)\[(\d+)\]\[(\w+)\]", var)
-        if m and m.group(1) == string:
-            integer_index = m.group(2)
-            sub_index = m.group(3)
+        match = re.search(r"(\w+)\[(\d+)\]\[(\w+)\]", var)
+        if match and match.group(1) == string:
+            integer_index = match.group(2)
+            sub_index = match.group(3)
             value = request.get(var)
             if not integer_index in dictionary:
                 dictionary[integer_index] = {}
@@ -84,7 +87,7 @@ def dictfetchall(cursor):
     ]
 
 
-months = [('1', 'January'),
+MONTHS = [('1', 'January'),
           ('2', _('February')),
           ('3', _('March')),
           ('4', _('April')),
@@ -98,7 +101,8 @@ months = [('1', 'January'),
           ('12', _('December')), ]
 
 
-# credit to https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#jsonresponsemixin-example
+# credit to
+# https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#jsonresponsemixin-example
 class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
@@ -121,10 +125,6 @@ class JSONResponseMixin:
         # objects -- such as Django model instances or querysets
         # -- can be serialized as JSON.
         return context
-
-
-class Coalesce(Func):
-    function = 'COALESCE'
 
 
 # credit to https://code.djangoproject.com/ticket/28805
