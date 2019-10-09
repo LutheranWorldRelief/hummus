@@ -171,6 +171,7 @@ class ProjectContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     ordering = ['-date_entry_project']
     readonly_fields = ['created', 'updated', ]
     list_per_page = 20
+    raw_id_fields = ('contact',)
     list_max_show_all = 50
     search_fields = ['id', 'project__name', 'contact__name', 'product__name']
     list_filter = [
