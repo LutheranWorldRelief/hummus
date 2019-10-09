@@ -242,8 +242,7 @@ class DownloadTemplate(DomainRequiredMixin, View):
         # response
         response = HttpResponse(content=save_virtual_workbook(book),
                                 content_type='application/vnd.openxmlformats-officedocument.'
-                                'spreadsheetml.sheet'
-                                )
+                                'spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
 
