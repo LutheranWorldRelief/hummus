@@ -184,7 +184,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact_sex=Coalesce('sex_id', Value('')),
                     contact_document=Coalesce('document', Value('')),
                     contact_organization=Coalesce('organization__name', Value('')),
-                )
+        )
 
         # contacts = list(contacts)
 
