@@ -145,7 +145,7 @@ class ContactFusion(JSONResponseMixin, TemplateView):
             context['error'] = _('Not enough records to merge.')
             return self.render_to_response(context, status=500)
 
-        if not contact_id in ids:
+        if contact_id not in ids:
             context['error'] = _('Selected record not found.')
             return self.render_to_response(context, status=500)
 
