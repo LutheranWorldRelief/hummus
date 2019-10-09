@@ -184,7 +184,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact_sex=Coalesce('sex_id', Value('')),
                     contact_document=Coalesce('document', Value('')),
                     contact_organization=Coalesce('organization__name', Value('')),
-                )
+        )
 
         # contacts = list(contacts)
 
@@ -241,8 +241,7 @@ class DownloadTemplate(DomainRequiredMixin, View):
 
         # response
         response = HttpResponse(content=save_virtual_workbook(book),
-                                content_type=\
-                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                                 )
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
