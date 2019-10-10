@@ -108,7 +108,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     fieldsets = [
         (_('General information'),
          {'fields': ['code', 'name', 'status', 'logo', 'colors', 'url', 'lwrregion',
-                     'show_salesforce_url', 'created', 'updated',]}),
+                     'show_salesforce_url', 'created', 'updated', ]}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
         (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
