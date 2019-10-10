@@ -12,7 +12,7 @@ class CustomIndexDashboard(Dashboard):
     def init_with_context(self, context):
         self.children.append(modules.AppList(
             _('List Applications'),
-            exclude=('auth.*', 'legacy.*', 'microsoft_auth.*', 'jet.*', 'contenttypes.*',
+            exclude=('auth.*', 'microsoft_auth.*', 'jet.*', 'contenttypes.*',
                      'sessions.*', 'sites.*', 'databse.*', 'constance.*', 'admin.*', 'database.*'),
             column=0,
             order=0
