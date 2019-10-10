@@ -71,7 +71,7 @@
                                 <span>{% trans 'Types' %}</span></a></li>
                         </ul>
                     </li>
-                    <li class="treeview"><a href="#"><i class="fa fa-list"></i>
+                    <li class="treeview"><a href="javascript:void (0);"><i class="fa fa-list"></i>
                         <span>{% trans 'Catalogs' %}</span>
                         <span
                                 class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
@@ -85,6 +85,9 @@
                             <li><a href="{% url 'admin:monitoring_education_changelist' %}"><i
                                     class="fa fa-list"></i>
                                 <span>{% trans 'Educations' %}</span></a></li>
+                            li><a href="{% url 'admin:monitoring_sex_changelist' %}"><i
+                                class="fa fa-list"></i>
+                            <span>{% trans 'Sex' %}</span></a></li>
                         </ul>
                     </li>
                     <li><a href="{% url 'admin:monitoring_filter_changelist' %}"><i class="fa fa-filter"></i>

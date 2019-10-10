@@ -214,7 +214,7 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
         (_('General information'),
          {'fields': ['code', 'name', 'project', 'status', 'organization', 'country',
                      'show_salesforce_url', 'created', 'updated', ]}),
-        (_('Date information'), {'fields': ['start', 'end',]}),
+        (_('Date information'), {'fields': ['start', 'end', ]}),
         (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
     list_filter = [
@@ -231,6 +231,11 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
 
 class CountryAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'name_es', 'name_fr')
+    readonly_fields = ['id']
+    search_fields = ['name', 'name_es', 'name_fr']
+    list_display_links = ('name',)
+    list_per_page = 20
+    list_max_show_all = 50
 
 
 class LWRRegionAdmin(AdminForUserMixin, admin.ModelAdmin):

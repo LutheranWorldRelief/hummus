@@ -38,7 +38,7 @@ class ReportExportMixin:
 
     def create_export(self, export_format):
 
-        if export_format != 'csv':
+        if export_format != 'xlsx':
             raise ValueError(_('Unsupported export format.'))
 
         # get table and create dataset

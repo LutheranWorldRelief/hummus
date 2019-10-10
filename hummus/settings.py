@@ -192,6 +192,7 @@ JET_SIDE_MENU_ITEMS = [
         {'name': 'monitoring.country', 'label': _('Countries')},
         {'name': 'monitoring.contacttype', 'label': _('Contact Types')},
         {'name': 'monitoring.education', 'label': _('Educations')},
+        {'name': 'monitoring.sex', 'label': _('Sex')},
         {'name': 'monitoring.filter', 'label': _('Segmentation')},
     ]},
     {'label': _('Security'), 'items': [
