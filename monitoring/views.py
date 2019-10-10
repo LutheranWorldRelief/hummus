@@ -3,7 +3,7 @@
 """
 import time
 from os.path import basename
-
+import pdb
 from django.db.models import Count, Q, Value, F
 from django.db.models.functions import Upper, Trim, Coalesce
 from django.core.files.storage import default_storage
@@ -23,8 +23,9 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      SubProjectFilter, SubProjectFilterFormHelper,
                      ProjectFilter, ProjectFilterFormHelper,
                      ProjectContactFilter, ProjectContactFilterFormHelper,
-                     ContactFilter, ContactFilterFormHelper,)
-from .models import SubProject, Project, Contact, Template, Organization, ProjectContact, Request
+                     ContactFilter, ContactFilterFormHelper, )
+from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact, Request, Sex, Education,
+                     Country)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace)
 from .catalog import create_catalog
@@ -54,18 +55,36 @@ class Capture(TemplateView):
 class ImportParticipants(DomainRequiredMixin, FormView):
 
     def update_contact(self, request, contact, row):
+        columna_name = __('name')
         first_name = row['first_name'].strip()
         last_name = row['last_name'].strip()
         name = "{} {}".format(first_name, last_name)
         contact.first_name = first_name
         contact.last_name = last_name
         contact.name = name
-        contact.document = row['document']
+        contact.document = row['document'].strip()
+        contact.women_home = row['women_home'] if row['women_home'] else None
+        contact.men_home = row['men_home'] if row['men_home'] else None
+        contact.municipality = row['departament'].strip() if row['departament'] else ''
+        contact.community = row['community'].strip() if row['community'] else None
+
         if contact.id:
             contact.updated_user = request.user.username
         else:
             contact.created_user = request.user.username
-        # TODO : complete fields
+
+        sex = Sex.objects.filter(**{columna_name: row['sex']}).first()
+        education = Education.objects.filter(**{columna_name: row['education']}).first()
+        country = Country.objects.filter(**{columna_name: row['country']}).first()
+
+        contact.sex_id = sex.id if sex else 'N'
+        contact.education_id = sex.id if education else None
+        contact.country_id = country.id if country else None
+
+        if row['birthdate'] and row['birthdate'].find('—') <= -1:
+            contact.birthdate = row['birthdate']
+
+        pdb.set_trace()
         contact.save()
 
     def update_project_contact(self, request, project_contact, row):
@@ -114,6 +133,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['women_home'] = row[project_cols + 8].value
             row_dict['organization'] = row[project_cols + 9].value
             row_dict['country'] = row[project_cols + 10].value
+            row_dict['departament'] = row[project_cols + 11].value
+            row_dict['community'] = row[project_cols + 12].value
             contact = Contact.objects.filter(document=row_dict['document'],
                                              first_name=row_dict['first_name'],
                                              last_name=row_dict['last_name']).first()
@@ -173,17 +194,17 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         queryset2 = Contact.objects.filter(document__isnull=False).exclude(
             document='').values('document').order_by(
-                'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
+            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
         documents = [row['document'] for row in queryset2]
 
         contacts = Contact.objects.filter(id__in=imported_ids) \
             .filter(
-                Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
-                    contact_id=F('id'),
-                    contact_name=Coalesce('name', Value('')),
-                    contact_sex=Coalesce('sex_id', Value('')),
-                    contact_document=Coalesce('document', Value('')),
-                    contact_organization=Coalesce('organization__name', Value('')),
+            Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
+            contact_id=F('id'),
+            contact_name=Coalesce('name', Value('')),
+            contact_sex=Coalesce('sex_id', Value('')),
+            contact_document=Coalesce('document', Value('')),
+            contact_organization=Coalesce('organization__name', Value('')),
         )
 
         # contacts = list(contacts)
@@ -243,7 +264,7 @@ class DownloadTemplate(DomainRequiredMixin, View):
         # response
         response = HttpResponse(content=save_virtual_workbook(book),
                                 content_type='application/vnd.openxmlformats-officedocument.'
-                                'spreadsheetml.sheet')
+                                             'spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
 
