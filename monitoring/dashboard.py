@@ -56,7 +56,7 @@ def get_paises(request):
             'id': row['project__countries'],
             'country': row['project__countries__name'],
             'active': row['project__countries'] in request.POST.getlist("paises[]") or
-                      paises_todos})
+            paises_todos})
 
     return JsonResponse({'paises': paises, 'todos': paises_todos, 'ninguno': ninguno, })
 
