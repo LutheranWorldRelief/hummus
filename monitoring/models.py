@@ -166,7 +166,7 @@ class Contact(models.Model):
             self.last_name = self.last_name.strip()
             self.name = "{} {}".format(self.first_name, self.last_name)
             self.name = self.name.strip()
-        else:
+        elif not self.name:
             raise ValueError(_("We need a name! name, first_name and last_name seem to be empty."))
         super().save(*args, **kwargs)
 
