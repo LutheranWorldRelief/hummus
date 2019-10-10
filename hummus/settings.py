@@ -25,9 +25,6 @@ DATABASES = {
     'default': env.db(),
 }
 
-# domain server
-LEGACY_URL = env('LEGACY_URL', default='http://localhost/')
-
 # Localization and translation
 LANGUAGES = [
     ('en', _('English')),
@@ -66,7 +63,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_select2',
     # my apps
-    'legacy',
     'monitoring',
 ]
 
@@ -96,7 +92,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # extras
                 'microsoft_auth.context_processors.microsoft',
-                'monitoring.context_processors.legacy_url',
             ],
         },
     },
