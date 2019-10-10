@@ -3,7 +3,7 @@
 """
 import time
 from os.path import basename
-import pdb
+
 from django.db.models import Count, Q, Value, F
 from django.db.models.functions import Upper, Trim, Coalesce
 from django.core.files.storage import default_storage
@@ -24,8 +24,8 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectFilter, ProjectFilterFormHelper,
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
-from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact, Request, Sex, Education,
-                     Country)
+from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
+                     Request, Sex, Education, Country, Product)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace)
 from .catalog import create_catalog
@@ -81,18 +81,27 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         contact.education_id = sex.id if education else None
         contact.country_id = country.id if country else None
 
-        if row['birthdate'] and row['birthdate'].find('—') <= -1:
-            contact.birthdate = row['birthdate']
-
-        pdb.set_trace()
         contact.save()
 
     def update_project_contact(self, request, project_contact, row):
+        columna_name = __('name')
         if project_contact.id:
             project_contact.updated_user = request.user.username
         else:
             project_contact.created_user = request.user.username
-        # TODO : complete fields
+
+        project_contact.organization_id = row['org_implementing_id']
+
+        product = Product.objects.filter(**{columna_name: row['product']}).first()
+
+        project_contact.product_id = product.id if product else None
+        project_contact.area = row['area'] if row['area'] else None
+        project_contact.development_area = row['dev_area'] if row['dev_area'] else None
+        project_contact.age_development_plantation = row['age_dev'] if row['age_dev'] else None
+        project_contact.productive_area = row['productive_area'] if row['productive_area'] else None
+        project_contact.age_productive_plantation = row['age_prod'] if row['age_prod'] else None
+        project_contact.yield_field = row['yield'] if row['yield'] else None
+
         project_contact.save()
 
     def post(self, request, *args, **kwargs):
@@ -116,12 +125,15 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             organization_name = row[1].value
             subproject = SubProject.objects.filter(project__name=project_name,
                                                    organization__name=organization_name).first()
+
+            org_implementing = Organization.objects.filter(name=organization_name).first()
             if not subproject:
                 raise Exception('Row # {} : Subproject with Project "{}" and Organization "{}"\
                     does not exist!'.format(row[0].row, project_name, organization_name))
 
             row_dict = {}
             project = Project.objects.get(name=project_name)
+            row_dict['org_implementing_id'] = org_implementing.id
             row_dict['document'] = row[project_cols + 0].value
             row_dict['first_name'] = row[project_cols + 1].value
             row_dict['last_name'] = row[project_cols + 2].value
@@ -135,6 +147,14 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['country'] = row[project_cols + 10].value
             row_dict['departament'] = row[project_cols + 11].value
             row_dict['community'] = row[project_cols + 12].value
+            row_dict['project_entry_date'] = row[project_cols + 13].value
+            row_dict['product'] = row[project_cols + 14].value
+            row_dict['area'] = row[project_cols + 15].value
+            row_dict['dev_area'] = row[project_cols + 16].value
+            row_dict['age_dev'] = row[project_cols + 17].value
+            row_dict['productive_area'] = row[project_cols + 18].value
+            row_dict['age_prod'] = row[project_cols + 19].value
+            row_dict['yield'] = row[project_cols + 20].value
             contact = Contact.objects.filter(document=row_dict['document'],
                                              first_name=row_dict['first_name'],
                                              last_name=row_dict['last_name']).first()
@@ -144,7 +164,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 messages.append('Create organization: {}'.format(row_dict['organization']))
                 if row_dict['organization']:
                     contact_organization = Organization()
-                    # TODO : complete fields
                     contact_organization.name = row_dict['organization']
                     contact_organization.created_user = request.user.username
                     contact_organization.save()
@@ -192,22 +211,21 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         names_uc = [row['name_uc'] for row in queryset1]
         contacts_names_ids = qs.values_list('id', flat=True).filter(name_uc__in=names_uc)
 
-        queryset2 = Contact.objects.filter(document__isnull=False).exclude(
-            document='').values('document').order_by(
-            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
+        queryset2 = Contact.objects.filter(document__isnull=False) \
+            .exclude(document='').values('document') \
+            .order_by('document') \
+            .annotate(cuenta=Count('document')) \
+            .filter(cuenta__gt=1)
         documents = [row['document'] for row in queryset2]
 
         contacts = Contact.objects.filter(id__in=imported_ids) \
-            .filter(
-            Q(id__in=contacts_names_ids) | Q(document__in=documents)).values(
-            contact_id=F('id'),
-            contact_name=Coalesce('name', Value('')),
-            contact_sex=Coalesce('sex_id', Value('')),
-            contact_document=Coalesce('document', Value('')),
-            contact_organization=Coalesce('organization__name', Value('')),
-        )
-
-        # contacts = list(contacts)
+            .filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)) \
+            .values(contact_id=F('id'),
+                    contact_name=Coalesce('name', Value('')),
+                    contact_sex=Coalesce('sex_id', Value('')),
+                    contact_document=Coalesce('document', Value('')),
+                    contact_organization=Coalesce('organization__name', Value('')),
+                    )
 
         context = {}
         context['excel_file'] = tmp_excel
