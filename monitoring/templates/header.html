@@ -2,8 +2,8 @@
 {% load i18n %}
 <header class="main-header">
     <a href="" class="logo">
-        <span class="logo-mini">LWR</span>
-        <span class="logo-lg">LWR</span>
+        <span class="logo-mini">{% trans 'LWR' %}</span>
+        <span class="logo-lg">{% trans 'LWR' %}</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation" style="background-color: #00AAA7;">
@@ -36,7 +36,7 @@
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a class="btn btn-default btn-flat" href="/site/profile">{% trans 'Profile' %}</a>
+                                <a class="btn btn-default btn-flat" href="{% url 'admin:monitoring_profile_change' request.user.id %}">{% trans 'Profile' %}</a>
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-default btn-flat" href="{% url 'admin:logout' %}" data-method="post">{% trans 'Log out' %}</a>
