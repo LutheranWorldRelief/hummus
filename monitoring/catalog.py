@@ -37,7 +37,7 @@ def create_catalog(book, request):
         letter = get_column_letter(col)
         dvs[col_value.__name__] = DataValidation(
             type="list", allow_blank=True, showDropDown=False,
-            formula1="catalog!$%s$2:$%s$%s" % (letter, letter, row), )
+            formula1="%s!$%s$2:$%s$%s" % (__('catalog'), letter, letter, row), )
         col += 1
 
 
