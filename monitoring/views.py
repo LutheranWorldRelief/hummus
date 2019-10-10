@@ -111,7 +111,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         tmp_excel = request.POST.get('excel_file')
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
-        uploaded_wb = load_workbook(excel_file)
+        uploaded_wb = load_workbook(excel_file, read_only=True)
         uploaded_ws = uploaded_wb[_('data')]
 
         # import
@@ -242,16 +242,16 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
                                            excel_file.name)
         default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
-        uploaded_wb = load_workbook(filename=excel_file)
+        uploaded_wb = load_workbook(filename=excel_file, read_only=True)
         uploaded_ws = uploaded_wb[_('data')]
 
         # check headers
         obj = Template.objects.get(id='clean-template')
         tfile = getattr(obj, __('file'))
-        book = load_workbook(filename=tfile)
+        book = load_workbook(filename=tfile, read_only=True)
         sheet = book[_('data')]
 
-        # FIXME: There shouldn't be two rows of headers
+        # two rows of headers on original template
         header_row = 2
         for cell in uploaded_ws[header_row]:
             if cell.value != sheet[header_row][cell.col_idx - 1].value:
@@ -276,7 +276,7 @@ class DownloadTemplate(DomainRequiredMixin, View):
         tfile = getattr(obj, __('file'))
         tfilename = tfile.name
 
-        book = load_workbook(filename=tfile)
+        book = load_workbook(filename=tfile, read_only=True)
         create_catalog(book, request)
 
         # response
