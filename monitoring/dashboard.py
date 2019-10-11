@@ -5,8 +5,7 @@ from datetime import date
 
 from django.utils.timezone import now
 from django.db.models.functions import ExtractYear
-from django.db.models import Count, Q
-from django.db.models import CharField, Case, Value, When
+from django.db.models import Count, Q, CharField, Case, Value, When
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
