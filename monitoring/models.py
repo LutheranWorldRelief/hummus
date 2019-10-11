@@ -366,11 +366,11 @@ class Project(models.Model):
         return "/project/%i/" % self.id
 
     def get_women(self):
-        return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women', 0)
+        return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
     get_women.short_description = _('Women')
 
     def get_men(self):
-        return self.subproject_set.aggregate(men=Sum('actualmen')).get('men', 0)
+        return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
     get_men.short_description = _('Men')
 
     def get_total(self):
