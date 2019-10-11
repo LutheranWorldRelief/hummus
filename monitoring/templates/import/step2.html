@@ -62,8 +62,25 @@
                                 <br>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-lg-4 col-lg-offset-1">
-                                        <h3 class="text-info pull-left">{% trans 'Data to import' %}</h3>
+                                    <div class="col-lg-5 col-lg-offset-1">
+                                        <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
+                                        <ol>
+                                            <li><strong>{% trans 'Name of Project' %}</strong></li>
+                                            <li><strong>{% trans 'Implementing Organization' %}</strong></li>
+                                            <li><strong>{% trans 'Identification number' %}</strong></li>
+                                            <li><strong>{% trans 'Name' %}</strong></li>
+                                            <li><strong>{% trans 'Last name' %}</strong></li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-5 col-lg-offset-1">
+                                        <h3 class="text-info pull-left">{% trans 'Data to import' %}
+                                            <small><a href="javascript:void(0);" class="d-none showdata"
+                                                      id="showBadRecords">{% trans 'Show only records with missing data' %}
+                                            </small></a>
+                                        </h3>
                                     </div>
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
@@ -135,39 +152,6 @@
     <script src="{% static 'js/kv-widgets.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
+    <script src="{% static 'js/validation_data_import.js' %}"></script>
 
-
-            $(window).on("load", function () {
-                console.log("window loaded");
-                validationData();
-
-            });
-
-            function validationData() {
-                let mostrar_boton = ($('.empty-cell-important').length <= 0);
-                if (mostrar_boton) {
-                    $('button[type=submit]').removeClass('d-none');
-                } else {
-                    let table = $('#tb_resultados');
-                    let filas = table.find('tr');
-                    filas.each(function () {
-                        let fila = $(this);
-                        for (let i = 1; i <= 5; i++) {
-                            let celda = fila.find('td').eq(i);
-                            if (celda.hasClass('empty-cell-important')) {
-                                fila.addClass('tr-missing_data')
-                            }
-                        }
-                    })
-                }
-
-
-            }
-
-        })
-
-    </script>
 {% endblock %}
