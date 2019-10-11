@@ -19,13 +19,13 @@
             <li><a href="{% url 'monitoring:import-step1' %}"><i class="fa fa-upload"></i>
                 <span>{% trans 'Import Beneficiaries' %}</span></a>
             </li>
-            <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-users"></i>
+            <li class="treeview"><a href="javascript:void(0);" id="participant"><i class="fa fa-users"></i>
                 <span>{% trans 'Participants' %}</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:monitoring_contact_changelist' %}"><i class="fa fa-users"></i>
                         <span>{% trans 'Participants' %}</span></a></li>
-                    <li class="treeview"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i>
+                    <li class="treeview"><a href="javascript:void(0);" id="duples"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Duplicates' %}</span> <span class="pull-right-container"><i
                                 class="fa fa-angle-left pull-right"></i></span></a>
                         <ul class="treeview-menu">
@@ -39,7 +39,7 @@
                 </ul>
             </li>
             <li class="header"><span><span>{% trans 'Reports' %}</span></span></li>
-            <li class="treeview"><a href="#"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
+            <li class="treeview"><a href="#" id="reports"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'monitoring:export' %}"><i class="fa fa-file-excel-o"></i>
@@ -53,13 +53,13 @@
                 <span>{% trans 'Graphics' %}</span></a>
             </li>
             <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
-            <li class="treeview"><a href="#"><i class="fa fa-sitemap"></i> <span>{% trans 'Configurations' %}</span>
+            <li class="treeview"><a href="#" id="configuration"><i class="fa fa-sitemap"></i> <span>{% trans 'Configurations' %}</span>
                 <span
                         class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:monitoring_project_changelist' %}"><i class="fa fa-folder-open-o"></i>
                         <span>{% trans 'Projects' %}</span></a></li>
-                    <li class="treeview"><a href="#"><i class="fa fa-home"></i> <span>{% trans 'Organizations' %}</span>
+                    <li class="treeview"><a href="#" id="organization"><i class="fa fa-home"></i> <span>{% trans 'Organizations' %}</span>
                         <span
                                 class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                         <ul class="treeview-menu">
@@ -71,7 +71,7 @@
                                 <span>{% trans 'Types' %}</span></a></li>
                         </ul>
                     </li>
-                    <li class="treeview"><a href="javascript:void (0);"><i class="fa fa-list"></i>
+                    <li class="treeview"><a href="javascript:void (0);" id="catalogs"><i class="fa fa-list"></i>
                         <span>{% trans 'Catalogs' %}</span>
                         <span
                                 class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
@@ -90,14 +90,14 @@
                                 <span>{% trans 'Sex' %}</span></a></li>
                             <li><a href="{% url 'admin:monitoring_lwrregion_changelist' %}"><i
                                     class="fa fa-list"></i>
-                                <span>{% trans 'Regions ' %}</span></a></li>
+                                <span>{% trans 'Regions' %}</span></a></li>
                         </ul>
                     </li>
                     <li><a href="{% url 'admin:monitoring_filter_changelist' %}"><i class="fa fa-filter"></i>
                         <span>{% trans 'Segmentation' %}</span></a></li>
                 </ul>
             </li>
-            <li class="treeview"><a href="#"><i class="fa fa-lock"></i> <span>{% trans 'Security' %}</span> <span
+            <li class="treeview"><a href="#" id="security"><i class="fa fa-lock"></i> <span>{% trans 'Security' %}</span> <span
                     class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:auth_user_changelist' %}"><i class="fa fa-circle-o"></i>
