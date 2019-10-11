@@ -66,7 +66,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             return message
 
         if org_implementing is None:
-            message = 'Problem to import record #{}, implementing organization is missing.'.format(row[0].row)
+            message = 'Problem to import record #{}, implementing organization is missing.'.format(
+                row[0].row)
             return message
 
         if document is None:
