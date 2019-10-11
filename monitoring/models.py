@@ -3,9 +3,11 @@ participant tracking data models
 """
 
 from django.db import models
+from django.db.models import Sum, Count, Q
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 
@@ -363,6 +365,18 @@ class Project(models.Model):
     def get_absolute_url(self):
         return "/project/%i/" % self.id
 
+    def get_women(self):
+        return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women', 0)
+    get_women.short_description = _('Women')
+
+    def get_men(self):
+        return self.subproject_set.aggregate(men=Sum('actualmen')).get('men', 0)
+    get_men.short_description = _('Men')
+
+    def get_total(self):
+        return self.get_women() + self.get_men()
+    get_total.short_description = _('Total')
+
     @property
     def salesforce_url(self):
         return '%s/%s' % (settings.SALESFORCE_URL, self.salesforce)
@@ -436,6 +450,14 @@ class SubProject(models.Model):
 
     def get_absolute_url(self):
         return "/subproject/%i/" % self.id
+
+    # TODO: Use this
+    @cached_property
+    def get_totals(self):
+        totals = ProjectContact.objects.filter(project_id=self.project_id).aggregate(
+            f=Count('contact', filter=Q(contact__sex='F')),
+            m=Count('contact', filter=Q(contact__sex='M')))
+        return totals
 
     @property
     def salesforce_url(self):

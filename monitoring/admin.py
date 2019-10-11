@@ -130,21 +130,6 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
 
     get_countries.short_description = _('Countries')
 
-    def get_women(self):
-        return 0
-
-    get_women.short_description = _('Women')
-
-    def get_men(self):
-        return 0
-
-    get_men.short_description = _('Men')
-
-    def get_total(self):
-        return self.get_men() + self.get_women()
-
-    get_total.short_description = _('T')
-
 
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = (
