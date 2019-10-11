@@ -148,8 +148,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         project_cols = 2
         uploaded_ws.delete_rows(0, amount=header_rows)
         for row in uploaded_ws.iter_rows():
-
             error_message = self.validate_data(row)
+
             if error_message == '':
                 # get SubProject, validates project columns
                 project_name = row[0].value
@@ -161,79 +161,80 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 if not subproject:
                     messages.append('Problem to import record #{} : Subproject with Project "{}" and Organization "{}"\
                         does not exist!'.format(row[0].row, project_name, organization_name))
-                    row_dict = {}
-                    project = Project.objects.get(name=project_name)
-                    row_dict['org_implementing_id'] = org_implementing.id
-                    row_dict['document'] = row[project_cols + 0].value
-                    row_dict['first_name'] = row[project_cols + 1].value
-                    row_dict['last_name'] = row[project_cols + 2].value
-                    row_dict['sex'] = row[project_cols + 3].value
-                    row_dict['birthdate'] = row[project_cols + 4].value
-                    row_dict['education'] = row[project_cols + 5].value
-                    row_dict['phone'] = row[project_cols + 6].value
-                    row_dict['men_home'] = row[project_cols + 7].value
-                    row_dict['women_home'] = row[project_cols + 8].value
-                    row_dict['organization'] = row[project_cols + 9].value
-                    row_dict['country'] = row[project_cols + 10].value
-                    row_dict['departament'] = row[project_cols + 11].value
-                    row_dict['community'] = row[project_cols + 12].value
-                    row_dict['project_entry_date'] = row[project_cols + 13].value
-                    row_dict['product'] = row[project_cols + 14].value
-                    row_dict['area'] = row[project_cols + 15].value
-                    row_dict['dev_area'] = row[project_cols + 16].value
-                    row_dict['age_dev'] = row[project_cols + 17].value
-                    row_dict['productive_area'] = row[project_cols + 18].value
-                    row_dict['age_prod'] = row[project_cols + 19].value
-                    row_dict['yield'] = row[project_cols + 20].value
-                    contact = Contact.objects.filter(document=row_dict['document'],
-                                                     first_name=row_dict['first_name'],
-                                                     last_name=row_dict['last_name']).first()
-                    contact_organization = Organization.objects.filter(
-                        name=row_dict['organization']).first()
-                    if not contact_organization and row_dict['organization']:
-                        messages.append('Create organization: {}'.format(row_dict['organization']))
-                        if row_dict['organization']:
-                            contact_organization = Organization()
-                            contact_organization.name = row_dict['organization']
-                            contact_organization.created_user = request.user.username
-                            contact_organization.save()
 
-                    if not contact:
-                        messages.append('Create contact: {} {}'.format(row_dict['first_name'],
-                                                                       row_dict['last_name']))
-                        contact = Contact()
-                        if contact_organization:
-                            contact.organization = contact_organization
-                        self.update_contact(request, contact, row_dict)
-                    else:
-                        messages.append('Update contact: {} {}'.format(row_dict['first_name'],
-                                                                       row_dict['last_name']))
-                        self.update_contact(request, contact, row_dict)
+                row_dict = {}
+                project = Project.objects.get(name=project_name)
+                row_dict['org_implementing_id'] = org_implementing.id
+                row_dict['document'] = row[project_cols + 0].value
+                row_dict['first_name'] = row[project_cols + 1].value
+                row_dict['last_name'] = row[project_cols + 2].value
+                row_dict['sex'] = row[project_cols + 3].value
+                row_dict['birthdate'] = row[project_cols + 4].value
+                row_dict['education'] = row[project_cols + 5].value
+                row_dict['phone'] = row[project_cols + 6].value
+                row_dict['men_home'] = row[project_cols + 7].value
+                row_dict['women_home'] = row[project_cols + 8].value
+                row_dict['organization'] = row[project_cols + 9].value
+                row_dict['country'] = row[project_cols + 10].value
+                row_dict['departament'] = row[project_cols + 11].value
+                row_dict['community'] = row[project_cols + 12].value
+                row_dict['project_entry_date'] = row[project_cols + 13].value
+                row_dict['product'] = row[project_cols + 14].value
+                row_dict['area'] = row[project_cols + 15].value
+                row_dict['dev_area'] = row[project_cols + 16].value
+                row_dict['age_dev'] = row[project_cols + 17].value
+                row_dict['productive_area'] = row[project_cols + 18].value
+                row_dict['age_prod'] = row[project_cols + 19].value
+                row_dict['yield'] = row[project_cols + 20].value
+                contact = Contact.objects.filter(document=row_dict['document'],
+                                                 first_name=row_dict['first_name'],
+                                                 last_name=row_dict['last_name']).first()
+                contact_organization = Organization.objects.filter(
+                    name=row_dict['organization']).first()
+                if not contact_organization and row_dict['organization']:
+                    messages.append('Create organization: {}'.format(row_dict['organization']))
+                    if row_dict['organization']:
+                        contact_organization = Organization()
+                        contact_organization.name = row_dict['organization']
+                        contact_organization.created_user = request.user.username
+                        contact_organization.save()
 
-                    imported_ids.append(contact.id)
+                if not contact:
+                    messages.append('Create contact: {} {}'.format(row_dict['first_name'],
+                                                                   row_dict['last_name']))
+                    contact = Contact()
+                    if contact_organization:
+                        contact.organization = contact_organization
+                    self.update_contact(request, contact, row_dict)
+                else:
+                    messages.append('Update contact: {} {}'.format(row_dict['first_name'],
+                                                                   row_dict['last_name']))
+                    self.update_contact(request, contact, row_dict)
 
-                    project_contact = ProjectContact.objects.filter(project__name=project_name,
-                                                                    contact=contact).first()
-                    if not project_contact:
-                        messages.append('Create project contact: {} {}'.format(project.name,
-                                                                               row_dict['first_name']))
-                        project_contact = ProjectContact()
-                        project_contact.contact = contact
-                        project_contact.project = project
-                        self.update_project_contact(request, project_contact, row_dict)
-                    else:
-                        messages.append('Update project contact: {} {}'.format(project.name,
-                                                                               row_dict['first_name']))
-                        self.update_project_contact(request, project_contact, row_dict)
-            else:
-                messages.append(error_message)
+                imported_ids.append(contact.id)
 
-            # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex',
-            # 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family',
-            # 'Organization belonging', 'Country Department', 'Community', 'Project entry date',
-            # 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in
-            # Development (years)', 'Production Area (hectares)', 'Planting Age in Production
-            # (years)', 'Yields (qq)']):
+                project_contact = ProjectContact.objects.filter(project__name=project_name,
+                                                                contact=contact).first()
+                if not project_contact:
+                    messages.append('Create project contact: {} {}'.format(project.name,
+                                                                           row_dict['first_name']))
+                    project_contact = ProjectContact()
+                    project_contact.contact = contact
+                    project_contact.project = project
+                    self.update_project_contact(request, project_contact, row_dict)
+                else:
+                    messages.append('Update project contact: {} {}'.format(project.name,
+                                                                           row_dict['first_name']))
+                    self.update_project_contact(request, project_contact, row_dict)
+        else:
+            messages.append(error_message)
+
+        # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex',
+        # 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family',
+        # 'Organization belonging', 'Country Department', 'Community', 'Project entry date',
+        # 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in
+        # Development (years)', 'Production Area (hectares)', 'Planting Age in Production
+        # (years)', 'Yields (qq)']):
 
         # gets dupes
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'),
