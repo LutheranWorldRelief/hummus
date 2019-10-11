@@ -4,9 +4,7 @@
 {% block extra_header %}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
-    <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify1.11.1/css/alertify.css' %}" rel="stylesheet">
@@ -26,7 +24,7 @@
                         <div class="tab-pane active container-fluid" role="tabpanel" id="step">
                             <form id="w0">
                                 <div class="row">
-                                    <div class="col-lg-9 col-lg-offset-1" >
+                                    <div class="col-lg-9 col-lg-offset-1">
                                         <h3 class="text-info pull-left">{% trans 'Process Completed Successfully' %}</h3>
                                     </div>
 
@@ -34,6 +32,22 @@
                                         <a href="{% url 'monitoring:import-step1' %}"
                                            class="btn btn-primary"><i class="fa fa-reply"></i>{% trans 'Go Back' %}</a>
                                     </div>
+
+                                    {% if messages|length > 0 %}
+                                        <div class="col-lg-9 col-lg-offset-1 text-left">
+                                            <a href="javascript:void(0)"
+                                               id="showError">{% trans 'Details about problems in records to import' %}</a>
+                                            <div class="d-none text-left" id="divErrors">
+                                                <ul style="list-style: none" class="text-left">
+                                                    {% for message in messages %}
+                                                        <li><strong>{{ message }}</strong></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+
                                     <div class="col-lg-10 col-lg-offset-1">
 
                                         <div id="app" v-cloak data-baseurl="/" class="row">
@@ -105,16 +119,28 @@
 {% endblock %}
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
-    <script src="{% static 'js/fileinput.min.js' %}"></script>
     <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
     <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
     <script>
         var gModels = {{ model|safe }};
+
+
+        $(function () {
+            $('body')
+                .on('click', '#showError', function () {
+                    if ($('#divErrors').hasClass('d-none')) {
+                        $('#divErrors').removeClass('d-none');
+                        $('#divErrors').fadeIn();
+                    } else {
+                        $('#divErrors').addClass('d-none');
+                        $('#divErrors').faceOut();
+                    }
+                })
+        })
     </script>
     <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.import.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
-    <script src="{% static 'js/kv-widgets.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
 

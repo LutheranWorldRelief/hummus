@@ -4,25 +4,10 @@
 {% block extra_header %}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
-    <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
-    <style>
-        .d-none {
-            display: none;
-        }
-
-        #tb_resultados tr.tr-missing_data {
-            background-color: #ff7f7f !important;
-        }
-
-        #tb_resultados tr.tr-missing_data:hover {
-            background-color: #ff7f7f !important;
-        }
-    </style>
 {% endblock %}
 {% block content %}
     <div class="content-wrapper">
@@ -78,8 +63,8 @@
                                     <div class="col-lg-5 col-lg-offset-1">
                                         <h3 class="text-info pull-left">{% trans 'Data to import' %}
                                             <small><a href="javascript:void(0);" class="d-none showdata"
-                                                      id="showBadRecords">{% trans 'Show only records with missing data' %}
-                                            </small></a>
+                                                      id="showBadRecords">{% trans 'Show only records with missing data' %}</a>
+                                            </small>
                                         </h3>
                                     </div>
 
@@ -148,8 +133,6 @@
 {% endblock %}
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
-    <script src="{% static 'js/fileinput.min.js' %}"></script>
-    <script src="{% static 'js/kv-widgets.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script src="{% static 'js/validation_data_import.js' %}"></script>
