@@ -11,9 +11,18 @@
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
     <style>
+        .d-none {
+            display: none;
+        }
 
+        #tb_resultados tr.tr-missing_data {
+            background-color: #ff7f7f !important;
+        }
+
+        #tb_resultados tr.tr-missing_data:hover {
+            background-color: #ff7f7f !important;
+        }
     </style>
-
 {% endblock %}
 {% block content %}
     <div class="content-wrapper">
@@ -41,7 +50,8 @@
                                                     <i class="fa fa-backward"></i>{% trans 'Cancel' %} </a>
                                             </li>
                                             <li>
-                                                <button type="submit" class="btn btn-success btn-block pull-right"><i
+                                                <button type="submit"
+                                                        class="btn btn-success btn-block pull-right d-none"><i
                                                         class="fa fa-upload fa-w-16"></i>
                                                     {% trans 'Import and continue' %}
                                                 </button>
@@ -69,7 +79,7 @@
                                                 {% endfor %}
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="tb_resultados">
                                             {% for row in data %}
                                                 <tr>
                                                     <td>
@@ -77,15 +87,19 @@
                                                                value="{{ row.0.row }}">
                                                     </td>
                                                     {% for cell in row %}
+
                                                         {% if cell.value != None %}
                                                             <td>
                                                                 {% if cell.value|length > 45 %}
-                                                                    <span tabindex="0" data-toggle="tooltip" class="cursor-"
+                                                                    <span tabindex="0" data-toggle="tooltip"
+                                                                          class="cursor-"
                                                                           title="{{ cell.value }}">{{ cell.value|truncatechars:25 }}</span>
                                                                 {% else %}
                                                                     {{ cell.value }}
                                                                 {% endif %}
                                                             </td>
+                                                        {% elif cell.value == None and forloop.counter <= 5 %}
+                                                            <td class="empty-cell-important"></td>
                                                         {% else %}
                                                             <td></td>
                                                         {% endif %}
@@ -98,7 +112,7 @@
 
                                     <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
                                          style="margin: 10px 20px 10px 10px">
-                                        <button type="submit" class="btn btn-success btn-block">
+                                        <button type="submit" class="btn btn-success btn-block d-none">
                                             <i class="fa fa-upload fa-w-16"></i>
                                             {% trans 'Import and continue' %}
                                         </button>
@@ -123,7 +137,37 @@
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script>
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
+
+
+            $(window).on("load", function () {
+                console.log("window loaded");
+                validationData();
+
+            });
+
+            function validationData() {
+                let mostrar_boton = ($('.empty-cell-important').length <= 0);
+                if (mostrar_boton) {
+                    $('button[type=submit]').removeClass('d-none');
+                } else {
+                    let table = $('#tb_resultados');
+                    let filas = table.find('tr');
+                    filas.each(function () {
+                        let fila = $(this);
+                        for (let i = 1; i <= 5; i++) {
+                            let celda = fila.find('td').eq(i);
+                            if (celda.hasClass('empty-cell-important')) {
+                                fila.addClass('tr-missing_data')
+                            }
+                        }
+                    })
+                }
+
+
+            }
+
         })
+
     </script>
 {% endblock %}
