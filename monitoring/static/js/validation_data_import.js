@@ -8,7 +8,7 @@ $(function () {
 
             let label = {
                 text1: 'Show only records with missing data',
-                text2: 'Show all records with missing data',
+                text2: 'Show all records',
             };
 
             if ($(this).hasClass('showdata')) {
