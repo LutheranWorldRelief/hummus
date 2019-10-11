@@ -175,7 +175,7 @@ class ProjectContactFilterFormHelper(FormHelper):
         'project',
         'organization',
         'contact__name',
-        Submit('submit', 'Apply Filter'),
+        Submit('submit', _('Apply Filter')),
     )
 
 
@@ -203,7 +203,7 @@ class ContactFilterFormHelper(FormHelper):
         'name',
         'country',
         'sex',
-        Submit('submit', 'Apply Filter'),
+        Submit('submit', _('Apply Filter')),
     )
 
 
@@ -231,7 +231,7 @@ class ProjectFilterFormHelper(FormHelper):
     form_method = 'GET'
     layout = Layout(
         'name',
-        Submit('submit', 'Apply Filter'),
+        Submit('submit', _('Apply Filter')),
     )
 
 
