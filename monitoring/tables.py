@@ -11,7 +11,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django_filters import FilterSet, CharFilter, ModelChoiceFilter
 from django_select2.forms import Select2Widget
-from django_tables2 import Table, SingleTableView, RequestConfig
+from django_tables2 import Table, SingleTableView, RequestConfig, Column
 from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
 
@@ -117,17 +117,23 @@ class PagedFilteredTableView(SingleTableView):
 
 class ProjectContactTable(Table):
 
-    def render_contact_sex_name(self, value, record):
-        return(record.contact.sex.name_es)
+    sex = Column(accessor="contact.sex.name")
+    education = Column(accessor="contact.education.name")
 
     class Meta:
         model = ProjectContact
         attrs = {'class': 'table table-bordered', 'id': 'tbPreview'}
         fields = ('project', 'organization', 'contact.document', 'contact.first_name',
-                  'contact.last_name', 'contact.sex.name', 'contact.birthdate',
-                  'contact.education', 'contact.phone', 'contact.men', 'contact.women',
+                  'contact.last_name', 'sex', 'contact.birthdate',
+                  'education', 'contact.phone', 'contact.men', 'contact.women',
                   'contact.organization', 'contact.country.name', 'contact.deparment',
                   'contact.community', 'contact.startdate', 'product')
+
+    def render_education(self, value, record):
+        return getattr(record.contact.education, __('name'))
+
+    def render_sex(self, value, record):
+        return getattr(record.contact.sex, __('name'))
 
 
 def projects(request):
