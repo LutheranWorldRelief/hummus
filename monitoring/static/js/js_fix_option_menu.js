@@ -18,4 +18,14 @@ $(function () {
                 body.addClass('sidebar-collapse');
             }
         })
+        .on('click', '#exitOption', function () {
+            let parent = $(this).parent();
+            if (parent.hasClass('menu-open')) {
+                parent.removeClass('menu-open');
+                parent.children('ul').removeClass('show');
+            } else {
+                parent.addClass('menu-open');
+                parent.children('ul').addClass('show');
+            }
+        })
 });

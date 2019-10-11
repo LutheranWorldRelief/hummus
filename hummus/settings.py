@@ -179,7 +179,7 @@ JET_SIDE_MENU_ITEMS = [
         {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document')},
     ]},
     {'label': _('Reports'), 'items': [
-        {'name': '', 'url': '/export/participants', 'label': _('Principal')},
+        {'name': '', 'url': '/export/participants', 'label': _('Project Participants')},
         {'name': '', 'url': '/export/template-clean/', 'label': _('Clean Template')},
     ]},
     {'label': _('Dashboard'), 'items': [
