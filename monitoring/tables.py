@@ -116,11 +116,15 @@ class PagedFilteredTableView(SingleTableView):
 # ProjectContact
 
 class ProjectContactTable(Table):
+
+    def render_contact_sex_name(self, value, record):
+        return(record.contact.sex.name_es)
+
     class Meta:
         model = ProjectContact
         attrs = {'class': 'table table-bordered', 'id': 'tbPreview'}
         fields = ('project', 'organization', 'contact.document', 'contact.first_name',
-                  'contact.last_name', __('contact.sex.name'), 'contact.birthdate',
+                  'contact.last_name', 'contact.sex.name', 'contact.birthdate',
                   'contact.education', 'contact.phone', 'contact.men', 'contact.women',
                   'contact.organization', 'contact.country.name', 'contact.deparment',
                   'contact.community', 'contact.startdate', 'product')
@@ -174,7 +178,7 @@ class ProjectContactFilterFormHelper(FormHelper):
 class ContactTable(Table):
     def render_name(self, value, record):
         url = record.get_absolute_url()
-        return mark_safe('<a href="%s">%s</a>' % (url, record))
+        return mark_safe('<a href="%s">%s</a>' % (url, value))
 
     class Meta:
         model = Contact
@@ -202,7 +206,7 @@ class ContactFilterFormHelper(FormHelper):
 class ProjectTable(Table):
     def render_name(self, value, record):
         url = record.get_absolute_url()
-        return mark_safe('<a href="%s">%s</a>' % (url, record))
+        return mark_safe('<a href="%s">%s</a>' % (url, value))
 
     class Meta:
         model = Project
