@@ -170,8 +170,8 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class ProjectContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = (
-        'id', 'project', 'contact', 'get_country_contact', 'product', 'area', 'date_entry_project',
-        'date_end_project', 'yield_field')
+        'id', 'project', 'organization', 'contact', 'get_country_contact', 'date_entry_project',
+        'date_end_project',)
     list_display_links = ['id', 'project']
     ordering = ['-date_entry_project']
     readonly_fields = ['created', 'updated', ]
@@ -181,7 +181,8 @@ class ProjectContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     search_fields = ['id', 'project__name', 'contact__name', 'product__name']
     list_filter = [
         ('product'),
-        ('contact__country', admin.RelatedOnlyFieldListFilter)
+        ('contact__country', admin.RelatedOnlyFieldListFilter),
+        ('organization', admin.RelatedOnlyFieldListFilter),
     ]
 
     def get_country_contact(self, obj):
