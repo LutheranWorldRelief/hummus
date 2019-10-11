@@ -455,8 +455,8 @@ class SubProject(models.Model):
     @cached_property
     def get_totals(self):
         totals = ProjectContact.objects.filter(project_id=self.project_id).aggregate(
-        f=Count('contact', filter=Q(contact__sex='F')),
-        m=Count('contact', filter=Q(contact__sex='M')))
+            f=Count('contact', filter=Q(contact__sex='F')),
+            m=Count('contact', filter=Q(contact__sex='M')))
         return totals
 
     @property
