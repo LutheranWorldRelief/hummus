@@ -933,6 +933,10 @@
             $scope.formulario.rubros = $scope.getDataRubros();
         };
 
+        $scope.CantidadRubros = function () {
+            return $scope.rubros.length;
+        };
+
         $scope.classChecked = function (obj) {
             return $scope.isChecked(obj) ? 'active' : '';
         };
