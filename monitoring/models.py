@@ -3,7 +3,7 @@ participant tracking data models
 """
 
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Sum, Count, Q
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
