@@ -5,8 +5,6 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
     <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
@@ -24,12 +22,71 @@
                             <form id="w0" action="{% url 'monitoring:import-step2' %}" method="post"
                                   enctype="multipart/form-data">
                                 {% csrf_token %}
+
+
                                 <div class="row">
-                                    <div class="col-lg-10 col-lg-offset-1">
+                                    <div class="col-lg-6 col-lg-offset-1">
                                         <h3 class="text-info pull-left">{% trans 'Step 1' %}: {% trans 'Upload File' %}</h3>
+                                    </div>
+                                    <div class="col-lg-2">
                                         <a href="{% url 'monitoring:template-clean' %}"
                                            class="btn btn-info pull-right"><i
                                                 class="fa fa-download"></i>{% trans 'Download Template' %}</a>
+
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button class="btn btn-primary pull-right" type="button" data-toggle="collapse"
+                                                data-target="#collapseExample" aria-expanded="false"
+                                                aria-controls="collapseExample">
+                                            <i class="fa fa-cogs"></i>
+                                            {% trans 'Advanced Options' %}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-10 col-lg-offset-1">
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="form-group row">
+                                                <label for="startrow"
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Data Start Row:' %}</label>
+                                                <div class="col-lg-7 col-md-7">
+                                                    <input type="number" class="form-control" name="startrow"
+                                                           id="startrow" value="3"
+                                                           min="3" max="100">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="typedate"
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Format Date:' %}</label>
+                                                <div class="col-lg-7 col-md-7">
+                                                    <select class="form-control" name="typedate"
+                                                            id="typedate">
+                                                        <option value="dd/mm/yyyy">{% trans 'Day/Month/Year' %}</option>
+                                                        <option value="mm/dd/yyyy">{% trans 'Month/Day/Year' %}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="ignorenewcolumns"
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Ignore Extra Columns:' %}</label>
+                                                <div class="col-lg-7 col-md-7">
+                                                    <input type="checkbox" id="ignorenewcolumns" name="ignorenewcolumns"
+                                                           checked>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="georeferencing"
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Georeferencing' %}</label>
+                                                <div class="col-lg-7 col-md-7">
+                                                    <select class="form-control" name="georeferencing"
+                                                            id="georeferencing">
+                                                        <option value="n/a">{% trans 'N/A' %}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
 
@@ -66,7 +123,6 @@
 {% block extra_body %}
     <script src="{% static 'js/assets/jquery.js' %}"></script>
     <script src="{% static 'js/fileinput.min.js' %}"></script>
-    <script src="{% static 'js/kv-widgets.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
 {% endblock %}
