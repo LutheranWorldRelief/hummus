@@ -21,8 +21,8 @@ def update_contact(request, contact, row):
     contact.document = row.get('document', '').strip()
     contact.women_home = row.get('women_home')
     contact.men_home = row.get('men_home')
-    contact.municipality = row.get('departament', '').strip()
-    contact.community = row.get('community', '').strip()
+    contact.municipality = row.get('departament').strip() if row.get('departament') else None
+    contact.community = row.get('community').strip() if row.get('departament') else None
 
     if contact.id:
         contact.updated_user = request.user.username
