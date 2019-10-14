@@ -2,12 +2,10 @@
 updates and saves models. used by importers.
 """
 
-from django.db.models import Count, Q, Value, F
-from django.db.models.functions import Upper, Trim, Coalesce
+from django.db.models import Q
 
 from .common import  get_localized_name as __
-from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request, Sex, Education, Country, Product)
+from .models import Sex, Education, Country, Product
 
 def update_contact(request, contact, row):
     columna_name = __('name')
