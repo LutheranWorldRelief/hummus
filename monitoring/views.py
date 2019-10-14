@@ -1,6 +1,7 @@
 """
 'monitoring' views, mostly invoked by urls.py
 """
+import json
 import time
 from os.path import basename
 
@@ -30,6 +31,7 @@ from .models import (SubProject, Project, Contact, Template, Organization, Proje
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace)
 from .catalog import create_catalog
+from .updates import update_contact, update_project_contact
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -44,12 +46,38 @@ class Capture(TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        messages = []
         context = {}
         row = Request()
         row.meta = request.META
         row.body = request.body.decode('utf-8')
-        row.created_user = request.user.username
-        row.save()
+        body = json.loads(row.body)
+        row_dict = {}
+        try:
+            row_dict['first_name'] = body['form'].get('first_name', '')
+            row_dict['last_name'] = body['form'].get('last_name', '')
+            row_dict['name'] = body['form'].get('name', '')
+            row_dict['sex'] = body['form'].get('sex', '')
+            row_dict['country'] = body['form'].get('country', '')
+            row_dict['education'] = body['form'].get('education', '')
+            row_dict['document'] = body['form'].get('id', '')
+            row_dict['source_id'] = 'commcare'
+        except KeyError as e:
+            print('KeyError in data forwarding : "%s"' % str(e))
+
+        contact = Contact.objects.filter(document=row_dict['document'],
+                                         first_name=row_dict['first_name'],
+                                         last_name=row_dict['last_name']).first()
+        if not contact:
+            messages.append('Create contact: {} {}'.format(row_dict['first_name'],
+                                                           row_dict['last_name']))
+            contact = Contact()
+            update_contact(request, contact, row_dict)
+        else:
+            messages.append('Update contact: {} {}'.format(row_dict['first_name'],
+                                                           row_dict['last_name']))
+            update_contact(request, contact, row_dict)
+
         return render(request, self.template_name, context)
 
 
@@ -84,59 +112,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             return message
 
         return message
-
-    def update_contact(self, request, contact, row):
-        columna_name = __('name')
-        columna_varname = __('varname')
-        first_name = row['first_name'].strip()
-        last_name = row['last_name'].strip()
-        name = "{} {}".format(first_name, last_name)
-        contact.first_name = first_name
-        contact.last_name = last_name
-        contact.name = name
-        contact.document = row['document'].strip()
-        contact.women_home = row['women_home'] if row['women_home'] else None
-        contact.men_home = row['men_home'] if row['men_home'] else None
-        contact.municipality = row['departament'].strip() if row['departament'] else ''
-        contact.community = row['community'].strip() if row['community'] else None
-
-        if contact.id:
-            contact.updated_user = request.user.username
-        else:
-            contact.created_user = request.user.username
-
-        sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) |
-                                 Q(**{columna_varname: row['sex']})).first()
-        education = Education.objects.filter(Q(**{columna_name: row['education']}) |
-                                             Q(**{columna_varname: row['education']})).first()
-        country = Country.objects.filter(**{columna_name: row['country']}).first()
-
-        contact.sex_id = sex.id if sex else 'N'
-        contact.education_id = sex.id if education else None
-        contact.country_id = country.id if country else None
-
-        contact.save()
-
-    def update_project_contact(self, request, project_contact, row):
-        columna_name = __('name')
-        if project_contact.id:
-            project_contact.updated_user = request.user.username
-        else:
-            project_contact.created_user = request.user.username
-
-        project_contact.organization_id = row['org_implementing_id']
-
-        product = Product.objects.filter(**{columna_name: row['product']}).first()
-
-        project_contact.product_id = product.id if product else None
-        project_contact.area = row['area'] if row['area'] else None
-        project_contact.development_area = row['dev_area'] if row['dev_area'] else None
-        project_contact.age_development_plantation = row['age_dev'] if row['age_dev'] else None
-        project_contact.productive_area = row['productive_area'] if row['productive_area'] else None
-        project_contact.age_productive_plantation = row['age_prod'] if row['age_prod'] else None
-        project_contact.yield_field = row['yield'] if row['yield'] else None
-
-        project_contact.save()
 
     def post(self, request, *args, **kwargs):
         messages = []
@@ -209,11 +184,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact = Contact()
                     if contact_organization:
                         contact.organization = contact_organization
-                    self.update_contact(request, contact, row_dict)
+                    update_contact(request, contact, row_dict)
                 else:
                     messages.append('Update contact: {} {}'.format(row_dict['first_name'],
                                                                    row_dict['last_name']))
-                    self.update_contact(request, contact, row_dict)
+                    update_contact(request, contact, row_dict)
 
                 imported_ids.append(contact.id)
 
@@ -225,11 +200,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     project_contact = ProjectContact()
                     project_contact.contact = contact
                     project_contact.project = project
-                    self.update_project_contact(request, project_contact, row_dict)
+                    update_project_contact(request, project_contact, row_dict)
                 else:
                     messages.append('Update project contact: {} {}'.format(project.name,
                                                                            row_dict['first_name']))
-                    self.update_project_contact(request, project_contact, row_dict)
+                    update_project_contact(request, project_contact, row_dict)
             else:
                 messages.append(error_message)
 
