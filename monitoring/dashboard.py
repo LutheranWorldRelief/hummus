@@ -90,38 +90,59 @@ def grafico_organizaciones(request):
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)  # filter_by(parameters, request)
 
-    organizaciones = ProjectContact.objects.filter(**filter_kwargs).order_by('organization_id'). \
-        values('organization_id', 'organization__name',
-               'organization__organization_type_id').distinct()
+    organizaciones = ProjectContact.objects \
+        .filter(organization__isnull=False) \
+        .filter(**filter_kwargs) \
+        .order_by('organization_id') \
+        .values('organization_id', 'organization__name', 'organization__organization_type_id') \
+        .distinct()
 
     org_list = []
 
     for row in organizaciones:
-        org_list.append({'id': row['organization_id'], 'name': row['organization__name'],
-                         'parent': row['organization__organization_type_id']})
+        if not row['organization__organization_type_id'] or row['organization__organization_type_id'] == 0:
+            parent = 'ne'
+        else:
+            parent = str(row['organization__organization_type_id'])
 
-    types = ProjectContact.objects.filter(**filter_kwargs).order_by(
-        'organization__organization_type_id') \
+        org_list.append({
+            'id': row['organization_id'] if row['organization_id'] else 'ne',
+            'name': row['organization__name'] if row['organization_id'] else 'NE',
+            'parent': parent,
+            'value': 1})
+
+    types = ProjectContact.objects.filter(**filter_kwargs) \
+        .order_by('organization__organization_type_id') \
         .values('organization__organization_type_id',
-                __('organization__organization_type__name')).distinct()
+                __('organization__organization_type__name')) \
+        .distinct()
+
+    types_list = []
+
+    for row in types:
+        types_list.append({
+            'id': str(row['organization__organization_type_id']) if
+            row['organization__organization_type_id'] else 'ne',
+            'name': row[__('organization__organization_type__name')] if
+            row['organization__organization_type_id'] else 'Sin Tipo'
+        })
 
     color_numero = 0
     colores = ['#B2BB1E', '#00AAA7', '#472A2B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655',
                '#FFF263', '#6AF9C4']
     data_dict = {}
-    for row in types:
+    for row in types_list:
         row['color'] = colores[color_numero % len(colores)]
         color_numero += 1
         row['value'] = 0
-        row['name'] = row[__('organization__organization_type__name')]
-        data_dict[row['organization__organization_type_id']] = row
+        data_dict[row['id']] = row
 
-    for row in organizaciones:
-        data_dict[row['organization__organization_type_id']]['value'] += 1
+    for row in org_list:
+        data_dict[row['parent']]['value'] += 1
 
     result = list(data_dict.values()) + org_list
 
-    return JsonResponse({'organizaciones': {'data': result, 'total': len(organizaciones),
+    return JsonResponse({'organizaciones': {'data': result, 'total': len(org_list),
                                             'tipos': data_dict,
                                             'total_categorias': len(data_dict)}})
 
