@@ -21,6 +21,7 @@ def update_contact(request, contact, row):
     contact.document = row.get('document', '').strip()
     contact.women_home = row.get('women_home')
     contact.men_home = row.get('men_home')
+    contact.birthdate = row.get('birthdate')
     contact.municipality = row.get('departament').strip() if row.get('departament') else None
     contact.community = row.get('community').strip() if row.get('departament') else None
 
@@ -59,6 +60,7 @@ def update_project_contact(request, project_contact, row):
     project_contact.age_development_plantation = row['age_dev'] if row['age_dev'] else None
     project_contact.productive_area = row['productive_area'] if row['productive_area'] else None
     project_contact.age_productive_plantation = row['age_prod'] if row['age_prod'] else None
+    project_contact.date_entry_project = row['date_entry_project']
     project_contact.yield_field = row['yield'] if row['yield'] else None
 
     project_contact.save()
