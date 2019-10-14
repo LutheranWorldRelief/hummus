@@ -4,8 +4,9 @@ updates and saves models. used by importers.
 
 from django.db.models import Q
 
-from .common import  get_localized_name as __
+from .common import get_localized_name as __
 from .models import Sex, Education, Country, Product
+
 
 def update_contact(request, contact, row):
     columna_name = __('name')
@@ -61,4 +62,3 @@ def update_project_contact(request, project_contact, row):
     project_contact.yield_field = row['yield'] if row['yield'] else None
 
     project_contact.save()
-
