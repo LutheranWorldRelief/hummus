@@ -50,7 +50,7 @@ class ReportExportMixin:
         tfile = getattr(obj, __('file'))
         tfilename = tfile.name
 
-        # loads 'datos' sheet # TODO rename to 'data'?
+        # loads 'data'
         book = load_workbook(filename=tfile)
         create_catalog(book, self.request)
         sheet = book[_('data')]
