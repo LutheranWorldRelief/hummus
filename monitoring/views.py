@@ -87,6 +87,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
     def update_contact(self, request, contact, row):
         columna_name = __('name')
+        columna_varname = __('varname')
         first_name = row['first_name'].strip()
         last_name = row['last_name'].strip()
         name = "{} {}".format(first_name, last_name)
@@ -104,8 +105,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         else:
             contact.created_user = request.user.username
 
-        sex = Sex.objects.filter(**{columna_name: row['sex']}).first()
-        education = Education.objects.filter(**{columna_name: row['education']}).first()
+        sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) |
+            Q(**{columna_varname: row['sex'])).first()
+        education = Education.objects.filter(Q(**{columna_name: row['education']}) |
+            Q(**{columna_varname: row['education'])).first()
         country = Country.objects.filter(**{columna_name: row['country']}).first()
 
         contact.sex_id = sex.id if sex else 'N'
