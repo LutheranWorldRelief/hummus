@@ -62,8 +62,8 @@
                                                 <div class="col-lg-7 col-md-7">
                                                     <select class="form-control" name="typedate"
                                                             id="typedate">
-                                                        <option value="dd/mm/yyyy">{% trans 'Day/Month/Year' %}</option>
-                                                        <option value="mm/dd/yyyy">{% trans 'Month/Day/Year' %}</option>
+                                                        <option value="d/m/Y" {% if short_date_format == "d/m/Y" %}selected{% endif %}>{% trans 'dd/mm/yyyy' %}</option>
+                                                        <option value="m/d/Y" {% if short_date_format == "m/d/Y" %}selected{% endif %}>{% trans 'mm/dd/yyyy' %}</option>
                                                     </select>
                                                 </div>
                                             </div>
