@@ -92,6 +92,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # extras
                 'microsoft_auth.context_processors.microsoft',
+                'constance.context_processors.config',
             ],
         },
     },
