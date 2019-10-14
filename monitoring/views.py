@@ -15,6 +15,7 @@ from django.views import View
 from django.views.generic import TemplateView, DetailView, FormView
 from django.views.decorators.csrf import csrf_exempt
 
+from constance import config
 from openpyxl import load_workbook
 from openpyxl.writer.excel import save_virtual_workbook
 
@@ -144,7 +145,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_ws = uploaded_wb[_('data')]
 
         # import
-        header_rows = 2
+        header_rows = config.START_ROW
         project_cols = 2
         uploaded_ws.delete_rows(0, amount=header_rows)
         for row in uploaded_ws.iter_rows():
