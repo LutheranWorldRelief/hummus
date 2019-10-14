@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='source',
             name='id',
-            field=models.CharField(max_length=16, primary_key=True, serialize=False, verbose_name='Id'),
+            field=models.CharField(max_length=16, primary_key=True,
+                                   serialize=False, verbose_name='Id'),
         ),
     ]
