@@ -230,8 +230,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     messages.append('Update project contact: {} {}'.format(project.name,
                                                                            row_dict['first_name']))
                     self.update_project_contact(request, project_contact, row_dict)
-        else:
-            messages.append(error_message)
+            else:
+                messages.append(error_message)
 
         # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex',
         # 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family',
