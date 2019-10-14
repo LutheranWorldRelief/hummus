@@ -1,6 +1,7 @@
 """
 monitoring URL Configuration. Included as root ''
 """
+from django.conf import settings
 from django.urls import path
 from django.views.generic import TemplateView, DetailView
 
@@ -52,8 +53,8 @@ urlpatterns = [
     path('import/participants/step3', views.ImportParticipants.as_view(), name='import-step3'),
     path('import/capture/', views.Capture.as_view(), name='capture'),
     path('import/capture/<int:pk>/', DetailView.as_view(model=models.Request)),
-    path('import/participants/', TemplateView.as_view(template_name='import/step1.html'),
-         name='import'),
+    path('import/participants/', TemplateView.as_view(template_name='import/step1.html',
+         extra_context={'short_date_format': settings.SHORT_DATE_FORMAT}), name='import'),
 
     # export
     path('export/participants', views.ProjectContactTableView.as_view(), name='export'),
