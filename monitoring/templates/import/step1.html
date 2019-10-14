@@ -51,9 +51,9 @@
                                                 <label for="startrow"
                                                        class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Data Start Row:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
-                                                    <input type="number" class="form-control" name="startrow"
-                                                           id="startrow" value="3"
-                                                           min="3" max="100">
+                                                    <input type="number" class="form-control" name="start_row"
+                                                           id="startrow" value="{{ config.START_ROW }}"
+                                                           min="{{ config.START_ROW }}" max="100">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -62,8 +62,10 @@
                                                 <div class="col-lg-7 col-md-7">
                                                     <select class="form-control" name="typedate"
                                                             id="typedate">
-                                                        <option value="d/m/Y" {% if short_date_format == "d/m/Y" %}selected{% endif %}>{% trans 'dd/mm/yyyy' %}</option>
-                                                        <option value="m/d/Y" {% if short_date_format == "m/d/Y" %}selected{% endif %}>{% trans 'mm/dd/yyyy' %}</option>
+                                                        <option value="d/m/Y"
+                                                                {% if short_date_format == "d/m/Y" %}selected{% endif %}>{% trans 'dd/mm/yyyy' %}</option>
+                                                        <option value="m/d/Y"
+                                                                {% if short_date_format == "m/d/Y" %}selected{% endif %}>{% trans 'mm/dd/yyyy' %}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -77,12 +79,10 @@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="georeferencing"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Georeferencing' %}</label>
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Georeferencing:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
-                                                    <select class="form-control" name="georeferencing"
-                                                            id="georeferencing">
-                                                        <option value="n/a">{% trans 'N/A' %}</option>
-                                                    </select>
+                                                    <input type="text" name="georeferencing" class="form-control"
+                                                           id="georeferencing" value="">
                                                 </div>
                                             </div>
 

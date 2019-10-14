@@ -143,14 +143,14 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         imported_ids = []
 
         tmp_excel = request.POST.get('excel_file')
+        start_row = int(request.POST.get('start_row'))
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
         uploaded_wb = load_workbook(excel_file)
         uploaded_ws = uploaded_wb[_('data')]
 
         # import
-        header_rows = config.START_ROW
         project_cols = 2
-        uploaded_ws.delete_rows(0, amount=header_rows)
+        uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
             error_message = self.validate_data(row)
 
@@ -276,6 +276,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 class ValidateExcel(DomainRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         excel_file = request.FILES['excel_file']
+        start_row = int(request.POST['start_row'])
         tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
                                            excel_file.name)
         default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
@@ -288,8 +289,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         book = load_workbook(filename=tfile)
         sheet = book[_('data')]
 
-        # FIXME: There shouldn't be two rows of headers
-        header_row = 2
+        header_row = config.HEADER_ROW
         for cell in uploaded_ws[header_row]:
             if cell.value != sheet[header_row][cell.col_idx - 1].value:
                 raise Exception('Headers are not the same as in template! {} != {}'.format(
@@ -297,8 +297,9 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
-        uploaded_ws.delete_rows(0, amount=header_row)
+        uploaded_ws.delete_rows(0, amount=start_row - 1)
         context['data'] = uploaded_ws
+        context['start_row'] = start_row
         context['excel_file'] = tmp_excel_name
 
         return render(request, self.template_name, context)
