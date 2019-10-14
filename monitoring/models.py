@@ -17,6 +17,8 @@ class Request(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     created_user = models.CharField(max_length=20, null=True, blank=True,
                                     verbose_name=_('Created by'))
+    source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Data Source'))
 
 
 class Template(models.Model):
@@ -106,15 +108,26 @@ class Sex(models.Model):
         verbose_name_plural = _('Sex')
 
 
+class Source(models.Model):
+    id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = _('Data Source')
+        verbose_name_plural = _('Data Sources')
+
+
 class ContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
-                return self.filter(projectcontact__project__countries__lwrregion__in=
-                                   user.profile.lwrregions.all())
+                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
-                return self.filter(projectcontact__project__countries__in=
-                                   user.profile.countries.all())
+                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -154,6 +167,8 @@ class Contact(models.Model):
                                     verbose_name=_('Created by'))
     updated_user = models.CharField(max_length=20, null=True, blank=True,
                                     verbose_name=_('Modified by'))
+    source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Data Source'))
 
     objects = ContactQuerySet.as_manager()
 
@@ -270,6 +285,8 @@ class Organization(models.Model):
                                     verbose_name=_('Created by'))
     updated_user = models.CharField(max_length=20, null=True, blank=True,
                                     verbose_name=_('Modified by'))
+    source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Data Source'))
 
     objects = OrganizationQuerySet.as_manager()
 
@@ -353,6 +370,8 @@ class Project(models.Model):
                                     verbose_name=_('Created by'))
     updated_user = models.CharField(max_length=20, null=True, blank=True,
                                     verbose_name=_('Modified by'))
+    source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Data Source'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -439,6 +458,8 @@ class SubProject(models.Model):
                                     verbose_name=_('Created by'))
     updated_user = models.CharField(max_length=20, null=True, blank=True,
                                     verbose_name=_('Modified by'))
+    source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Data Source'))
 
     objects = SubProjectQuerySet.as_manager()
 
@@ -521,6 +542,8 @@ class ProjectContact(models.Model):
                                     verbose_name=_('Created by'))
     updated_user = models.CharField(max_length=20, null=True, blank=True,
                                     verbose_name=_('Modified by'))
+    source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Data Source'))
 
     objects = ProjectContactQuerySet.as_manager()
 
