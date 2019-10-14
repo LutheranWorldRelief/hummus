@@ -91,8 +91,11 @@ class Profile(models.Model):
 class Sex(models.Model):
     id = models.CharField(primary_key=True, max_length=1, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
+    varname = models.CharField(max_length=255, verbose_name=_('Variable Id'))
     name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
+    varname_es = models.CharField(max_length=255, verbose_name=_('Variable Id ES'))
     name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
+    varname_fr = models.CharField(max_length=255, verbose_name=_('Variable Id FR'))
 
     def __str__(self):
         return "%s" % (self.id)
@@ -533,8 +536,11 @@ class ProjectContact(models.Model):
 
 class Education(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
+    varname = models.CharField(max_length=100, verbose_name=_('Variable Id'))
     name_es = models.CharField(max_length=100, verbose_name=_('Name ES'))
+    varname_es = models.CharField(max_length=100, verbose_name=_('Variable Id ES'))
     name_fr = models.CharField(max_length=100, verbose_name=_('Name FR'))
+    varname_fr = models.CharField(max_length=100, verbose_name=_('Variable Id FR'))
 
     def __str__(self):
         return self.name
