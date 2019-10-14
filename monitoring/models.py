@@ -109,7 +109,7 @@ class Sex(models.Model):
 
 
 class Source(models.Model):
-    id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
+    id = models.CharField(primary_key=True, max_length=16, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
 
     def __str__(self):

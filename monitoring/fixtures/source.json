@@ -1,0 +1,30 @@
+[
+  {
+    "model": "monitoring.source",
+    "pk": "commcare_xls",
+    "fields": {
+      "name": "CommCare Export"
+    }
+  },
+  {
+    "model": "monitoring.source",
+    "pk": "commcare",
+    "fields": {
+      "name": "CommCare Data Forwarding"
+    }
+  },
+  {
+    "model": "monitoring.source",
+    "pk": "excel",
+    "fields": {
+      "name": "Excel Template"
+    }
+  },
+  {
+    "model": "monitoring.source",
+    "pk": "excel_mix",
+    "fields": {
+      "name": "Excel Mixed"
+    }
+  }
+]
