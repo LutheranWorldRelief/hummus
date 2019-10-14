@@ -105,10 +105,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         else:
             contact.created_user = request.user.username
 
-        sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) |
-            Q(**{columna_varname: row['sex'])).first()
-        education = Education.objects.filter(Q(**{columna_name: row['education']}) |
-            Q(**{columna_varname: row['education'])).first()
+        sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) | \
+            Q(**{columna_varname: row['sex']})).first()
+        education = Education.objects.filter(Q(**{columna_name: row['education']}) | \
+            Q(**{columna_varname: row['education']})).first()
         country = Country.objects.filter(**{columna_name: row['country']}).first()
 
         contact.sex_id = sex.id if sex else 'N'
