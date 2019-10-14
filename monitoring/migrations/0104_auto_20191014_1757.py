@@ -14,31 +14,37 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contact',
             name='source',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Source', verbose_name='Data Source'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Source', verbose_name='Data Source'),
         ),
         migrations.AddField(
             model_name='organization',
             name='source',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Source', verbose_name='Data Source'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Source', verbose_name='Data Source'),
         ),
         migrations.AddField(
             model_name='project',
             name='source',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Source', verbose_name='Data Source'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Source', verbose_name='Data Source'),
         ),
         migrations.AddField(
             model_name='projectcontact',
             name='source',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Source', verbose_name='Data Source'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Source', verbose_name='Data Source'),
         ),
         migrations.AddField(
             model_name='request',
             name='source',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Source', verbose_name='Data Source'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Source', verbose_name='Data Source'),
         ),
         migrations.AddField(
             model_name='subproject',
             name='source',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Source', verbose_name='Data Source'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Source', verbose_name='Data Source'),
         ),
     ]

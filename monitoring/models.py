@@ -121,16 +121,13 @@ class Source(models.Model):
         verbose_name_plural = _('Data Sources')
 
 
-
 class ContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
-                return self.filter(projectcontact__project__countries__lwrregion__in=
-                                   user.profile.lwrregions.all())
+                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
-                return self.filter(projectcontact__project__countries__in=
-                                   user.profile.countries.all())
+                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
