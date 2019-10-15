@@ -39,8 +39,10 @@
                 </ul>
             </li>
             <li class="header"><span><span>{% trans 'Reports' %}</span></span></li>
-            <li class="treeview"><a href="#" id="reports"><i class="fa fa-print"></i> <span>{% trans 'Reports' %}</span> <span
-                    class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+            <li class="treeview long-text"><a href="#" id="reports"><i class="fa fa-print"></i>
+                <span class="span-long">{% trans 'Reports' %}</span>
+                <span class="pull-right-container"><i
+                        class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'monitoring:export' %}"><i class="fa fa-file-excel-o"></i>
                         <span>{% trans 'Project Participants' %}</span></a></li>
@@ -53,13 +55,15 @@
                 <span>{% trans 'Dashboard' %}</span></a>
             </li>
             <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
-            <li class="treeview"><a href="#" id="configuration"><i class="fa fa-sitemap"></i> <span>{% trans 'Configurations' %}</span>
+            <li class="treeview"><a href="#" id="configuration"><i class="fa fa-sitemap"></i>
+                <span>{% trans 'Configurations' %}</span>
                 <span
                         class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:monitoring_project_changelist' %}"><i class="fa fa-folder-open-o"></i>
                         <span>{% trans 'Projects' %}</span></a></li>
-                    <li class="treeview"><a href="#" id="organization"><i class="fa fa-home"></i> <span>{% trans 'Organizations' %}</span>
+                    <li class="treeview"><a href="#" id="organization"><i class="fa fa-home"></i>
+                        <span>{% trans 'Organizations' %}</span>
                         <span
                                 class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                         <ul class="treeview-menu">
@@ -97,8 +101,9 @@
                         <span>{% trans 'Segmentation' %}</span></a></li>
                 </ul>
             </li>
-            <li class="treeview"><a href="#" id="security"><i class="fa fa-lock"></i> <span>{% trans 'Security' %}</span> <span
-                    class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+            <li class="treeview"><a href="#" id="security"><i class="fa fa-lock"></i>
+                <span>{% trans 'Security' %}</span> <span
+                        class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="{% url 'admin:auth_user_changelist' %}"><i class="fa fa-circle-o"></i>
                         <span>{% trans 'Users' %}</span></a></li>
