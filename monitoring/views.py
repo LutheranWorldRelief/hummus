@@ -129,6 +129,9 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # creating the correct format date for python
         date_format = '%{}'.format(date_format.replace('/', '/%'))
 
+        if date_format not in settings.ALLOWED_DATE_FORMATS:
+            raise Exception('The Date format is incorrect!')
+
         # import
         project_cols = 2
         uploaded_ws.delete_rows(0, amount=start_row - 1)
