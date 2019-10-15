@@ -4519,7 +4519,7 @@
 
     // noinspection HtmlUnknownAttribute
     $.fn.fileinputLocales.en = {
-        fileSingle: gettex('file'),
+        fileSingle: gettext('file'),
         filePlural: gettext('files'),
         browseLabel: gettext('Browse &hellip;'),
         removeLabel: gettext('Remove'),
