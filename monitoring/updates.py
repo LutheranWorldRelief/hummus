@@ -11,7 +11,6 @@ from .models import Sex, Education, Country, Product
 def update_contact(request, contact, row):
     columna_name = __('name')
     columna_varname = __('varname')
-    contact.name = row['name']
     contact.first_name = row['first_name']
     contact.last_name = row['last_name']
     contact.source_id = row.get('source_id')
