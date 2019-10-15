@@ -7,10 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 
 from jet.admin import CompactInline
-from import_export.admin import ImportExportModelAdmin
-
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
-                     LWRRegion, Country)
+                     LWRRegion, Country, Sex, Education, OrganizationType)
 
 
 # Change default query
@@ -140,7 +138,6 @@ class OrganizationAdmin(admin.ModelAdmin):
     ordering = ['id']
     readonly_fields = ['created', 'updated', ]
     list_filter = [
-        ('name'),
         ('country'),
         ('organization_type'),
     ]
@@ -238,6 +235,14 @@ class LWRRegionAdmin(AdminForUserMixin, admin.ModelAdmin):
     ]
 
 
+class GeneralCatalogAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'name_es', 'name_fr')
+    list_display_links = ('id', 'name',)
+    list_per_page = 20
+    list_max_show_all = 50
+    search_fields = ['name', 'name_es', 'name_fr']
+
+
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
@@ -246,11 +251,13 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(SubProject, SubprojectAdmin)
 admin.site.register(LWRRegion, LWRRegionAdmin)
 admin.site.register(Country, CountryAdmin)
+admin.site.register(Sex, GeneralCatalogAdmin)
+admin.site.register(Education, GeneralCatalogAdmin)
+admin.site.register(OrganizationType, GeneralCatalogAdmin)
 
 MODELS = apps.get_models()
 for model in MODELS:
-    admin_class = type('AdminClass', (ListAdminMixin, ImportExportModelAdmin), {})
     try:
-        admin.site.register(model, admin_class)
+        admin.site.register(model)
     except admin.sites.AlreadyRegistered:
         pass
