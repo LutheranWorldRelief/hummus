@@ -14,7 +14,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 def domain_required():
-
     def check_domain(user):
         # domain required
         domain = user.email.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN))
@@ -67,14 +66,12 @@ def get_post_array(string, request):
 
     dictionary = {}
     for var in request:
-        match = re.search(r"(\w+)\[(\d+)\]\[(\w+)\]", var)
+        match = re.search(r"(\w+)\[(\w+)\]", var)
         if match and match.group(1) == string:
-            integer_index = match.group(2)
-            sub_index = match.group(3)
+            index = match.group(2)
             value = request.get(var)
-            if not integer_index in dictionary:
-                dictionary[integer_index] = {}
-            dictionary[integer_index][sub_index] = value
+            if index not in dictionary:
+                dictionary[index] = value
     return dictionary
 
 
@@ -107,6 +104,7 @@ class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
     """
+
     def render_to_json_response(self, context, **response_kwargs):
         """
         Returns a JSON response, transforming 'context' to make the payload.
