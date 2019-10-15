@@ -1,7 +1,7 @@
 {% load static %}
 {% load i18n %}
 <header class="main-header">
-    <a href="" class="logo">
+    <a href="{% url 'monitoring:dashboard' %}" class="logo" style="background-color: #00AAA7;">
         <span class="logo-mini">{% trans 'LWR' %}</span>
         <span class="logo-lg">{% trans 'LWR' %}</span>
     </a>
@@ -28,7 +28,6 @@
                         <li class="user-header">
                             <img src="{% static 'img/logo_user.jpg' %}" class="img-circle"
                                  alt="User Image"/>
-
                             <p>
                                 {{ request.user.first_name }} {{ request.user.last_name }}
                                 <small>{{ request.user.email }}</small>

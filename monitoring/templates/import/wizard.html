@@ -14,7 +14,7 @@
                 <div class="connecting-line"></div>
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="{% if 'step1' in request.path %} active {% endif %}">
-                        <a href="javascript:void(0);" title="Step 1">
+                        <a href="javascript:void(0);" title="{% trans 'Step 1' %}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-folder-open"></i>
                             </span>
@@ -22,7 +22,7 @@
                     </li>
 
                     <li role="presentation" class="{% if 'step2' in request.path %} active {% endif %}">
-                        <a href="javascript:void(0);" title="Step 2">
+                        <a href="javascript:void(0);" title="{% trans 'Step 2' %}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </span>
@@ -30,7 +30,7 @@
                     </li>
 
                     <li role="presentation" class="{% if 'step3' in request.path %} active {% endif %}">
-                        <a href="javascript:void(0);" title="Step 3">
+                        <a href="javascript:void(0);" title="{% trans 'Step 3' %}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-ok"></i>
                             </span>
