@@ -6,4 +6,5 @@ CONSTANCE_CONFIG = {
     'SALESFORCE_FREQ': (60, 'Salesforce Syncronization Frequency in minutes', int),
     'HEADER_ROW': (2, 'Row', int),
     'START_ROW': (3, 'Data starts at this row', int),
+    'LOCATION_FIELD': ('location', 'Location field name', str),
 }
