@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-15 20:46+0000\n"
+"POT-Creation-Date: 2019-10-15 22:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,280 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: monitoring/static/js/fileinput.js:4522
+msgid "file"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4523
+msgid "files"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4524
+msgid "Browse &hellip;"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4525
+msgid "Remove"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4526
+msgid "Clear selected files"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4527
+msgid "Cancel"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4528
+msgid "Abort ongoing upload"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4529
+msgid "Upload"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4530
+msgid "Upload selected files"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4531
+msgid "No"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4532
+msgid "No files selected"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4533
+msgid "Cancelled"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4534
+msgid "Select {files}..."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4535
+msgid "Detailed Preview"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4536
+msgid "You must select a file to upload."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4537
+msgid ""
+"File \"{name}\" (<b>{size} KB</b>) is too small and must be larger than "
+"<b>{minSize} KB</b>."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4538
+msgid ""
+"File \"{name}\" (<b>{size} KB</b>) exceeds maximum allowed upload size of "
+"<b>{maxSize} KB</b>."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4539
+msgid "You must select at least <b>{n}</b> {files} to upload."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4540
+msgid ""
+"Number of files selected for upload <b>({n})</b> exceeds maximum allowed "
+"limit of <b>{m}</b>."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4541
+msgid "File \"{name}\" not found!"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4542
+msgid "Security restrictions prevent reading the file \"{name}\"."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4543
+msgid "File \"{name}\" is not readable."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4544
+msgid "File preview aborted for \"{name}\"."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4545
+msgid "An error occurred while reading the file \"{name}\"."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4546
+msgid "Invalid or unsupported characters in file name \"{name}\"."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4547
+msgid "Invalid type for file \"{name}\". Only \"{types}\" files are supported."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4548
+msgid ""
+"Invalid extension for file \"{name}\". Only \"{extensions}\" files are "
+"supported."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4550
+msgid "image"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4551
+msgid "HTML"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4552
+msgid "text"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4553
+msgid "video"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4554
+msgid "audio"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4555
+msgid "flash"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4556
+msgid "PDF"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4557
+msgid "object"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4559
+msgid "The file upload was aborted"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4560
+msgid "Processing..."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4561
+msgid "Initializing..."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4562
+msgid "Done"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4563
+msgid "No valid data available for upload."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4564
+msgid "Error"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4565
+msgid "Validation Error"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4566
+msgid "Loading file {index} of {files} &hellip;"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4567
+#, javascript-format
+msgid "Loading file {index} of {files} - {name} - {percent}% completed."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4568
+msgid "{n} {files} selected"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4569
+msgid "Drag & drop files only! {n} folder(s) dropped were skipped."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4570
+msgid "Width of image file \"{name}\" must be at least {size} px."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4571
+msgid "Height of image file \"{name}\" must be at least {size} px."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4572
+msgid "Width of image file \"{name}\" cannot exceed {size} px."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4573
+msgid "Height of image file \"{name}\" cannot exceed {size} px."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4574
+msgid "Could not get the image dimensions to resize."
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4575
+msgid "Error while resizing the image.<pre>{errors}</pre>"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4576
+msgid ""
+"Something went wrong with the {operation} operation. Please try again later!"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4577
+msgid "{operation} failed"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4579
+msgid "file delete"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4580
+msgid "file upload"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4581
+msgid "batch file upload"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4582
+msgid "form data upload"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4584
+msgid "Drag & drop files here &hellip;"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4585
+msgid "<br>(or click to select {files})"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4587
+msgid "View previous file"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4588
+msgid "View next file"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4589
+msgid "Toggle header"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4590
+msgid "Toggle full screen"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4591
+msgid "Toggle borderless mode"
+msgstr ""
+
+#: monitoring/static/js/fileinput.js:4592
+msgid "Close detailed preview"
+msgstr ""
 
 #: monitoring/static/js/fileinput.min.js:10
 msgid "generic"
