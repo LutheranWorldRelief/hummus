@@ -29,7 +29,11 @@ def get_proyecto(request):
 @csrf_exempt
 @domain_required()
 def cantidad_paises(request):
-    paises = ProjectContact.objects.values('project__countries__id').distinct().count()
+    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
+                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
+                  'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filter_by(parameters, request)
+    paises = ProjectContact.objects.filter(**filter_kwargs).values('project__countries__id').distinct().count()
     data = {'cantidad_paises': paises}
     return JsonResponse(data)
 
@@ -37,7 +41,11 @@ def cantidad_paises(request):
 @csrf_exempt
 @domain_required()
 def cantidad_participantes(request):
-    participantes = ProjectContact.objects.values('contact_id').distinct().count()
+    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
+                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
+                  'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filter_by(parameters, request)
+    participantes = ProjectContact.objects.filter(**filter_kwargs).values('contact_id').distinct().count()
     data = {'participantes': participantes}
     return JsonResponse(data)
 
@@ -45,7 +53,11 @@ def cantidad_participantes(request):
 @csrf_exempt
 @domain_required()
 def cantidad_proyectos(request):
-    proyectos = Project.objects.count()
+    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
+                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
+                  'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filter_by(parameters, request)
+    proyectos = ProjectContact.objects.filter(**filter_kwargs).values('project_id').distinct().count()
     data = {'proyectos': proyectos}
     return JsonResponse(data)
 
@@ -189,6 +201,7 @@ def proyectos_metas(request):
         f=Count('contact', filter=Q(contact__sex='F')),
         m=Count('contact', filter=Q(contact__sex='M')))
     totales['total'] = totales['f'] + totales['m']
+    print(totales)
     if proyecto['targetmen'] and proyecto['targetwomen']:
         proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
     else:
