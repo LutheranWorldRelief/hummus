@@ -67,14 +67,12 @@ def get_post_array(string, request):
 
     dictionary = {}
     for var in request:
-        match = re.search(r"(\w+)\[(\d+)\]\[(\w+)\]", var)
+        match = re.search(r"(\w+)\[(\w+)\]", var)
         if match and match.group(1) == string:
-            integer_index = match.group(2)
-            sub_index = match.group(3)
+            index = match.group(2)
             value = request.get(var)
-            if not integer_index in dictionary:
-                dictionary[integer_index] = {}
-            dictionary[integer_index][sub_index] = value
+            if not index in dictionary:
+                dictionary[index] = value
     return dictionary
 
 
