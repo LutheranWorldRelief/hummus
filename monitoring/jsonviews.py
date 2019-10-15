@@ -103,7 +103,10 @@ class ContactNameValues(JSONResponseMixin, TemplateView):
                 continue
             values[f.column] = []
             for row in queryset:
-                if row[f.column] and row[f.column] not in values[f.column]:  # TODO strip if string
+                if row[f.column] and row[f.column] not in values[f.column] \
+                        and isinstance(values[f.column], str):
+                    values[f.column].append(row[f.column].strip())
+                else:
                     values[f.column].append(row[f.column])
 
         resolve = {}
