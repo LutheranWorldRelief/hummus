@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-10 15:36+0000\n"
+"POT-Creation-Date: 2019-10-15 20:46+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/lutheran-world-relief/teams/101869/es/)\n"
@@ -29,137 +29,137 @@ msgstr "genérico"
 msgid "_"
 msgstr "_"
 
-#: monitoring/static/js/script/dashboard_index.js:330
+#: monitoring/static/js/script/dashboard_index.js:360
 msgid "Activities"
 msgstr "Ocupaciones"
 
-#: monitoring/static/js/script/dashboard_index.js:332
-#: monitoring/static/js/script/dashboard_index.js:380
-#: monitoring/static/js/script/dashboard_index.js:467
-#: monitoring/static/js/script/dashboard_index.js:511
+#: monitoring/static/js/script/dashboard_index.js:362
+#: monitoring/static/js/script/dashboard_index.js:410
+#: monitoring/static/js/script/dashboard_index.js:497
+#: monitoring/static/js/script/dashboard_index.js:541
 msgid "Amount of people"
 msgstr "Cantidad de personas"
 
-#: monitoring/static/js/script/dashboard_index.js:342
-#: monitoring/static/js/script/dashboard_index.js:390
-#: monitoring/static/js/script/dashboard_index.js:478
-#: monitoring/static/js/script/dashboard_index.js:521
+#: monitoring/static/js/script/dashboard_index.js:372
+#: monitoring/static/js/script/dashboard_index.js:420
+#: monitoring/static/js/script/dashboard_index.js:508
+#: monitoring/static/js/script/dashboard_index.js:551
 msgid "<b>Participants</b><br/>"
 msgstr "<b>Participantes</b><br/>"
 
-#: monitoring/static/js/script/dashboard_index.js:343
-#: monitoring/static/js/script/dashboard_index.js:391
-#: monitoring/static/js/script/dashboard_index.js:434
-#: monitoring/static/js/script/dashboard_index.js:479
-#: monitoring/static/js/script/dashboard_index.js:522
+#: monitoring/static/js/script/dashboard_index.js:373
+#: monitoring/static/js/script/dashboard_index.js:421
+#: monitoring/static/js/script/dashboard_index.js:464
+#: monitoring/static/js/script/dashboard_index.js:509
+#: monitoring/static/js/script/dashboard_index.js:552
 msgid "Total:"
 msgstr "Total:"
 
-#: monitoring/static/js/script/dashboard_index.js:374
+#: monitoring/static/js/script/dashboard_index.js:404
 msgid "PARTICIPANTS BY TYPE OF PERSON"
 msgstr "PARTICIPANTES POR TIPO DE PERSONA"
 
-#: monitoring/static/js/script/dashboard_index.js:377
+#: monitoring/static/js/script/dashboard_index.js:407
 msgid "Types"
 msgstr "Tipos"
 
-#: monitoring/static/js/script/dashboard_index.js:417
+#: monitoring/static/js/script/dashboard_index.js:447
 msgid "PARTICIPANTS BY AGE"
 msgstr "PARTICIPANTES POR EDAD"
 
-#: monitoring/static/js/script/dashboard_index.js:420
+#: monitoring/static/js/script/dashboard_index.js:450
 msgid "Ages"
 msgstr "Edades"
 
-#: monitoring/static/js/script/dashboard_index.js:460
+#: monitoring/static/js/script/dashboard_index.js:490
 msgid "PARTICIPANTS BY FISCAL YEAR"
 msgstr "PARTICIPANTES POR AÑO FISCAL"
 
-#: monitoring/static/js/script/dashboard_index.js:463
+#: monitoring/static/js/script/dashboard_index.js:493
 msgid "Years"
 msgstr "Años"
 
-#: monitoring/static/js/script/dashboard_index.js:505
+#: monitoring/static/js/script/dashboard_index.js:535
 msgid "PARTICIPANTS BY EDUCATION"
 msgstr "PARTICIPANTES POR EDUCACIÓN"
 
-#: monitoring/static/js/script/dashboard_index.js:508
+#: monitoring/static/js/script/dashboard_index.js:538
 msgid "Education"
 msgstr "Educación"
 
-#: monitoring/static/js/script/dashboard_index.js:544
-#: monitoring/static/js/script/dashboard_index.js:638
+#: monitoring/static/js/script/dashboard_index.js:574
+#: monitoring/static/js/script/dashboard_index.js:668
 msgid "Participants by Nationality"
 msgstr "Participantes por Nacionalidad"
 
-#: monitoring/static/js/script/dashboard_index.js:550
+#: monitoring/static/js/script/dashboard_index.js:580
 msgid "Geographic location of participants"
 msgstr "Ubicación geográfica de los participantes."
 
-#: monitoring/static/js/script/dashboard_index.js:650
+#: monitoring/static/js/script/dashboard_index.js:680
 msgid "<b>Participants "
 msgstr "<b>Participantes"
 
-#: monitoring/static/js/script/dashboard_index.js:652
-#: monitoring/static/js/script/dashboard_index.js:726
-#: monitoring/static/js/script/dashboard_index.js:793
-#: monitoring/static/js/script/dashboard_index.js:1041
+#: monitoring/static/js/script/dashboard_index.js:682
+#: monitoring/static/js/script/dashboard_index.js:756
+#: monitoring/static/js/script/dashboard_index.js:823
+#: monitoring/static/js/script/dashboard_index.js:1075
 msgid "Men"
 msgstr "Hombres"
 
-#: monitoring/static/js/script/dashboard_index.js:653
-#: monitoring/static/js/script/dashboard_index.js:730
-#: monitoring/static/js/script/dashboard_index.js:796
-#: monitoring/static/js/script/dashboard_index.js:1044
+#: monitoring/static/js/script/dashboard_index.js:683
+#: monitoring/static/js/script/dashboard_index.js:760
+#: monitoring/static/js/script/dashboard_index.js:826
+#: monitoring/static/js/script/dashboard_index.js:1078
 msgid "Women"
 msgstr "Mujeres"
 
-#: monitoring/static/js/script/dashboard_index.js:667
+#: monitoring/static/js/script/dashboard_index.js:697
 msgid "<br/><b>Total Participants: </b>"
 msgstr "<br/><b>Total de participantes:</b>"
 
-#: monitoring/static/js/script/dashboard_index.js:670
+#: monitoring/static/js/script/dashboard_index.js:700
 msgid "<br/><b>Events: </b>"
 msgstr "<br/><b>Eventos:</b>"
 
-#: monitoring/static/js/script/dashboard_index.js:772
+#: monitoring/static/js/script/dashboard_index.js:802
 msgid "Participants reached, by sex"
 msgstr "Participantes alcanzados, por sexo"
 
-#: monitoring/static/js/script/dashboard_index.js:773
+#: monitoring/static/js/script/dashboard_index.js:803
 msgid "Total amount"
 msgstr "Cantidad total"
 
-#: monitoring/static/js/script/dashboard_index.js:790
-#: monitoring/static/js/script/dashboard_index.js:803
+#: monitoring/static/js/script/dashboard_index.js:820
+#: monitoring/static/js/script/dashboard_index.js:833
 msgid "Participants"
 msgstr "Participantes"
 
-#: monitoring/static/js/script/dashboard_index.js:813
+#: monitoring/static/js/script/dashboard_index.js:843
 msgid "ORGANIZATIONS"
 msgstr "ORGANIZACIONES"
 
-#: monitoring/static/js/script/dashboard_index.js:814
+#: monitoring/static/js/script/dashboard_index.js:844
 msgid "total, in"
 msgstr "total, en"
 
-#: monitoring/static/js/script/dashboard_index.js:814
+#: monitoring/static/js/script/dashboard_index.js:844
 msgid "Categories"
 msgstr "Categorías"
 
-#: monitoring/static/js/script/dashboard_index.js:835
+#: monitoring/static/js/script/dashboard_index.js:865
 msgid "Organizations"
 msgstr "Organizaciones"
 
-#: monitoring/static/js/script/dashboard_index.js:853
+#: monitoring/static/js/script/dashboard_index.js:883
 msgid "Total participants achieved and goals, by sex"
 msgstr "Total de participantes alcanzados y metas, por sexo"
 
-#: monitoring/static/js/script/dashboard_index.js:860
+#: monitoring/static/js/script/dashboard_index.js:890
 msgid "Persons"
 msgstr "Personas"
 
-#: monitoring/static/js/script/dashboard_index.js:880
+#: monitoring/static/js/script/dashboard_index.js:910
 msgid "Goals"
 msgstr "Metas"
 
@@ -335,6 +335,14 @@ msgstr "Visualizar tabla de datos"
 #: monitoring/static/js/servicios_angular/highcharts.optiones.js:117
 msgid "All rights reserved LWR"
 msgstr "Todos los derechos reservados LWR"
+
+#: monitoring/static/js/validation_data_import.js:10
+msgid "Show only records with missing data"
+msgstr "Mostrar solo registros con datos faltantes"
+
+#: monitoring/static/js/validation_data_import.js:11
+msgid "Show all records"
+msgstr "Mostrar todos los registros"
 
 #: monitoring/static/js/vue/contact.merge.document.js:85
 msgid "Problem loading tags"
