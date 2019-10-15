@@ -180,14 +180,21 @@ class Contact(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        # if 'name' is null or empty
+
+        # strips stuff from text fields
+        for field in self._meta.get_fields():
+            if isinstance(field, models.CharField):
+                value = getattr(self, field.name)
+                if value:
+                    setattr(self, field.name, value.strip())
+
+        # compute  'name' from first and last name, if needed
         if not self.name and (self.first_name or self.last_name):
-            self.first_name = self.first_name.strip()
-            self.last_name = self.last_name.strip()
             self.name = "{} {}".format(self.first_name, self.last_name)
             self.name = self.name.strip()
         elif not self.name:
             raise ValueError(_("We need a name! name, first_name and last_name seem to be empty."))
+
         super().save(*args, **kwargs)
 
     class Meta:
