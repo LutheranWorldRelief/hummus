@@ -11,7 +11,6 @@ from .models import Sex, Education, Country, Product
 def update_contact(request, contact, row):
     columna_name = __('name')
     columna_varname = __('varname')
-    contact.name = row['name']
     contact.first_name = row['first_name']
     contact.last_name = row['last_name']
     contact.source_id = row.get('source_id')
@@ -59,5 +58,6 @@ def update_project_contact(request, project_contact, row):
     project_contact.age_productive_plantation = row['age_prod'] if row['age_prod'] else None
     project_contact.date_entry_project = row['project_entry_date']
     project_contact.yield_field = row['yield'] if row['yield'] else None
+    project_contact.source_id = row.get('source_id')
 
     project_contact.save()
