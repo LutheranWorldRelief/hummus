@@ -90,7 +90,7 @@
             DatosService
                 .Enviar(UrlsAcciones.UrlDatosCantidadPaises, data)
                 .then(function (result) {
-                    $scope.paises = result.data.paises;
+                    $scope.cantidad_paises = result.data.cantidad_paises;
                 })
                 .catch(function (mensaje, codigo) {
                     console.log(codigo + ' => ' + mensaje);
@@ -286,6 +286,10 @@
 
             $timeout(function () {
                 cargarDatosGraficoAnioFiscal(data);
+            }, 1);
+
+            $timeout(function () {
+                cargarDatosCantidadPaises(data);
             }, 1);
 
             $timeout(function () {

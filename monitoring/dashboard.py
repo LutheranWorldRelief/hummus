@@ -30,7 +30,7 @@ def get_proyecto(request):
 @domain_required()
 def cantidad_paises(request):
     paises = ProjectContact.objects.values('project__countries__id').distinct().count()
-    data = {'paises': paises}
+    data = {'cantidad_paises': paises}
     return JsonResponse(data)
 
 

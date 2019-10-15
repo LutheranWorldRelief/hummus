@@ -27,6 +27,7 @@ urlpatterns = [
     path('', views.DashboardView.as_view(), name='dashboard'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('graphic/proyecto/', dashboard.get_proyecto, name='graphic-proyecto'),
+    path('graphic/cantidad-paises/', dashboard.cantidad_paises, name='cantidad-paises'),
     path('graphic/cantidad-proyectos/', dashboard.cantidad_proyectos, name='cantidad-proyectos'),
     path('graphic/cantidad-participantes/', dashboard.cantidad_participantes, name='cantidad-participantes'),
     path('graphic/paises/', dashboard.get_paises, name='graphic-paises'),
