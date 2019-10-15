@@ -33,7 +33,8 @@ def cantidad_paises(request):
                   'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
-    paises = ProjectContact.objects.filter(**filter_kwargs).values('project__countries__id').distinct().count()
+    paises = ProjectContact.objects.filter(
+        **filter_kwargs).values('project__countries__id').distinct().count()
     data = {'cantidad_paises': paises}
     return JsonResponse(data)
 
@@ -45,7 +46,8 @@ def cantidad_participantes(request):
                   'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
-    participantes = ProjectContact.objects.filter(**filter_kwargs).values('contact_id').distinct().count()
+    participantes = ProjectContact.objects.filter(
+        **filter_kwargs).values('contact_id').distinct().count()
     data = {'participantes': participantes}
     return JsonResponse(data)
 
@@ -57,7 +59,8 @@ def cantidad_proyectos(request):
                   'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
-    proyectos = ProjectContact.objects.filter(**filter_kwargs).values('project_id').distinct().count()
+    proyectos = ProjectContact.objects.filter(
+        **filter_kwargs).values('project_id').distinct().count()
     data = {'proyectos': proyectos}
     return JsonResponse(data)
 
