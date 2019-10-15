@@ -53,6 +53,8 @@ class Capture(TemplateView):
         row.body = request.body.decode('utf-8')
         body = json.loads(row.body)
         row_dict = {}
+        project_name = body['form'].get('project')
+        project = Project.objects.get(name=project_name)
         try:
             row_dict['name'] = body['form'].get('name', '')
             row_dict['first_name'] = body['form'].get('first_name', '')
