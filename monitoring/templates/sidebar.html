@@ -9,8 +9,8 @@
                 <img src="{% static 'img/logo_user.png' %}" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p>{% trans 'Full name' %}</p>
-                <small>{% trans 'Email' %}</small>
+                <p>{{ request.user.first_name }} {{ request.user.last_name }}</p>
+                <small>{{ request.user.email }}</small>
             </div>
         </div>
 
