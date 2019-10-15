@@ -482,7 +482,6 @@ class SubProject(models.Model):
     def get_absolute_url(self):
         return "/subproject/%i/" % self.id
 
-    # TODO: Use this
     @cached_property
     def get_totals(self):
         totals = ProjectContact.objects.filter(project_id=self.project_id).aggregate(
