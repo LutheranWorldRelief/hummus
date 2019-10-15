@@ -66,20 +66,37 @@ class Capture(TemplateView):
         except KeyError as e:
             print('KeyError in data forwarding : "%s"' % str(e))
 
-        print(row_dict)
+        # try to find contact
         contact = Contact.objects.filter(document=row_dict['document'],
                                          first_name=row_dict['first_name'],
                                          last_name=row_dict['last_name']).first()
+
+        # using MDC sometimes only 'name' is collected, try to find contact
         if not contact:
-            print('Create contact: {} {}'.format(row_dict['first_name'],
-                                                           row_dict['last_name']))
+            contact = Contact.objects.filter(document=row_dict['document'],
+                                             name=row_dict['name']).first()
+
+        if not contact:
+            print('Create contact: {} {} {}'.format(row_dict['name'],
+                                                    row_dict['first_name'], row_dict['last_name']))
             contact = Contact()
             update_contact(request, contact, row_dict)
         else:
-            print('Update contact: {} {}'.format(row_dict['first_name'],
-                                                           row_dict['last_name']))
+            print('Update contact: {} {} {}'.format(row_dict['name'],
+                                                    row_dict['first_name'], row_dict['last_name']))
             update_contact(request, contact, row_dict)
 
+        project_contact = ProjectContact.objects.filter(project__name=project_name,
+                                                        contact=contact).first()
+        if not project_contact:
+            print('Create project contact: {} {}'.format(project.name, row_dict['name']))
+            project_contact = ProjectContact()
+            project_contact.contact = contact
+            project_contact.project = project
+            update_project_contact(request, project_contact, row_dict)
+        else:
+            print('Update project contact: {} {}'.format(project.name, row_dict['first_name']))
+            update_project_contact(request, project_contact, row_dict)
         return render(request, self.template_name, context)
 
 
