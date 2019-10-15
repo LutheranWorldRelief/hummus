@@ -28,6 +28,22 @@ def get_proyecto(request):
 
 @csrf_exempt
 @domain_required()
+def cantidad_paises(request):
+    paises = ProjectContact.objects.values('project__countries__id').distinct().count()
+    data = {'cantidad_paises': paises}
+    return JsonResponse(data)
+
+
+@csrf_exempt
+@domain_required()
+def cantidad_participantes(request):
+    participantes = ProjectContact.objects.values('contact_id').distinct().count()
+    data = {'participantes': participantes}
+    return JsonResponse(data)
+
+
+@csrf_exempt
+@domain_required()
 def cantidad_proyectos(request):
     proyectos = Project.objects.count()
     data = {'proyectos': proyectos}
