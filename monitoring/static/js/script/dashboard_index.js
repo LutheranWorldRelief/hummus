@@ -86,6 +86,28 @@
                 });
         }
 
+        function cargarDatosCantidadPaises(data) {
+            DatosService
+                .Enviar(UrlsAcciones.UrlDatosCantidadPaises, data)
+                .then(function (result) {
+                    $scope.paises = result.data.paises;
+                })
+                .catch(function (mensaje, codigo) {
+                    console.log(codigo + ' => ' + mensaje);
+                });
+        }
+
+        function cargarDatosCantidadParticipantes(data) {
+            DatosService
+                .Enviar(UrlsAcciones.UrlDatosCantidadParticipantes, data)
+                .then(function (result) {
+                    $scope.participantes = result.data.participantes;
+                })
+                .catch(function (mensaje, codigo) {
+                    console.log(codigo + ' => ' + mensaje);
+                });
+        }
+
         function cargarDatosCantidadProyectos(data) {
             DatosService
                 .Enviar(UrlsAcciones.UrlDatosCantidadProyectos, data)
@@ -264,6 +286,10 @@
 
             $timeout(function () {
                 cargarDatosGraficoAnioFiscal(data);
+            }, 1);
+
+            $timeout(function () {
+                cargarDatosCantidadParticipantes(data);
             }, 1);
 
             $timeout(function () {
