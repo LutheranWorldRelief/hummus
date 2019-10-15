@@ -7,8 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 
 from jet.admin import CompactInline
-from import_export.admin import ImportExportModelAdmin
-
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
                      LWRRegion, Country)
 
@@ -249,8 +247,7 @@ admin.site.register(Country, CountryAdmin)
 
 MODELS = apps.get_models()
 for model in MODELS:
-    admin_class = type('AdminClass', (ListAdminMixin, ImportExportModelAdmin), {})
     try:
-        admin.site.register(model, admin_class)
+        admin.site.register(model)
     except admin.sites.AlreadyRegistered:
         pass
