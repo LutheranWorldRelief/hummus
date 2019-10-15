@@ -7,8 +7,8 @@ $(function () {
         .on('click', '#showBadRecords', function () {
 
             let label = {
-                text1: 'Show only records with missing data',
-                text2: 'Show all records',
+                text1: gettext('Show only records with missing data'),
+                text2: gettext('Show all records'),
             };
 
             if ($(this).hasClass('showdata')) {
