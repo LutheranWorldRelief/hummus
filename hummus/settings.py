@@ -215,6 +215,8 @@ SALESFORCE_URL = env('SALESFORCE_URL', default='https://example.my.salesforce.co
 # Django Constance Dynamic settings
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
+ALLOWED_DATE_FORMATS = ('%d/%m/%Y', '%m/%d/%Y')
+
 try:
     from .constance_settings import *
 except ImportError:

@@ -3,7 +3,9 @@
 """
 import json
 import time
+import datetime
 from os.path import basename
+from django.conf import settings
 
 from django.db.models import Count, Q, Value, F
 from django.db.models.functions import Upper, Trim, Coalesce
@@ -27,7 +29,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request, Sex, Education, Country, Product)
+                     Request)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace)
 from .catalog import create_catalog
@@ -90,24 +92,24 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         document = row[2].value
         first_name = row[3].value
         last_name = row[4].value
-        if project is None:
+        if not project:
             message = 'Problem to import record #{}, project is missing.'.format(row[0].row)
             return message
 
-        if org_implementing is None:
-            message = 'Problem to import record #{}, implementing organization is missing.'.format(
-                row[0].row)
+        if not org_implementing:
+            message = 'Problem to import record #{}, implementing organization is missing.' \
+                .format(row[0].row)
             return message
 
-        if document is None:
+        if not document:
             message = 'Problem to import record #{}, document is missing.'.format(row[0].row)
             return message
 
-        if first_name is None:
+        if not first_name:
             message = 'Problem to import record #{}, name is missing.'.format(row[0].row)
             return message
 
-        if last_name is None:
+        if not last_name:
             message = 'Problem to import record #{}, lastname is missing.'.format(row[0].row)
             return message
 
@@ -118,10 +120,17 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         imported_ids = []
 
         tmp_excel = request.POST.get('excel_file')
-        start_row = int(request.POST.get('start_row'))
+        start_row = int(request.POST.get('start_row', config.START_ROW))
+        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
         excel_file = default_storage.open('{}/{}'.format('tmp', tmp_excel))
         uploaded_wb = load_workbook(excel_file)
         uploaded_ws = uploaded_wb[_('data')]
+
+        # creating the correct format date for python
+        date_format = '%{}'.format(date_format.replace('/', '/%'))
+
+        if date_format not in settings.ALLOWED_DATE_FORMATS:
+            raise Exception('The Date format is incorrect!')
 
         # import
         project_cols = 2
@@ -138,8 +147,21 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
                 org_implementing = Organization.objects.filter(name=organization_name).first()
                 if not subproject:
-                    messages.append('Problem to import record #{} : Subproject with Project "{}" and Organization "{}"\
+                    messages.append('Problem to import record #{} : '
+                                    'Subproject with Project "{}" and Organization "{}"\
                         does not exist!'.format(row[0].row, project_name, organization_name))
+
+                birthdate = row[project_cols + 4].value
+                project_entry_date = row[project_cols + 13].value
+                if birthdate:
+                    birthdate = datetime.datetime.strptime(birthdate, date_format)
+                else:
+                    birthdate = None
+
+                if project_entry_date:
+                    project_entry_date = datetime.datetime.strptime(project_entry_date, date_format)
+                else:
+                    project_entry_date = None
 
                 row_dict = {}
                 project = Project.objects.get(name=project_name)
@@ -148,7 +170,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 row_dict['first_name'] = row[project_cols + 1].value
                 row_dict['last_name'] = row[project_cols + 2].value
                 row_dict['sex'] = row[project_cols + 3].value
-                row_dict['birthdate'] = row[project_cols + 4].value
+                row_dict['birthdate'] = birthdate
                 row_dict['education'] = row[project_cols + 5].value
                 row_dict['phone'] = row[project_cols + 6].value
                 row_dict['men_home'] = row[project_cols + 7].value
@@ -157,7 +179,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 row_dict['country'] = row[project_cols + 10].value
                 row_dict['departament'] = row[project_cols + 11].value
                 row_dict['community'] = row[project_cols + 12].value
-                row_dict['project_entry_date'] = row[project_cols + 13].value
+                row_dict['project_entry_date'] = project_entry_date
                 row_dict['product'] = row[project_cols + 14].value
                 row_dict['area'] = row[project_cols + 15].value
                 row_dict['dev_area'] = row[project_cols + 16].value
@@ -165,6 +187,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 row_dict['productive_area'] = row[project_cols + 18].value
                 row_dict['age_prod'] = row[project_cols + 19].value
                 row_dict['yield'] = row[project_cols + 20].value
+                row_dict['source_id'] = 'excel'
                 contact = Contact.objects.filter(document=row_dict['document'],
                                                  first_name=row_dict['first_name'],
                                                  last_name=row_dict['last_name']).first()
@@ -208,13 +231,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             else:
                 messages.append(error_message)
 
-        # FOR REFERENCE:  enumerate(['Identification number', 'Name', 'Last name', 'Sex',
-        # 'Birthdate', 'Education', 'Phone', 'Men in your family', 'Women in your family',
-        # 'Organization belonging', 'Country Department', 'Community', 'Project entry date',
-        # 'Item', 'Estate area (hectares)', 'Developing Area (hectares)', 'Planting Age in
-        # Development (years)', 'Production Area (hectares)', 'Planting Age in Production
-        # (years)', 'Yields (qq)']):
-
         # gets dupes
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'),
                                                                        r'\s+', ' ', 'g'))))
@@ -251,7 +267,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 class ValidateExcel(DomainRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         excel_file = request.FILES['excel_file']
-        start_row = int(request.POST['start_row'])
+        start_row = int(request.POST.get('start_row', config.START_ROW))
         tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
                                            excel_file.name)
         default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
@@ -267,14 +283,15 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         header_row = config.HEADER_ROW
         for cell in uploaded_ws[header_row]:
             if cell.value != sheet[header_row][cell.col_idx - 1].value:
-                raise Exception('Headers are not the same as in template! {} != {}'.format(
-                    cell.value, sheet[header_row][cell.col_idx - 1].value))
+                raise Exception('Headers are not the same as in template! {} != {}'
+                                .format(cell.value, sheet[header_row][cell.col_idx - 1].value))
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         context['data'] = uploaded_ws
         context['start_row'] = start_row
+        context['date_format'] = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
         context['excel_file'] = tmp_excel_name
 
         return render(request, self.template_name, context)
