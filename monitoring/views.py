@@ -54,6 +54,7 @@ class Capture(TemplateView):
         body = json.loads(row.body)
         row_dict = {}
         try:
+            row_dict['name'] = body['form'].get('name', '')
             row_dict['first_name'] = body['form'].get('first_name', '')
             row_dict['last_name'] = body['form'].get('last_name', '')
             row_dict['name'] = body['form'].get('name', '')
@@ -65,16 +66,17 @@ class Capture(TemplateView):
         except KeyError as e:
             print('KeyError in data forwarding : "%s"' % str(e))
 
+        print(row_dict)
         contact = Contact.objects.filter(document=row_dict['document'],
                                          first_name=row_dict['first_name'],
                                          last_name=row_dict['last_name']).first()
         if not contact:
-            messages.append('Create contact: {} {}'.format(row_dict['first_name'],
+            print('Create contact: {} {}'.format(row_dict['first_name'],
                                                            row_dict['last_name']))
             contact = Contact()
             update_contact(request, contact, row_dict)
         else:
-            messages.append('Update contact: {} {}'.format(row_dict['first_name'],
+            print('Update contact: {} {}'.format(row_dict['first_name'],
                                                            row_dict['last_name']))
             update_contact(request, contact, row_dict)
 
