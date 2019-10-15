@@ -138,7 +138,6 @@ class OrganizationAdmin(admin.ModelAdmin):
     ordering = ['id']
     readonly_fields = ['created', 'updated', ]
     list_filter = [
-        ('name'),
         ('country'),
         ('organization_type'),
     ]
