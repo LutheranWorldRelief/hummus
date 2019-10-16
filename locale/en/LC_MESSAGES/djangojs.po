@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-15 22:54+0000\n"
+"POT-Creation-Date: 2019-10-16 15:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,8 +200,7 @@ msgid "Loading file {index} of {files} &hellip;"
 msgstr ""
 
 #: monitoring/static/js/fileinput.js:4567
-#, javascript-format
-msgid "Loading file {index} of {files} - {name} - {percent}% completed."
+msgid "Loading file {index} of {files} - {name} completed."
 msgstr ""
 
 #: monitoring/static/js/fileinput.js:4568
@@ -209,7 +208,7 @@ msgid "{n} {files} selected"
 msgstr ""
 
 #: monitoring/static/js/fileinput.js:4569
-msgid "Drag & drop files only! {n} folder(s) dropped were skipped."
+msgid "Drag & drop files only! not folder(s)."
 msgstr ""
 
 #: monitoring/static/js/fileinput.js:4570
@@ -237,8 +236,7 @@ msgid "Error while resizing the image.<pre>{errors}</pre>"
 msgstr ""
 
 #: monitoring/static/js/fileinput.js:4576
-msgid ""
-"Something went wrong with the {operation} operation. Please try again later!"
+msgid "Something went wrong with the {operation} operation."
 msgstr ""
 
 #: monitoring/static/js/fileinput.js:4577
