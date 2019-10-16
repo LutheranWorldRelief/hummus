@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-15 20:46+0000\n"
+"POT-Creation-Date: 2019-10-15 22:54+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -20,6 +20,297 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: monitoring/static/js/fileinput.js:4522
+msgid "file"
+msgstr "fichier"
+
+#: monitoring/static/js/fileinput.js:4523
+msgid "files"
+msgstr "des dossiers"
+
+#: monitoring/static/js/fileinput.js:4524
+msgid "Browse &hellip;"
+msgstr "Feuilleter"
+
+#: monitoring/static/js/fileinput.js:4525
+msgid "Remove"
+msgstr "Retirer"
+
+#: monitoring/static/js/fileinput.js:4526
+msgid "Clear selected files"
+msgstr "Effacer les fichiers sélectionnés"
+
+#: monitoring/static/js/fileinput.js:4527
+msgid "Cancel"
+msgstr "Annuler"
+
+#: monitoring/static/js/fileinput.js:4528
+msgid "Abort ongoing upload"
+msgstr "Abandonner le téléchargement en cours"
+
+#: monitoring/static/js/fileinput.js:4529
+msgid "Upload"
+msgstr "Télécharger"
+
+#: monitoring/static/js/fileinput.js:4530
+msgid "Upload selected files"
+msgstr "Télécharger les fichiers sélectionnés"
+
+#: monitoring/static/js/fileinput.js:4531
+msgid "No"
+msgstr "Non"
+
+#: monitoring/static/js/fileinput.js:4532
+msgid "No files selected"
+msgstr "Aucun fichier sélectionné"
+
+#: monitoring/static/js/fileinput.js:4533
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: monitoring/static/js/fileinput.js:4534
+msgid "Select {files}..."
+msgstr "Sélectionnez les  {files}..."
+
+#: monitoring/static/js/fileinput.js:4535
+msgid "Detailed Preview"
+msgstr "Aperçu détaillé"
+
+#: monitoring/static/js/fileinput.js:4536
+msgid "You must select a file to upload."
+msgstr "Vous devez sélectionner un fichier à télécharger."
+
+#: monitoring/static/js/fileinput.js:4537
+msgid ""
+"File \"{name}\" (<b>{size} KB</b>) is too small and must be larger than "
+"<b>{minSize} KB</b>."
+msgstr ""
+"Le fichier \"{name}\" <b>({size} KB</b>) est trop petit et doit être "
+"supérieur à <b>{minSize} KB</b>."
+
+#: monitoring/static/js/fileinput.js:4538
+msgid ""
+"File \"{name}\" (<b>{size} KB</b>) exceeds maximum allowed upload size of "
+"<b>{maxSize} KB</b>."
+msgstr ""
+"Le fichier \"{name}\" (<b>{size} KB</b>) dépasse la taille de téléchargement"
+" maximale autorisée de <b>{maxSize} KB</b>."
+
+#: monitoring/static/js/fileinput.js:4539
+msgid "You must select at least <b>{n}</b> {files} to upload."
+msgstr "Vous devez sélectionner au moins <b>{n}</b> {files} à télécharger."
+
+#: monitoring/static/js/fileinput.js:4540
+msgid ""
+"Number of files selected for upload <b>({n})</b> exceeds maximum allowed "
+"limit of <b>{m}</b>."
+msgstr ""
+"Nombre de fichiers sélectionnés pour le téléchargement<b>({n})</b>dépasse la"
+" limite maximale autorisée de<b>{m}</b>."
+
+#: monitoring/static/js/fileinput.js:4541
+msgid "File \"{name}\" not found!"
+msgstr "Fichier \"{name}\" non trouvé!"
+
+#: monitoring/static/js/fileinput.js:4542
+msgid "Security restrictions prevent reading the file \"{name}\"."
+msgstr "Les restrictions de sécurité empêchent la lecture du fichier \"{name}\"."
+
+#: monitoring/static/js/fileinput.js:4543
+msgid "File \"{name}\" is not readable."
+msgstr "Le fichier \"{name}\" n'est pas lisible."
+
+#: monitoring/static/js/fileinput.js:4544
+msgid "File preview aborted for \"{name}\"."
+msgstr "L'aperçu du fichier a été abandonné pour \"{name}\"."
+
+#: monitoring/static/js/fileinput.js:4545
+msgid "An error occurred while reading the file \"{name}\"."
+msgstr "Une erreur s'est produite lors de la lecture du fichier \"{name}\"."
+
+#: monitoring/static/js/fileinput.js:4546
+msgid "Invalid or unsupported characters in file name \"{name}\"."
+msgstr ""
+"Caractères non valides ou non pris en charge dans le nom de fichier "
+"\"{name}\"."
+
+#: monitoring/static/js/fileinput.js:4547
+msgid "Invalid type for file \"{name}\". Only \"{types}\" files are supported."
+msgstr ""
+"Type non valide pour le fichier \"{name}\". Seuls les fichiers \"{types}\" "
+"sont pris en charge."
+
+#: monitoring/static/js/fileinput.js:4548
+msgid ""
+"Invalid extension for file \"{name}\". Only \"{extensions}\" files are "
+"supported."
+msgstr ""
+"Extension non valide pour le fichier \"{name}\". Seuls les fichiers "
+"\"{extensions}\" sont pris en charge."
+
+#: monitoring/static/js/fileinput.js:4550
+msgid "image"
+msgstr "image"
+
+#: monitoring/static/js/fileinput.js:4551
+msgid "HTML"
+msgstr "HTML"
+
+#: monitoring/static/js/fileinput.js:4552
+msgid "text"
+msgstr "texte"
+
+#: monitoring/static/js/fileinput.js:4553
+msgid "video"
+msgstr "vidéo"
+
+#: monitoring/static/js/fileinput.js:4554
+msgid "audio"
+msgstr "l'audio"
+
+#: monitoring/static/js/fileinput.js:4555
+msgid "flash"
+msgstr "flash"
+
+#: monitoring/static/js/fileinput.js:4556
+msgid "PDF"
+msgstr "PDF"
+
+#: monitoring/static/js/fileinput.js:4557
+msgid "object"
+msgstr "objet"
+
+#: monitoring/static/js/fileinput.js:4559
+msgid "The file upload was aborted"
+msgstr "Le téléchargement du fichier a été annulé"
+
+#: monitoring/static/js/fileinput.js:4560
+msgid "Processing..."
+msgstr "En traitement..."
+
+#: monitoring/static/js/fileinput.js:4561
+msgid "Initializing..."
+msgstr "Initialisation ..."
+
+#: monitoring/static/js/fileinput.js:4562
+msgid "Done"
+msgstr "Terminé"
+
+#: monitoring/static/js/fileinput.js:4563
+msgid "No valid data available for upload."
+msgstr "Aucune donnée valide disponible pour le téléchargement."
+
+#: monitoring/static/js/fileinput.js:4564
+msgid "Error"
+msgstr "Erreur"
+
+#: monitoring/static/js/fileinput.js:4565
+msgid "Validation Error"
+msgstr "erreur de validation"
+
+#: monitoring/static/js/fileinput.js:4566
+msgid "Loading file {index} of {files} &hellip;"
+msgstr "Chargement du fichier {index} sur {files}"
+
+#: monitoring/static/js/fileinput.js:4567
+#, javascript-format
+msgid "Loading file {index} of {files} - {name} - {percent}% completed."
+msgstr ""
+"Chargement du fichier {index} sur {fichiers} - {name} - {percent}% terminé."
+
+#: monitoring/static/js/fileinput.js:4568
+msgid "{n} {files} selected"
+msgstr "{n} {files} sélectionnés"
+
+#: monitoring/static/js/fileinput.js:4569
+msgid "Drag & drop files only! {n} folder(s) dropped were skipped."
+msgstr ""
+"Glisser / déposer des fichiers uniquement! {n} dossier (s) déposé ont été "
+"ignorés."
+
+#: monitoring/static/js/fileinput.js:4570
+msgid "Width of image file \"{name}\" must be at least {size} px."
+msgstr "La largeur du fichier image \"{name}\" doit être d'au moins {size} px."
+
+#: monitoring/static/js/fileinput.js:4571
+msgid "Height of image file \"{name}\" must be at least {size} px."
+msgstr "La hauteur du fichier image \"{name}\" doit être au moins {size} px."
+
+#: monitoring/static/js/fileinput.js:4572
+msgid "Width of image file \"{name}\" cannot exceed {size} px."
+msgstr "La largeur du fichier image \"{name}\" ne peut pas dépasser {size} px."
+
+#: monitoring/static/js/fileinput.js:4573
+msgid "Height of image file \"{name}\" cannot exceed {size} px."
+msgstr "La hauteur du fichier image \"{name}\" ne peut pas dépasser {size} px."
+
+#: monitoring/static/js/fileinput.js:4574
+msgid "Could not get the image dimensions to resize."
+msgstr "Impossible de redimensionner les dimensions de l'image."
+
+#: monitoring/static/js/fileinput.js:4575
+msgid "Error while resizing the image.<pre>{errors}</pre>"
+msgstr "Erreur lors du redimensionnement de l'image. <pre>{Erreurs}</pre>"
+
+#: monitoring/static/js/fileinput.js:4576
+msgid ""
+"Something went wrong with the {operation} operation. Please try again later!"
+msgstr ""
+"Quelque chose s'est mal passé lors de l'opération {operation}. Veuillez "
+"réessayer plus tard!"
+
+#: monitoring/static/js/fileinput.js:4577
+msgid "{operation} failed"
+msgstr "{operation} échoué"
+
+#: monitoring/static/js/fileinput.js:4579
+msgid "file delete"
+msgstr "suppression de fichier"
+
+#: monitoring/static/js/fileinput.js:4580
+msgid "file upload"
+msgstr "téléchargement de fichiers"
+
+#: monitoring/static/js/fileinput.js:4581
+msgid "batch file upload"
+msgstr "envoi de fichiers par lots"
+
+#: monitoring/static/js/fileinput.js:4582
+msgid "form data upload"
+msgstr "formulaire de téléchargement de données"
+
+#: monitoring/static/js/fileinput.js:4584
+msgid "Drag & drop files here &hellip;"
+msgstr "Glisser-déposer les fichiers ici"
+
+#: monitoring/static/js/fileinput.js:4585
+msgid "<br>(or click to select {files})"
+msgstr "<br>(ou cliquez pour sélectionner {files})"
+
+#: monitoring/static/js/fileinput.js:4587
+msgid "View previous file"
+msgstr "Voir le fichier précédent"
+
+#: monitoring/static/js/fileinput.js:4588
+msgid "View next file"
+msgstr "Voir le fichier suivant"
+
+#: monitoring/static/js/fileinput.js:4589
+msgid "Toggle header"
+msgstr "Basculer l'en-tête"
+
+#: monitoring/static/js/fileinput.js:4590
+msgid "Toggle full screen"
+msgstr "Passer en plein écran"
+
+#: monitoring/static/js/fileinput.js:4591
+msgid "Toggle borderless mode"
+msgstr "Basculer en mode sans bordure"
+
+#: monitoring/static/js/fileinput.js:4592
+msgid "Close detailed preview"
+msgstr "Fermer l'aperçu détaillé"
 
 #: monitoring/static/js/fileinput.min.js:10
 msgid "generic"
