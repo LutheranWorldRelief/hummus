@@ -22,7 +22,7 @@ def domain_required():
         superuser = user.is_superuser
 
         # if you can view projects, you can view this...
-        permission = user.has_perm('monitoring.project.can_view')
+        permission = user.has_perm('monitoring.view_project')
 
         return domain or superuser or permission
 
@@ -41,7 +41,7 @@ class DomainRequiredMixin(UserPassesTestMixin):
         superuser = self.request.user.is_superuser
 
         # if you can view projects, you can view this...
-        permission = self.request.user.has_perm('monitoring.project.can_view')
+        permission = self.request.user.has_perm('monitoring.view_project')
 
         return domain or superuser or permission
 
