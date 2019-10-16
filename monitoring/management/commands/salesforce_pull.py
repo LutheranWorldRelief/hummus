@@ -6,6 +6,10 @@ from simple_salesforce import Salesforce
 from monitoring.models import Project, SubProject, Country, LWRRegion
 
 
+def getLWRRegion(string):
+    return LWRRegion.objects.filter(name=string).first()
+
+
 def getCountry(string):
     return Country.objects.filter(name=string).first()
 
@@ -26,6 +30,8 @@ def getCountries(string):
 
 
 def updateProject(hummus_record, salesforce_record, options):
+    if options['verbose']:
+        print(salesforce_record['Name'])
     fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType', 'Name'], 'lwrregion': 'LWR_Region__c', 'countries': 'Search_Strings__c'}
     update = False
     for field in fields_map:
@@ -35,19 +41,19 @@ def updateProject(hummus_record, salesforce_record, options):
             salesforce_value = salesforce_record[fields_map[field]]
         if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
             salesforce_value = int(salesforce_value)
+        if field  == 'lwrregion':
+            salesforce_value = getLWRRegion(salesforce_value)
         if field  == 'countries':
             countries = getCountries(salesforce_record['Search_Strings__c'])
             if countries != list(hummus_record.countries.all()):
-                print(countries)
-                print(hummus_record.countries.all())
+                if options['verbose']:
+                    print('Update countries {} with {}'.format(countries, hummus_record.countries.all()))
                 update = True
                 hummus_record.countries.set(countries)
-                import pdb; pdb.set_trace()
             continue
         if str(getattr(hummus_record, field)) != str(salesforce_value):
             if options['verbose']:
                 print("field {} : {} != {}".format(field, getattr(hummus_record, field), salesforce_value))
-            print(field)
             setattr(hummus_record, field, salesforce_value)
             update = True
     if update:
@@ -57,7 +63,7 @@ def updateProject(hummus_record, salesforce_record, options):
 
 def updateSubProject(hummus_record, salesforce_record, options):
     fields_map = { 'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType','Name'], 'country': ['Country__r','Name'],
-        'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c', 'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c', 
+        'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c', 'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c',
         'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c', 'targetimen': 'Men_Indirect_Target__c', 'targetiwomen': 'Women_Indirect_Target__c', }
     update = False
     for field in fields_map:
