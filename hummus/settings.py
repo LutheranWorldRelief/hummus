@@ -166,8 +166,6 @@ MICROSOFT_DOMAIN = env('MICROSOFT_DOMAIN')
 # include Microsoft Accounts, Office 365 Enterpirse and Azure AD accounts
 MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
 
-LOGIN_URL = '/admin/login/'
-
 # Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
     {'label': _('Import Beneficiaries'), 'items': [
