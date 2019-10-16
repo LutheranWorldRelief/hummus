@@ -32,28 +32,31 @@ def getCountries(string):
 def updateProject(hummus_record, salesforce_record, options):
     if options['verbose']:
         print(salesforce_record['Name'])
-    fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType', 'Name'], 'lwrregion': 'LWR_Region__c', 'countries': 'Search_Strings__c'}
+    fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': [
+        'RecordType', 'Name'], 'lwrregion': 'LWR_Region__c', 'countries': 'Search_Strings__c'}
     update = False
     for field in fields_map:
-        if isinstance(fields_map[field],list):
+        if isinstance(fields_map[field], list):
             salesforce_value = salesforce_record[fields_map[field][0]][fields_map[field][1]]
         else:
             salesforce_value = salesforce_record[fields_map[field]]
         if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
             salesforce_value = int(salesforce_value)
-        if field  == 'lwrregion':
+        if field == 'lwrregion':
             salesforce_value = getLWRRegion(salesforce_value)
-        if field  == 'countries':
+        if field == 'countries':
             countries = getCountries(salesforce_record['Search_Strings__c'])
             if countries != list(hummus_record.countries.all()):
                 if options['verbose']:
-                    print('Update countries {} with {}'.format(countries, hummus_record.countries.all()))
+                    print('Update countries {} with {}'.format(
+                        countries, hummus_record.countries.all()))
                 update = True
                 hummus_record.countries.set(countries)
             continue
         if str(getattr(hummus_record, field)) != str(salesforce_value):
             if options['verbose']:
-                print("field {} : {} != {}".format(field, getattr(hummus_record, field), salesforce_value))
+                print("field {} : {} != {}".format(
+                    field, getattr(hummus_record, field), salesforce_value))
             setattr(hummus_record, field, salesforce_value)
             update = True
     if update:
