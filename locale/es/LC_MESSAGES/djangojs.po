@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-15 22:54+0000\n"
+"POT-Creation-Date: 2019-10-16 15:39+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/lutheran-world-relief/teams/101869/es/)\n"
@@ -212,19 +212,16 @@ msgid "Loading file {index} of {files} &hellip;"
 msgstr "Cargando el archivo {index} de {files}"
 
 #: monitoring/static/js/fileinput.js:4567
-#, javascript-format
-msgid "Loading file {index} of {files} - {name} - {percent}% completed."
-msgstr ""
-"Cargando el archivo {index} de {files} - {name} - {percent}% completado."
+msgid "Loading file {index} of {files} - {name} completed."
+msgstr "Cargando el archivo {index} de {files} - {name} completado."
 
 #: monitoring/static/js/fileinput.js:4568
 msgid "{n} {files} selected"
 msgstr "{n} {files} seleccionados"
 
 #: monitoring/static/js/fileinput.js:4569
-msgid "Drag & drop files only! {n} folder(s) dropped were skipped."
-msgstr ""
-"¡Arrastra y suelta archivos solamente! Se omitieron {n} carpeta(s) caídas."
+msgid "Drag & drop files only! not folder(s)."
+msgstr "Arrastra y suelta archivos solamente! no carpeta(s)"
 
 #: monitoring/static/js/fileinput.js:4570
 msgid "Width of image file \"{name}\" must be at least {size} px."
@@ -252,11 +249,8 @@ msgid "Error while resizing the image.<pre>{errors}</pre>"
 msgstr "Error al cambiar el tamaño de la imagen. <pre>{Errors}</pre>"
 
 #: monitoring/static/js/fileinput.js:4576
-msgid ""
-"Something went wrong with the {operation} operation. Please try again later!"
-msgstr ""
-"Algo salió mal con la operación {operation}. ¡Por favor, inténtelo de nuevo "
-"más tarde!"
+msgid "Something went wrong with the {operation} operation."
+msgstr "Algo salió mal con la operación {operación}."
 
 #: monitoring/static/js/fileinput.js:4577
 msgid "{operation} failed"
