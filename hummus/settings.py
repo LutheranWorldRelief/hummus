@@ -215,6 +215,8 @@ CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 ALLOWED_DATE_FORMATS = ('%d/%m/%Y', '%m/%d/%Y')
 
+LOGIN_REDIRECT_URL = '/dashboard'
+
 try:
     from .constance_settings import *
 except ImportError:
