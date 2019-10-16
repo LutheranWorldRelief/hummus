@@ -25,6 +25,7 @@ urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
     path('', include('monitoring.urls')),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
