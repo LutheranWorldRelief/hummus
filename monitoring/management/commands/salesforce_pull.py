@@ -65,22 +65,23 @@ def updateProject(hummus_record, salesforce_record, options):
 
 
 def updateSubProject(hummus_record, salesforce_record, options):
-    fields_map = { 'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType','Name'], 'country': ['Country__r','Name'],
-        'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c', 'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c',
-        'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c', 'targetimen': 'Men_Indirect_Target__c', 'targetiwomen': 'Women_Indirect_Target__c', }
+    fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c', 'recordtype': ['RecordType', 'Name'], 'country': ['Country__r', 'Name'],
+                  'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c', 'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c',
+                  'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c', 'targetimen': 'Men_Indirect_Target__c', 'targetiwomen': 'Women_Indirect_Target__c', }
     update = False
     for field in fields_map:
-        if isinstance(fields_map[field],list):
+        if isinstance(fields_map[field], list):
             salesforce_value = salesforce_record[fields_map[field][0]][fields_map[field][1]]
         else:
             salesforce_value = salesforce_record[fields_map[field]]
         if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
             salesforce_value = int(salesforce_value)
-        if field  == 'country':
+        if field == 'country':
             salesforce_value = getCountry(salesforce_value)
         if str(getattr(hummus_record, field)) != str(salesforce_value):
             if options['verbose']:
-                print("field {} : {} != {}".format(field, getattr(hummus_record, field), salesforce_value))
+                print("field {} : {} != {}".format(
+                    field, getattr(hummus_record, field), salesforce_value))
             setattr(hummus_record, field, salesforce_value)
             update = True
     if update:
