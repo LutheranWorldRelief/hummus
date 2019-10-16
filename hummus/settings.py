@@ -195,7 +195,7 @@ JET_SIDE_MENU_ITEMS = [
         {'name': 'monitoring.lwrregion', 'label': _('Regions')},
         {'name': 'monitoring.filter', 'label': _('Segmentation')},
     ]},
-    {'label': _('Security'), 'items': [
+    {'label': _('Security'), 'permissions': ['request.user.is_superuser'], 'items': [
         {'name': 'auth.user', 'label': _('Users')},
         {'name': 'auth.group', 'label': _('Roles')},
         {'name': 'monitoring.profile', 'label': _('Profiles')},

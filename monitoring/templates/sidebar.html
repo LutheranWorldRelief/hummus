@@ -55,64 +55,125 @@
                 <span>{% trans 'Dashboard' %}</span></a>
             </li>
             <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
-            <li class="treeview"><a href="#" id="configuration"><i class="fa fa-sitemap"></i>
-                <span>{% trans 'Configurations' %}</span>
-                <span
-                        class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+            <li class="treeview">
+                <a href="#" id="configuration">
+                    <i class="fa fa-sitemap"></i>
+                    <span>{% trans 'Configurations' %}</span>
+                    <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                </a>
                 <ul class="treeview-menu">
-                    <li><a href="{% url 'admin:monitoring_project_changelist' %}"><i class="fa fa-folder-open-o"></i>
-                        <span>{% trans 'Projects' %}</span></a></li>
-                    <li class="treeview"><a href="#" id="organization"><i class="fa fa-home"></i>
-                        <span>{% trans 'Organizations' %}</span>
-                        <span
-                                class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+
+                        <li>
+                            <a href="{% url 'admin:monitoring_project_changelist' %}">
+                                <i class="fa fa-folder-open-o"></i>
+                                <span>{% trans 'Projects' %}</span>
+                            </a>
+                        </li>
+
+
+
+                    <li class="treeview">
+                        <a href="#" id="organization">
+                            <i class="fa fa-home"></i>
+                            <span>{% trans 'Organizations' %}</span>
+                            <span
+                                    class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
                         <ul class="treeview-menu">
-                            <li><a href="{% url 'admin:monitoring_organization_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'List' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_organizationtype_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Types' %}</span></a></li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_organization_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'List' %}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'Types' %}</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li class="treeview"><a href="javascript:void (0);" id="catalogs"><i class="fa fa-list"></i>
-                        <span>{% trans 'Catalogs' %}</span>
-                        <span
-                                class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <li class="treeview">
+                        <a href="javascript:void (0);" id="catalogs">
+                            <i class="fa fa-list"></i>
+                            <span>{% trans 'Catalogs' %}</span>
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                        </a>
                         <ul class="treeview-menu">
-                            <li><a href="{% url 'admin:monitoring_country_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Countries' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_contacttype_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Contact Types' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_education_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Educations' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_sex_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Sex' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_lwrregion_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Regions' %}</span></a></li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_country_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'Countries' %}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_contacttype_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'Contact Types' %}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_education_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'Educations' %}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_sex_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'Sex' %}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_lwrregion_changelist' %}">
+                                    <i class="fa fa-list"></i>
+                                    <span>{% trans 'Regions' %}</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li><a href="{% url 'admin:monitoring_filter_changelist' %}"><i class="fa fa-filter"></i>
                         <span>{% trans 'Segmentation' %}</span></a></li>
                 </ul>
             </li>
-            <li class="treeview"><a href="#" id="security"><i class="fa fa-lock"></i>
-                <span>{% trans 'Security' %}</span> <span
-                        class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
-                <ul class="treeview-menu">
-                    <li><a href="{% url 'admin:auth_user_changelist' %}"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Users' %}</span></a></li>
-                    <li><a href="{% url 'admin:auth_group_changelist' %}"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Roles' %}</span></a></li>
-                    <li><a href="{% url 'admin:monitoring_profile_changelist' %}"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Profiles' %}</span></a></li>
-                </ul>
-            </li>
+            {% if request.user.is_superuser %}
+                <li class="treeview">
+                    <a href="#" id="security">
+                        <i class="fa fa-lock"></i>
+                        <span>{% trans 'Security' %}</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="{% url 'admin:auth_user_changelist' %}">
+                                <i class="fa fa-circle-o"></i>
+                                <span>{% trans 'Users' %}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'admin:auth_group_changelist' %}">
+                                <i class="fa fa-circle-o"></i>
+                                <span>{% trans 'Roles' %}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'admin:monitoring_profile_changelist' %}">
+                                <i class="fa fa-circle-o"></i>
+                                <span>{% trans 'Profiles' %}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
         </ul>
     </section>
 
