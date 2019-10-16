@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-15 22:54+0000\n"
+"POT-Creation-Date: 2019-10-16 15:39+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -214,20 +214,16 @@ msgid "Loading file {index} of {files} &hellip;"
 msgstr "Chargement du fichier {index} sur {files}"
 
 #: monitoring/static/js/fileinput.js:4567
-#, javascript-format
-msgid "Loading file {index} of {files} - {name} - {percent}% completed."
-msgstr ""
-"Chargement du fichier {index} sur {fichiers} - {name} - {percent}% terminé."
+msgid "Loading file {index} of {files} - {name} completed."
+msgstr "Chargement du fichier {index} sur {files} - {name} terminé."
 
 #: monitoring/static/js/fileinput.js:4568
 msgid "{n} {files} selected"
 msgstr "{n} {files} sélectionnés"
 
 #: monitoring/static/js/fileinput.js:4569
-msgid "Drag & drop files only! {n} folder(s) dropped were skipped."
-msgstr ""
-"Glisser / déposer des fichiers uniquement! {n} dossier (s) déposé ont été "
-"ignorés."
+msgid "Drag & drop files only! not folder(s)."
+msgstr "Glisser-déposer des fichiers uniquement! pas de dossier(s)."
 
 #: monitoring/static/js/fileinput.js:4570
 msgid "Width of image file \"{name}\" must be at least {size} px."
@@ -254,11 +250,8 @@ msgid "Error while resizing the image.<pre>{errors}</pre>"
 msgstr "Erreur lors du redimensionnement de l'image. <pre>{Erreurs}</pre>"
 
 #: monitoring/static/js/fileinput.js:4576
-msgid ""
-"Something went wrong with the {operation} operation. Please try again later!"
-msgstr ""
-"Quelque chose s'est mal passé lors de l'opération {operation}. Veuillez "
-"réessayer plus tard!"
+msgid "Something went wrong with the {operation} operation."
+msgstr "Quelque chose s'est mal passé lors de l'opération {operation}."
 
 #: monitoring/static/js/fileinput.js:4577
 msgid "{operation} failed"
