@@ -696,5 +696,4 @@ msgstr "Problème de fusion des enregistrements de contact"
 #: monitoring/static/js/vue/contact.merge.document.js:302
 #: monitoring/static/js/vue/contact.merge.document.js:312
 msgid "The URL could not be generated to get the contact information"
-msgstr ""
-"L'URL n'a pas pu être générée pour obtenir les informations de contact."
+msgstr "URL n'a pas pu être générée pour obtenir les informations de contact."
