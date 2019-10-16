@@ -14,8 +14,8 @@ class CustomIndexDashboard(Dashboard):
             _('Quick Liks'),
             models=('monitoring.Project', 'monitoring.Organization',
                     'monitoring.Contact', 'monitoring.Profile',
-                    'auth.User', 'auth.Group','auth.Permission',
-                    'constance.Config','monitoring.ProjectContact'),
+                    'auth.User', 'auth.Group', 'auth.Permission',
+                    'constance.Config', 'monitoring.ProjectContact'),
             column=0,
             order=0
         ))
