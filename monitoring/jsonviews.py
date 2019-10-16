@@ -41,7 +41,6 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_data(self, context):
-        context = {}
         qs = Contact.objects.annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.values('name_uc').order_by('name_uc').annotate(
@@ -57,7 +56,6 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_data(self, context):
-        context = {}
         qs = Contact.objects.annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.filter(name_uc=self.kwargs['name']).values()
@@ -70,10 +68,9 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_data(self, context):
-        context = {}
         queryset = Contact.objects.filter(
             document__isnull=False).exclude(document='').values('document').order_by(
-                'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
+            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
         for row in queryset:
             row['name'] = ','.join(Contact.objects.filter(
                 document=row['document']).values_list('name', flat=True))
@@ -86,7 +83,6 @@ class ContactDocDupesDetails(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_data(self, context):
-        context = {}
         queryset = Contact.objects.filter(document=self.kwargs['document']).values()
         context = {'models': list(queryset)}
         return context
@@ -107,7 +103,10 @@ class ContactNameValues(JSONResponseMixin, TemplateView):
                 continue
             values[f.column] = []
             for row in queryset:
-                if row[f.column] and row[f.column] not in values[f.column]:  # TODO strip if string
+                if row[f.column] and row[f.column] not in values[f.column] \
+                        and isinstance(values[f.column], str):
+                    values[f.column].append(row[f.column].strip())
+                else:
                     values[f.column].append(row[f.column])
 
         resolve = {}
@@ -134,10 +133,8 @@ class ContactFusion(JSONResponseMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         contact_id = request.POST.get('id')
         ids = request.POST.getlist('ids[]')
-        # FIXME: values not used
         values = get_post_array('values', request.POST)
         context = {}
-
         contacts = Contact.objects.filter(id__in=ids).exclude(id=contact_id)
         contact = Contact.objects.get(id=contact_id)
 
@@ -154,6 +151,36 @@ class ContactFusion(JSONResponseMixin, TemplateView):
             contact.first_name = contact.first_name.strip().replace('  ', ' ')
         if contact.last_name:
             contact.last_name = contact.last_name.strip().replace('  ', ' ')
+
+        if not contact.birthdate and values['birthdate'] != '':
+            contact.birthdate = values['birthdate']
+
+        if values['document'].strip() != '':
+            contact.document = values['document'].strip()
+
+        if values['organization_id'].strip() != '':
+            contact.organization_id = int(values['organization_id'])
+
+        if values['sex_id'].strip() != '':
+            contact.sex_id = values['sex_id']
+
+        if values['type_id'].strip() != '':
+            contact.type_id = values['type_id']
+
+        if values['education_id'].strip() != '':
+            contact.education_id = values['education_id']
+
+        if values['phone_work'].strip() != '':
+            contact.phone_work = values['phone_work']
+
+        if values['phone_personal'].strip() != '':
+            contact.phone_personal = values['phone_personal']
+
+        if values['men_home'].strip() != '':
+            contact.men_home = values['men_home']
+
+        if values['women_home'].strip() != '':
+            contact.women_home = values['women_home']
 
         contact.updated_user = request.user.username
         contact.save()
