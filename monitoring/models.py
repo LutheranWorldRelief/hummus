@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Sum, Count, Q
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.gis.db import models as geomodels
 from django.core.exceptions import PermissionDenied
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -121,6 +122,53 @@ class Source(models.Model):
         verbose_name_plural = _('Data Sources')
 
 
+class CountryNE(models.Model):
+    iso_a2 = models.CharField(max_length=2, null=True, blank=True)
+    sov_a3 = models.CharField(max_length=3, null=True, blank=True)
+    name = models.CharField(max_length=255, verbose_name=_('Name'), null=True, blank=True)
+    name_es = models.CharField(max_length=255, verbose_name=_('Name ES'), null=True, blank=True)
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'), null=True, blank=True)
+    geometry = geomodels.MultiPolygonField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+        db_table = 'countryne'
+
+
+class CityQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if hasattr(user, 'profile'):
+            if user.profile.countries.exists():
+                return City.objects.filter(country__in=user.profile.countries.all())
+        else:
+            raise PermissionDenied(_("Current user has no profile."))
+        return self
+
+
+class City(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    location = geomodels.PointField()
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name=_('Country'))
+
+    objects = CityQuerySet.as_manager()
+
+    def __str__(self):
+        return "{}, {}".format(self.name, self.country.name)
+
+    def get_absolute_url(self):
+        return "/city/%i/" % self.id
+
+    class Meta:
+        unique_together = [['name', 'country']]
+        ordering = ('name',)
+        verbose_name_plural = _('Cities')
+        db_table = 'city'
+
+
 class ContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
@@ -224,13 +272,13 @@ class CountryQuerySet(models.QuerySet):
 
 class Country(models.Model):
     id = models.CharField(primary_key=True, max_length=2, verbose_name=_('Id'))
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
-    name_es = models.CharField(max_length=255, verbose_name=_('Name ES'))
-    name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'))
-    codigo_numerico = models.IntegerField(verbose_name=_('Numerical Code'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'), unique=True)
+    name_es = models.CharField(max_length=255, verbose_name=_('Name ES'), unique=True)
+    name_fr = models.CharField(max_length=255, verbose_name=_('Name FR'), unique=True)
+    codigo_numerico = models.IntegerField(verbose_name=_('Numerical Code'), null=True, blank=True)
     alfa3 = models.CharField(max_length=3, verbose_name=_('Alfa3'))
-    x = models.CharField(max_length=255, verbose_name=_('X'))
-    y = models.CharField(max_length=255, verbose_name=_('Y'))
+    x = models.CharField(max_length=255, verbose_name=_('X'), null=True, blank=True)
+    y = models.CharField(max_length=255, verbose_name=_('Y'), null=True, blank=True)
     region = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Region'))
     subregion = models.CharField(max_length=255, blank=True, null=True,
                                  verbose_name=_('Sub Region'))
