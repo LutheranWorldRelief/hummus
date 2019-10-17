@@ -198,17 +198,23 @@ JET_SIDE_MENU_ITEMS = [
         {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},
     ]},
     {'label': _('Configurations'), 'items': [
-        {'name': 'monitoring.project', 'label': _('Projects'), 'permissions': ['monitoring.view_project']},
+        {'name': 'monitoring.project', 'label': _('Projects'), 'permissions': [
+            'monitoring.view_project']},
         {'name': 'monitoring.organization', 'label': _('Organizations'),
          'permissions': ['monitoring.view_organization']},
         {'name': 'monitoring.organizationtype', 'label': _('Types'),
          'permissions': ['monitoring.view_organizationtype']},
-        {'name': 'monitoring.country', 'label': _('Countries'), 'permissions': ['monitoring.view_country']},
-        {'name': 'monitoring.contacttype', 'label': _('Contact Types'), 'permissions': ['monitoring.view_contacttype']},
-        {'name': 'monitoring.education', 'label': _('Educations'), 'permissions': ['monitoring.view_education']},
+        {'name': 'monitoring.country', 'label': _('Countries'), 'permissions': [
+            'monitoring.view_country']},
+        {'name': 'monitoring.contacttype', 'label': _('Contact Types'), 'permissions': [
+            'monitoring.view_contacttype']},
+        {'name': 'monitoring.education', 'label': _('Educations'), 'permissions': [
+            'monitoring.view_education']},
         {'name': 'monitoring.sex', 'label': _('Sex'), 'permissions': ['monitoring.view_sex']},
-        {'name': 'monitoring.lwrregion', 'label': _('Regions'), 'permissions': ['monitoring.view_lwrregion']},
-        {'name': 'monitoring.filter', 'label': _('Segmentation'), 'permissions': ['monitoring.view_filter']},
+        {'name': 'monitoring.lwrregion', 'label': _('Regions'), 'permissions': [
+            'monitoring.view_lwrregion']},
+        {'name': 'monitoring.filter', 'label': _('Segmentation'), 'permissions': [
+            'monitoring.view_filter']},
     ]},
     {'label': _('Security'), 'permissions': ['request.user.is_superuser'], 'items': [
         {'name': 'auth.user', 'label': _('Users')},
