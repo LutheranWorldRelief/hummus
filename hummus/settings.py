@@ -175,10 +175,13 @@ JET_SIDE_MENU_ITEMS = [
         {'name': '', 'url': '/import/participants',
          'label': _('Import Beneficiaries')},
     ]},
-    {'label': _('Participants'), 'items': [
-        {'name': 'monitoring.contact', 'label': _('Participants')},
-        {'name': '', 'url': '/validate/dupes-name', 'label': _('Duplicates by Name')},
-        {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document')},
+    {'label': _('Participants'), 'permissions': ['monitoring.view_contact'], 'items': [
+        {'name': 'monitoring.contact', 'label': _('Participants'),
+         'permissions': ['monitoring.view_contact']},
+        {'name': '', 'url': '/validate/dupes-name', 'label': _('Duplicates by Name'),
+         'permissions': ['monitoring.add_contact', 'monitoring.change_projectcontact']},
+        {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document'),
+         'permissions': ['monitoring.add_contact', 'monitoring.change_projectcontact']},
     ]},
     {'label': _('Reports'), 'items': [
         {'name': '', 'url': '/export/participants', 'label': _('Project Participants')},

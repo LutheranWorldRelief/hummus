@@ -29,31 +29,54 @@
                 </li>
             {% endif %}
 
-
-            <li class="treeview">
-                <a href="javascript:void(0);" id="participant">
-                    <i class="fa fa-users"></i>
-                    <span>{% trans 'Participants' %}</span>
-                    <span class="pull-right-container">
+            {% if perms.monitoring.view_contact and perms.monitoring.add_contact %}
+                <li class="treeview">
+                    <a href="javascript:void(0);" id="participant">
+                        <i class="fa fa-users"></i>
+                        <span>{% trans 'Participants' %}</span>
+                        <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{% url 'admin:monitoring_contact_changelist' %}"><i class="fa fa-users"></i>
-                        <span>{% trans 'Participants' %}</span></a></li>
-                    <li class="treeview"><a href="javascript:void(0);" id="duples"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Duplicates' %}</span> <span class="pull-right-container"><i
-                                class="fa fa-angle-left pull-right"></i></span></a>
-                        <ul class="treeview-menu">
-                            <li><a href="{% url 'monitoring:validate-dupes-name' %}"><i class="fa fa-user"></i>
-                                <span>{% trans 'Name' %}</span></a>
+                    </a>
+                    <ul class="treeview-menu">
+                        {% if perms.monitoring.view_contact and perms.monitoring.add_contact %}
+                            <li>
+                                <a href="{% url 'admin:monitoring_contact_changelist' %}">
+                                    <i class="fa fa-users"></i>
+                                    <span>{% trans 'Participants' %}</span>
+                                </a>
                             </li>
-                            <li><a href="{% url 'monitoring:validate-dupes-doc' %}"><i class="fa fa-id-card"></i>
-                                <span>{% trans 'Document' %}</span></a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+                        {% endif %}
+                        {% if perms.monitoring.add_contact and perms.monitoring.change_projectcontact %}
+                            <li class="treeview">
+                                <a href="javascript:void(0);" id="duples">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>{% trans 'Duplicates' %}</span>
+                                    <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="{% url 'monitoring:validate-dupes-name' %}">
+                                            <i class="fa fa-user"></i>
+                                            <span>{% trans 'Name' %}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'monitoring:validate-dupes-doc' %}">
+                                            <i class="fa fa-id-card"></i>
+                                            <span>{% trans 'Document' %}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+
+
             <li class="header"><span><span>{% trans 'Reports' %}</span></span></li>
             <li class="treeview long-text"><a href="#" id="reports"><i class="fa fa-print"></i>
                 <span class="span-long">{% trans 'Reports' %}</span>
