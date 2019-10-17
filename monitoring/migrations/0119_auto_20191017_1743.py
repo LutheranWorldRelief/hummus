@@ -30,6 +30,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contact',
             name='location',
-            field=django.contrib.gis.db.models.fields.PointField(blank=True, null=True, srid=4326, verbose_name='Location'),
+            field=django.contrib.gis.db.models.fields.PointField(
+                blank=True, null=True, srid=4326, verbose_name='Location'),
         ),
     ]
