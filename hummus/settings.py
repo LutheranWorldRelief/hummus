@@ -183,9 +183,16 @@ JET_SIDE_MENU_ITEMS = [
         {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document'),
          'permissions': ['monitoring.add_contact', 'monitoring.change_projectcontact']},
     ]},
-    {'label': _('Reports'), 'items': [
+    {'label': _('Reports'), 'permissions': ['monitoring.view_projectcontact',
+                                            'monitoring.view_country',
+                                            'monitoring.view_contact',
+                                            'monitoring.view_organization'], 'items': [
         {'name': '', 'url': '/export/participants', 'label': _('Project Participants')},
-        {'name': '', 'url': '/export/template-clean/', 'label': _('Clean Template')},
+        {'name': '', 'url': '/export/template-clean/', 'label': _('Clean Template'),
+         'permissions': ['monitoring.add_projectcontact',
+                         'monitoring.change_projectcontact',
+                         'monitoring.add_contact',
+                         'monitoring.change_contact']},
     ]},
     {'label': _('Dashboard'), 'items': [
         {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},

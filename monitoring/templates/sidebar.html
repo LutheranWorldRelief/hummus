@@ -77,23 +77,51 @@
             {% endif %}
 
 
-            <li class="header"><span><span>{% trans 'Reports' %}</span></span></li>
-            <li class="treeview long-text"><a href="#" id="reports"><i class="fa fa-print"></i>
-                <span class="span-long">{% trans 'Reports' %}</span>
-                <span class="pull-right-container"><i
-                        class="fa fa-angle-left pull-right"></i></span></a>
-                <ul class="treeview-menu">
-                    <li><a href="{% url 'monitoring:export' %}"><i class="fa fa-file-excel-o"></i>
-                        <span>{% trans 'Project Participants' %}</span></a></li>
-                    <li><a href="{% url 'monitoring:template-clean' %}"><i class="fa fa-file-excel-o"></i>
-                        <span>{% trans 'Clean template' %}</span></a>
-                    </li>
-                </ul>
+            <li class="header">
+                <span>
+                    <span>{% trans 'Reports' %}</span>
+                </span>
             </li>
-            <li><a href="{% url 'monitoring:dashboard' %}"><i class="fa fa-bar-chart"></i>
-                <span>{% trans 'Dashboard' %}</span></a>
+            {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
+                <li class="treeview long-text">
+                    <a href="#" id="reports">
+                        <i class="fa fa-print"></i>
+                        <span class="span-long">{% trans 'Reports' %}</span>
+                        <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li>
+                            <a href="{% url 'monitoring:export' %}">
+                                <i class="fa fa-file-excel-o"></i>
+                                <span>{% trans 'Project Participants' %}</span>
+                            </a>
+                        </li>
+
+                        {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                            <li>
+                                <a href="{% url 'monitoring:template-clean' %}">
+                                    <i class="fa fa-file-excel-o"></i>
+                                    <span>{% trans 'Clean template' %}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+            <li>
+                <a href="{% url 'monitoring:dashboard' %}">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>{% trans 'Dashboard' %}</span>
+                </a>
             </li>
-            <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
+            <li class="header">
+                <span>
+                    <span>{% trans 'Catalogs and Configurations' %}</span>
+                </span>
+            </li>
             <li class="treeview">
                 <a href="#" id="configuration">
                     <i class="fa fa-sitemap"></i>
