@@ -15,104 +15,253 @@
         </div>
 
         <ul class="sidebar-menu tree" data-widget="tree">
-            <li class="header"><span><span>{% trans 'Menu' %}</span></span></li>
-            <li><a href="{% url 'monitoring:import-step1' %}"><i class="fa fa-upload"></i>
-                <span>{% trans 'Import Beneficiaries' %}</span></a>
+            <li class="header">
+                <span>
+                    <span>{% trans 'Menu' %}</span>
+                </span>
             </li>
-            <li class="treeview"><a href="javascript:void(0);" id="participant"><i class="fa fa-users"></i>
-                <span>{% trans 'Participants' %}</span>
-                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
-                <ul class="treeview-menu">
-                    <li><a href="{% url 'admin:monitoring_contact_changelist' %}"><i class="fa fa-users"></i>
-                        <span>{% trans 'Participants' %}</span></a></li>
-                    <li class="treeview"><a href="javascript:void(0);" id="duples"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Duplicates' %}</span> <span class="pull-right-container"><i
-                                class="fa fa-angle-left pull-right"></i></span></a>
-                        <ul class="treeview-menu">
-                            <li><a href="{% url 'monitoring:validate-dupes-name' %}"><i class="fa fa-user"></i>
-                                <span>{% trans 'Name' %}</span></a>
+            {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                <li>
+                    <a href="{% url 'monitoring:import-step1' %}">
+                        <i class="fa fa-upload"></i>
+                        <span>{% trans 'Import Beneficiaries' %}</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if perms.monitoring.view_contact or perms.monitoring.add_contact %}
+                <li class="treeview">
+                    <a href="javascript:void(0);" id="participant">
+                        <i class="fa fa-users"></i>
+                        <span>{% trans 'Participants' %}</span>
+                        <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        {% if perms.monitoring.view_contact or perms.monitoring.add_contact or perms.monitoring.change_contact %}
+                            <li>
+                                <a href="{% url 'admin:monitoring_contact_changelist' %}">
+                                    <i class="fa fa-users"></i>
+                                    <span>{% trans 'Participants' %}</span>
+                                </a>
                             </li>
-                            <li><a href="{% url 'monitoring:validate-dupes-doc' %}"><i class="fa fa-id-card"></i>
-                                <span>{% trans 'Document' %}</span></a></li>
-                        </ul>
-                    </li>
-                </ul>
+                        {% endif %}
+                        {% if perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                            <li class="treeview">
+                                <a href="javascript:void(0);" id="duples">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>{% trans 'Duplicates' %}</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="{% url 'monitoring:validate-dupes-name' %}">
+                                            <i class="fa fa-user"></i>
+                                            <span>{% trans 'Name' %}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'monitoring:validate-dupes-doc' %}">
+                                            <i class="fa fa-id-card"></i>
+                                            <span>{% trans 'Document' %}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
+                <li class="header">
+                <span>
+                    <span>{% trans 'Reports' %}</span>
+                </span>
+                </li>
+                <li class="treeview long-text">
+                    <a href="#" id="reports">
+                        <i class="fa fa-print"></i>
+                        <span class="span-long">{% trans 'Reports' %}</span>
+                        <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                    </a>
+                    <ul class="treeview-menu">
+
+                        <li>
+                            <a href="{% url 'monitoring:export' %}">
+                                <i class="fa fa-file-excel-o"></i>
+                                <span>{% trans 'Project Participants' %}</span>
+                            </a>
+                        </li>
+
+                        {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                            <li>
+                                <a href="{% url 'monitoring:template-clean' %}">
+                                    <i class="fa fa-file-excel-o"></i>
+                                    <span>{% trans 'Clean template' %}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+            <li>
+                <a href="{% url 'monitoring:dashboard' %}">
+                    <i class="fa fa-bar-chart"></i>
+                    <span>{% trans 'Dashboard' %}</span>
+                </a>
             </li>
-            <li class="header"><span><span>{% trans 'Reports' %}</span></span></li>
-            <li class="treeview long-text"><a href="#" id="reports"><i class="fa fa-print"></i>
-                <span class="span-long">{% trans 'Reports' %}</span>
-                <span class="pull-right-container"><i
-                        class="fa fa-angle-left pull-right"></i></span></a>
+            <li class="header">
+                <span>
+                    <span>{% trans 'Catalogs and Configurations' %}</span>
+                </span>
+            </li>
+            <li class="treeview">
+                <a href="#" id="configuration">
+                    <i class="fa fa-sitemap"></i>
+                    <span>{% trans 'Configurations' %}</span>
+                    <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                </a>
                 <ul class="treeview-menu">
-                    <li><a href="{% url 'monitoring:export' %}"><i class="fa fa-file-excel-o"></i>
-                        <span>{% trans 'Project Participants' %}</span></a></li>
-                    <li><a href="{% url 'monitoring:template-clean' %}"><i class="fa fa-file-excel-o"></i>
-                        <span>{% trans 'Clean template' %}</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="{% url 'monitoring:dashboard' %}"><i class="fa fa-bar-chart"></i>
-                <span>{% trans 'Dashboard' %}</span></a>
-            </li>
-            <li class="header"><span><span>{% trans 'Catalogs and Configurations' %}</span></span></li>
-            <li class="treeview"><a href="#" id="configuration"><i class="fa fa-sitemap"></i>
-                <span>{% trans 'Configurations' %}</span>
-                <span
-                        class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
-                <ul class="treeview-menu">
-                    <li><a href="{% url 'admin:monitoring_project_changelist' %}"><i class="fa fa-folder-open-o"></i>
-                        <span>{% trans 'Projects' %}</span></a></li>
-                    <li class="treeview"><a href="#" id="organization"><i class="fa fa-home"></i>
-                        <span>{% trans 'Organizations' %}</span>
-                        <span
-                                class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    {% if perms.monitoring.view_project %}
+                        <li>
+                            <a href="{% url 'admin:monitoring_project_changelist' %}">
+                                <i class="fa fa-folder-open-o"></i>
+                                <span>{% trans 'Projects' %}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="treeview">
+                        {% if perms.monitoring.view_organization or perms.monitoring.view_organizationtype %}
+                            <a href="#" id="organization">
+                                <i class="fa fa-home"></i>
+                                <span>{% trans 'Organizations' %}</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                        {% endif %}
                         <ul class="treeview-menu">
-                            <li><a href="{% url 'admin:monitoring_organization_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'List' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_organizationtype_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Types' %}</span></a></li>
+                            {% if perms.monitoring.view_organization %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_organization_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'List' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if perms.monitoring.view_organizationtype %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'Types' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </li>
-                    <li class="treeview"><a href="javascript:void (0);" id="catalogs"><i class="fa fa-list"></i>
-                        <span>{% trans 'Catalogs' %}</span>
-                        <span
-                                class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <li class="treeview">
+                        {% if perms.monitoring.view_sex or perms.monitoring.view_country or perms.monitoring.view_contacttype or perms.monitoring.view_education or perms.monitoring.view_lwrregion %}
+                            <a href="javascript:void (0);" id="catalogs">
+                                <i class="fa fa-list"></i>
+                                <span>{% trans 'Catalogs' %}</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                        {% endif %}
                         <ul class="treeview-menu">
-                            <li><a href="{% url 'admin:monitoring_country_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Countries' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_contacttype_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Contact Types' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_education_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Educations' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_sex_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Sex' %}</span></a></li>
-                            <li><a href="{% url 'admin:monitoring_lwrregion_changelist' %}"><i
-                                    class="fa fa-list"></i>
-                                <span>{% trans 'Regions' %}</span></a></li>
+                            {% if perms.monitoring.view_country %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_country_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'Countries' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if perms.monitoring.view_contacttype %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_contacttype_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'Contact Types' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if perms.monitoring.view_education %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_education_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'Educations' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if perms.monitoring.view_sex %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_sex_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'Sex' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if perms.monitoring.view_lwrregion %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_lwrregion_changelist' %}">
+                                        <i class="fa fa-list"></i>
+                                        <span>{% trans 'Regions' %}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </li>
-                    <li><a href="{% url 'admin:monitoring_filter_changelist' %}"><i class="fa fa-filter"></i>
-                        <span>{% trans 'Segmentation' %}</span></a></li>
+                    {% if perms.monitoring.view_filter %}
+                        <li>
+                            <a href="{% url 'admin:monitoring_filter_changelist' %}">
+                                <i class="fa fa-filter"></i>
+                                <span>{% trans 'Segmentation' %}</span>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
-            <li class="treeview"><a href="#" id="security"><i class="fa fa-lock"></i>
-                <span>{% trans 'Security' %}</span> <span
-                        class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
-                <ul class="treeview-menu">
-                    <li><a href="{% url 'admin:auth_user_changelist' %}"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Users' %}</span></a></li>
-                    <li><a href="{% url 'admin:auth_group_changelist' %}"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Roles' %}</span></a></li>
-                    <li><a href="{% url 'admin:monitoring_profile_changelist' %}"><i class="fa fa-circle-o"></i>
-                        <span>{% trans 'Profiles' %}</span></a></li>
-                </ul>
-            </li>
+            {% if request.user.is_superuser %}
+                <li class="treeview">
+                    <a href="#" id="security">
+                        <i class="fa fa-lock"></i>
+                        <span>{% trans 'Security' %}</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="{% url 'admin:auth_user_changelist' %}">
+                                <i class="fa fa-circle-o"></i>
+                                <span>{% trans 'Users' %}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'admin:auth_group_changelist' %}">
+                                <i class="fa fa-circle-o"></i>
+                                <span>{% trans 'Roles' %}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'admin:monitoring_profile_changelist' %}">
+                                <i class="fa fa-circle-o"></i>
+                                <span>{% trans 'Profiles' %}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
         </ul>
     </section>
 
