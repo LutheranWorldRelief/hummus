@@ -161,6 +161,14 @@ class Contact(models.Model):
                                   verbose_name=_('Phone Work'))
     men_home = models.IntegerField(blank=True, null=True, verbose_name=_('Men Home'))
     women_home = models.IntegerField(blank=True, null=True, verbose_name=_('Women Home'))
+
+    # Contact geo location fields
+    longitude = models.FloatField(verbose_name=_('Longitude'), blank=True, null=True)
+    latitude = models.FloatField(verbose_name=_('Latitude'), blank=True, null=True)
+    altitude = models.FloatField(verbose_name=_('Altitude'), blank=True, null=True)
+    precision = models.FloatField(verbose_name=_('Precision'), blank=True, null=True)
+
+    # Contact meta data fields
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
     created_user = models.CharField(max_length=20, null=True, blank=True,
