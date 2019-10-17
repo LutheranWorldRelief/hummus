@@ -5,10 +5,10 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'js/lib/select2/select2.css' %}" rel="stylesheet">
     <link href="{% static 'js/lib/select2/css/select2-addl.css' %}" rel="stylesheet">
-    <link href="{% static 'js/lib/select2/css/select2-krajee.css' %}" rel="stylesheet">
     <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
     <link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static '/js/lib/alertify1.11.1/css/alertify.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
@@ -124,32 +124,22 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script src="{% static 'js/assets/jquery.js' %}"></script>
+    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/lib/select2/js/select2.full.js' %}"></script>
+    <script src="{% static 'js/yii.min.js' %}"></script>
+    <script src="{% static 'js/lib/select2/js/select2.full.min.js' %}"></script>
     <script src="{% static 'js/lib/select2/js/select2-krajee.js' %}"></script>
     <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
-    <script src="{% static 'js/vue/vue2.5.16.js' %}"></script>
+    <script src="{% static 'js/vue/vue2.5.16.min.js' %}"></script>
     <script src="{% static 'js/vue/comp.select2.js' %}"></script>
+    <script src="{% static '/js/lib/alertify1.11.1/alertify.min.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
+
     <script>
-        var s2options_d6851687 = {
-            "themeCss": ".select2-container--krajee",
-            "sizeCss": "",
-            "doReset": true,
-            "doToggle": false,
-            "doOrder": false
-        };
-        window.select2_de559a6a = {
-            "allowClear": true,
-            "theme": "krajee",
-            "width": "100%",
-            "language": "es"
-        };
+        jQuery(function ($) {
+            jQuery('#modal-merge').modal({"show": false});
+        });
     </script>
-    <script>jQuery(function ($) {
-        jQuery('#modal-merge').modal({"show": false});
-    });</script>
 {% endblock %}
