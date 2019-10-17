@@ -76,13 +76,12 @@
                 </li>
             {% endif %}
 
-
-            <li class="header">
+            {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
+                <li class="header">
                 <span>
                     <span>{% trans 'Reports' %}</span>
                 </span>
-            </li>
-            {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
+                </li>
                 <li class="treeview long-text">
                     <a href="#" id="reports">
                         <i class="fa fa-print"></i>
