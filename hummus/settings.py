@@ -172,7 +172,7 @@ JET_SIDE_MENU_ITEMS = [
                                                          'monitoring.change_projectcontact',
                                                          'monitoring.add_contact',
                                                          'monitoring.change_contact'], 'items': [
-        {'name': '', 'url': '/import/participants',
+        {'name': '', 'url': '/import/participants/step1  ',
          'label': _('Import Beneficiaries')},
     ]},
     {'label': _('Participants'), 'permissions': ['monitoring.view_contact'], 'items': [

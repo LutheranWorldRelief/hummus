@@ -29,7 +29,7 @@
                 </li>
             {% endif %}
 
-            {% if perms.monitoring.view_contact and perms.monitoring.add_contact %}
+            {% if perms.monitoring.view_contact or perms.monitoring.add_contact %}
                 <li class="treeview">
                     <a href="javascript:void(0);" id="participant">
                         <i class="fa fa-users"></i>
@@ -39,7 +39,7 @@
                 </span>
                     </a>
                     <ul class="treeview-menu">
-                        {% if perms.monitoring.view_contact and perms.monitoring.add_contact %}
+                        {% if perms.monitoring.view_contact or perms.monitoring.add_contact or perms.monitoring.change_contact %}
                             <li>
                                 <a href="{% url 'admin:monitoring_contact_changelist' %}">
                                     <i class="fa fa-users"></i>
@@ -53,8 +53,8 @@
                                     <i class="fa fa-circle-o"></i>
                                     <span>{% trans 'Duplicates' %}</span>
                                     <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
