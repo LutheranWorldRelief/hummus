@@ -168,7 +168,10 @@ MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
 
 # Jet Menu Settings
 JET_SIDE_MENU_ITEMS = [
-    {'label': _('Import Beneficiaries'), 'items': [
+    {'label': _('Import Beneficiaries'), 'permissions': ['monitoring.add_projectcontact',
+                                                         'monitoring.change_projectcontact',
+                                                         'monitoring.add_contact',
+                                                         'monitoring.change_contact'], 'items': [
         {'name': '', 'url': '/import/participants',
          'label': _('Import Beneficiaries')},
     ]},
