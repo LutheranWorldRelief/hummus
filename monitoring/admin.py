@@ -3,6 +3,7 @@ admin customization for 'monitoring'
 """
 from django.apps import apps
 from django.contrib import admin
+from django.contrib.gis import admin as geoadmin
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 
@@ -71,7 +72,7 @@ class SubProjectsInline(CompactInline):
 
 
 # Admin Class
-class ContactAdmin(AdminForUserMixin, admin.ModelAdmin):
+class ContactAdmin(AdminForUserMixin, geoadmin.OSMGeoAdmin):
     list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
     list_display_links = ['name', 'country', 'type']
     list_per_page = 20
@@ -212,7 +213,7 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     show_salesforce_url.short_description = "Salesforce Link"
 
 
-class CityAdmin(AdminForUserMixin, admin.ModelAdmin):
+class CityAdmin(AdminForUserMixin, geoadmin.GeoModelAdmin):
     list_display = ('name', 'country')
     search_fields = ['name', ]
     list_display_links = ('name',)
