@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.gis',
     # extra
+    'leaflet',
     'django_tables2',
     'django_filters',
     'crispy_forms',

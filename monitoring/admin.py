@@ -8,7 +8,7 @@ from django.utils.html import format_html
 
 from jet.admin import CompactInline
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
-                     LWRRegion, Country, Sex, Education, OrganizationType)
+                     LWRRegion, Country, City, Sex, Education, OrganizationType)
 
 
 # Change default query
@@ -212,6 +212,17 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     show_salesforce_url.short_description = "Salesforce Link"
 
 
+class CityAdmin(AdminForUserMixin, admin.ModelAdmin):
+    list_display = ('name', 'country')
+    search_fields = ['name', ]
+    list_display_links = ('name',)
+    list_per_page = 20
+    list_max_show_all = 50
+    list_filter = [
+        ('country'),
+    ]
+
+
 class CountryAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'name_es', 'name_fr')
     readonly_fields = ['id']
@@ -251,6 +262,7 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(SubProject, SubprojectAdmin)
 admin.site.register(LWRRegion, LWRRegionAdmin)
 admin.site.register(Country, CountryAdmin)
+admin.site.register(City, CityAdmin)
 admin.site.register(Sex, GeneralCatalogAdmin)
 admin.site.register(Education, GeneralCatalogAdmin)
 admin.site.register(OrganizationType, GeneralCatalogAdmin)
