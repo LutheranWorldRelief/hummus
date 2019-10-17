@@ -29,7 +29,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request)
+                     Request, City)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace)
 from .catalog import create_catalog
@@ -414,3 +414,11 @@ class ContactDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class CityDetailView(DetailView):
+    model = City
+
+    def get_object(self, queryset=None):
+        obj = City.objects.filter(name=self.kwargs['name']).first()
+        return obj

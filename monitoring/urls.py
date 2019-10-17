@@ -23,6 +23,7 @@ urlpatterns = [
     path('project/<int:pk>/', views.ProjectDetailView.as_view(), name='project'),
     path('subproject/<int:pk>/', views.SubProjectDetailView.as_view(), name='subproject'),
     path('city/<int:pk>/', DetailView.as_view(model=models.City), name='city'),
+    path('city/<str:name>/', views.CityDetailView.as_view(), name='city-name'),
 
     # dashboard
     path('', views.DashboardView.as_view(), name='dashboard'),
