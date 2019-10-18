@@ -220,7 +220,7 @@ class CityAdmin(AdminForUserMixin, geoadmin.OSMGeoAdmin):
     list_per_page = 20
     list_max_show_all = 50
     list_filter = [
-        ('country'),
+        ('country', admin.RelatedOnlyFieldListFilter),
     ]
 
 
