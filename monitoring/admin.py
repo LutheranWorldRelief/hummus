@@ -213,7 +213,7 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
     show_salesforce_url.short_description = "Salesforce Link"
 
 
-class CityAdmin(AdminForUserMixin, geoadmin.GeoModelAdmin):
+class CityAdmin(AdminForUserMixin, geoadmin.OSMGeoAdmin):
     list_display = ('name', 'country')
     search_fields = ['name', ]
     list_display_links = ('name',)
