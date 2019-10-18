@@ -16,6 +16,7 @@ urlpatterns = [
 
     # misc
     # path('',TemplateView.as_view(template_name='index.html')),
+    path('helloworld', TemplateView.as_view(template_name='monitoring/helloworld.html')),
     path('contact/', views.ContactTableView.as_view()),
     path('project/', views.ProjectTableView.as_view()),
     path('subproject/', views.SubProjectTableView.as_view()),
