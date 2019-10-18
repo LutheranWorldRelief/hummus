@@ -46,6 +46,7 @@
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script type="text/javascript">
         function map_init(map, options) {
+            map.zoomControl.setPosition('topright');
             // get point lat and lon
             var lon = "{{ city.location.x|unlocalize }}";
             var lat = "{{ city.location.y|unlocalize }}";
