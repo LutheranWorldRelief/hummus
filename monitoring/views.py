@@ -420,5 +420,10 @@ class CityDetailView(DetailView):
     model = City
 
     def get_object(self, queryset=None):
-        obj = City.objects.filter(name=self.kwargs['name']).first()
+        name = self.kwargs.get('name')
+        country_id = self.kwargs.get('country_id')
+        obj = City.objects.all()
+        if country_id:
+            obj = obj.filter(Q(country_id=country_id.upper()) | Q(country__name__iexact=country_id))
+        obj = obj.filter(name__iexact=name).first()
         return obj
