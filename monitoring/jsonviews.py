@@ -41,7 +41,12 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_data(self, context):
-        qs = Contact.objects.annotate(
+        parameters = {'countryCode': 'country_id',
+                      'projectId': 'projectcontact__project_id',
+                      'organizationId': 'organization_id',
+                      'nameSearch': 'name__icontains'}
+        filter_kwargs = filter_by(parameters, self.request)
+        qs = Contact.objects.filter(**filter_kwargs).annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.values('name_uc').order_by('name_uc').annotate(
             cuenta=Count('name_uc')).filter(cuenta__gt=1)
@@ -68,7 +73,12 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_data(self, context):
-        queryset = Contact.objects.filter(
+        parameters = {'countryCode': 'country_id',
+                      'projectId': 'projectcontact__project_id',
+                      'organizationId': 'organization_id',
+                      'nameSearch': 'name__icontains'}
+        filter_kwargs = filter_by(parameters, self.request)
+        queryset = Contact.objects.filter(**filter_kwargs).filter(
             document__isnull=False).exclude(document='').values('document').order_by(
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
         for row in queryset:
@@ -237,3 +247,15 @@ class JsonIdName(JSONResponseMixin, TemplateView):
         for row in self.queryset:
             result[row.id] = row.name
         return self.render_to_response(result)
+
+
+def filter_by(parameters, request):
+    filter_kwargs = {}
+
+    for key in request.GET:
+        if key in parameters:
+            value = request.GET[key]
+            if value != '':
+                filter_kwargs[parameters[key]] = value
+
+    return filter_kwargs
