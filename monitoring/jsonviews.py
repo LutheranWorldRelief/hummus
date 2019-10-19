@@ -255,7 +255,7 @@ def filter_by(parameters, request):
     for key in request.GET:
         if key in parameters:
             value = request.GET[key]
-            if value != '':
+            if value != '' and value.find('-') == -1:
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs
