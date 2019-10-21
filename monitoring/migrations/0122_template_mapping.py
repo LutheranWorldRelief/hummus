@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='template',
             name='mapping',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True, verbose_name='Mapping'),
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True, null=True, verbose_name='Mapping'),
         ),
     ]

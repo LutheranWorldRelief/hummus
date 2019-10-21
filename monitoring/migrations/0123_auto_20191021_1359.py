@@ -14,11 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='template',
             name='mapping_es',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True, verbose_name='Mapping ES'),
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True, null=True, verbose_name='Mapping ES'),
         ),
         migrations.AddField(
             model_name='template',
             name='mapping_fr',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True, verbose_name='Mapping FR'),
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True, null=True, verbose_name='Mapping FR'),
         ),
     ]
