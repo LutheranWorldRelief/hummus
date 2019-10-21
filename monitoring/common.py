@@ -52,9 +52,10 @@ def language_no_region(language):
     return language
 
 
-def get_localized_name(column):
-    language = language_no_region(translation.get_language())
+def get_localized_name(column, language=None):
     default_language = language_no_region(settings.LANGUAGE_CODE)
+    if not language:
+        language = language_no_region(translation.get_language())
     return column if language in default_language else "%s_%s" % (column, language)
 
 
