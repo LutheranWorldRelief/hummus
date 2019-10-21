@@ -7,6 +7,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse
 
+from constance import config
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django_filters import FilterSet, CharFilter, ModelChoiceFilter
@@ -46,7 +47,7 @@ class ReportExportMixin:
         dataset = self.table_to_dataset(table, self.exclude_columns)
 
         # get localized excel tempalte
-        obj = Template.objects.get(id='clean-template')
+        obj = Template.objects.get(id=config.DEFAULT_TEMPLATE)
         tfile = getattr(obj, __('file'))
         tfilename = tfile.name
 

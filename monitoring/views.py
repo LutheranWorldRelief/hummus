@@ -296,7 +296,8 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         uploaded_ws = uploaded_wb[_('data')]
 
         # check headers
-        obj = Template.objects.get(id='clean-template')
+        template = request.POST.get('template', config.DEFAULT_TEMPLATE)
+        obj = Template.objects.get(id=template)
         tfile = getattr(obj, __('file'))
         book = load_workbook(filename=tfile)
         sheet = book[_('data')]
@@ -323,7 +324,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 class DownloadTemplate(DomainRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # get localized excel template
-        obj = Template.objects.get(id='clean-template')
+        obj = Template.objects.get(id=config.DEFAULT_TEMPLATE)
         tfile = getattr(obj, __('file'))
         tfilename = tfile.name
 

@@ -7,6 +7,7 @@ from django.db.models import Sum, Count, Q
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geomodels
+from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import PermissionDenied
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -30,6 +31,9 @@ class Template(models.Model):
     file = models.FileField(upload_to='templates/', verbose_name=_('File'))
     file_fr = models.FileField(upload_to='templates/', verbose_name=_('File FR'))
     file_es = models.FileField(upload_to='templates/', verbose_name=_('File ES'))
+    mapping = JSONField(null=True, blank=True, verbose_name=_('Mapping'))
+    mapping_fr = JSONField(null=True, blank=True, verbose_name=_('Mapping FR'))
+    mapping_es = JSONField(null=True, blank=True, verbose_name=_('Mapping ES'))
 
     def __str__(self):
         return "%s" % (self.name)
