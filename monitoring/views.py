@@ -325,8 +325,8 @@ class ValidateExcel(DomainRequiredMixin, FormView):
             for field in mapping[model]:
                 column_name = mapping[model][field]['name']
                 if column_name not in headers:
-                    raise Exception('Column "{}" not found, choices are: {}'\
-                            .format(column_name, ', '.join(filter(None,headers))))
+                    raise Exception('Column "{}" not found, choices are: {}'
+                                    .format(column_name, ', '.join(filter(None, headers))))
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
