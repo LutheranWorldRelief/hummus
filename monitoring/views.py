@@ -13,6 +13,7 @@ from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
+from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView, DetailView, FormView
@@ -287,33 +288,52 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
 class ValidateExcel(DomainRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
-        excel_file = request.FILES['excel_file']
+        # get advanced options
+        language = request.POST.get('language', settings.LANGUAGE_CODE)
         start_row = int(request.POST.get('start_row', config.START_ROW))
+        header_row = int(request.POST.get('start_row', config.HEADER_ROW))
+        template = request.POST.get('template', config.DEFAULT_TEMPLATE)
+        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
+
+        # get file and set name
+        excel_file = request.FILES['excel_file']
         tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
                                            excel_file.name)
         default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
         uploaded_wb = load_workbook(filename=excel_file)
-        uploaded_ws = uploaded_wb[_('data')]
+
+        # gets the data sheet, tries all languages
+        uploaded_ws = None
+        if _('data') in uploaded_wb.sheetnames:
+            uploaded_ws = uploaded_wb[_('data')]
+        else:
+            for other_lang in [lang[0] for lang in settings.LANGUAGES]:
+                with translation.override(other_lang):
+                    if _('data') in uploaded_wb.sheetnames:
+                        uploaded_ws = uploaded_wb[_('data')]
+                        continue
+        if not uploaded_ws:
+            uploaded_ws = uploaded_wb.active
 
         # check headers
-        template = request.POST.get('template', config.DEFAULT_TEMPLATE)
-        obj = Template.objects.get(id=template)
-        tfile = getattr(obj, __('file'))
-        book = load_workbook(filename=tfile)
-        sheet = book[_('data')]
+        template_obj = Template.objects.get(id=template)
+        mapping = getattr(template_obj, __('mapping', language))
+        headers = [cell.value for cell in uploaded_ws[header_row-1]]
 
-        header_row = config.HEADER_ROW
-        for cell in uploaded_ws[header_row]:
-            if cell.value != sheet[header_row][cell.col_idx - 1].value:
-                raise Exception('Headers are not the same as in template! {} != {}'
-                                .format(cell.value, sheet[header_row][cell.col_idx - 1].value))
+        # checks columns from mapping exist in uploaded file
+        for model in mapping:
+            for field in mapping[model]:
+                column_name = mapping[model][field]['name']
+                if column_name not in headers:
+                    raise Exception('Column "{}" not found, choices are: {}'
+                                    .format(column_name, ', '.join(filter(None, headers))))
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         context['data'] = uploaded_ws
         context['start_row'] = start_row
-        context['date_format'] = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
+        context['date_format'] = date_format
         context['excel_file'] = tmp_excel_name
 
         return render(request, self.template_name, context)

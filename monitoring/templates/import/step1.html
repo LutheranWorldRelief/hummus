@@ -48,17 +48,26 @@
                                     <div class="col-lg-10 col-lg-offset-1">
                                         <div class="collapse" id="collapseExample">
                                             <div class="form-group row">
+                                                <label for="headerrow"
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Header Row:' %}</label>
+                                                <div class="col-lg-7 col-md-7">
+                                                    <input type="number" class="form-control" name="header_row"
+                                                           id="headerrow" value="{{ config.HEADER_ROW }}"
+                                                           min="0" max="100">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
                                                 <label for="startrow"
                                                        class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Data Start Row:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
                                                     <input type="number" class="form-control" name="start_row"
                                                            id="startrow" value="{{ config.START_ROW }}"
-                                                           min="{{ config.START_ROW }}" max="100">
+                                                           min="0" max="100">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="typedate"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Date format:' %}</label>
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Date Format:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
                                                     <select class="form-control" name="date_format"
                                                             id="typedate">
@@ -67,6 +76,14 @@
                                                         <option value="m/d/Y"
                                                                 {% if short_date_format == "m/d/Y" %}selected{% endif %}>{% trans 'mm/dd/yyyy' %}</option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="language"
+                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Language:' %}</label>
+                                                <div class="col-lg-7 col-md-7">
+                                                    <input type="text" id="language" name="language"
+                                                           value="{{ request.user.profile.language }}">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
