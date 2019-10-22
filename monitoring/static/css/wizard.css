@@ -188,17 +188,17 @@ form#w0 {
     cursor: pointer;
 }
 
-  .d-none {
-            display: none;
-        }
+.d-none {
+    display: none;
+}
 
-        #tb_resultados tr.tr-missing_data {
-            background-color: #ff7f7f !important;
-        }
+#resultados tr.tr-missing_data {
+    background-color: #ff7f7f !important;
+}
 
-        #tb_resultados tr.tr-missing_data:hover {
-            background-color: #ff7f7f !important;
-        }
+#resultados tr.tr-missing_data:hover {
+    background-color: #ff7f7f !important;
+}
 
 
 @media ( max-width: 585px ) {

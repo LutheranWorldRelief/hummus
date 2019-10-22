@@ -318,12 +318,17 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         # check headers
         template_obj = Template.objects.get(id=template)
         mapping = getattr(template_obj, __('mapping', language))
+        columns_required = []
         headers = [cell.value for cell in uploaded_ws[header_row]]
 
         # checks columns from mapping exist in uploaded file
         for model in mapping:
             for field in mapping[model]:
                 column_name = mapping[model][field]['name']
+
+                if mapping[model][field]['required']:
+                    columns_required.append(column_name)
+
                 if column_name not in headers:
                     raise Exception('Column "{}" not found, choices are: {}'
                                     .format(column_name, ', '.join(filter(None, headers))))
@@ -332,6 +337,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         context['columns'] = uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         context['data'] = uploaded_ws
+        context['columns_required'] = columns_required
         context['start_row'] = start_row
         context['date_format'] = date_format
         context['excel_file'] = tmp_excel_name
