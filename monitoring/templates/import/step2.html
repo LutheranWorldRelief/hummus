@@ -73,7 +73,7 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
                                          style="width: calc(100% - 50px)">
 
-                                        <table class="table table-bordered" style="margin: 5px">
+                                        <table class="table table-bordered" style="margin: 5px" id="tableParticipants">
                                             <caption>{% trans 'list of participants' %}</caption>
                                             <thead>
                                             <tr>
@@ -83,7 +83,7 @@
                                                 {% endfor %}
                                             </tr>
                                             </thead>
-                                            <tbody id="tb_resultados">
+                                            <tbody id="resultados">
                                             {% for row in data %}
                                                 <tr>
                                                     <td>
@@ -102,8 +102,6 @@
                                                                     {{ cell.value }}
                                                                 {% endif %}
                                                             </td>
-                                                        {% elif cell.value == None and forloop.counter <= 5 %}
-                                                            <td class="empty-cell-important"></td>
                                                         {% else %}
                                                             <td></td>
                                                         {% endif %}
@@ -134,6 +132,9 @@
     </div>
 {% endblock %}
 {% block extra_body %}
+    <script>
+        var columns_required = {{ columns_required|safe }};
+    </script>
     <script src="{% static 'js/assets/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>

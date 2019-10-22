@@ -1,5 +1,5 @@
 $(function () {
-    let table = $('#tb_resultados');
+    var tableParticipants = $('#tableParticipants');
     $('[data-toggle="tooltip"]').tooltip();
     validationData();
 
@@ -24,25 +24,49 @@ $(function () {
 
 
     function validationData() {
+        let array_index = getColumnAddClass();
         let mostrar_boton = ($('.empty-cell-important').length <= 0);
         if (mostrar_boton) {
             $('button[type=submit]').removeClass('d-none');
         } else {
             $('#showBadRecords').removeClass('d-none');
 
-            let filas = table.find('tr');
+            let filas = tableParticipants.find('#resultados tr');
             filas.each(function () {
                 let fila = $(this);
-                for (let i = 1; i <= 5; i++) {
-                    let celda = fila.find('td').eq(i);
+                for (let index of array_index) {
+                    let celda = fila.find('td').eq(index);
                     if (celda.hasClass('empty-cell-important')) {
                         fila.addClass('tr-missing_data')
                     }
                 }
             })
         }
-
-
     }
 
-})
+    function getColumnAddClass() {
+        let array_index = [];
+        tableParticipants.find('thead tr th').each(function (index) {
+            let cell = $(this);
+            if (columns_required.includes(cell.text())) {
+                array_index.push(index)
+            }
+        });
+        if (array_index.length > 0) {
+
+            let filas = tableParticipants.find('#resultados tr');
+            filas.each(function () {
+                let fila = $(this);
+                for (let index of array_index) {
+                    let celda = fila.find('td').eq(index);
+                    if (celda.text().length <= 0) {
+                        celda.addClass('empty-cell-important');
+                        break;
+                    }
+                }
+            })
+        }
+        return array_index;
+    }
+
+});
