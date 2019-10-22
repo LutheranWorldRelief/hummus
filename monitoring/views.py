@@ -330,7 +330,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
-        uploaded_ws.delete_rows(0, amount=header_row)
+        uploaded_ws.delete_rows(0, amount=start_row - 1)
         context['data'] = uploaded_ws
         context['start_row'] = start_row
         context['date_format'] = date_format
