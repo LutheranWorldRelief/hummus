@@ -341,6 +341,9 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         context['start_row'] = start_row
         context['date_format'] = date_format
         context['excel_file'] = tmp_excel_name
+        context['templaet'] = template
+        context['header_row'] = header_row
+        context['language'] = language
 
         return render(request, self.template_name, context)
 
