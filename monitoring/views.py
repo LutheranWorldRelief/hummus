@@ -291,7 +291,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         # get advanced options
         language = request.POST.get('language', settings.LANGUAGE_CODE)
         start_row = int(request.POST.get('start_row', config.START_ROW))
-        header_row = int(request.POST.get('start_row', config.HEADER_ROW))
+        header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
         date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
 
@@ -318,7 +318,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         # check headers
         template_obj = Template.objects.get(id=template)
         mapping = getattr(template_obj, __('mapping', language))
-        headers = [cell.value for cell in uploaded_ws[header_row-1]]
+        headers = [cell.value for cell in uploaded_ws[header_row]]
 
         # checks columns from mapping exist in uploaded file
         for model in mapping:
@@ -330,7 +330,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
-        uploaded_ws.delete_rows(0, amount=start_row - 1)
+        uploaded_ws.delete_rows(0, amount=header_row)
         context['data'] = uploaded_ws
         context['start_row'] = start_row
         context['date_format'] = date_format
