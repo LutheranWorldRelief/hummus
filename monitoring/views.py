@@ -211,7 +211,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
                 row_dict[field_name] = value
-                if model.get_field(fiel_name).get_internal_type() == 'DateField':
+                if model.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         value = datetime.datetime.strptime(value, date_format)
                     else:
@@ -258,7 +258,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
                 row_dict[field_name] = value
-                if model.get_field(fiel_name).get_internal_type() == 'DateField':
+                if model.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         value = datetime.datetime.strptime(value, date_format)
                     else:
@@ -271,6 +271,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     project_contact = ProjectContact()
                     project_contact.contact = contact
                     project_contact.project = project
+                    project_contact.organization = organization
                 else:
                     messages.append('Update project contact: {} {}'.format(project, contact))
                 update_project_contact(request, project_contact, row_dict)
