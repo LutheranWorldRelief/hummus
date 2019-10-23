@@ -56,11 +56,9 @@
                                     <div class="col-lg-5 col-lg-offset-1">
                                         <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
                                         <ol>
-                                            <li><strong>{% trans 'Name of Project' %}</strong></li>
-                                            <li><strong>{% trans 'Implementing Organization' %}</strong></li>
-                                            <li><strong>{% trans 'Identification Number' %}</strong></li>
-                                            <li><strong>{% trans 'First Name' %}</strong></li>
-                                            <li><strong>{% trans 'Last Name' %}</strong></li>
+                                            {% for column in columns_required %}
+                                            <li><strong>{{ column }}</strong></li>
+                                            {% endfor %}
                                         </ol>
                                     </div>
                                 </div>
