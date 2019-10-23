@@ -46,18 +46,8 @@ def update_project_contact(request, project_contact, row):
     else:
         project_contact.created_user = request.user.username
 
-    project_contact.organization_id = row['org_implementing_id']
-
-    product = Product.objects.filter(**{columna_name: row['product']}).first()
-
-    project_contact.product_id = product.id if product else None
-    project_contact.area = row['area'] if row['area'] else None
-    project_contact.development_area = row['dev_area'] if row['dev_area'] else None
-    project_contact.age_development_plantation = row['age_dev'] if row['age_dev'] else None
-    project_contact.productive_area = row['productive_area'] if row['productive_area'] else None
-    project_contact.age_productive_plantation = row['age_prod'] if row['age_prod'] else None
-    project_contact.date_entry_project = row['project_entry_date']
-    project_contact.yield_field = row['yield'] if row['yield'] else None
+    project_contact.organization = row.get('organization')
+    project_contact.date_entry_project = row.get('date_entry_project')
     project_contact.source_id = row.get('source_id')
 
     project_contact.save()
