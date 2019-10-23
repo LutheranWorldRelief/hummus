@@ -99,11 +99,11 @@ MONTHS = [('1', 'January'),
           ('12', _('December')), ]
 
 
-# credit to
-# https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#jsonresponsemixin-example
 class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
+    credit to
+    https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#jsonresponsemixin-example
     """
 
     def render_to_json_response(self, context, **response_kwargs):
@@ -126,8 +126,16 @@ class JSONResponseMixin:
         return context
 
 
-# credit to https://code.djangoproject.com/ticket/28805
+def xstr(s):
+    """ return empty instead of None. credit to https://stackoverflow.com/a/1034598/1170404 """
+    return '' if s is None else str(s)
+
+
 class RegexpReplace(Func):
+    """
+    PostgreSQL Regex function for Django
+    based on https://code.djangoproject.com/ticket/28805
+    """
     function = 'REGEXP_REPLACE'
 
     def __init__(self, expression, pattern, replacement, flags, **extra):
