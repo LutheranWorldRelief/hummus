@@ -111,7 +111,7 @@
                                                             id="language">
                                                      {% for template in templates %}
                                                             <option value="{{ template.template_id }}"
-                                                                    {% if template.id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
+                                                                    {% if template.template_id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
                                                                 {{ template.template_name }}
                                                             </option>
                                                         {% endfor %}
