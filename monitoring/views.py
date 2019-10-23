@@ -9,6 +9,7 @@ from django.conf import settings
 
 from django.db.models import Count, Q, Value, F
 from django.db.models.functions import Upper, Trim, Coalesce
+from django.contrib.gis.geos import Point
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -192,12 +193,15 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['source_id'] = 'excel'
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
-                row_dict[field_name] = value
+                if model._meta.get_field(field_name).get_internal_type() == 'PointField':
+                    (lat, lng, alt, acc) = value.split(' ', 4)
+                    value = Point(float(lng), float(lat))
                 if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         value = datetime.datetime.strptime(value, date_format)
                     else:
                         value = None
+                row_dict[field_name] = value
 
             # there are two ways to look up a contact: name+doc and firstname+lastname+doc
             if {'name', 'document'} <= set(model_fields):
@@ -240,12 +244,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['organization'] = organization
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
-                row_dict[field_name] = value
                 if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         value = datetime.datetime.strptime(value, date_format)
                     else:
                         value = None
+                row_dict[field_name] = value
 
                 project_contact = ProjectContact.objects.filter(project=project,
                                                                 contact=contact).first()

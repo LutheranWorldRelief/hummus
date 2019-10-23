@@ -12,6 +12,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
+from .common import xstr
 
 class Request(models.Model):
     meta = models.TextField()
@@ -244,7 +245,7 @@ class Contact(models.Model):
 
         # compute  'name' from first and last name, if needed
         if not self.name and (self.first_name or self.last_name):
-            self.name = "{} {}".format(self.first_name, self.last_name)
+            self.name = "{} {}".format(xstr(self.first_name), xstr(self.last_name))
             self.name = self.name.strip()
         elif not self.name:
             raise ValueError(_("We need a name! name, first_name and last_name seem to be empty."))
