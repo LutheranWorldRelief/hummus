@@ -106,35 +106,19 @@ class Capture(TemplateView):
 
 
 class ImportParticipants(DomainRequiredMixin, FormView):
+    """
+    Also known as 'step3'.
+    Further validates rows and proceeds to import.
+    """
 
-    def validate_data(self, row):
+    def validate_data(self, row, mapping):
         message = ''
-        project = row[0].value
-        org_implementing = row[1].value
-        document = row[2].value
-        first_name = row[3].value
-        last_name = row[4].value
-        if not project:
-            message = 'Problem to import record #{}, project is missing.'.format(row[0].row)
-            return message
-
-        if not org_implementing:
-            message = 'Problem to import record #{}, implementing organization is missing.' \
-                .format(row[0].row)
-            return message
-
-        if not document:
-            message = 'Problem to import record #{}, document is missing.'.format(row[0].row)
-            return message
-
-        if not first_name:
-            message = 'Problem to import record #{}, name is missing.'.format(row[0].row)
-            return message
-
-        if not last_name:
-            message = 'Problem to import record #{}, lastname is missing.'.format(row[0].row)
-            return message
-
+        for fields in mapping:
+            for field, details in mapping['contact'].items():
+                value = row[details['column']]
+                if details['required'] and not value:
+                    message = 'Problem to import record #{}, project is missing.'.format(value)
+                    return message
         return message
 
     def post(self, request, *args, **kwargs):
@@ -156,10 +140,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_ws = uploaded_wb[sheet]
 
         # creating the correct format date for python
-        date_format = '%{}'.format(date_format.replace('/', '/%'))
-
-        if date_format not in settings.ALLOWED_DATE_FORMATS:
-            raise Exception('The Date format is incorrect!')
+        date_format_maps = {'m/d/Y': '%m/%d/%Y', 'd/m/Y': '%d/%m/%Y', 'Y-m-d': '%Y-%m-%d'}
+        date_format = date_format_maps[date_format]
 
         # check headers
         template_obj = Template.objects.get(id=template)
@@ -177,23 +159,23 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
             # quick data validation
-            error_message = self.validate_data(row)
+            error_message = self.validate_data(row, mapping)
             if error_message:
                 messages.append(error_message)
                 continue
 
             # get subproject, project and organization
             if 'project' in mapping:
-                subproject = Project.objects.all()
+                subproject = SubProject.objects.all()
                 model_fields = mapping['project']
                 for field_name, field_data in model_fields.items():
                     value = row[field_data['column']].value
                     if field_name == 'name' and '=>' in value:
                         code, value = value.split('=>', 2)
-                    if field_name == 'name' and not subproject.filter(name=value).exist():
+                    if field_name == 'name' and not subproject.filter(name=value).exists():
                         field_name = 'project'
-                    if SubProject._meta.get_field(field_name).is_related:
-                        field_name = "{}__name"
+                    if SubProject._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
+                        field_name = "{}__name".format(field_name)
                     subproject = subproject.filter(**{field_name: value})
                 if not subproject:
                     messages.append('Problem to import record #{} : '
@@ -211,7 +193,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
                 row_dict[field_name] = value
-                if model.get_field(field_name).get_internal_type() == 'DateField':
+                if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         value = datetime.datetime.strptime(value, date_format)
                     else:
@@ -220,11 +202,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             # there are two ways to look up a contact: name+doc and firstname+lastname+doc
             if {'name', 'document'} <= set(model_fields):
                 contact = Contact.objects.filter(name=row_dict['name'],
-                                                 docuemnt=row_dict['document)'])
+                                                 document=row_dict['document)']).first()
             elif {'first_name', 'last_name', 'document'} <= set(model_fields):
                 contact = Contact.objects.filter(first_name=row_dict['first_name'],
                                                  last_name=row_dict['last_name'],
-                                                 docuemnt=row_dict['document'])
+                                                 document=row_dict['document']).first()
             else:
                 raise Exception('Mapping needs more contact data fields')
 
@@ -255,10 +237,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             model_fields = mapping['project_contact']
             row_dict = {}
             row_dict['source_id'] = 'excel'
+            row_dict['organization'] = organization
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
                 row_dict[field_name] = value
-                if model.get_field(field_name).get_internal_type() == 'DateField':
+                if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         value = datetime.datetime.strptime(value, date_format)
                     else:
@@ -271,7 +254,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     project_contact = ProjectContact()
                     project_contact.contact = contact
                     project_contact.project = project
-                    project_contact.organization = organization
                 else:
                     messages.append('Update project contact: {} {}'.format(project, contact))
                 update_project_contact(request, project_contact, row_dict)
