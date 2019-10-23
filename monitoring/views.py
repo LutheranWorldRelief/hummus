@@ -185,7 +185,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     value = row[field_data['column']].value
                     if field_name == 'name' and '=>' in value:
                         code, value = value.split('=>', 2)
-                    if field_name == 'name' and not subproject = subproject.filter(name=value).exist()
+                    if field_name == 'name' and not subproject.filter(name=value).exist()
                         field_name = 'project'
                     if SubProject._meta.get_field(field_name).is_related:
                         field_name = "{}__name"
