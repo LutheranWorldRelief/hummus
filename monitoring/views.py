@@ -169,7 +169,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # TODO test
         # map headers to columns
         for model, fields in mapping.items():
-            for field_name, field_data in fields,items():
+            for field_name, field_data in fields.items():
                 column_header = field_data['name']
                 mapping[model][field_name]['column'] = headers[column_header]
 
@@ -353,16 +353,16 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         headers = [cell.value for cell in uploaded_ws[header_row]]
 
         # checks columns from mapping exist in uploaded file
-        for model in mapping:
-            for field in mapping[model]:
-                column_name = mapping[model][field]['name']
+        for model, fields in mapping.items():
+            for field_name, field_data in fields.items():
+                column_header = field_data['name']
 
-                if mapping[model][field]['required']:
-                    columns_required.append(column_name)
-
-                if column_name not in headers:
+                if column_header not in headers:
                     raise Exception('Column "{}" not found, choices are: {}'
                                     .format(column_name, ', '.join(filter(None, headers))))
+
+                if field_data['required']:
+                    columns_required.append(column_header)
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
