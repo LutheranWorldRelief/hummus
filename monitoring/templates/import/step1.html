@@ -84,8 +84,15 @@
                                                 <label for="language"
                                                        class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Language:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
-                                                    <input type="text" id="language" name="language"
-                                                           value="{{ request.user.profile.language }}">
+                                                    <select class="form-control" name="language"
+                                                            id="language">
+                                                        {% for language in languages %}
+                                                            <option value="{{ language.value }}"
+                                                                    {% if request.user.profile.language == language.value %}selected{% endif %}>
+                                                                {{ language.name }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -100,8 +107,15 @@
                                                 <label for="template"
                                                        class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Template format:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
-                                                    <input type="text" name="template" class="form-control"
-                                                           id="template" value="{{ config.DEFAULT_TEMPLATE }}">
+                                                 <select class="form-control" name="language"
+                                                            id="language">
+                                                     {% for template in templates %}
+                                                            <option value="{{ template.id }}"
+                                                                    {% if template.id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
+                                                                {{ template.name }}
+                                                            </option>
+                                                        {% endfor %}
+                                                  </select>
                                                 </div>
                                             </div>
 
