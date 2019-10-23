@@ -144,7 +144,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # get advanced options
         language = request.POST.get('language', settings.LANGUAGE_CODE)
         start_row = int(request.POST.get('start_row', config.START_ROW))
-        header_row = int(request.POST.get('start_row', config.HEADER_ROW))
+        header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
         date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
 
