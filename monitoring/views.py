@@ -186,7 +186,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     if field_name == 'name' and '=>' in value:
                         code, value = value.split('=>', 2)
                     if field_name == 'name' and not subproject = subproject.filter(name=value).exist()
-                        field_name = 'project'
+                    field_name = 'project'
                     if SubProject._meta.get_field(field_name).is_related:
                         field_name = "{}__name"
                     subproject = subproject.filter(**{field_name: value})
@@ -215,8 +215,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                                                  docuemnt=row_dict['document'])
             else:
                 raise Exception('Mapping needs more contact data fields')
-
-
 
             # TODO ... pendiente actualizar codigo para crear o actualizar contacto
 
