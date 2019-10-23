@@ -30,7 +30,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request, City)
+                     Request, City, Profile)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace)
 from .catalog import create_catalog
@@ -145,7 +145,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         # check headers
         template_obj = Template.objects.get(id=template)
-        headers = {cell.value: cell.col_idx-1 for cell in uploaded_ws[header_row]}
+        headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
         mapping = getattr(template_obj, __('mapping', language))
 
         # map headers to columns
@@ -258,7 +258,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     messages.append('Update project contact: {} {}'.format(project, contact))
                 update_project_contact(request, project_contact, row_dict)
 
-
         # gets dupes
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'),
                                                                        r'\s+', ' ', 'g'))))
@@ -360,6 +359,22 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         return render(request, self.template_name, context)
 
     template_name = 'import/step2.html'
+
+
+class ImportParticipantsStep1(DomainRequiredMixin, View):
+    template_name = 'import/step1.html'
+
+    def get(self, request):
+        context = {}
+        languages = [{'value': short_name,
+                      'name': long_name} for (short_name, long_name) in
+                     Profile.LANGUAGE_CHOICES]
+        templates = Template.objects.values('id', __('name'))
+        print(templates)
+        context['short_date_format'] = settings.SHORT_DATE_FORMAT
+        context['languages'] = languages
+        context['templates'] = templates
+        return render(request, self.template_name, context)
 
 
 class DownloadTemplate(DomainRequiredMixin, View):
