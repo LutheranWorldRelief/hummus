@@ -125,9 +125,11 @@ class JSONResponseMixin:
         # -- can be serialized as JSON.
         return context
 
+
 def xstr(s):
     """ return empty instead of None. credit to https://stackoverflow.com/a/1034598/1170404 """
     return '' if s is None else str(s)
+
 
 class RegexpReplace(Func):
     """
