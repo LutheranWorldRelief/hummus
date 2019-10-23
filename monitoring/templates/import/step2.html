@@ -24,7 +24,11 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="excel_file" value="{{ excel_file }}">
                                 <input type="hidden" name="start_row" value="{{ start_row }}">
+                                <input type="hidden" name="header_row" value="{{ header_row }}">
+                                <input type="hidden" name="language" value="{{ language }}">
+                                <input type="hidden" name="template" value="{{ template }}">
                                 <input type="hidden" name="date_format" value="{{ date_format }}">
+                                <input type="hidden" name="sheet" value="{{ sheet }}">
                                 <div class="row">
                                     <div class="col-lg-4 col-lg-offset-1">
                                         <h3 class="text-info pull-left">{% trans 'Step 2' %}: {% trans 'Adjust Data' %}</h3>
