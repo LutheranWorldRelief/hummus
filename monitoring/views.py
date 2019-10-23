@@ -231,24 +231,24 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             # create new organization if needed
             contact_organization = Organization.objects.filter(
                 name=row_dict['organization']).first()
-                if not contact_organization and row_dict['organization']:
-                    messages.append('Create organization: {}'.format(row_dict['organization']))
-                    contact_organization = Organization()
-                    contact_organization.name = row_dict['organization']
-                    contact_organization.created_user = request.user.username
-                    contact_organization.save()
+            if not contact_organization and row_dict['organization']:
+                messages.append('Create organization: {}'.format(row_dict['organization']))
+                contact_organization = Organization()
+                contact_organization.name = row_dict['organization']
+                contact_organization.created_user = request.user.username
+                contact_organization.save()
 
             # create contact if needed
-                if not contact:
-                    messages.append('Create contact: {}'.format(contact))
-                    contact = Contact()
-                    if contact_organization:
-                        contact.organization = contact_organization
-                else:
-                    messages.append('Update contact: {}'.format(contact))
-                update_contact(request, contact, row_dict)
+            if not contact:
+                messages.append('Create contact: {}'.format(contact))
+                contact = Contact()
+                if contact_organization:
+                    contact.organization = contact_organization
+            else:
+                messages.append('Update contact: {}'.format(contact))
+            update_contact(request, contact, row_dict)
 
-                imported_ids.append(contact.id)
+            imported_ids.append(contact.id)
 
             # create or update project contact
             model = ProjectContact
@@ -267,12 +267,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 project_contact = ProjectContact.objects.filter(project=project,
                                                                 contact=contact).first()
                 if not project_contact:
-                    messages.append('Create project contact: {} {}'.format(project, contact)
+                    messages.append('Create project contact: {} {}'.format(project, contact))
                     project_contact = ProjectContact()
                     project_contact.contact = contact
                     project_contact.project = project
                 else:
-                    messages.append('Update project contact: {} {}'.format(project, contact)
+                    messages.append('Update project contact: {} {}'.format(project, contact))
                 update_project_contact(request, project_contact, row_dict)
 
 
