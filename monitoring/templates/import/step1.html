@@ -107,8 +107,8 @@
                                                 <label for="template"
                                                        class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Template format:' %}</label>
                                                 <div class="col-lg-7 col-md-7">
-                                                 <select class="form-control" name="language"
-                                                            id="language">
+                                                 <select class="form-control" name="template"
+                                                            id="template">
                                                      {% for template in templates %}
                                                             <option value="{{ template.template_id }}"
                                                                     {% if template.template_id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
