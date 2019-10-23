@@ -9,8 +9,14 @@ from .models import Sex, Education, Country, Product
 
 
 def update_contact(request, contact, row):
+    if contact.id:
+        contact.updated_user = request.user.username
+    else:
+        contact.created_user = request.user.username
+
     columna_name = __('name')
     columna_varname = __('varname')
+
     contact.first_name = row['first_name']
     contact.last_name = row['last_name']
     contact.source_id = row.get('source_id')
@@ -20,11 +26,7 @@ def update_contact(request, contact, row):
     contact.birthdate = row.get('birthdate')
     contact.municipality = row.get('departament')
     contact.community = row.get('community')
-
-    if contact.id:
-        contact.updated_user = request.user.username
-    else:
-        contact.created_user = request.user.username
+    contact.location = row.get('location')
 
     sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) |
                              Q(**{columna_varname: row['sex']})).first()
@@ -40,7 +42,6 @@ def update_contact(request, contact, row):
 
 
 def update_project_contact(request, project_contact, row):
-    columna_name = __('name')
     if project_contact.id:
         project_contact.updated_user = request.user.username
     else:
