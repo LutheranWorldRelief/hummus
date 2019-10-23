@@ -36,7 +36,7 @@
                         <li class="user-footer">
                             <div class="pull-left">
                                 <a class="btn btn-default btn-flat"
-                                   href="{% url 'admin:monitoring_profile_change' request.user.id %}">{% trans 'Profile' %}</a>
+                                   href="{% url 'admin:monitoring_profile_change' request.user.profile.id %}">{% trans 'Profile' %}</a>
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-default btn-flat" href="{% url 'logout' %}"
