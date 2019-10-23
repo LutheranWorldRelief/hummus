@@ -300,54 +300,54 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact_organization=Coalesce('organization__name', Value('')),
                     )
 
-        context = {}
-        context['excel_file'] = tmp_excel
-        context['messages'] = messages
-        context['model'] = list(contacts)
+        context={}
+        context['excel_file']=tmp_excel
+        context['messages']=messages
+        context['model']=list(contacts)
         return render(request, self.template_name, context)
 
-    template_name = 'import/step3.html'
+    template_name='import/step3.html'
 
 
 class ValidateExcel(DomainRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         # get advanced options
-        language = request.POST.get('language', settings.LANGUAGE_CODE)
-        start_row = int(request.POST.get('start_row', config.START_ROW))
-        header_row = int(request.POST.get('header_row', config.HEADER_ROW))
-        template = request.POST.get('template', config.DEFAULT_TEMPLATE)
-        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
+        language=request.POST.get('language', settings.LANGUAGE_CODE)
+        start_row=int(request.POST.get('start_row', config.START_ROW))
+        header_row=int(request.POST.get('header_row', config.HEADER_ROW))
+        template=request.POST.get('template', config.DEFAULT_TEMPLATE)
+        date_format=request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
 
         # get file and set name
-        excel_file = request.FILES['excel_file']
-        tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
+        excel_file=request.FILES['excel_file']
+        tmp_excel_name="{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
                                            excel_file.name)
         default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
-        uploaded_wb = load_workbook(filename=excel_file)
+        uploaded_wb=load_workbook(filename=excel_file)
 
         # gets the data sheet, tries all languages
-        uploaded_ws = None
+        uploaded_ws=None
         if _('data') in uploaded_wb.sheetnames:
-            uploaded_ws = uploaded_wb[_('data')]
+            uploaded_ws=uploaded_wb[_('data')]
         else:
             for other_lang in [lang[0] for lang in settings.LANGUAGES]:
                 with translation.override(other_lang):
                     if _('data') in uploaded_wb.sheetnames:
-                        uploaded_ws = uploaded_wb[_('data')]
+                        uploaded_ws=uploaded_wb[_('data')]
                         continue
         if not uploaded_ws:
-            uploaded_ws = uploaded_wb.active
+            uploaded_ws=uploaded_wb.active
 
         # check headers
-        template_obj = Template.objects.get(id=template)
-        mapping = getattr(template_obj, __('mapping', language))
-        columns_required = []
-        headers = [cell.value for cell in uploaded_ws[header_row]]
+        template_obj=Template.objects.get(id=template)
+        mapping=getattr(template_obj, __('mapping', language))
+        columns_required=[]
+        headers=[cell.value for cell in uploaded_ws[header_row]]
 
         # checks columns from mapping exist in uploaded file
         for model, fields in mapping.items():
             for field_name, field_data in fields.items():
-                column_header = field_data['name']
+                column_header=field_data['name']
 
                 if column_header not in headers:
                     raise Exception('Column "{}" not found, choices are: {}'
@@ -356,128 +356,128 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 if field_data['required']:
                     columns_required.append(column_header)
 
-        context = {}
-        context['columns'] = uploaded_ws[header_row]
+        context={}
+        context['columns']=uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=start_row - 1)
-        context['data'] = uploaded_ws
-        context['columns_required'] = columns_required
-        context['start_row'] = start_row
-        context['date_format'] = date_format
-        context['excel_file'] = tmp_excel_name
-        context['templaet'] = template
-        context['header_row'] = header_row
-        context['language'] = language
-        context['sheet'] = uploaded_ws.title
+        context['data']=uploaded_ws
+        context['columns_required']=columns_required
+        context['start_row']=start_row
+        context['date_format']=date_format
+        context['excel_file']=tmp_excel_name
+        context['templaet']=template
+        context['header_row']=header_row
+        context['language']=language
+        context['sheet']=uploaded_ws.title
 
         return render(request, self.template_name, context)
 
-    template_name = 'import/step2.html'
+    template_name='import/step2.html'
 
 
 class DownloadTemplate(DomainRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # get localized excel template
-        obj = Template.objects.get(id=config.DEFAULT_TEMPLATE)
-        tfile = getattr(obj, __('file'))
-        tfilename = tfile.name
+        obj=Template.objects.get(id=config.DEFAULT_TEMPLATE)
+        tfile=getattr(obj, __('file'))
+        tfilename=tfile.name
 
-        book = load_workbook(filename=tfile)
+        book=load_workbook(filename=tfile)
         create_catalog(book, request)
 
         # response
-        response = HttpResponse(content=save_virtual_workbook(book),
+        response=HttpResponse(content=save_virtual_workbook(book),
                                 content_type='application/vnd.openxmlformats-officedocument.'
                                              'spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
+        response['Content-Disposition']='attachment; filename=%s' % (basename(tfilename),)
         return response
 
 
 class ValidateDupesDoc(DomainRequiredMixin, TemplateView):
-    template_name = 'dupes_document.html'
+    template_name='dupes_document.html'
 
 
 class ValidateDupesName(DomainRequiredMixin, TemplateView):
-    template_name = 'dupes_name.html'
+    template_name='dupes_name.html'
 
 
 class SubProjectTableView(DomainRequiredMixin, PagedFilteredTableView):
-    model = SubProject
-    table_class = SubProjectTable
-    template_name = 'table.html'
-    paginate_by = 50
-    filter_class = SubProjectFilter
-    formhelper_class = SubProjectFilterFormHelper
+    model=SubProject
+    table_class=SubProjectTable
+    template_name='table.html'
+    paginate_by=50
+    filter_class=SubProjectFilter
+    formhelper_class=SubProjectFilterFormHelper
 
 
 class ProjectTableView(DomainRequiredMixin, PagedFilteredTableView):
-    model = Project
-    table_class = ProjectTable
-    template_name = 'table.html'
-    paginate_by = 50
-    filter_class = ProjectFilter
-    formhelper_class = ProjectFilterFormHelper
+    model=Project
+    table_class=ProjectTable
+    template_name='table.html'
+    paginate_by=50
+    filter_class=ProjectFilter
+    formhelper_class=ProjectFilterFormHelper
 
 
 class ContactTableView(DomainRequiredMixin, PagedFilteredTableView):
-    model = Contact
-    table_class = ContactTable
-    template_name = 'table.html'
-    paginate_by = 50
-    filter_class = ContactFilter
-    formhelper_class = ContactFilterFormHelper
+    model=Contact
+    table_class=ContactTable
+    template_name='table.html'
+    paginate_by=50
+    filter_class=ContactFilter
+    formhelper_class=ContactFilterFormHelper
 
 
 class ProjectContactTableView(DomainRequiredMixin, ReportExportMixin, PagedFilteredTableView):
-    model = ProjectContact
-    table_class = ProjectContactTable
-    template_name = 'table.html'
-    paginate_by = 50
-    filter_class = ProjectContactFilter
-    formhelper_class = ProjectContactFilterFormHelper
+    model=ProjectContact
+    table_class=ProjectContactTable
+    template_name='table.html'
+    paginate_by=50
+    filter_class=ProjectContactFilter
+    formhelper_class=ProjectContactFilterFormHelper
 
 
 class DashboardView(DomainRequiredMixin, TemplateView):
-    template_name = 'dashboard.html'
+    template_name='dashboard.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['months'] = MONTHS
-        context['projects'] = Project.objects.values('id', 'name')
+        context=super().get_context_data(**kwargs)
+        context['months']=MONTHS
+        context['projects']=Project.objects.values('id', 'name')
         return context
 
 
 class SubProjectDetailView(DetailView):
-    model = SubProject
+    model=SubProject
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context=super().get_context_data(**kwargs)
         return context
 
 
 class ProjectDetailView(DetailView):
-    model = Project
+    model=Project
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context=super().get_context_data(**kwargs)
         return context
 
 
 class ContactDetailView(DetailView):
-    model = Contact
+    model=Contact
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context=super().get_context_data(**kwargs)
         return context
 
 
 class CityDetailView(DetailView):
-    model = City
+    model=City
 
     def get_object(self, queryset=None):
-        name = self.kwargs.get('name')
-        country_id = self.kwargs.get('country_id')
-        obj = City.objects.all()
+        name=self.kwargs.get('name')
+        country_id=self.kwargs.get('country_id')
+        obj=City.objects.all()
         if country_id:
-            obj = obj.filter(Q(country_id=country_id.upper()) | Q(country__name__iexact=country_id))
-        obj = obj.filter(name__iexact=name).first()
+            obj=obj.filter(Q(country_id=country_id.upper()) | Q(country__name__iexact=country_id))
+        obj=obj.filter(name__iexact=name).first()
         return obj
