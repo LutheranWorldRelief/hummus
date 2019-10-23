@@ -17,8 +17,9 @@ def update_contact(request, contact, row):
     columna_name = __('name')
     columna_varname = __('varname')
 
-    contact.first_name = row['first_name']
-    contact.last_name = row['last_name']
+    contact.name = row.get('name', '')
+    contact.first_name = row.get('first_name', '')
+    contact.last_name = row.get('last_name', '')
     contact.source_id = row.get('source_id')
     contact.document = row.get('document', '')
     contact.women_home = row.get('women_home')
