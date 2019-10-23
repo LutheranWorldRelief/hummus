@@ -28,15 +28,15 @@ class Template(models.Model):
     name = models.CharField(max_length=50, verbose_name=_('Name'))
     name_fr = models.CharField(max_length=50, verbose_name=_('Name FR'))
     name_es = models.CharField(max_length=50, verbose_name=_('Name ES'))
-    file = models.FileField(upload_to='templates/', verbose_name=_('File'))
-    file_fr = models.FileField(upload_to='templates/', verbose_name=_('File FR'))
-    file_es = models.FileField(upload_to='templates/', verbose_name=_('File ES'))
+    file = models.FileField(upload_to='templates/', verbose_name=_('File'), null=True, blank=True)
+    file_fr = models.FileField(upload_to='templates/', verbose_name=_('File FR'), null=True, blank=True)
+    file_es = models.FileField(upload_to='templates/', verbose_name=_('File ES'), null=True, blank=True)
     mapping = JSONField(null=True, blank=True, verbose_name=_('Mapping'))
     mapping_fr = JSONField(null=True, blank=True, verbose_name=_('Mapping FR'))
     mapping_es = JSONField(null=True, blank=True, verbose_name=_('Mapping ES'))
 
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s: %s" % (self.name, self.id)
 
     class Meta:
         ordering = ['name']
