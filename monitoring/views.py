@@ -369,7 +369,8 @@ class ImportParticipantsStep1(DomainRequiredMixin, View):
         languages = [{'value': short_name,
                       'name': long_name} for (short_name, long_name) in
                      Profile.LANGUAGE_CHOICES]
-        templates = Template.objects.values('id', __('name'))
+        templates = Template.objects.values(template_id=F('id'),
+                                            template_name=F(__('name')))
         context['short_date_format'] = settings.SHORT_DATE_FORMAT
         context['languages'] = languages
         context['templates'] = templates

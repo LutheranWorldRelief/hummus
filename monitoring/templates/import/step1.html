@@ -110,9 +110,9 @@
                                                  <select class="form-control" name="language"
                                                             id="language">
                                                      {% for template in templates %}
-                                                            <option value="{{ template.id }}"
+                                                            <option value="{{ template.template_id }}"
                                                                     {% if template.id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
-                                                                {{ template.name }}
+                                                                {{ template.template_name }}
                                                             </option>
                                                         {% endfor %}
                                                   </select>
