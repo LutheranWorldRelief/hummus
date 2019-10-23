@@ -166,7 +166,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         headers = {cell.value: cell.col_idx-1 for cell in uploaded_ws[header_row]}
         mapping = getattr(template_obj, __('mapping', language))
 
-        # TODO test
         # map headers to columns
         for model, fields in mapping.items():
             for field_name, field_data in fields.items():
@@ -177,6 +176,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # import
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
+            # quick data validation
+            error_message = self.validate_data(row)
+            if error_message:
+                messages.append(error_message)
+                continue
+
             # get subproject, project and organization
             if 'project' in mapping:
                 subproject = Project.objects.all()
@@ -197,15 +202,22 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 subproject = subproject.first()
                 project = subproject.project
                 organization = subproject.organization
-                print("Got {}".format(subproject))
 
             # create or update contact
+            model = Contact
             model_fields = mapping['contact']
             row_dict = {}
+            row_dict['source_id'] = 'excel'
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
                 row_dict[field_name] = value
-            print(row_dict)
+                if model.get_field(fiel_name).get_internal_type() == 'DateField':
+                    if value:
+                        value = datetime.datetime.strptime(value, date_format)
+                    else:
+                        value = None
+
+            # there are two ways to look up a contact: name+doc and firstname+lastname+doc
             if {'name', 'document'} <= set(model_fields):
                 contact = Contact.objects.filter(name=row_dict['name'],
                                                  docuemnt=row_dict['document)'])
@@ -216,71 +228,53 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             else:
                 raise Exception('Mapping needs more contact data fields')
 
-            # TODO ... pendiente actualizar codigo para crear o actualizar contacto
-
-            # create or update project contact
-
-        # import
-        for row in uploaded_ws.iter_rows():
-            error_message = self.validate_data(row)
-            if error_message == '':
-
-                birthdate = row[project_cols + 4].value
-                project_entry_date = row[project_cols + 13].value
-                if birthdate:
-                    birthdate = datetime.datetime.strptime(birthdate, date_format)
-                else:
-                    birthdate = None
-
-                if project_entry_date:
-                    project_entry_date = datetime.datetime.strptime(project_entry_date, date_format)
-                else:
-                    project_entry_date = None
-
-                row_dict = {}
-                project = Project.objects.get(name=project_name)
-                row_dict['org_implementing_id'] = org_implementing.id
-                row_dict['birthdate'] = birthdate
-                row_dict['source_id'] = 'excel'
-                contact_organization = Organization.objects.filter(
-                    name=row_dict['organization']).first()
+            # create new organization if needed
+            contact_organization = Organization.objects.filter(
+                name=row_dict['organization']).first()
                 if not contact_organization and row_dict['organization']:
                     messages.append('Create organization: {}'.format(row_dict['organization']))
-                    if row_dict['organization']:
-                        contact_organization = Organization()
-                        contact_organization.name = row_dict['organization']
-                        contact_organization.created_user = request.user.username
-                        contact_organization.save()
+                    contact_organization = Organization()
+                    contact_organization.name = row_dict['organization']
+                    contact_organization.created_user = request.user.username
+                    contact_organization.save()
 
+            # create contact if needed
                 if not contact:
-                    messages.append('Create contact: {} {}'.format(row_dict['first_name'],
-                                                                   row_dict['last_name']))
+                    messages.append('Create contact: {}'.format(contact))
                     contact = Contact()
                     if contact_organization:
                         contact.organization = contact_organization
-                    update_contact(request, contact, row_dict)
                 else:
-                    messages.append('Update contact: {} {}'.format(row_dict['first_name'],
-                                                                   row_dict['last_name']))
-                    update_contact(request, contact, row_dict)
+                    messages.append('Update contact: {}'.format(contact))
+                update_contact(request, contact, row_dict)
 
                 imported_ids.append(contact.id)
 
-                project_contact = ProjectContact.objects.filter(project__name=project_name,
+            # create or update project contact
+            model = ProjectContact
+            model_fields = mapping['project_contact']
+            row_dict = {}
+            row_dict['source_id'] = 'excel'
+            for field_name, field_data in model_fields.items():
+                value = row[field_data['column']].value
+                row_dict[field_name] = value
+                if model.get_field(fiel_name).get_internal_type() == 'DateField':
+                    if value:
+                        value = datetime.datetime.strptime(value, date_format)
+                    else:
+                        value = None
+
+                project_contact = ProjectContact.objects.filter(project=project,
                                                                 contact=contact).first()
                 if not project_contact:
-                    messages.append('Create project contact: {} {}'.format(project.name,
-                                                                           row_dict['first_name']))
+                    messages.append('Create project contact: {} {}'.format(project, contact)
                     project_contact = ProjectContact()
                     project_contact.contact = contact
                     project_contact.project = project
-                    update_project_contact(request, project_contact, row_dict)
                 else:
-                    messages.append('Update project contact: {} {}'.format(project.name,
-                                                                           row_dict['first_name']))
-                    update_project_contact(request, project_contact, row_dict)
-            else:
-                messages.append(error_message)
+                    messages.append('Update project contact: {} {}'.format(project, contact)
+                update_project_contact(request, project_contact, row_dict)
+
 
         # gets dupes
         qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'),
