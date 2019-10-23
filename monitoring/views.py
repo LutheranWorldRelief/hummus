@@ -311,6 +311,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
 
 class ValidateExcel(DomainRequiredMixin, FormView):
+    """
+    Also known as 'step2'.
+    Validates the excel file and gets user confirmation to import.
+    """
+
     def post(self, request, *args, **kwargs):
         # get advanced options
         language = request.POST.get('language', settings.LANGUAGE_CODE)
@@ -365,7 +370,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         context['start_row'] = start_row
         context['date_format'] = date_format
         context['excel_file'] = tmp_excel_name
-        context['templaet'] = template
+        context['template'] = template
         context['header_row'] = header_row
         context['language'] = language
         context['sheet'] = uploaded_ws.title
