@@ -54,9 +54,7 @@ urlpatterns = [
          name='grafico-pais-eventos'),
 
     # import
-    path('import/participants/step1', TemplateView.as_view(
-        template_name='import/step1.html',
-        extra_context={'short_date_format': settings.SHORT_DATE_FORMAT}), name='import-step1'),
+    path('import/participants/step1', views.ImportParticipantsStep1.as_view(), name='import-step1'),
     path('import/participants/step2', views.ValidateExcel.as_view(), name='import-step2'),
     path('import/participants/step3', views.ImportParticipants.as_view(), name='import-step3'),
     path('import/capture/', views.Capture.as_view(), name='capture'),
