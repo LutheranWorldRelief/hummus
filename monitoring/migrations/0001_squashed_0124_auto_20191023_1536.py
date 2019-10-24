@@ -58,7 +58,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'organization_type',
                 'ordering': ['name'],
-                'managed': False,
                 'verbose_name': 'Organization Type',
                 'verbose_name_plural': 'Organization Types',
             },
@@ -139,7 +138,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'organization',
                 'ordering': ['name'],
-                'managed': False,
                 'verbose_name': 'Organization',
                 'verbose_name_plural': 'Organizations',
             },
@@ -168,7 +166,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'project',
                 'ordering': ['name'],
-                'managed': False,
                 'verbose_name': 'Project',
                 'verbose_name_plural': 'Projects',
             },
@@ -291,7 +288,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'filter',
                 'ordering': ['slug', 'name'],
-                'managed': False,
                 'verbose_name': 'Filter',
                 'verbose_name_plural': 'Filters',
             },
@@ -349,6 +345,26 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='City',
+            fields=[
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100)),
+                ('location', django.contrib.gis.db.models.fields.PointField(srid=4326)),
+            ],
+            options={
+                'verbose_name_plural': 'Cities',
+                'db_table': 'city',
+                'ordering': ('name',),
+            },
+        ),
+        migrations.AddField(
+            model_name='city',
+            name='country',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Country', verbose_name='Country'),
+        ),
+        migrations.CreateModel(
             name='Contact',
             fields=[
                 ('id', models.AutoField(auto_created=True,
@@ -395,7 +411,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'contact',
                 'ordering': ['name'],
-                'managed': False,
                 'verbose_name': 'Contact',
                 'verbose_name_plural': 'Contacts',
             },
@@ -454,7 +469,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'project_contact',
                 'ordering': ['project', 'contact'],
-                'managed': False,
                 'verbose_name': 'Project Contact',
                 'verbose_name_plural': 'Project Contacts',
             },
@@ -524,29 +538,6 @@ class Migration(migrations.Migration):
                 'db_table': 'subproject',
                 'ordering': ['name'],
             },
-        ),
-        migrations.CreateModel(
-            name='City',
-            fields=[
-                ('id', models.AutoField(auto_created=True,
-                                        primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('location', django.contrib.gis.db.models.fields.PointField(srid=4326)),
-            ],
-            options={
-                'verbose_name_plural': 'Cities',
-                'ordering': ('name',),
-            },
-        ),
-        migrations.AlterModelTable(
-            name='city',
-            table='city',
-        ),
-        migrations.AddField(
-            model_name='city',
-            name='country',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
-                                    to='monitoring.Country', verbose_name='Country'),
         ),
         migrations.AlterField(
             model_name='country',

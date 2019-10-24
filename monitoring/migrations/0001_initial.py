@@ -57,7 +57,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'contact',
                 'ordering': ['name'],
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -131,7 +130,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'filter',
                 'ordering': ['slug', 'name'],
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -149,7 +147,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'organization',
                 'ordering': ['name'],
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -163,7 +160,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'organization_type',
                 'ordering': ['name'],
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -183,7 +179,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'project',
                 'ordering': ['name'],
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -203,7 +198,6 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'project_contact',
                 'ordering': ['project', 'contact'],
-                'managed': False,
             },
         ),
         migrations.CreateModel(
