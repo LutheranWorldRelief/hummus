@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from monitoring.models import Contact
 
+
 class ContactTestCase(TestCase):
     def setUp(self):
         Contact.objects.create(first_name="Trey Polk", last_name="Polk")
