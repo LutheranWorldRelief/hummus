@@ -63,7 +63,9 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
     def get_data(self, context):
         qs = Contact.objects.annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
-        queryset = qs.filter(name_uc=self.kwargs['name']).values()
+        qs = qs.filter(name_uc=self.kwargs['name']).values()
+        for row in qs:
+            row['location'] = row['location'].coords
         context = {'models': list(queryset)}
         return context
 
