@@ -65,7 +65,8 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         qs = qs.filter(name_uc=self.kwargs['name']).values()
         for row in qs:
-            row['location'] = row['location'].coords
+            if row['location']:
+                row['location'] = row['location'].coords
         context = {'models': list(queryset)}
         return context
 
