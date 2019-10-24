@@ -25,8 +25,8 @@ def update_contact(request, contact, row):
     contact.women_home = row.get('women_home')
     contact.men_home = row.get('men_home')
     contact.birthdate = row.get('birthdate')
-    contact.municipality = row.get('departament')
-    contact.community = row.get('community')
+    contact.municipality = row.get('municipality').replace('_', ' ').title()
+    contact.community = row.get('community').replace('_', ' ').title()
     contact.location = row.get('location')
 
     sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) |

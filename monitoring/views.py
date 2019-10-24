@@ -166,8 +166,9 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 continue
 
             # get subproject, project and organization
+            model = SubProject
             if 'project' in mapping:
-                subproject = SubProject.objects.all()
+                subproject = model.objects.all()
                 model_fields = mapping['project']
                 for field_name, field_data in model_fields.items():
                     value = row[field_data['column']].value
@@ -175,7 +176,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                         code, value = value.split('=>', 2)
                     if field_name == 'name' and not subproject.filter(name=value).exists():
                         field_name = 'project'
-                    if SubProject._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
+                    if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
                         field_name = "{}__name".format(field_name)
                     subproject = subproject.filter(**{field_name: value})
                 if not subproject:
