@@ -91,7 +91,7 @@ class ContactTestCase(TestCase):
         self.assertEqual(name, response_content['models'][0]['name'])
 
 
-    def test_api_contact(self):
+    def test_api_doc(self):
         """get contact json data"""
         name = "Akiko Rolfe"
         document = "555"
