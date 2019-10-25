@@ -9,33 +9,40 @@ from .models import Sex, Education, Country, Product
 
 
 def update_contact(request, contact, row):
-    if contact.id:
-        contact.updated_user = request.user.username
-    else:
-        contact.created_user = request.user.username
+    if request:
+        if contact.id:
+            contact.updated_user = request.user.username
+        else:
+            contact.created_user = request.user.username
 
     columna_name = __('name')
     columna_varname = __('varname')
 
     contact.name = row.get('name', '')
-    contact.first_name = row.get('first_name', '')
-    contact.last_name = row.get('last_name', '')
+    contact.first_name = row.get('first_name')
+    contact.last_name = row.get('last_name')
     contact.source_id = row.get('source_id')
-    contact.document = row.get('document', '')
+    contact.document = row.get('document')
     contact.women_home = row.get('women_home')
     contact.men_home = row.get('men_home')
     contact.birthdate = row.get('birthdate')
-    contact.municipality = row.get('municipality').replace('_', ' ').title()
-    contact.community = row.get('community').replace('_', ' ').title()
+    contact.municipality = row.get('municipality')
+    contact.community = row.get('community')
     contact.location = row.get('location')
 
-    sex = Sex.objects.filter(Q(**{columna_name: row['sex']}) |
-                             Q(**{columna_varname: row['sex']})).first()
-    education = Education.objects.filter(Q(**{columna_name: row['education']}) |
-                                         Q(**{columna_varname: row['education']})).first()
-    country = Country.objects.filter(**{columna_name: row['country']}).first()
+    sex = row.get('sex')
+    if sex:
+        sex = Sex.objects.filter(Q(**{columna_name: sex}) |
+                                 Q(**{columna_varname: sex})).first()
+    education = row.get('education')
+    if education:
+        education = Education.objects.filter(Q(**{columna_name: education}) |
+                                             Q(**{columna_varname: education})).first()
+    country = row.get('country')
+    if country:
+        country = Country.objects.filter(**{columna_name: country}).first()
 
-    contact.sex_id = sex.id if sex else 'N'
+    contact.sex_id = sex.id if sex else None
     contact.education_id = education.id if education else None
     contact.country_id = country.id if country else None
 
