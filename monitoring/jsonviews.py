@@ -67,7 +67,7 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
         for row in qs:
             if row['location']:
                 row['location'] = row['location'].coords
-        context = {'models': list(queryset)}
+        context = {'models': list(qs)}
         return context
 
 

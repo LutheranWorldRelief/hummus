@@ -236,12 +236,19 @@ class Contact(models.Model):
 
     def save(self, *args, **kwargs):
 
-        # strips stuff from text fields
+        # strips stuff from text fields, and detects snake_names
         for field in self._meta.get_fields():
             if isinstance(field, models.CharField):
                 value = getattr(self, field.name)
                 if value:
-                    setattr(self, field.name, value.strip())
+                    value = value.strip()
+                    # detect snake_name, change to Snake Name
+                    simple_value = value
+                    simple_value = simple_value.replace(' ', '')
+                    simple_value = simple_value.replace('_', '')
+                    if '_' in value and all(c.islower() for c in simple_value):
+                        value = value.replace('_', ' ').title()
+                    setattr(self, field.name, value)
 
         # compute  'name' from first and last name, if needed
         if not self.name and (self.first_name or self.last_name):
