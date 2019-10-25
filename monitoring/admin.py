@@ -12,8 +12,13 @@ from leaflet.admin import LeafletGeoAdmin
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
                      LWRRegion, Country, City, Sex, Education, OrganizationType)
 from django.contrib.auth.models import Group, User
-from .modelForm import GroupAdminForm
 from microsoft_auth.models import MicrosoftAccount
+
+from .modelForm import GroupAdminForm
+from django.contrib.auth.forms import (
+    AdminPasswordChangeForm, UserChangeForm, UserCreationForm,
+)
+
 
 
 # Change default query
@@ -292,6 +297,15 @@ class UserAdmin(admin.ModelAdmin):
         MicrosoftInline,
         ProfileInline
     ]
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2'),
+        }),
+    )
+    form = UserChangeForm
+    add_form = UserCreationForm
+    change_password_form = AdminPasswordChangeForm
 
 
 admin.site.unregister(Group)
