@@ -10,7 +10,8 @@ from django.http import HttpResponse
 from constance import config
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
-from django_filters import FilterSet, CharFilter, ModelChoiceFilter
+from django_filters import FilterSet, CharFilter, ModelChoiceFilter, DateFromToRangeFilter
+from django_filters.widgets import RangeWidget
 from django_select2.forms import Select2Widget
 from django_tables2 import Table, SingleTableView, RequestConfig, Column
 from openpyxl import load_workbook
@@ -128,7 +129,7 @@ class ProjectContactTable(Table):
                   'contact.last_name', 'sex', 'contact.birthdate',
                   'education', 'contact.phone', 'contact.men', 'contact.women',
                   'contact.organization', 'contact.country.name', 'contact.deparment',
-                  'contact.community', 'contact.startdate', 'product')
+                  'contact.community', 'date_entry_project', 'product')
 
     def render_education(self, value, record):
         return getattr(record.contact.education, __('name'))
@@ -158,15 +159,14 @@ def organizations(request):
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
     project = ModelChoiceFilter(queryset=projects, widget=Select2Widget)
-    contact__country = ModelChoiceFilter(
-        queryset=countries, widget=Select2Widget)
-    organization = ModelChoiceFilter(
-        queryset=organizations, widget=Select2Widget)
+    contact__country = ModelChoiceFilter(queryset=countries, widget=Select2Widget)
+    organization = ModelChoiceFilter(queryset=organizations, widget=Select2Widget)
+    date_entry_project = DateFromToRangeFilter(widget=RangeWidget(attrs={'type': 'date'}))
 
     class Meta:
         model = ProjectContact
-        fields = ('contact__country', 'project',
-                  'organization', 'contact__name')
+        fields = ('contact__country', 'project', 'organization',
+                  'contact__name', 'date_entry_project')
 
 
 class ProjectContactFilterFormHelper(FormHelper):
@@ -176,6 +176,7 @@ class ProjectContactFilterFormHelper(FormHelper):
         'project',
         'organization',
         'contact__name',
+        'date_entry_project',
         Submit('submit', _('Apply Filter')),
     )
 
