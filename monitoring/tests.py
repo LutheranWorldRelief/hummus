@@ -70,8 +70,8 @@ class ContactTestCase(TestCase):
     def test_find_dupes(self):
         """find duplicates using names"""
         name = "Leigha Parnell"
-        Contact.objects.create(name=name, location=Point(1,1))
-        Contact.objects.create(name=name, location=Point(2,2))
+        Contact.objects.create(name=name, location=Point(1, 1))
+        Contact.objects.create(name=name, location=Point(2, 2))
         c = Client()
         response = c.get('/opt/api-name/{}/'.format(name.upper()))
         self.assertEqual(response.status_code, 200)
@@ -80,10 +80,10 @@ class ContactTestCase(TestCase):
 
     def test_api_contact(self):
         """get contact json data"""
-        name="Ophelia Oshiro"
-        document="555"
-        contact = Contact.objects.create(name=name, document=document, location=Point(1,1))
-        contact = Contact.objects.create(name=name, document=document, location=Point(1,1))
+        name = "Ophelia Oshiro"
+        document = "555"
+        contact = Contact.objects.create(name=name, document=document, location=Point(1, 1))
+        contact = Contact.objects.create(name=name, document=document, location=Point(1, 1))
         c = Client()
         response = c.get('/opt/api-contact/{}/'.format(contact.id))
         self.assertEqual(response.status_code, 200)
