@@ -13,7 +13,7 @@ from .models import (Contact, Project, Organization, ProjectContact, Profile, Su
                      LWRRegion, Country, City, Sex, Education, OrganizationType)
 from django.contrib.auth.models import Group, User
 from .modelForm import GroupAdminForm
-from microsoft_auth.models import MicrosoftAccount, XboxLiveAccount
+from microsoft_auth.models import MicrosoftAccount
 
 
 # Change default query
