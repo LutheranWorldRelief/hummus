@@ -13,6 +13,7 @@ from .models import (Contact, Project, Organization, ProjectContact, Profile, Su
                      LWRRegion, Country, City, Sex, Education, OrganizationType)
 from django.contrib.auth.models import Group, User
 from .modelForm import GroupAdminForm
+from microsoft_auth.models import MicrosoftAccount, XboxLiveAccount
 
 
 # Change default query
@@ -77,6 +78,11 @@ class SubProjectsInline(CompactInline):
 class ProfileInline(admin.StackedInline):
     model = Profile
     extra = 0
+
+
+class MicrosoftInline(admin.StackedInline):
+    model = MicrosoftAccount
+    readonly_fields = ['microsoft_id']
 
 
 # Admin Class
@@ -273,7 +279,17 @@ class UserAdmin(admin.ModelAdmin):
     list_display_links = ('username', 'email',)
     list_per_page = 20
     list_max_show_all = 50
+    fieldsets = [
+        (None, {'fields': ['username', 'password']}),
+        (_('Personal Information'), {'fields': ['first_name', 'last_name', 'email']}),
+        (_('Permissions'), {'fields': ['is_active', 'is_staff', 'is_superuser',
+                                       'groups', 'user_permissions']}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    ]
+    ordering = ('username',)
+    filter_horizontal = ('groups', 'user_permissions',)
     inlines = [
+        MicrosoftInline,
         ProfileInline
     ]
 
