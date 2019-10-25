@@ -155,7 +155,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 column_header = field_data['name']
                 mapping[model][field_name]['column'] = headers[column_header]
 
-        # TODO complete new import
         # import
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
