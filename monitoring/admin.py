@@ -11,6 +11,8 @@ from leaflet.admin import LeafletGeoAdmin
 
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
                      LWRRegion, Country, City, Sex, Education, OrganizationType)
+from django.contrib.auth.models import Group
+from .modelForm import GroupAdminForm
 
 
 # Change default query
@@ -256,7 +258,13 @@ class GeneralCatalogAdmin(admin.ModelAdmin):
     search_fields = ['name', 'name_es', 'name_fr']
 
 
+class GroupAdmin(admin.ModelAdmin):
+    form = GroupAdminForm
+
+
+admin.site.unregister(Group)
 admin.site.register(Contact, ContactAdmin)
+admin.site.register(Group, GroupAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
