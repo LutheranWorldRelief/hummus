@@ -64,9 +64,12 @@ class ContactNameDupesDetails(JSONResponseMixin, TemplateView):
         qs = Contact.objects.annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         qs = qs.filter(name_uc=self.kwargs['name']).values()
+
+        # make Point JSON serializable
         for row in qs:
             if row['location']:
                 row['location'] = row['location'].coords
+
         context = {'models': list(qs)}
         return context
 
@@ -229,6 +232,11 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
 
         contacts_dupes = Contact.objects.filter(
             Q(name=contact.name) | Q(document=contact.document)).exclude(id=contact_id).values()
+
+        # make Point JSON serializable
+        for row in contacts_dupes:
+            if row['location']:
+                row['location'] = row['location'].coords
 
         context['models'] = list(contacts_dupes)
 
