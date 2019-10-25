@@ -89,3 +89,15 @@ class ContactTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         response_content = json.loads(response.content)
         self.assertEqual(name, response_content['models'][0]['name'])
+
+    def test_api_doc(self):
+        """get contact json data"""
+        name = "Akiko Rolfe"
+        document = "555"
+        Contact.objects.create(name=name, document=document, location=Point(1, 1))
+        Contact.objects.create(name=name, document=document, location=Point(1, 1))
+        c = Client()
+        response = c.get('/opt/api-doc/{}/'.format(document))
+        self.assertEqual(response.status_code, 200)
+        response_content = json.loads(response.content)
+        self.assertEqual(name, response_content['models'][0]['name'])

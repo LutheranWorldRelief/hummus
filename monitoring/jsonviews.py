@@ -100,6 +100,9 @@ class ContactDocDupesDetails(JSONResponseMixin, TemplateView):
 
     def get_data(self, context):
         queryset = Contact.objects.filter(document=self.kwargs['document']).values()
+        for row in queryset:
+            if row['location']:
+                row['location'] = row['location'].coords
         context = {'models': list(queryset)}
         return context
 
