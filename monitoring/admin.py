@@ -11,7 +11,7 @@ from leaflet.admin import LeafletGeoAdmin
 
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
                      LWRRegion, Country, City, Sex, Education, OrganizationType)
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from .modelForm import GroupAdminForm
 
 
@@ -71,6 +71,11 @@ class CountryInline(CompactInline):
 class SubProjectsInline(CompactInline):
     model = SubProject
     can_delete = False
+    extra = 0
+
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
     extra = 0
 
 
@@ -262,9 +267,22 @@ class GroupAdmin(admin.ModelAdmin):
     form = GroupAdminForm
 
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff']
+    search_fields = ['username', 'email', 'first_name', 'last_name', ]
+    list_display_links = ('username', 'email',)
+    list_per_page = 20
+    list_max_show_all = 50
+    inlines = [
+        ProfileInline
+    ]
+
+
 admin.site.unregister(Group)
+admin.site.unregister(User)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(User, UserAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
