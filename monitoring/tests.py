@@ -39,7 +39,7 @@ class ContactTestCase(TestCase):
     def test_no_name(self):
         """tries to add a contact with no name"""
         with self.assertRaisesMessage(ValueError,
-            'We need a name! name, first_name and last_name seem to be empty.'):
+                                      'We need a name! name, first_name and last_name seem to be empty.'):
             contact = Contact.objects.create(document='555')
 
     def test_update_contact(self):
