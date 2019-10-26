@@ -34,6 +34,7 @@
                             </p>
                         </li>
                         <li class="user-footer">
+                            {% if request.user.profile %}
                             <div class="pull-left">
                                 <a class="btn btn-default btn-flat"
                                    href="{% url 'admin:monitoring_profile_change' request.user.profile.id %}">{% trans 'Profile' %}</a>
@@ -42,6 +43,7 @@
                                 <a class="btn btn-default btn-flat" href="{% url 'logout' %}"
                                    data-method="post">{% trans 'Log out' %}</a>
                             </div>
+                            {% endif %}
                         </li>
                     </ul>
                 </li>
