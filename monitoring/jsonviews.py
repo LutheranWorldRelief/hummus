@@ -116,6 +116,10 @@ class ContactNameValues(JSONResponseMixin, TemplateView):
         ids = request.POST.getlist('ids[]')
         queryset = Contact.objects.filter(id__in=ids).values()
 
+        for row in queryset:
+            if row['location']:
+                row['location'] = row['location'].coords
+
         values = {}
         for f in Contact._meta.fields:
             if f.column == 'id':
