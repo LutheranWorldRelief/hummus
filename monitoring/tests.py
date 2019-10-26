@@ -5,7 +5,6 @@ import json
 
 from django.contrib.gis.geos import Point
 from django.test import TestCase, Client
-from django.urls import reverse
 
 from monitoring.models import Contact, Sex
 from monitoring.updates import update_contact
@@ -88,7 +87,6 @@ class ContactTestCase(TestCase):
     def test_find_dupes(self):
         """find duplicates using names"""
         name = self.name
-        document = self.document
         c = Client()
         response = c.get('/opt/api-name/{}/'.format(name.upper()))
         self.assertEqual(response.status_code, 200)
