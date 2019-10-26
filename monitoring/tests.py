@@ -13,7 +13,7 @@ from monitoring.updates import update_contact
 
 class ContactTestCase(TestCase):
 
-    point = Point(1,1)
+    point = Point(1, 1)
     name = "Ophelia Oshiro"
     document = "555"
     contact1 = None
