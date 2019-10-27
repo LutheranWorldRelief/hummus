@@ -37,3 +37,4 @@ if settings.DEBUG:
         path(r'404/', TemplateView.as_view(template_name='404.html')),
     ]
 
+handler500 = 'hummus.views.server_error'

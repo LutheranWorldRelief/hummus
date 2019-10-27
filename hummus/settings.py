@@ -24,7 +24,6 @@ environ.Env.read_env()
 DEBUG = env('DEBUG')
 ADMINS = [x.split(':') for x in env.list('DJANGO_ADMINS', default=())]
 DEFAULT_LOGGING['handlers']['console']['filters'] = []
-LOGGING = DEFAULT_LOGGING
 SECRET_KEY = env('SECRET_KEY')
 DATABASES = {
     'default': env.db(),
