@@ -4,11 +4,8 @@ general system views
 import sys
 
 from django.template import loader
-from django.shortcuts import render
 from django.http import HttpResponseServerError
 
-
-from django.http import HttpResponseServerError
 
 def server_error(request, template_name='500.html'):
     """ custom 500 handler, it add message """
