@@ -277,7 +277,7 @@ class GroupAdmin(admin.ModelAdmin):
 
 class MyUserAdmin(UserAdmin):
     inlines = [
-        #MicrosoftInline,
+        # MicrosoftInline,
         ProfileInline,
     ]
 
