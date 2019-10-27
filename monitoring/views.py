@@ -342,7 +342,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
                 if column_header not in headers:
                     raise Exception('Column "{}" not found, choices are: {}'
-                                    .format(column_name, ', '.join(filter(None, headers))))
+                                    .format(column_header, ', '.join(filter(None, headers))))
 
                 if field_data['required']:
                     columns_required.append(column_header)
