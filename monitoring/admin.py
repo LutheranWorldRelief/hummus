@@ -3,6 +3,7 @@ admin customization for 'monitoring'
 """
 from django.apps import apps
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 
@@ -11,7 +12,9 @@ from leaflet.admin import LeafletGeoAdmin
 
 from .models import (Contact, Project, Organization, ProjectContact, Profile, SubProject,
                      LWRRegion, Country, City, Sex, Education, OrganizationType)
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
+from microsoft_auth.models import MicrosoftAccount
+
 from .modelForm import GroupAdminForm
 
 
@@ -72,6 +75,16 @@ class SubProjectsInline(CompactInline):
     model = SubProject
     can_delete = False
     extra = 0
+
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    extra = 0
+
+
+class MicrosoftInline(admin.StackedInline):
+    model = MicrosoftAccount
+    readonly_fields = ['microsoft_id']
 
 
 # Admin Class
@@ -262,9 +275,18 @@ class GroupAdmin(admin.ModelAdmin):
     form = GroupAdminForm
 
 
+class MyUserAdmin(UserAdmin):
+    inlines = [
+        # MicrosoftInline,
+        ProfileInline,
+    ]
+
+
 admin.site.unregister(Group)
+admin.site.unregister(User)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(User, MyUserAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
