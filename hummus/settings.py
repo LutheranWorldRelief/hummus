@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import environ
 from django.utils.translation import gettext_lazy as _
+from django.utils.log import DEFAULT_LOGGING
+
 
 # Env basic configuration
 env = environ.Env(
@@ -20,6 +22,8 @@ env = environ.Env(
 )
 environ.Env.read_env()
 DEBUG = env('DEBUG')
+ADMINS = [x.split(':') for x in env.list('DJANGO_ADMINS', default=())]
+DEFAULT_LOGGING['handlers']['console']['filters'] = []
 SECRET_KEY = env('SECRET_KEY')
 DATABASES = {
     'default': env.db(),
