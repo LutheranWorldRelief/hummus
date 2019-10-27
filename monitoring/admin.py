@@ -3,6 +3,7 @@ admin customization for 'monitoring'
 """
 from django.apps import apps
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 
@@ -278,41 +279,18 @@ class GroupAdmin(admin.ModelAdmin):
     form = GroupAdminForm
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff']
-    search_fields = ['username', 'email', 'first_name', 'last_name', ]
-    list_display_links = ('username', 'email',)
-    list_per_page = 20
-    list_max_show_all = 50
-    fieldsets = [
-        (None, {'fields': ['username', 'password']}),
-        (_('Personal Information'), {'fields': ['first_name', 'last_name', 'email']}),
-        (_('Permissions'), {'fields': ['is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions']}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-    ]
-    ordering = ('username',)
-    filter_horizontal = ('groups', 'user_permissions',)
+class MyUserAdmin(UserAdmin):
     inlines = [
-        MicrosoftInline,
-        ProfileInline
+        #MicrosoftInline,
+        ProfileInline,
     ]
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2'),
-        }),
-    )
-    form = UserChangeForm
-    add_form = UserCreationForm
-    change_password_form = AdminPasswordChangeForm
 
 
 admin.site.unregister(Group)
 admin.site.unregister(User)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Group, GroupAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, MyUserAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(ProjectContact, ProjectContactAdmin)
