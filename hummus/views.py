@@ -10,6 +10,7 @@ from django.http import HttpResponseServerError
 
 from django.http import HttpResponseServerError
 
+
 def server_error(request, template_name='500.html'):
     """ custom 500 handler, it add message """
     t = loader.get_template(template_name)
