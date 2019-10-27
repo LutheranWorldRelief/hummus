@@ -16,10 +16,6 @@ from django.contrib.auth.models import Group, User
 from microsoft_auth.models import MicrosoftAccount
 
 from .modelForm import GroupAdminForm
-from django.contrib.auth.forms import (
-    AdminPasswordChangeForm, UserChangeForm, UserCreationForm,
-)
-
 
 
 # Change default query
