@@ -604,6 +604,7 @@ class ProjectContact(models.Model):
     date_end_project = models.DateField(blank=True, null=True, verbose_name=_('Date End Project'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
                                      null=True, verbose_name=_('Organization'))
+    extra = JSONField(null=True, blank=True, verbose_name=_('Extra Data'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
     created_user = models.CharField(max_length=64, null=True, blank=True,
