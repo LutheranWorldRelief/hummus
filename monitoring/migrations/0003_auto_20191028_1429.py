@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Log',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True, verbose_name='Created')),
                 ('user', models.CharField(blank=True, max_length=64, null=True, verbose_name='User')),
                 ('module', models.CharField(blank=True, max_length=64, null=True, verbose_name='Module')),
@@ -28,7 +29,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='contact',
             name='updated_user',
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name='Modified by'),
+            field=models.CharField(blank=True, max_length=64, null=True,
+                                   verbose_name='Modified by'),
         ),
         migrations.AlterField(
             model_name='organization',
@@ -38,7 +40,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='organization',
             name='updated_user',
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name='Modified by'),
+            field=models.CharField(blank=True, max_length=64, null=True,
+                                   verbose_name='Modified by'),
         ),
         migrations.AlterField(
             model_name='project',
@@ -48,7 +51,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='project',
             name='updated_user',
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name='Modified by'),
+            field=models.CharField(blank=True, max_length=64, null=True,
+                                   verbose_name='Modified by'),
         ),
         migrations.AlterField(
             model_name='projectcontact',
@@ -58,7 +62,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='projectcontact',
             name='updated_user',
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name='Modified by'),
+            field=models.CharField(blank=True, max_length=64, null=True,
+                                   verbose_name='Modified by'),
         ),
         migrations.AlterField(
             model_name='request',
@@ -73,6 +78,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='subproject',
             name='updated_user',
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name='Modified by'),
+            field=models.CharField(blank=True, max_length=64, null=True,
+                                   verbose_name='Modified by'),
         ),
     ]

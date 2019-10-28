@@ -655,6 +655,7 @@ class ContactType(models.Model):
         verbose_name = _('Contact Type')
         verbose_name_plural = _('Contacts Types')
 
+
 class Log(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     user = models.CharField(max_length=64, null=True, blank=True, verbose_name=_('User'))
