@@ -244,7 +244,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['organization'] = organization
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
-                print("{} : {} : {}".format(field_name, model._meta.get_field(field_name).get_internal_type(), value))
+                print("{} : {} : {}".format(field_name, model._meta.get_field(
+                    field_name).get_internal_type(), value))
                 if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
                         if not row[field_data['column']].is_date:
