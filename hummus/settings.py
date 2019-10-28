@@ -15,7 +15,6 @@ import environ
 from django.utils.translation import gettext_lazy as _
 from django.utils.log import DEFAULT_LOGGING
 
-
 # Env basic configuration
 env = environ.Env(
     DEBUG=(bool, False)
@@ -244,7 +243,19 @@ ALLOWED_DATE_FORMATS = ('%d/%m/%Y', '%m/%d/%Y')
 
 LOGIN_REDIRECT_URL = '/dashboard'
 
+# optional constance settings
 try:
     from .constance_settings import *
+except ImportError:
+    pass
+
+# optional sentry init
+try:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    sentry_sdk.init(
+        dsn=env('SENTRY_DSN'),
+        integrations=[DjangoIntegration()]
+    )
 except ImportError:
     pass

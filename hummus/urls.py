@@ -34,7 +34,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        path(r'404/', TemplateView.as_view(template_name='404.html')),
+        path('404/', TemplateView.as_view(template_name='404.html')),
+        path('500/', TemplateView.as_view(template_name='500.html')),
     ]
 
 handler500 = 'hummus.views.server_error'
