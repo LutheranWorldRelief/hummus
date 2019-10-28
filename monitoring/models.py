@@ -18,7 +18,7 @@ class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    created_user = models.CharField(max_length=20, null=True, blank=True,
+    created_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Created by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
@@ -218,9 +218,9 @@ class Contact(models.Model):
     # Contact meta data fields
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True,
+    created_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True,
+    updated_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
@@ -350,9 +350,9 @@ class Organization(models.Model):
     is_implementer = models.BooleanField(default=False, verbose_name=_('Is Implementer'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True,
+    created_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True,
+    updated_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
@@ -435,9 +435,9 @@ class Project(models.Model):
                                   verbose_name=_('Record Type'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True,
+    created_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True,
+    updated_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
@@ -523,9 +523,9 @@ class SubProject(models.Model):
                                      null=True, verbose_name=_('Implementing Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True,
+    created_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True,
+    updated_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
@@ -606,9 +606,9 @@ class ProjectContact(models.Model):
                                      null=True, verbose_name=_('Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
-    created_user = models.CharField(max_length=20, null=True, blank=True,
+    created_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Created by'))
-    updated_user = models.CharField(max_length=20, null=True, blank=True,
+    updated_user = models.CharField(max_length=64, null=True, blank=True,
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
@@ -654,3 +654,10 @@ class ContactType(models.Model):
         ordering = ['name']
         verbose_name = _('Contact Type')
         verbose_name_plural = _('Contacts Types')
+
+
+class Log(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    user = models.CharField(max_length=64, null=True, blank=True, verbose_name=_('User'))
+    module = models.CharField(max_length=64, null=True, blank=True, verbose_name=_('Module'))
+    content = models.TextField(blank=True, null=True, verbose_name=_('Content'))
