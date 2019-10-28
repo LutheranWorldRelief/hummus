@@ -197,7 +197,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     value = Point(float(lng), float(lat))
                 if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
-                        value = datetime.datetime.strptime(value, date_format)
+                        if not row[field_data['column']].is_date:
+                            value = datetime.datetime.strptime(value, date_format)
                     else:
                         value = None
                 row_dict[field_name] = value
@@ -243,9 +244,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['organization'] = organization
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
+                print("{} : {} : {}".format(field_name, model._meta.get_field(
+                    field_name).get_internal_type(), value))
                 if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                     if value:
-                        value = datetime.datetime.strptime(value, date_format)
+                        if not row[field_data['column']].is_date:
+                            value = datetime.datetime.strptime(value, date_format)
                     else:
                         value = None
                 row_dict[field_name] = value
