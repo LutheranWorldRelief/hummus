@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='projectcontact',
             name='extra',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, null=True, verbose_name='Extra Data'),
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True, null=True, verbose_name='Extra Data'),
         ),
     ]
