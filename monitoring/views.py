@@ -179,9 +179,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                         field_name = "{}__name".format(field_name)
                     subproject = subproject.filter(**{field_name: value})
                 if not subproject:
-                    messages.append('Problem to import record #{} : '
-                                    'Subproject with Project "{}" and Organization "{}"\
-                        does not exist!'.format(row[0].row, project_name, organization_name))
+                    messages.append('Problem to import record #{} : Subproject with Project '
+                                    'and Organization does not exist!'.format(row[0].row,))
                 subproject = subproject.first()
                 project = subproject.project
                 organization = subproject.organization
