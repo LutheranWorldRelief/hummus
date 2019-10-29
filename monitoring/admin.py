@@ -15,7 +15,7 @@ from .models import (Contact, Project, Organization, ProjectContact, Profile, Su
 from django.contrib.auth.models import Group, User
 from microsoft_auth.models import MicrosoftAccount
 
-from .modelForm import GroupAdminForm
+from .forms import GroupAdminForm
 
 
 # Change default query
