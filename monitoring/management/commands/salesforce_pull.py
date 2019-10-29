@@ -154,14 +154,17 @@ class Command(BaseCommand):
             hummus_subprojects = SubProject.objects.all()
             sf_fields = "Id, Name, RecordType.Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Implementer__r.Name, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c, Men_Direct_Actual__c, Men_Indirect_Actual__c, Women_Direct_Actual__c, Women_Indirect_Actual__c"
             if options['project_ids']:
-                subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
+                subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (
+                    sf_fields, options['project_ids']))
             else:
-                subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.RecordType.Name <> 'Non-Project'" % (sf_fields,))
+                subprojects = sf.query_all(
+                    "SELECT %s FROM Sub_Project__c WHERE Project__r.RecordType.Name <> 'Non-Project'" % (sf_fields,))
             for subproject in subprojects['records']:
                 # check if organization exists
                 if subproject['Implementer__r'] and not getByName(Organization, subproject['Implementer__r']['Name']):
                     Organization.objects.create(name=subproject['Implementer__r']['Name'])
-                    self.stdout.write(self.style.SUCCESS('Successfully added organization "%s"' % (subproject['Implementer__r']['Name'],)))
+                    self.stdout.write(self.style.SUCCESS(
+                        'Successfully added organization "%s"' % (subproject['Implementer__r']['Name'],)))
                 hummus_subproject = hummus_subprojects.filter(salesforce=subproject['Id']).first()
                 if hummus_subproject:
                     # subproject exists already, update fields
