@@ -461,7 +461,8 @@ class SubProjectDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['contact_locations'] = self.object.project.projectcontact_set.filter(contact__location__isnull=False)
+        context['contact_locations'] = self.object.project.projectcontact_set.filter(
+            contact__location__isnull=False)
         return context
 
 
@@ -470,7 +471,8 @@ class ProjectDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['contact_locations'] = self.object.projectcontact_set.filter(contact__location__isnull=False)
+        context['contact_locations'] = self.object.projectcontact_set.filter(
+            contact__location__isnull=False)
         return context
 
 
