@@ -241,13 +241,16 @@ class Contact(models.Model):
             if isinstance(field, models.CharField):
                 value = getattr(self, field.name)
                 if value:
-                    value = value.strip()
-                    # detect snake_name, change to Snake Name
-                    simple_value = value
-                    simple_value = simple_value.replace(' ', '')
-                    simple_value = simple_value.replace('_', '')
-                    if '_' in value and all(c.islower() for c in simple_value):
-                        value = value.replace('_', ' ').title()
+                    if isinstance(value, str):
+                        value = value.strip()
+                        # detect snake_name, change to Snake Name
+                        simple_value = value
+                        simple_value = simple_value.replace(' ', '')
+                        simple_value = simple_value.replace('_', '')
+                        if '_' in value and all(c.islower() for c in simple_value):
+                            value = value.replace('_', ' ').title()
+                    else:
+                        value = value
                     setattr(self, field.name, value)
 
         # compute  'name' from first and last name, if needed
