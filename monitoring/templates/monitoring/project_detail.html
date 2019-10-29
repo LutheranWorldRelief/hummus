@@ -1,12 +1,35 @@
 {% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load l10n %}
+{% block extra_header %}
+    {% leaflet_js %}
+    {% leaflet_css %}
+{% endblock %}
 {% block content %}
 <p>Name: {{ object.name }}</p>
 <p>Code: {{ object.code }}</p>
-<p>Logo: {{ object.logo }}</p>
-<p>Colors: {{ object.colors }}</p>
-<p>Url: {{ object.url }}</p>
 <p>Start: {{ object.start }}</p>
 <p>End: {{ object.end }}</p>
-<p>Target men: {{ object.goalmen }}</p>
-<p>Target women: {{ object.goalwomen }}</p>
+<p>Target direct men: {{ object.targetmen }}</p>
+<p>Target direct women: {{ object.targetwomen }}</p>
+<p>Target indirect men: {{ object.targetimen }}</p>
+<p>Target indirect women: {{ object.targetiwomen }}</p>
+<p>Actual direct men: {{ object.actualmen }}</p>
+<p>Actual direct women: {{ object.actualwomen }}</p>
+<p>Actual indirect men: {{ object.actualimen }}</p>
+<p>Actual indirect women: {{ object.actualiwomen }}</p>
+{% localize off %}
+<script type="text/javascript">
+    function map_init_basic (map, options) {
+        markers = [];
+		{% for row in contact_locations %}
+            marker = [{{row.contact.location.y}}, {{row.contact.location.x}}];
+			L.marker(marker).addTo(map);
+            markers.push(marker);
+		{% endfor %}
+        map.fitBounds([markers]);
+    }
+</script>
+{% endlocalize %}
+{% leaflet_map "yourmap" callback="window.map_init_basic" %}
 {% endblock %}
