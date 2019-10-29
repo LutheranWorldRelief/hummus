@@ -425,6 +425,11 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
                               verbose_name=_('Status'))
+    actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
+    actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
+    actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
+    actualiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Actual Indirect Women'))
     targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men',
                                     verbose_name=_('Target Direct Men'))
     targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women',
