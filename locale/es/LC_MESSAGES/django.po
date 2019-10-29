@@ -604,11 +604,11 @@ msgstr "Estado"
 
 #: monitoring/models.py:425 monitoring/models.py:515
 msgid "Target Direct Men"
-msgstr "Meta indirecta Hombres"
+msgstr "Meta Directa Hombres"
 
 #: monitoring/models.py:427 monitoring/models.py:516
 msgid "Target Direct Women"
-msgstr "Meta indirecta Mujeres"
+msgstr "Meta Directa Mujeres"
 
 #: monitoring/models.py:428 monitoring/models.py:517
 msgid "Target Indirect Men"
