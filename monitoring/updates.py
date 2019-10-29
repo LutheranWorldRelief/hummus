@@ -23,6 +23,7 @@ def update_contact(request, contact, row):
     contact.last_name = row.get('last_name')
     contact.source_id = row.get('source_id')
     contact.document = row.get('document')
+    contact.phone_personal = row.get('phone_personal')
     contact.women_home = row.get('women_home')
     contact.men_home = row.get('men_home')
     contact.birthdate = row.get('birthdate')
