@@ -14,11 +14,17 @@ $(function () {
             if ($(this).hasClass('showdata')) {
                 $(this).text(label.text2);
                 $(this).removeClass('showdata');
-                table.find('tr:not(.tr-missing_data)').fadeOut('slow');
+                tableParticipants
+                    .find('#resultados')
+                    .find('tr:not(.tr-missing_data)')
+                    .fadeOut('slow');
             } else {
                 $(this).text(label.text1);
                 $(this).addClass('showdata');
-                table.find('tr:not(.tr-missing_data)').fadeIn('slow');
+                tableParticipants
+                    .find('#resultados')
+                    .find('tr:not(.tr-missing_data)')
+                    .fadeIn('slow');
             }
         });
 
