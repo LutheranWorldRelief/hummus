@@ -208,6 +208,10 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         contact.updated_user = request.user.username
         contact.save()
 
+        contact_dict = model_to_dict(contact)
+        if contact.location:
+            contact_dict['location'] = contact.location.coords
+
         result = {}
         result['Proyectos-Contactos'] = {}
         result['Eliminado'] = {}
@@ -219,7 +223,7 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         context['save'] = True
         context['result'] = result
         context['id'] = contact_id
-        context['model'] = model_to_dict(contact)
+        context['model'] = contact_dict
         context['models'] = list(contacts.values())
         return self.render_to_response(context)
 
