@@ -3,15 +3,12 @@ from django.conf import settings
 
 from simple_salesforce import Salesforce
 
-from monitoring.models import Project, SubProject, Country, LWRRegion
+from monitoring.models import Project, SubProject, Country, LWRRegion, Organization
 
 
-def getLWRRegion(string):
-    return LWRRegion.objects.filter(name=string).first()
-
-
-def getCountry(string):
-    return Country.objects.filter(name=string).first()
+def getByName(model, string):
+    result = model.objects.filter(name=string).first()
+    return result
 
 
 def getCountries(string):
@@ -49,7 +46,7 @@ def updateProject(hummus_record, salesforce_record, options):
         if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
             salesforce_value = int(salesforce_value)
         if field == 'lwrregion':
-            salesforce_value = getLWRRegion(salesforce_value)
+            salesforce_value = getByName(LWRRegion, salesforce_value)
         if field == 'countries':
             countries = getCountries(salesforce_record['Search_Strings__c'])
             if countries != list(hummus_record.countries.all()):
@@ -77,17 +74,21 @@ def updateSubProject(hummus_record, salesforce_record, options):
                   'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c',
                   'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c',
                   'targetimen': 'Men_Indirect_Target__c',
-                  'targetiwomen': 'Women_Indirect_Target__c', }
+                  'targetiwomen': 'Women_Indirect_Target__c',
+                  'organization': ['Implementer__r', 'Name']}
     update = False
     for field in fields_map:
         if isinstance(fields_map[field], list):
-            salesforce_value = salesforce_record[fields_map[field][0]][fields_map[field][1]]
+            if salesforce_record[fields_map[field][0]]:
+                salesforce_value = salesforce_record[fields_map[field][0]][fields_map[field][1]]
         else:
             salesforce_value = salesforce_record[fields_map[field]]
         if hasattr(salesforce_value, 'is_integer') and salesforce_value.is_integer():
             salesforce_value = int(salesforce_value)
+        if field == 'organization':
+            salesforce_value = getByName(Organization, salesforce_value)
         if field == 'country':
-            salesforce_value = getCountry(salesforce_value)
+            salesforce_value = getByName(Country, salesforce_value)
         if str(getattr(hummus_record, field)) != str(salesforce_value):
             if options['verbose']:
                 print("field {} : {} != {}".format(
@@ -151,12 +152,16 @@ class Command(BaseCommand):
 
         if not options['skip_subprojects']:
             hummus_subprojects = SubProject.objects.all()
-            sf_fields = "Id, Name, RecordType.Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c, Men_Direct_Actual__c, Men_Indirect_Actual__c, Women_Direct_Actual__c, Women_Indirect_Actual__c"
+            sf_fields = "Id, Name, RecordType.Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Implementer__r.Name, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c, Men_Direct_Actual__c, Men_Indirect_Actual__c, Women_Direct_Actual__c, Women_Indirect_Actual__c"
             if options['project_ids']:
                 subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (sf_fields, options['project_ids']))
             else:
                 subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.RecordType.Name <> 'Non-Project'" % (sf_fields,))
             for subproject in subprojects['records']:
+                # check if organization exists
+                if subproject['Implementer__r'] and not getByName(Organization, subproject['Implementer__r']['Name']):
+                    Organization.objects.create(name=subproject['Implementer__r']['Name'])
+                    self.stdout.write(self.style.SUCCESS('Successfully added organization "%s"' % (subproject['Implementer__r']['Name'],)))
                 hummus_subproject = hummus_subprojects.filter(salesforce=subproject['Id']).first()
                 if hummus_subproject:
                     # subproject exists already, update fields
