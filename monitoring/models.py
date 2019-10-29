@@ -179,11 +179,9 @@ class ContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
-                return self.filter(projectcontact__project__countries__lwrregion__in=\
-                                   user.profile.lwrregions.all())
+                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
-                return self.filter(projectcontact__project__countries__in=\
-                                   user.profile.countries.all())
+                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
             if user.profile.projects.exists():
                 return self.filter(projectcontact__project__in=user.profile.projects.all())
         else:
