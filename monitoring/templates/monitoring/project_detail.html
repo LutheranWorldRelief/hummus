@@ -10,14 +10,14 @@
 <p>Code: {{ object.code }}</p>
 <p>Start: {{ object.start }}</p>
 <p>End: {{ object.end }}</p>
-<p>Target direct men: {{ object.targetmen }}</p>
-<p>Target direct women: {{ object.targetwomen }}</p>
-<p>Target indirect men: {{ object.targetimen }}</p>
-<p>Target indirect women: {{ object.targetiwomen }}</p>
-<p>Actual direct men: {{ object.actualmen }}</p>
-<p>Actual direct women: {{ object.actualwomen }}</p>
-<p>Actual indirect men: {{ object.actualimen }}</p>
-<p>Actual indirect women: {{ object.actualiwomen }}</p>
+<p>{% trans 'Target direct men' %}: {{ object.targetmen }}</p>
+<p>{% trans 'Target direct women' %}: {{ object.targetwomen }}</p>
+<p>{% trans 'Target indirect men' %}: {{ object.targetimen }}</p>
+<p>{% trans 'Target indirect women' %}: {{ object.targetiwomen }}</p>
+<p>{% trans 'Actual direct men' %}: {{ object.actualmen }}</p>
+<p>{% trans 'Actual direct women' %}: {{ object.actualwomen }}</p>
+<p>{% trans 'Actual indirect men' %}: {{ object.actualimen }}</p>
+<p>{% trans 'Actual indirect women' %}: {{ object.actualiwomen }}</p>
 {% localize off %}
 <script type="text/javascript">
     function map_init_basic (map, options) {
