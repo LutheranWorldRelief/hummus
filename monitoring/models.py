@@ -180,6 +180,8 @@ class ContactQuerySet(models.QuerySet):
                 return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
                 return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
+            if user.profile.projects.exists():
+                return self.filter(projectcontact__project__in=user.profile.projects.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -577,6 +579,8 @@ class ProjectContactQuerySet(models.QuerySet):
                 return self.filter(project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
                 return self.filter(project__countries__in=user.profile.countries.all())
+            if user.profile.projects.exists():
+                return self.filter(project__in=user.profile.projects.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
