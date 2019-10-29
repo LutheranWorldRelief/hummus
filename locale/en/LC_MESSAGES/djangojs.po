@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-16 15:39+0000\n"
+"POT-Creation-Date: 2019-10-29 05:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -289,10 +289,6 @@ msgstr ""
 
 #: monitoring/static/js/fileinput.js:4592
 msgid "Close detailed preview"
-msgstr ""
-
-#: monitoring/static/js/fileinput.min.js:10
-msgid "generic"
 msgstr ""
 
 #: monitoring/static/js/lib/highcharts/lib/svg2pdf.js:24
