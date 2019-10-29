@@ -192,15 +192,15 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['source_id'] = 'excel'
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
-                if model._meta.get_field(field_name).get_internal_type() == 'PointField':
-                    (lat, lng, alt, acc) = value.split(' ', 4)
-                    value = Point(float(lng), float(lat))
-                if model._meta.get_field(field_name).get_internal_type() == 'DateField':
-                    if value:
+                if value:
+                    if model._meta.get_field(field_name).get_internal_type() == 'PointField':
+                        (lat, lng, alt, acc) = value.split(' ', 4)
+                        value = Point(float(lng), float(lat))
+                    if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
                             value = datetime.datetime.strptime(value, date_format)
-                    else:
-                        value = None
+                else:
+                    value = None
                 row_dict[field_name] = value
 
             # there are two ways to look up a contact: name+doc and firstname+lastname+doc
@@ -246,12 +246,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 value = row[field_data['column']].value
                 print("{} : {} : {}".format(field_name, model._meta.get_field(
                     field_name).get_internal_type(), value))
-                if model._meta.get_field(field_name).get_internal_type() == 'DateField':
-                    if value:
+                if value:
+                    if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
                             value = datetime.datetime.strptime(value, date_format)
-                    else:
-                        value = None
+                else:
+                    value = None
                 row_dict[field_name] = value
 
                 project_contact = ProjectContact.objects.filter(project=project,
