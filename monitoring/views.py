@@ -194,7 +194,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 value = row[field_data['column']].value
                 if value:
                     if model._meta.get_field(field_name).get_internal_type() == 'PointField':
-                        (lat, lng, alt, acc) = value.split(' ', 4)
+                        (lat, lng) = value.split(' ')[:2]
                         value = Point(float(lng), float(lat))
                     if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
