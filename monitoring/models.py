@@ -335,6 +335,8 @@ class OrganizationQuerySet(models.QuerySet):
                 return self.filter(country__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
                 return self.filter(country__in=user.profile.countries.all())
+            if user.profile.projects.exists():
+                return self.filter(projectcontact__project__in=user.profile.projects.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -516,6 +518,10 @@ class SubProject(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name=_('Country'))
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
+                                     null=True, verbose_name=_('Implementing Organization'))
+    recordtype = models.CharField(max_length=100, null=True, blank=True,
+                                  verbose_name=_('Record Type'))
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
@@ -526,10 +532,6 @@ class SubProject(models.Model):
     targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
     targetiwomen = models.IntegerField(blank=True, null=True,
                                        verbose_name=_('Target Indirect Women'))
-    recordtype = models.CharField(max_length=100, null=True, blank=True,
-                                  verbose_name=_('Record Type'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
-                                     null=True, verbose_name=_('Implementing Organization'))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
     created_user = models.CharField(max_length=64, null=True, blank=True,
