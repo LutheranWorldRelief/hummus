@@ -122,7 +122,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         return message
 
     def post(self, request, *args, **kwargs):
-        messages = []
+        messages_error = []
+        messages_info = []
         imported_ids = []
 
         # get advanced options
@@ -160,7 +161,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             # quick data validation
             error_message = self.validate_data(row, mapping)
             if error_message:
-                messages.append(error_message)
+                messages_error.append(error_message)
                 continue
 
             # get subproject, project and organization
@@ -178,7 +179,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                         field_name = "{}__name".format(field_name)
                     subproject = subproject.filter(**{field_name: value})
                 if not subproject:
-                    messages.append('Problem to import record #{} : Subproject with Project '
+                    messages_error.append('Problem to import record #{} : Subproject with Project '
                                     'and Organization does not exist!'.format(row[0].row,))
                     continue
                 subproject = subproject.first()
@@ -218,7 +219,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             contact_organization = Organization.objects.filter(
                 name=row_dict['organization']).first()
             if not contact_organization and row_dict['organization']:
-                messages.append('Create organization: {}'.format(row_dict['organization']))
+                messages_info.append('Create organization: {}'.format(row_dict['organization']))
                 contact_organization = Organization()
                 contact_organization.name = row_dict['organization']
                 contact_organization.created_user = request.user.username
@@ -226,12 +227,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
             # create contact if needed
             if not contact:
-                messages.append('Create contact: {}'.format(contact))
+                messages_info.append('Create contact: {}'.format(contact))
                 contact = Contact()
                 if contact_organization:
                     contact.organization = contact_organization
             else:
-                messages.append('Update contact: {}'.format(contact))
+                messages_info.append('Update contact: {}'.format(contact))
             update_contact(request, contact, row_dict)
 
             imported_ids.append(contact.id)
@@ -244,8 +245,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             row_dict['organization'] = organization
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
-                print("{} : {} : {}".format(field_name, model._meta.get_field(
-                    field_name).get_internal_type(), value))
                 if value:
                     if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
@@ -258,12 +257,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 project_contact = ProjectContact.objects.filter(project=project,
                                                                 contact=contact).first()
                 if not project_contact:
-                    messages.append('Create project contact: {} {}'.format(project, contact))
+                    messages_info.append('Create project contact: {} {}'.format(project, contact))
                     project_contact = ProjectContact()
                     project_contact.contact = contact
                     project_contact.project = project
                 else:
-                    messages.append('Update project contact: {} {}'.format(project, contact))
+                    messages_info.append('Update project contact: {} {}'.format(project, contact))
                 update_project_contact(request, project_contact, row_dict)
 
         # gets dupes
@@ -292,7 +291,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         context = {}
         context['excel_file'] = tmp_excel
-        context['messages'] = messages
+        context['messages_error'] = messages_error
+        context['messages_info'] = messages_info
         context['model'] = list(contacts)
         return render(request, self.template_name, context)
 
