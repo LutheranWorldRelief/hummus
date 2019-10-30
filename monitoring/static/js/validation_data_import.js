@@ -40,11 +40,19 @@ $(function () {
             let filas = tableParticipants.find('#resultados tr');
             filas.each(function () {
                 let fila = $(this);
+                let title = gettext('Missing ');
+                let have_data_missing = false;
                 for (let index of array_index) {
                     let celda = fila.find('td').eq(index);
                     if (celda.hasClass('empty-cell-important')) {
-                        fila.addClass('tr-missing_data')
+                        title += ' ' + columns_required[index] + ',';
+                        have_data_missing = true;
                     }
+                }
+                if (have_data_missing) {
+                    fila.addClass('tr-missing_data');
+                    fila.attr('data-toggle', 'tooltip');
+                    fila.attr('title', title.slice(0, -1));
                 }
             })
         }
@@ -67,7 +75,6 @@ $(function () {
                     let celda = fila.find('td').eq(index);
                     if (celda.text().length <= 0) {
                         celda.addClass('empty-cell-important');
-                        break;
                     }
                 }
             })
