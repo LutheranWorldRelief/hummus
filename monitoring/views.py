@@ -180,6 +180,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 if not subproject:
                     messages.append('Problem to import record #{} : Subproject with Project '
                                     'and Organization does not exist!'.format(row[0].row,))
+                    continue
                 subproject = subproject.first()
                 project = subproject.project
                 organization = subproject.organization
