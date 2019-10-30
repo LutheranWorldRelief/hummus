@@ -3,6 +3,7 @@ common or frequently used tools
 """
 
 import re
+import datetime
 
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -129,6 +130,19 @@ class JSONResponseMixin:
 def xstr(s):
     """ return empty instead of None. credit to https://stackoverflow.com/a/1034598/1170404 """
     return '' if s is None else str(s)
+
+
+def parse_date(string, date_format=None):
+    """ parses date in all possible formats, tries optional date_format first """
+    date_formats = settings.DATE_INPUT_FORMATS
+    if date_format:
+        date_formats.insert(0, date_format)
+    for fmt in date_formats:
+        try:
+            return datetime.datetime.strptime(string, fmt)
+        except ValueError:
+            pass
+    return None
 
 
 class RegexpReplace(Func):
