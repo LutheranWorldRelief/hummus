@@ -7,18 +7,21 @@
     {% leaflet_css %}
 {% endblock %}
 {% block content %}
-<p>Name: {{ object.name }}</p>
-<p>Code: {{ object.code }}</p>
+<p>Name: {{ object.name }} <a target='_blank' href='{{ object.salesforce_url }}'>{{ object.code }}</a></p>
 <p>Start: {{ object.start }}</p>
 <p>End: {{ object.end }}</p>
+<table><tr><td>
 <p>{% trans 'Target Direct Men' %}: {{ object.targetmen }}</p>
 <p>{% trans 'Target Direct Women' %}: {{ object.targetwomen }}</p>
 <p>{% trans 'Target Indirect Men' %}: {{ object.targetimen }}</p>
 <p>{% trans 'Target Indirect Women' %}: {{ object.targetiwomen }}</p>
+</td><td>
 <p>{% trans 'Actual Direct Men' %}: {{ object.actualmen }}</p>
 <p>{% trans 'Actual Direct Women' %}: {{ object.actualwomen }}</p>
 <p>{% trans 'Actual Indirect Men' %}: {{ object.actualimen }}</p>
 <p>{% trans 'Actual Indirect Women' %}: {{ object.actualiwomen }}</p>
+</td></tr></table>
+{% if contact_locations %}
 {% localize off %}
 <script type="text/javascript">
     function map_init_basic (map, options) {
@@ -33,4 +36,5 @@
 </script>
 {% endlocalize %}
 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+{% endif %}
 {% endblock %}
