@@ -96,6 +96,7 @@ class ContactAdmin(AdminForUserMixin, LeafletGeoAdmin):
     ordering = ['name']
     readonly_fields = ['created', 'updated', ]
     list_filter = [
+        ('projectcontact__project', admin.RelatedOnlyFieldListFilter),
         ('country'),
         ('organization__name'),
         'type'
@@ -179,7 +180,7 @@ class ProjectContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_max_show_all = 50
     search_fields = ['id', 'project__name', 'contact__name', 'product__name']
     list_filter = [
-        ('product'),
+        ('project', admin.RelatedOnlyFieldListFilter),
         ('contact__country', admin.RelatedOnlyFieldListFilter),
         ('organization', admin.RelatedOnlyFieldListFilter),
     ]

@@ -14,6 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .common import xstr
 
+
 class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
@@ -30,8 +31,10 @@ class Template(models.Model):
     name_fr = models.CharField(max_length=50, verbose_name=_('Name FR'))
     name_es = models.CharField(max_length=50, verbose_name=_('Name ES'))
     file = models.FileField(upload_to='templates/', verbose_name=_('File'), null=True, blank=True)
-    file_fr = models.FileField(upload_to='templates/', verbose_name=_('File FR'), null=True, blank=True)
-    file_es = models.FileField(upload_to='templates/', verbose_name=_('File ES'), null=True, blank=True)
+    file_fr = models.FileField(upload_to='templates/', verbose_name=_('File FR'),
+                               null=True, blank=True)
+    file_es = models.FileField(upload_to='templates/', verbose_name=_('File ES'),
+                               null=True, blank=True)
     mapping = JSONField(null=True, blank=True, verbose_name=_('Mapping'))
     mapping_fr = JSONField(null=True, blank=True, verbose_name=_('Mapping FR'))
     mapping_es = JSONField(null=True, blank=True, verbose_name=_('Mapping ES'))
@@ -180,6 +183,8 @@ class ContactQuerySet(models.QuerySet):
                 return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
                 return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
+            if user.profile.projects.exists():
+                return self.filter(projectcontact__project__in=user.profile.projects.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -227,7 +232,6 @@ class Contact(models.Model):
 
     objects = ContactQuerySet.as_manager()
 
-
     def get_absolute_url(self):
         return "/contact/%i/" % self.id
 
@@ -241,14 +245,13 @@ class Contact(models.Model):
             if isinstance(field, models.CharField):
                 value = getattr(self, field.name)
                 if value:
-                    if isinstance(value, str):
-                        value = value.strip()
-                        # detect snake_name, change to Snake Name
-                        simple_value = value
-                        simple_value = simple_value.replace(' ', '')
-                        simple_value = simple_value.replace('_', '')
-                        if '_' in value and all(c.islower() for c in simple_value):
-                            value = value.replace('_', ' ').title()
+                    value = str(value).strip()
+                    # detect snake_name, change to Snake Name
+                    simple_value = value
+                    simple_value = simple_value.replace(' ', '')
+                    simple_value = simple_value.replace('_', '')
+                    if '_' in value and all(c.islower() for c in simple_value):
+                        value = value.replace('_', ' ').title()
 
                     setattr(self, field.name, value)
 
@@ -423,6 +426,11 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
                               verbose_name=_('Status'))
+    actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
+    actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
+    actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
+    actualiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Actual Indirect Women'))
     targetmen = models.IntegerField(blank=True, null=True, db_column='goal_men',
                                     verbose_name=_('Target Direct Men'))
     targetwomen = models.IntegerField(blank=True, null=True, db_column='goal_women',
@@ -460,14 +468,17 @@ class Project(models.Model):
 
     def get_women(self):
         return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
+
     get_women.short_description = _('Women')
 
     def get_men(self):
         return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
+
     get_men.short_description = _('Men')
 
     def get_total(self):
         return self.get_women() + self.get_men()
+
     get_total.short_description = _('Total')
 
     @property
@@ -579,6 +590,8 @@ class ProjectContactQuerySet(models.QuerySet):
                 return self.filter(project__countries__lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
                 return self.filter(project__countries__in=user.profile.countries.all())
+            if user.profile.projects.exists():
+                return self.filter(project__in=user.profile.projects.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self

@@ -55,7 +55,7 @@
                         {% verbatim %}
                         <table class="table" style="display: block; overflow-y: scroll; max-height: 500px;">
                             <tr v-for="(values, key) in modelsResolve" v-if="showAttribute(key)">
-                                <th>{{ modelLabels[key] }}</th>
+                                <th>{{ modelLabels[key.replace('_id','')] }}</th>
                                 <td>
                                     <select class="form-control" v-model="modelMerge[key]" v-if="showField(key)">
                                         <option v-for="value in values">{{ value }}</option>
