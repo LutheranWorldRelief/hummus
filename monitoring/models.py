@@ -14,6 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .common import xstr
 
+
 class Request(models.Model):
     meta = models.TextField()
     body = models.TextField()
@@ -231,7 +232,6 @@ class Contact(models.Model):
 
     objects = ContactQuerySet.as_manager()
 
-
     def get_absolute_url(self):
         return "/contact/%i/" % self.id
 
@@ -245,7 +245,7 @@ class Contact(models.Model):
             if isinstance(field, models.CharField):
                 value = getattr(self, field.name)
                 if value:
-                    value = value.strip()
+                    value = str(value).strip()
                     # detect snake_name, change to Snake Name
                     simple_value = value
                     simple_value = simple_value.replace(' ', '')
@@ -467,14 +467,17 @@ class Project(models.Model):
 
     def get_women(self):
         return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
+
     get_women.short_description = _('Women')
 
     def get_men(self):
         return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
+
     get_men.short_description = _('Men')
 
     def get_total(self):
         return self.get_women() + self.get_men()
+
     get_total.short_description = _('Total')
 
     @property
