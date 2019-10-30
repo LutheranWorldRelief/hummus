@@ -40,12 +40,12 @@ $(function () {
             let filas = tableParticipants.find('#resultados tr');
             filas.each(function () {
                 let fila = $(this);
-                let title = gettext('Missing ');
+                let title = gettext('Missing');
                 let have_data_missing = false;
-                for (let index of array_index) {
+                for (let index in array_index) {
                     let celda = fila.find('td').eq(index);
                     if (celda.hasClass('empty-cell-important')) {
-                        title += ' ' + columns_required[index] + ',';
+                        title += ' ' + array_index[index] + ',';
                         have_data_missing = true;
                     }
                 }
@@ -59,19 +59,18 @@ $(function () {
     }
 
     function getColumnAddClass() {
-        let array_index = [];
+        let array_index = {};
         tableParticipants.find('thead tr th').each(function (index) {
             let cell = $(this);
             if (columns_required.includes(cell.text())) {
-                array_index.push(index)
+                array_index[index] = cell.text().trim();
             }
         });
-        if (array_index.length > 0) {
-
+        if (Object.entries(array_index).length > 0) {
             let filas = tableParticipants.find('#resultados tr');
             filas.each(function () {
                 let fila = $(this);
-                for (let index of array_index) {
+                for (let index in array_index) {
                     let celda = fila.find('td').eq(index);
                     if (celda.text().length <= 0) {
                         celda.addClass('empty-cell-important');
