@@ -97,9 +97,9 @@ class ContactAdmin(AdminForUserMixin, LeafletGeoAdmin):
     readonly_fields = ['created', 'updated', ]
     list_filter = [
         ('projectcontact__project', admin.RelatedOnlyFieldListFilter),
-        ('country'),
-        ('organization__name'),
-        'type'
+        ('country', admin.RelatedOnlyFieldListFilter),
+        ('organization', admin.RelatedOnlyFieldListFilter),
+        ('type', admin.RelatedOnlyFieldListFilter),
     ]
     inlines = [
         ProjectContactInline,

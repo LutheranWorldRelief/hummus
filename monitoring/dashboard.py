@@ -204,7 +204,6 @@ def proyectos_metas(request):
         f=Count('contact', filter=Q(contact__sex='F')),
         m=Count('contact', filter=Q(contact__sex='M')))
     totales['total'] = totales['f'] + totales['m']
-    print(totales)
     if proyecto['targetmen'] and proyecto['targetwomen']:
         proyecto['meta_total'] = proyecto['targetmen'] + proyecto['targetwomen']
     else:
