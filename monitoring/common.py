@@ -139,7 +139,7 @@ def parse_date(string, date_format=None):
         date_formats.insert(0, date_format)
     for fmt in date_formats:
         try:
-            return datetime.datetime.strptime(string, fmt)
+            return datetime.datetime.strptime(str(string), fmt).date()
         except ValueError:
             pass
     return None
