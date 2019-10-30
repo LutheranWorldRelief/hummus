@@ -252,7 +252,6 @@ class Contact(models.Model):
                     simple_value = simple_value.replace('_', '')
                     if '_' in value and all(c.islower() for c in simple_value):
                         value = value.replace('_', ' ').title()
-
                     setattr(self, field.name, value)
 
         # compute  'name' from first and last name, if needed
