@@ -245,7 +245,7 @@ class Contact(models.Model):
             if isinstance(field, models.CharField):
                 value = getattr(self, field.name)
                 if value:
-                    value = value.strip()
+                    value = str(value).strip()
                     # detect snake_name, change to Snake Name
                     simple_value = value
                     simple_value = simple_value.replace(' ', '')
