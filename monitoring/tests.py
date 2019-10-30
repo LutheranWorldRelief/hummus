@@ -2,13 +2,23 @@
 Tests for 'monitoring'
 """
 import json
+import datetime
 
 from django.contrib.gis.geos import Point
 from django.test import TestCase, Client
 
 from monitoring.models import Contact, Sex
 from monitoring.updates import update_contact
+from monitoring.common import parse_date
 
+
+class CommonTestCase(TestCase):
+
+    def test_parse_date(self):
+        test_date = datetime.date(2000, 12, 31)
+        self.assertEqual(test_date, parse_date('2000-12-31'))
+        self.assertEqual(test_date, parse_date('12/31/2000'))
+        self.assertEqual(None, parse_date(1))
 
 class ContactTestCase(TestCase):
 
