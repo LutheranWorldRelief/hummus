@@ -3,7 +3,6 @@
 """
 import json
 import time
-import datetime
 from os.path import basename
 from django.conf import settings
 
@@ -33,7 +32,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
                      Request, City, Profile)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
-                     RegexpReplace)
+                     RegexpReplace, parse_date)
 from .catalog import create_catalog
 from .updates import update_contact, update_project_contact
 
@@ -198,7 +197,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                         value = Point(float(lng), float(lat))
                     if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
-                            value = datetime.datetime.strptime(value, date_format)
+                            value = parse_date(value, date_format)
                 else:
                     value = None
                 row_dict[field_name] = value
@@ -249,7 +248,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 if value:
                     if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
-                            value = datetime.datetime.strptime(value, date_format)
+                            value = parse_date(value, date_format)
+
                 else:
                     value = None
                 row_dict[field_name] = value
