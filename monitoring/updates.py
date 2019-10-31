@@ -61,3 +61,14 @@ def update_project_contact(request, project_contact, row):
     project_contact.source_id = row.get('source_id')
 
     project_contact.save()
+
+
+def validate_data(row, mapping):
+    message = ''
+    for fields in mapping:
+        for field, details in mapping['contact'].items():
+            value = row[details['column']]
+            if details['required'] and not value:
+                message = 'Problem to import record #{}, project is missing.'.format(value)
+                return message
+    return message
