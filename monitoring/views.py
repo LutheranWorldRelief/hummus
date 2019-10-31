@@ -343,6 +343,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 if field_data['required']:
                     columns_required.append(column_header)
 
+        context = {}
         context['columns'] = uploaded_ws[header_row]
         uploaded_ws.delete_rows(0, amount=start_row - 1)
 
@@ -354,7 +355,6 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 messages_error.append(error_message)
                 continue
 
-        context = {}
         context['messages_error'] = messages_error
         context['data'] = uploaded_ws
         context['columns_required'] = columns_required
