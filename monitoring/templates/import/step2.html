@@ -57,11 +57,23 @@
                                         <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
                                         <ol> {# TODO show only if needed #}
                                             {% for column in columns_required %}
-                                            <li><strong>{{ column }}</strong></li>
+                                                <li><strong>{{ column }}</strong></li>
                                             {% endfor %}
                                         </ol>
                                     </div>
                                 </div>
+                                {% if messages_errors_data|length > 0 %}
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-lg-offset-1">
+                                            <h5><strong>{% trans 'Registros con datos faltantes' %}</strong></h5>
+                                            {% for message in messages_errors_data %}
+                                                <p>{{ message }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
                                 <hr>
                                 <div class="row">
 
