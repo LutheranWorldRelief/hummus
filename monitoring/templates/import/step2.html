@@ -64,13 +64,6 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-lg-5 col-lg-offset-1">
-                                        <h3 class="text-info pull-left">{% trans 'Data to import' %}
-                                            <small><a href="javascript:void(0);" class="d-none showdata"
-                                                      id="showBadRecords">{% trans 'Show only records with missing data' %}</a>
-                                            </small>
-                                        </h3>
-                                    </div>
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
                                          style="width: calc(100% - 50px); height: 600px">
@@ -79,7 +72,6 @@
                                             <caption>{% trans 'list of participants' %}</caption>
                                             <thead>
                                             <tr>
-                                                <th>Select</th>
                                                 {% for col in columns %}
                                                     <th>{{ col.value }}</th>
                                                 {% endfor %}
@@ -88,10 +80,6 @@
                                             <tbody id="resultados">
                                             {% for row in data %}
                                                 <tr>
-                                                    <td>
-                                                        <input type="checkbox" checked="checked"
-                                                               value="{{ row.0.row }}">
-                                                    </td>
                                                     {% for cell in row %}
 
                                                         {% if cell.value != None %}
