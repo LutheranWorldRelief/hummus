@@ -345,7 +345,15 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
+
+        headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
         uploaded_ws.delete_rows(0, amount=start_row - 1)
+
+        # map headers to columns
+        for model, fields in mapping.items():
+            for field_name, field_data in fields.items():
+                column_header = field_data['name']
+                mapping[model][field_name]['column'] = headers[column_header]
 
         # validate rows
         for row in uploaded_ws.iter_rows():
