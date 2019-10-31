@@ -3,32 +3,6 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
     validationData();
 
-    $('body')
-        .on('click', '#showBadRecords', function () {
-
-            let label = {
-                text1: gettext('Show only records with missing data'),
-                text2: gettext('Show all records'),
-            };
-
-            if ($(this).hasClass('showdata')) {
-                $(this).text(label.text2);
-                $(this).removeClass('showdata');
-                tableParticipants
-                    .find('#resultados')
-                    .find('tr:not(.tr-missing_data)')
-                    .fadeOut('slow');
-            } else {
-                $(this).text(label.text1);
-                $(this).addClass('showdata');
-                tableParticipants
-                    .find('#resultados')
-                    .find('tr:not(.tr-missing_data)')
-                    .fadeIn('slow');
-            }
-        });
-
-
     function validationData() {
         let array_index = getColumnAddClass();
         let mostrar_boton = ($('.empty-cell-important').length <= 0);
@@ -50,7 +24,6 @@ $(function () {
                     }
                 }
                 if (have_data_missing) {
-                    fila.addClass('tr-missing_data');
                     fila.attr('data-toggle', 'tooltip');
                     fila.attr('title', title.slice(0, -1));
                 }
