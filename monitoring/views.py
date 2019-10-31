@@ -296,6 +296,8 @@ class ValidateExcel(DomainRequiredMixin, FormView):
     """
 
     def post(self, request, *args, **kwargs):
+        messages_error = []
+
         # get advanced options
         language = request.POST.get('language', settings.LANGUAGE_CODE)
         start_row = int(request.POST.get('start_row', config.START_ROW))
@@ -353,6 +355,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 continue
 
         context = {}
+        context['messages_error'] = messages_error
         context['data'] = uploaded_ws
         context['columns_required'] = columns_required
         context['start_row'] = start_row
