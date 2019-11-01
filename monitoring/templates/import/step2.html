@@ -73,18 +73,6 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                {% if messages_errors_data|length > 0 %}
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-lg-5 col-lg-offset-1">
-                                            <h5><strong>{% trans 'Registros con datos faltantes' %}</strong></h5>
-                                            {% for message in messages_errors_data %}
-                                                <p>{{ message }}</p>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-
                                 <hr>
                                 <div class="row">
 
@@ -145,13 +133,9 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script>
-        var columns_required = {{ columns_required|safe }};
-    </script>
     <script src="{% static 'js/assets/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script src="{% static 'js/validation_data_import.js' %}"></script>
 
 {% endblock %}
