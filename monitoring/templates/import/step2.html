@@ -40,13 +40,15 @@
                                                    href="{% url 'monitoring:import-step1' %}">
                                                     <i class="fa fa-backward"></i>{% trans 'Cancel' %} </a>
                                             </li>
-                                            <li>
-                                                <button type="submit"
-                                                        class="btn btn-success btn-block pull-right"><i
-                                                        class="fa fa-upload fa-w-16"></i>
-                                                    {% trans 'Import and continue' %}
-                                                </button>
-                                            </li>
+                                            {% if not messages_error %}
+                                                <li>
+                                                    <button type="submit"
+                                                            class="btn btn-success btn-block pull-right">
+                                                        <i class="fa fa-upload fa-w-16"></i>
+                                                        {% trans 'Import and continue' %}
+                                                    </button>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </div>
@@ -72,67 +74,59 @@
                                             {% endfor %}
                                         </div>
                                     </div>
-                                {% endif %}
-                                {% if messages_errors_data|length > 0 %}
+                                {% else %}
                                     <hr>
                                     <div class="row">
-                                        <div class="col-lg-5 col-lg-offset-1">
-                                            <h5><strong>{% trans 'Registros con datos faltantes' %}</strong></h5>
-                                            {% for message in messages_errors_data %}
-                                                <p>{{ message }}</p>
-                                            {% endfor %}
+                                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
+                                             style="width: calc(100% - 50px); height: 600px">
+
+                                            <table class="table table-bordered" style="margin: 5px"
+                                                   id="tableParticipants">
+                                                <caption>{% trans 'list of participants' %}</caption>
+                                                <thead>
+                                                <tr>
+                                                    {% for col in columns %}
+                                                        <th>{{ col.value }}</th>
+                                                    {% endfor %}
+                                                </tr>
+                                                </thead>
+                                                <tbody id="resultados">
+                                                {% for row in data %}
+                                                    <tr>
+                                                        {% for cell in row %}
+
+                                                            {% if cell.value != None %}
+                                                                <td>
+                                                                    {% if cell.value|length > 45 %}
+                                                                        <span tabindex="0" data-toggle="tooltip"
+                                                                              class="cursor-"
+                                                                              title="{{ cell.value }}">{{ cell.value|truncatechars:25 }}</span>
+                                                                    {% else %}
+                                                                        {{ cell.value }}
+                                                                    {% endif %}
+                                                                </td>
+                                                            {% else %}
+                                                                <td></td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 {% endif %}
-
-                                <hr>
-                                <div class="row">
-
-                                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
-                                         style="width: calc(100% - 50px); height: 600px">
-
-                                        <table class="table table-bordered" style="margin: 5px" id="tableParticipants">
-                                            <caption>{% trans 'list of participants' %}</caption>
-                                            <thead>
-                                            <tr>
-                                                {% for col in columns %}
-                                                    <th>{{ col.value }}</th>
-                                                {% endfor %}
-                                            </tr>
-                                            </thead>
-                                            <tbody id="resultados">
-                                            {% for row in data %}
-                                                <tr>
-                                                    {% for cell in row %}
-
-                                                        {% if cell.value != None %}
-                                                            <td>
-                                                                {% if cell.value|length > 45 %}
-                                                                    <span tabindex="0" data-toggle="tooltip"
-                                                                          class="cursor-"
-                                                                          title="{{ cell.value }}">{{ cell.value|truncatechars:25 }}</span>
-                                                                {% else %}
-                                                                    {{ cell.value }}
-                                                                {% endif %}
-                                                            </td>
-                                                        {% else %}
-                                                            <td></td>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
+                                {% if not messages_error %}
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
+                                             style="margin: 10px 20px 10px 10px">
+                                            <button type="submit" class="btn btn-success btn-block">
+                                                <i class="fa fa-upload fa-w-16"></i>
+                                                {% trans 'Import and continue' %}
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
-                                         style="margin: 10px 20px 10px 10px">
-                                        <button type="submit" class="btn btn-success btn-block">
-                                            <i class="fa fa-upload fa-w-16"></i>
-                                            {% trans 'Import and continue' %}
-                                        </button>
-                                    </div>
-                                </div>
+                                {% endif %}
                                 <div style="clear: both;"></div>
                             </form>
                         </div>
@@ -145,13 +139,9 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script>
-        var columns_required = {{ columns_required|safe }};
-    </script>
     <script src="{% static 'js/assets/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/adminlte.min.js' %}"></script>
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script src="{% static 'js/validation_data_import.js' %}"></script>
 
 {% endblock %}
