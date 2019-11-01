@@ -62,6 +62,17 @@
                                         </ol>
                                     </div>
                                 </div>
+                                {% if messages_error %}
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-lg-offset-1">
+                                            <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
+                                            {% for message in messages_error %}
+                                                <p>{{ message }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 {% if messages_errors_data|length > 0 %}
                                     <hr>
                                     <div class="row">

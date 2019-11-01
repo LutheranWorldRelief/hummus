@@ -64,7 +64,27 @@ def update_project_contact(request, project_contact, row):
     project_contact.save()
 
 
+def try_to_find(model, value):
+    """ tries to find value in model """
+
+    name = "name"
+    name_trans = __(name)
+    varname = "varname"
+    varname_trans = __(varname)
+
+    condition = Q(**{name: value})
+    if hasattr(model, name_trans):
+        condition = (condition | Q(**{name_trans: value}))
+    if hasattr(model, varname):
+        condition = (condition | Q(**{varname: value}))
+    if hasattr(model, varname_trans):
+        condition = (condition | Q(**{varname_trans: value}))
+
+    return model.objects.filter(condition).first()
+
+
 def validate_data(row, mapping, start_row=0, date_format=None):
+    """ validates an excel row """
     app_name = 'monitoring'
     map_models = {'project': 'SubProject', 'contact': 'Contact',
                   'project_contact': 'ProjectContact'}
@@ -72,12 +92,31 @@ def validate_data(row, mapping, start_row=0, date_format=None):
         model = apps.get_model(app_name, map_models[model_name])
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
+            reference = "{}{}".format(cell.column_letter, cell.row+start_row-1)
+
+            # validates required fields
             if details['required'] and not cell.value:
-                return '{} ({}{}) is required'.format(details['name'],
-                                                      cell.column_letter, cell.row)
-            if hasattr(model, field):
+                return '[{}]: {} is required'.format(reference, details['name'])
+
+            if cell.value and hasattr(model, field):
+
+                # validates date feilds
                 if model._meta.get_field(field).get_internal_type() == 'DateField':
-                    if cell.value and not parse_date(cell.value):
-                        return '{} "{}" ({}{}) is not a valid date.'.\
-                            format(field, cell.value, cell.column_letter, cell.row+start_row-1)
+                    if not cell.is_date and not parse_date(cell.value):
+                        return '[{}]: "{}" is not a valid date.'.format(reference,
+                                                                        field, cell.value,)
+
+                # validates foreign keys
+                if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
+                    related_model = model._meta.get_field(field).related_model
+                    found = try_to_find(related_model, cell.value)
+                    if not found:
+                        if related_model.objects.count() <= 10:
+                            options = list(related_model.objects.values_list('name', flat=True))
+                            options_trans = list(related_model.objects.values_list(__('name'),
+                                                                                   flat=True))
+                            options.extend(options_trans)
+                            return '[{}]: "{}" not found in {}. Options are {}'.\
+                                format(reference, cell.value, field, options)
+                        return '[{}]: "{}" not found in {}.'.format(reference, cell.value, field)
     return
