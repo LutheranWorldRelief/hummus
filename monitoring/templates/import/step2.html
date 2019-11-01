@@ -40,7 +40,7 @@
                                                    href="{% url 'monitoring:import-step1' %}">
                                                     <i class="fa fa-backward"></i>{% trans 'Cancel' %} </a>
                                             </li>
-                                            {% if not messages_error %}
+                                            {% if not messages_error or config.ALLOW_INVALID_IMPORT %}
                                                 <li>
                                                     <button type="submit"
                                                             class="btn btn-success btn-block pull-right">
@@ -123,7 +123,7 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                {% if not messages_error %}
+                                {% if not messages_error or config.ALLOW_INVALID_IMPORT %}
                                     <div class="row">
                                         <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
                                              style="margin: 10px 20px 10px 10px">
