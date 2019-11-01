@@ -14,21 +14,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contact',
             name='log',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Log', verbose_name='Related event'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Log', verbose_name='Related event'),
         ),
         migrations.AddField(
             model_name='organization',
             name='log',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Log', verbose_name='Related event'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Log', verbose_name='Related event'),
         ),
         migrations.AddField(
             model_name='project',
             name='log',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Log', verbose_name='Related event'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Log', verbose_name='Related event'),
         ),
         migrations.AddField(
             model_name='projectcontact',
             name='log',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.Log', verbose_name='Related event'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.Log', verbose_name='Related event'),
         ),
     ]
