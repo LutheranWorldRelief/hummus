@@ -696,5 +696,3 @@ class Log(models.Model):
         ordering = ['-created']
         verbose_name = _('Log')
         verbose_name_plural = _('Logs')
-
-
