@@ -54,24 +54,31 @@
                                 </div>
                                 <br>
                                 <hr>
+                                {% if messages_error %}
                                 <div class="row">
                                     <div class="col-lg-5 col-lg-offset-1">
                                         <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
-                                        <ol> {# TODO show only if needed #}
+                                        <ol>
                                             {% for column in columns_required %}
                                                 <li><strong>{{ column }}</strong></li>
                                             {% endfor %}
                                         </ol>
                                     </div>
                                 </div>
-                                {% if messages_error %}
                                     <hr>
                                     <div class="row">
                                         <div class="col-lg-5 col-lg-offset-1">
                                             <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
+                                            <ul>
                                             {% for message in messages_error %}
-                                                <p>{{ message }}</p>
+                                            <li>foo</li>
+                                            <ul>
+                                                {% for submessage in message %}
+                                                <li>{{ submessage }}</li>
+                                                {% endfor %}
+                                            </ul>
                                             {% endfor %}
+                                            </ul>
                                         </div>
                                     </div>
                                 {% else %}
