@@ -130,10 +130,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_wb = load_workbook(excel_file)
         uploaded_ws = uploaded_wb[sheet]
 
-        # creating the correct format date for python
-        date_format_maps = {'m/d/Y': '%m/%d/%Y', 'd/m/Y': '%d/%m/%Y', 'Y-m-d': '%Y-%m-%d'}
-        date_format = date_format_maps[date_format]
-
         # check headers
         template_obj = Template.objects.get(id=template)
         headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
