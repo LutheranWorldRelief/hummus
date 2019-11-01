@@ -77,10 +77,13 @@ def try_to_find(model, value):
     condition = Q(**{name: value})
     if hasattr(model, name_trans):
         condition = (condition | Q(**{name_trans: value}))
+        condition = (condition | Q(**{name_trans: value.title()}))
     if hasattr(model, varname):
         condition = (condition | Q(**{varname: value}))
+        condition = (condition | Q(**{varname: value.title()}))
     if hasattr(model, varname_trans):
         condition = (condition | Q(**{varname_trans: value}))
+        condition = (condition | Q(**{varname_trans: value.title()}))
 
     return model.objects.filter(condition).exists()
 

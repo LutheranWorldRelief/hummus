@@ -349,7 +349,7 @@ class Organization(models.Model):
                                 verbose_name=_('Country'))
     organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True,
                                           null=True, verbose_name=_('Organization Type'))
-    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True,
+    organization = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,
                                      related_name="parent", verbose_name=_('Organization'))
     description = models.CharField(max_length=255, blank=True, null=True,
                                    verbose_name=_('Description'))
