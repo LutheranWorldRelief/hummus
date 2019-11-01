@@ -102,7 +102,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
             model_fields = mapping['project']
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
-                if field_name == 'name' and '=>' in value:
+                if value and field_name == 'name' and '=>' in value:
                     code, value = value.split('=>', 2)
                 if field_name == 'name' and not subproject.filter(name=value).exists():
                     field_name = 'project'
