@@ -134,6 +134,14 @@ def xstr(s):
 
 def parse_date(string, date_format=None):
     """ parses date in all possible formats, tries optional date_format first """
+
+    # already date, return
+    if isinstance(string, datetime.datetime):
+        return string.date()
+    if isinstance(string, datetime.date):
+        return string
+
+    # do parse
     date_formats = settings.DATE_INPUT_FORMATS
     date_formats.extend(settings.DATETIME_INPUT_FORMATS)
     if date_format:
@@ -143,7 +151,7 @@ def parse_date(string, date_format=None):
             return datetime.datetime.strptime(str(string), fmt).date()
         except ValueError:
             pass
-    return None
+    return
 
 
 class RegexpReplace(Func):

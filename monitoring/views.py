@@ -362,7 +362,6 @@ class ValidateExcel(DomainRequiredMixin, FormView):
             error_message = validate_data(row, mapping, start_row, date_format)
             if error_message:
                 bad_rows.append(row)
-                print(error_message)
                 messages_error.append(error_message)
 
         context['messages_error'] = messages_error
