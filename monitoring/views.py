@@ -142,7 +142,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 mapping[model][field_name]['column'] = headers[column_header]
 
         # create log event
-        content = "Excel import using '' and template '{}'".format(tmp_excel, template)
+        content = "Excel import using '{}' and template '{}'".format(tmp_excel, template)
         log = Log.objects.create(module='excel import', user=request.user.username, content=content)
 
         # import

@@ -31,6 +31,7 @@ def update_contact(request, contact, row):
     contact.municipality = row.get('municipality')
     contact.community = row.get('community')
     contact.location = row.get('location')
+    contact.log = row.get('log')
 
     sex = row.get('sex')
     if sex:
@@ -60,6 +61,7 @@ def update_project_contact(request, project_contact, row):
     project_contact.organization = row.get('organization')
     project_contact.date_entry_project = row.get('date_entry_project')
     project_contact.source_id = row.get('source_id')
+    project_contact.log = row.get('log')
 
     project_contact.save()
 
