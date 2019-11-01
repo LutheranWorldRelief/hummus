@@ -113,7 +113,9 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 project = row[model_fields['name']['column']].value
                 organization = row[model_fields['organization']['column']].value
                 messages.append('[{}]: Subproject with Project "{}" and Organization "{}" '
-                                'does not exist!'.format(row[0].row + offset, project, organization, ))
+                                'does not exist!'.format(row[0].row + offset,
+                                                         project,
+                                                         organization, ))
 
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
