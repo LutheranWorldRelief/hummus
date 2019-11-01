@@ -34,7 +34,7 @@ from .models import (SubProject, Project, Contact, Template, Organization, Proje
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace, parse_date)
 from .catalog import create_catalog
-from .updates import update_contact, update_project_contact
+from .updates import update_contact, update_project_contact, validate_data
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -111,16 +111,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
     Further validates rows and proceeds to import.
     """
 
-    def validate_data(self, row, mapping):
-        message = ''
-        for fields in mapping:
-            for field, details in mapping['contact'].items():
-                value = row[details['column']]
-                if details['required'] and not value:
-                    message = 'Problem to import record #{}, project is missing.'.format(value)
-                    return message
-        return message
-
     def post(self, request, *args, **kwargs):
         messages_error = []
         messages_info = []
@@ -159,7 +149,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
             # quick data validation
-            error_message = self.validate_data(row, mapping)
+            error_message = validate_data(row, mapping)
             if error_message:
                 messages_error.append(error_message)
                 continue
@@ -306,6 +296,8 @@ class ValidateExcel(DomainRequiredMixin, FormView):
     """
 
     def post(self, request, *args, **kwargs):
+        messages_error = []
+
         # get advanced options
         language = request.POST.get('language', settings.LANGUAGE_CODE)
         start_row = int(request.POST.get('start_row', config.START_ROW))
@@ -353,7 +345,25 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         context = {}
         context['columns'] = uploaded_ws[header_row]
+
+        headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
         uploaded_ws.delete_rows(0, amount=start_row - 1)
+
+        # map headers to columns
+        for model, fields in mapping.items():
+            for field_name, field_data in fields.items():
+                column_header = field_data['name']
+                mapping[model][field_name]['column'] = headers[column_header]
+
+        # validate rows
+        for row in uploaded_ws.iter_rows():
+            # quick data validation
+            error_message = validate_data(row, mapping)
+            if error_message:
+                messages_error.append(error_message)
+                continue
+
+        context['messages_error'] = messages_error
         context['data'] = uploaded_ws
         context['columns_required'] = columns_required
         context['start_row'] = start_row
