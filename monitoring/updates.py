@@ -117,7 +117,11 @@ def validate_data(row, mapping, start_row=0, date_format=None):
 
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
-            reference = "{}{}".format(cell.column_letter, cell.row + offset)
+            try:
+                reference = "{}{}".format(cell.column_letter, cell.row + offset)
+            except AttributeError:
+                # tolarates merged cells
+                reference = "{}".format(cell.row + offset)
             value = cell.value
 
             # validates required fields
