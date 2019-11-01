@@ -120,8 +120,8 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                             options_trans = list(related_model.objects.values_list(__('name'),
                                                                                    flat=True))
                             options.extend(options_trans)
-                            messages.append('[{}]: "{}" not found in {}. Options are {}'.\
-                                format(reference, cell.value, field, options))
+                            messages.append('[{}]: "{}" not found in {}. Options are {}'.
+                                            format(reference, cell.value, field, options))
                         messages.append('[{}]: "{}" not found in {}.'.format(reference,
-                                        cell.value, field))
+                                                                             cell.value, field))
     return messages
