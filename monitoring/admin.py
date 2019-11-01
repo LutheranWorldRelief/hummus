@@ -45,8 +45,6 @@ class ListAdminMixin:
                              if field.name not in not_allowed]
         if 'name' in self.list_display:
             self.search_fields = ['name']
-        if 'type' in self.list_display:
-            self.list_filter.append(('type', admin.RelatedOnlyFieldListFilter))
         if 'country' in self.list_display:
             self.list_filter.append(('country', admin.RelatedOnlyFieldListFilter))
         super(ListAdminMixin, self).__init__(model, admin_site)
@@ -89,8 +87,8 @@ class MicrosoftInline(admin.StackedInline):
 
 # Admin Class
 class ContactAdmin(AdminForUserMixin, LeafletGeoAdmin):
-    list_display = ('id', 'name', 'document', 'country', 'organization', 'type', 'title')
-    list_display_links = ['name', 'country', 'type']
+    list_display = ('id', 'name', 'document', 'country', 'organization', 'contact_type', 'title')
+    list_display_links = ['name', 'country', 'contact_type']
     list_per_page = 20
     list_max_show_all = 50
     ordering = ['name']
@@ -99,7 +97,7 @@ class ContactAdmin(AdminForUserMixin, LeafletGeoAdmin):
         ('projectcontact__project', admin.RelatedOnlyFieldListFilter),
         ('country', admin.RelatedOnlyFieldListFilter),
         ('organization', admin.RelatedOnlyFieldListFilter),
-        ('type', admin.RelatedOnlyFieldListFilter),
+        ('contact_type', admin.RelatedOnlyFieldListFilter),
     ]
     inlines = [
         ProjectContactInline,

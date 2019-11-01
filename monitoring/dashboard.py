@@ -291,9 +291,9 @@ def grafico_tipo_participante(request):
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
     result = ProjectContact.objects.filter(**filter_kwargs).order_by(
-        __('contact__type__name')).values(__('contact__type__name')).annotate(
-            type=Case(When(contact__type__name=None, then=Value('NE')),
-                      default=__('contact__type__name'), output_field=CharField()),
+        __('contact__contact_type__name')).values(__('contact__contact_type__name')).annotate(
+            type=Case(When(contact__contact_type__name=None, then=Value('NE')),
+                      default=__('contact__contact_type__name'), output_field=CharField()),
             total=Count('contact_id', distinct=True),
             f=Count('contact_id', distinct=True, filter=Q(contact__sex='F')),
             m=Count('contact_id', distinct=True, filter=Q(contact__sex='M')))
