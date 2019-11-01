@@ -103,7 +103,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 # validates date feilds
                 if model._meta.get_field(field).get_internal_type() == 'DateField':
                     if not cell.is_date and not parse_date(cell.value):
-                        return '[{}]: "{}" is not a valid date.'.format(reference,
+                        return '[{}]: {} "{}" is not a valid date.'.format(reference,
                                                                         field, cell.value,)
 
                 # validates foreign keys
