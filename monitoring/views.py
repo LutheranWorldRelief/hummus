@@ -356,15 +356,17 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 mapping[model][field_name]['column'] = headers[column_header]
 
         # validate rows
+        bad_rows = []
         for row in uploaded_ws.iter_rows():
             # quick data validation
-            error_message = validate_data(row, mapping)
+            error_message = validate_data(row, mapping, start_row, date_format)
             if error_message:
+                bad_rows.append(row)
+                print(error_message)
                 messages_error.append(error_message)
-                continue
 
         context['messages_error'] = messages_error
-        context['data'] = uploaded_ws
+        context['data'] = bad_rows
         context['columns_required'] = columns_required
         context['start_row'] = start_row
         context['messages_errors_data'] = []

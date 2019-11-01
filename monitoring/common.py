@@ -135,6 +135,7 @@ def xstr(s):
 def parse_date(string, date_format=None):
     """ parses date in all possible formats, tries optional date_format first """
     date_formats = settings.DATE_INPUT_FORMATS
+    date_formats.extend(settings.DATETIME_INPUT_FORMATS)
     if date_format:
         date_formats.insert(0, date_format)
     for fmt in date_formats:

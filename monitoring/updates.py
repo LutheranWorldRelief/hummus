@@ -3,8 +3,9 @@ updates and saves models. used by importers.
 """
 
 from django.db.models import Q
+from django.apps import apps
 
-from .common import get_localized_name as __
+from .common import get_localized_name as __, parse_date
 from .models import Sex, Education, Country, Product
 
 
@@ -63,12 +64,19 @@ def update_project_contact(request, project_contact, row):
     project_contact.save()
 
 
-def validate_data(row, mapping):
-    message = ''
-    for fields in mapping:
-        for field, details in mapping['contact'].items():
-            value = row[details['column']]
-            if details['required'] and not value:
-                message = 'Problem to import record #{}, project is missing.'.format(value)
-                return message
-    return message
+def validate_data(row, mapping, start_row=0, date_format=None):
+    app_name = 'monitoring'
+    map_models = {'project': 'SubProject', 'contact': 'Contact', 'project_contact': 'ProjectContact'}
+    for model_name in mapping:
+        model = apps.get_model(app_name, map_models[model_name])
+        for field, details in mapping[model_name].items():
+            cell = row[details['column']]
+            if details['required'] and not cell.value:
+                return '{} ({}{}) is required'.format(details['name'],
+                                                      cell.column_letter, cell.row)
+            if hasattr(model, field):
+                if model._meta.get_field(field).get_internal_type() == 'DateField':
+                    if cell.value and not parse_date(cell.value):
+                        return '{} "{}" ({}{}) is not a valid date.'.\
+                            format(field, cell.value, cell.column_letter, cell.row+start_row-1)
+    return
