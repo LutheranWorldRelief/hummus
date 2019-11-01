@@ -141,6 +141,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 column_header = field_data['name']
                 mapping[model][field_name]['column'] = headers[column_header]
 
+        # create log event
+        content = "Excel import using '' and template '{}'".format(tmp_excel, template)
+        log = Log.objects.create(module='excel import', user=request.user.username, content=content)
+
         # import
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
@@ -209,6 +213,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 contact_organization = Organization()
                 contact_organization.name = row_dict['organization']
                 contact_organization.created_user = request.user.username
+                contact_organzation.log = log
                 contact_organization.save()
 
             # create contact if needed
@@ -219,6 +224,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact.organization = contact_organization
             else:
                 messages_info.append('Update contact: {}'.format(contact))
+            row_dict['log'] = log
             update_contact(request, contact, row_dict)
 
             imported_ids.append(contact.id)
@@ -249,6 +255,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     project_contact.project = project
                 else:
                     messages_info.append('Update project contact: {} {}'.format(project, contact))
+                row_dict['log'] = log
                 update_project_contact(request, project_contact, row_dict)
 
         # gets dupes

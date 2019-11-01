@@ -228,6 +228,8 @@ class Contact(models.Model):
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
+    log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Related event'))
 
     objects = ContactQuerySet.as_manager()
 
@@ -354,6 +356,8 @@ class Organization(models.Model):
                                    verbose_name=_('Description'))
     country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
     is_implementer = models.BooleanField(default=False, verbose_name=_('Is Implementer'))
+
+    # Organization meta data fields
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
     created_user = models.CharField(max_length=64, null=True, blank=True,
@@ -362,6 +366,8 @@ class Organization(models.Model):
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
+    log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Related event'))
 
     objects = OrganizationQuerySet.as_manager()
 
@@ -444,6 +450,8 @@ class Project(models.Model):
                                   verbose_name=_('LWR Region'))
     recordtype = models.CharField(max_length=100, null=True, blank=True,
                                   verbose_name=_('Record Type'))
+
+    # Project meta data fields
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
     created_user = models.CharField(max_length=64, null=True, blank=True,
@@ -452,6 +460,8 @@ class Project(models.Model):
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
+    log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Related event'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -618,6 +628,8 @@ class ProjectContact(models.Model):
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
                                      null=True, verbose_name=_('Organization'))
     extra = JSONField(null=True, blank=True, verbose_name=_('Extra Data'))
+
+    # Project Contact meta data fields
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Modified'))
     created_user = models.CharField(max_length=64, null=True, blank=True,
@@ -626,6 +638,8 @@ class ProjectContact(models.Model):
                                     verbose_name=_('Modified by'))
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
+    log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
+                               verbose_name=_('Related event'))
 
     objects = ProjectContactQuerySet.as_manager()
 
