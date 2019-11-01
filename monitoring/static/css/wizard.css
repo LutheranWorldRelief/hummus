@@ -200,6 +200,9 @@ form#w0 {
     background-color: #ff7f7f !important;
 }
 
+.empty-cell-important{
+    background-color: #ff7f7f !important;
+}
 
 @media ( max-width: 585px ) {
 

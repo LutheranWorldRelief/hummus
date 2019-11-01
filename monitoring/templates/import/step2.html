@@ -57,20 +57,25 @@
                                         <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
                                         <ol> {# TODO show only if needed #}
                                             {% for column in columns_required %}
-                                            <li><strong>{{ column }}</strong></li>
+                                                <li><strong>{{ column }}</strong></li>
                                             {% endfor %}
                                         </ol>
                                     </div>
                                 </div>
+                                {% if messages_errors_data|length > 0 %}
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-lg-offset-1">
+                                            <h5><strong>{% trans 'Registros con datos faltantes' %}</strong></h5>
+                                            {% for message in messages_errors_data %}
+                                                <p>{{ message }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
                                 <hr>
                                 <div class="row">
-                                    <div class="col-lg-5 col-lg-offset-1">
-                                        <h3 class="text-info pull-left">{% trans 'Data to import' %}
-                                            <small><a href="javascript:void(0);" class="d-none showdata"
-                                                      id="showBadRecords">{% trans 'Show only records with missing data' %}</a>
-                                            </small>
-                                        </h3>
-                                    </div>
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
                                          style="width: calc(100% - 50px); height: 600px">
@@ -79,7 +84,6 @@
                                             <caption>{% trans 'list of participants' %}</caption>
                                             <thead>
                                             <tr>
-                                                <th>Select</th>
                                                 {% for col in columns %}
                                                     <th>{{ col.value }}</th>
                                                 {% endfor %}
@@ -88,10 +92,6 @@
                                             <tbody id="resultados">
                                             {% for row in data %}
                                                 <tr>
-                                                    <td>
-                                                        <input type="checkbox" checked="checked"
-                                                               value="{{ row.0.row }}">
-                                                    </td>
                                                     {% for cell in row %}
 
                                                         {% if cell.value != None %}

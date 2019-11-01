@@ -367,6 +367,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         context['data'] = uploaded_ws
         context['columns_required'] = columns_required
         context['start_row'] = start_row
+        context['messages_errors_data'] = []
         context['date_format'] = date_format
         context['excel_file'] = tmp_excel_name
         context['template'] = template
