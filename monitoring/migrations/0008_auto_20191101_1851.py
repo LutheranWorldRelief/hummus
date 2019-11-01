@@ -20,4 +20,9 @@ class Migration(migrations.Migration):
             name='varname',
             field=models.CharField(blank=True, max_length=255, null=True, verbose_name='Acronym'),
         ),
+        migrations.RenameField(
+            model_name='contact',
+            old_name='type',
+            new_name='contact_type',
+        ),
     ]
