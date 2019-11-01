@@ -80,7 +80,7 @@ def try_to_find(model, value):
     if hasattr(model, varname_trans):
         condition = (condition | Q(**{varname_trans: value}))
 
-    return model.objects.filter(condition).first()
+    return model.objects.filter(condition).exists()
 
 
 def validate_data(row, mapping, start_row=0, date_format=None):
@@ -89,32 +89,34 @@ def validate_data(row, mapping, start_row=0, date_format=None):
     app_name = 'monitoring'
     map_models = {'project': 'SubProject', 'contact': 'Contact',
                   'project_contact': 'ProjectContact'}
-    print('------------------')
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
             reference = "{}{}".format(cell.column_letter, cell.row+start_row-1)
+            value = cell.value
 
             # validates required fields
-            if details['required'] and not cell.value:
+            if details['required'] and not value:
                 messages.append('[{}]: {} is required'.format(reference, details['name']))
 
             if model_name == 'project' and field == 'name':
                 field = 'project'
+                if value and '=>' in value:
+                    code, value = value.split('=>', 2)
 
-            if cell.value and hasattr(model, field):
+            if value and hasattr(model, field):
 
                 # validates date feilds
                 if model._meta.get_field(field).get_internal_type() == 'DateField':
-                    if not cell.is_date and not parse_date(cell.value):
+                    if not cell.is_date and not parse_date(value):
                         messages.append('[{}]: {} "{}" is not a valid date.'.
-                                        format(reference, field, cell.value,))
+                                        format(reference, field, value,))
 
                 # validates foreign keys
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
                     related_model = model._meta.get_field(field).related_model
-                    found = try_to_find(related_model, cell.value)
+                    found = try_to_find(related_model, value)
                     if not found:
                         if related_model.objects.count() <= 10:
                             options = list(related_model.objects.values_list('name', flat=True))
@@ -122,8 +124,8 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                                                                                    flat=True))
                             options.extend(options_trans)
                             messages.append('[{}]: "{}" not found in {}. Options are {}'.
-                                            format(reference, cell.value, field, options))
+                                            format(reference, value, field, options))
                         else:
                             messages.append('[{}]: "{}" not found in {}.'.
-                                            format(reference, cell.value, field))
+                                            format(reference, value, field))
     return messages
