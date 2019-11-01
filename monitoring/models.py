@@ -229,10 +229,9 @@ class Contact(models.Model):
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
     log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
-                               verbose_name=_('Related event'))
+                            verbose_name=_('Related event'))
 
     objects = ContactQuerySet.as_manager()
-
 
     def get_absolute_url(self):
         return "/contact/%i/" % self.id
@@ -367,7 +366,7 @@ class Organization(models.Model):
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
     log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
-                               verbose_name=_('Related event'))
+                            verbose_name=_('Related event'))
 
     objects = OrganizationQuerySet.as_manager()
 
@@ -461,7 +460,7 @@ class Project(models.Model):
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
     log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
-                               verbose_name=_('Related event'))
+                            verbose_name=_('Related event'))
 
     objects = ProjectQuerySet.as_manager()
 
@@ -639,7 +638,7 @@ class ProjectContact(models.Model):
     source = models.ForeignKey('Source', on_delete=models.SET_NULL, null=True, blank=True,
                                verbose_name=_('Data Source'))
     log = models.ForeignKey('Log', on_delete=models.SET_NULL, null=True, blank=True,
-                               verbose_name=_('Related event'))
+                            verbose_name=_('Related event'))
 
     objects = ProjectContactQuerySet.as_manager()
 
