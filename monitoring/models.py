@@ -201,8 +201,8 @@ class Contact(models.Model):
                                      null=True, verbose_name=_('Organization'))
     sex = models.ForeignKey('Sex', on_delete=models.SET_NULL, blank=True, null=True,
                             verbose_name=_('Sex'))
-    type = models.ForeignKey('ContactType', on_delete=models.SET_NULL, blank=True, null=True,
-                             verbose_name=_('Type'))
+    contact_type = models.ForeignKey('ContactType', on_delete=models.SET_NULL,
+                                     blank=True, null=True, verbose_name=_('Contact Type'))
     community = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Community'))
     municipality = models.CharField(max_length=40, blank=True, null=True,
                                     verbose_name=_('Municipality'))
@@ -345,6 +345,7 @@ class OrganizationQuerySet(models.QuerySet):
 
 class Organization(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Name'))
+    varname = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Acronym'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True,
                                 verbose_name=_('Country'))
     organization_type = models.ForeignKey('OrganizationType', on_delete=models.SET_NULL, blank=True,
@@ -353,7 +354,6 @@ class Organization(models.Model):
                                      related_name="parent", verbose_name=_('Organization'))
     description = models.CharField(max_length=255, blank=True, null=True,
                                    verbose_name=_('Description'))
-    country_number = models.IntegerField(blank=True, null=True, verbose_name=_('Country Number'))
     is_implementer = models.BooleanField(default=False, verbose_name=_('Is Implementer'))
 
     # Organization meta data fields
