@@ -98,7 +98,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="resultados">
-                                                {% for row in data|slice:"1:20" %}
+                                                {% for row in data|slice:"1:{{ max_data }}" %}
                                                     <tr>
                                                         {% for cell in row %}
 
