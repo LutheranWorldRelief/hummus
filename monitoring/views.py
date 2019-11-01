@@ -30,7 +30,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request, City, Profile)
+                     Request, City, Profile, Log)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace, parse_date)
 from .catalog import create_catalog
