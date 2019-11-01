@@ -89,6 +89,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
     app_name = 'monitoring'
     map_models = {'project': 'SubProject', 'contact': 'Contact',
                   'project_contact': 'ProjectContact'}
+    print('------------------')
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
         for field, details in mapping[model_name].items():
@@ -122,6 +123,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                             options.extend(options_trans)
                             messages.append('[{}]: "{}" not found in {}. Options are {}'.
                                             format(reference, cell.value, field, options))
-                        messages.append('[{}]: "{}" not found in {}.'.format(reference,
-                                                                             cell.value, field))
+                        else:
+                            messages.append('[{}]: "{}" not found in {}.'.
+                                            format(reference, cell.value, field))
     return messages
