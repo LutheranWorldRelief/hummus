@@ -66,7 +66,8 @@ def update_project_contact(request, project_contact, row):
 
 def validate_data(row, mapping, start_row=0, date_format=None):
     app_name = 'monitoring'
-    map_models = {'project': 'SubProject', 'contact': 'Contact', 'project_contact': 'ProjectContact'}
+    map_models = {'project': 'SubProject', 'contact': 'Contact',
+                  'project_contact': 'ProjectContact'}
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
         for field, details in mapping[model_name].items():
