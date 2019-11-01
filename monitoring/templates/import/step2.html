@@ -67,7 +67,7 @@
                                 </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col-lg-5 col-lg-offset-1">
+                                        <div class="col-lg-10 col-lg-offset-1">
                                             <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
                                             <ul>
                                             {% for message in messages_error %}
@@ -98,7 +98,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="resultados">
-                                                {% for row in data %}
+                                                {% for row in data|slice:"1:{{ max_data }}" %}
                                                     <tr>
                                                         {% for cell in row %}
 

@@ -14,6 +14,5 @@ django-select2==7.1.1
 django-tables2==2.1.1
 openpyxl==3.0.0
 pandas==0.25.1
-pyexcel-xlsx==0.5.7
 simple-salesforce==0.74.3
 sqlparse==0.3.0
