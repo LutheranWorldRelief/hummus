@@ -688,3 +688,13 @@ class Log(models.Model):
     user = models.CharField(max_length=64, null=True, blank=True, verbose_name=_('User'))
     module = models.CharField(max_length=64, null=True, blank=True, verbose_name=_('Module'))
     content = models.TextField(blank=True, null=True, verbose_name=_('Content'))
+
+    def __str__(self):
+        return "{}: {} by {}".format(self.id, self.created, self.user)
+
+    class Meta:
+        ordering = ['-created']
+        verbose_name = _('Log')
+        verbose_name_plural = _('Logs')
+
+
