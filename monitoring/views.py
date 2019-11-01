@@ -115,6 +115,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         messages_error = []
         messages_info = []
         imported_ids = []
+        counter_records_updated = 0
+        counter_records_created = 0
 
         # get advanced options
         language = request.POST.get('language', settings.LANGUAGE_CODE)
@@ -170,7 +172,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     subproject = subproject.filter(**{field_name: value})
                 if not subproject:
                     messages_error.append('Problem to import record #{} : Subproject with Project '
-                                    'and Organization does not exist!'.format(row[0].row,))
+                                          'and Organization does not exist!'.format(row[0].row, ))
                     continue
                 subproject = subproject.first()
                 project = subproject.project
@@ -222,8 +224,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 contact = Contact()
                 if contact_organization:
                     contact.organization = contact_organization
+                counter_records_created += 1
             else:
                 messages_info.append('Update contact: {}'.format(contact))
+                counter_records_updated += 1
             row_dict['log'] = log
             update_contact(request, contact, row_dict)
 
@@ -286,6 +290,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         context['excel_file'] = tmp_excel
         context['messages_error'] = messages_error
         context['messages_info'] = messages_info
+        context['quantity_records_updated'] = counter_records_updated
+        context['quantity_records_created'] = counter_records_created
         context['model'] = list(contacts)
         return render(request, self.template_name, context)
 
