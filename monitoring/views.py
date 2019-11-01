@@ -30,7 +30,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request, City, Profile)
+                     Request, City, Profile, Log)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace, parse_date)
 from .catalog import create_catalog
@@ -130,10 +130,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         uploaded_wb = load_workbook(excel_file)
         uploaded_ws = uploaded_wb[sheet]
 
-        # creating the correct format date for python
-        date_format_maps = {'m/d/Y': '%m/%d/%Y', 'd/m/Y': '%d/%m/%Y', 'Y-m-d': '%Y-%m-%d'}
-        date_format = date_format_maps[date_format]
-
         # check headers
         template_obj = Template.objects.get(id=template)
         headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
@@ -144,6 +140,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             for field_name, field_data in fields.items():
                 column_header = field_data['name']
                 mapping[model][field_name]['column'] = headers[column_header]
+
+        # create log event
+        content = "Excel import using '{}' and template '{}'".format(tmp_excel, template)
+        log = Log.objects.create(module='excel import', user=request.user.username, content=content)
 
         # import
         uploaded_ws.delete_rows(0, amount=start_row - 1)
@@ -213,6 +213,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 contact_organization = Organization()
                 contact_organization.name = row_dict['organization']
                 contact_organization.created_user = request.user.username
+                contact_organization.log = log
                 contact_organization.save()
 
             # create contact if needed
@@ -223,6 +224,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     contact.organization = contact_organization
             else:
                 messages_info.append('Update contact: {}'.format(contact))
+            row_dict['log'] = log
             update_contact(request, contact, row_dict)
 
             imported_ids.append(contact.id)
@@ -253,6 +255,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     project_contact.project = project
                 else:
                     messages_info.append('Update project contact: {} {}'.format(project, contact))
+                row_dict['log'] = log
                 update_project_contact(request, project_contact, row_dict)
 
         # gets dupes
