@@ -91,12 +91,32 @@ def validate_data(row, mapping, start_row=0, date_format=None):
     app_name = 'monitoring'
     map_models = {'project': 'SubProject', 'contact': 'Contact',
                   'project_contact': 'ProjectContact'}
+    offset = start_row - 1
 
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
+
+        # validate subproject = project + impleementer
+        if model_name == 'project':
+            subproject = model.objects.all()
+            model_fields = mapping['project']
+            for field_name, field_data in model_fields.items():
+                value = row[field_data['column']].value
+                if field_name == 'name' and '=>' in value:
+                    code, value = value.split('=>', 2)
+                if field_name == 'name' and not subproject.filter(name=value).exists():
+                    field_name = 'project'
+                if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
+                    field_name = "{}__name".format(field_name)
+                subproject = subproject.filter(**{field_name: value})
+            if not subproject:
+                project = row[model_fields['name']['column']].value
+                organization = row[model_fields['organization']['column']].value
+                messages.append('[{}]: Subproject with Project "{}" and Organization "{}" '
+                                'does not exist!'.format(row[0].row+offset, project, organization,))
+
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
-            offset = start_row - 1
             reference = "{}{}".format(cell.column_letter, cell.row + offset)
             value = cell.value
 
