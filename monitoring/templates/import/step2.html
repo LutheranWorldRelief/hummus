@@ -40,13 +40,15 @@
                                                    href="{% url 'monitoring:import-step1' %}">
                                                     <i class="fa fa-backward"></i>{% trans 'Cancel' %} </a>
                                             </li>
-                                            <li>
-                                                <button type="submit"
-                                                        class="btn btn-success btn-block pull-right">
-                                                    <i class="fa fa-upload fa-w-16"></i>
-                                                    {% trans 'Import and continue' %}
-                                                </button>
-                                            </li>
+                                            {% if not messages_error %}
+                                                <li>
+                                                    <button type="submit"
+                                                            class="btn btn-success btn-block pull-right">
+                                                        <i class="fa fa-upload fa-w-16"></i>
+                                                        {% trans 'Import and continue' %}
+                                                    </button>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </div>
@@ -114,15 +116,17 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
-                                         style="margin: 10px 20px 10px 10px">
-                                        <button type="submit" class="btn btn-success btn-block">
-                                            <i class="fa fa-upload fa-w-16"></i>
-                                            {% trans 'Import and continue' %}
-                                        </button>
+                                {% if not messages_error %}
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
+                                             style="margin: 10px 20px 10px 10px">
+                                            <button type="submit" class="btn btn-success btn-block">
+                                                <i class="fa fa-upload fa-w-16"></i>
+                                                {% trans 'Import and continue' %}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                                 <div style="clear: both;"></div>
                             </form>
                         </div>
