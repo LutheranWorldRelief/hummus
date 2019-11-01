@@ -85,6 +85,7 @@ def try_to_find(model, value):
 
 def validate_data(row, mapping, start_row=0, date_format=None):
     """ validates an excel row """
+    messages = []
     app_name = 'monitoring'
     map_models = {'project': 'SubProject', 'contact': 'Contact',
                   'project_contact': 'ProjectContact'}
@@ -96,15 +97,18 @@ def validate_data(row, mapping, start_row=0, date_format=None):
 
             # validates required fields
             if details['required'] and not cell.value:
-                return '[{}]: {} is required'.format(reference, details['name'])
+                messages.append('[{}]: {} is required'.format(reference, details['name']))
+
+            if model_name == 'project' and field == 'name':
+                field = 'project'
 
             if cell.value and hasattr(model, field):
 
                 # validates date feilds
                 if model._meta.get_field(field).get_internal_type() == 'DateField':
                     if not cell.is_date and not parse_date(cell.value):
-                        return '[{}]: {} "{}" is not a valid date.'.format(reference,
-                                                                        field, cell.value,)
+                        messages.append('[{}]: {} "{}" is not a valid date.'.format(reference,
+                                                                        field, cell.value,))
 
                 # validates foreign keys
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
@@ -116,7 +120,8 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                             options_trans = list(related_model.objects.values_list(__('name'),
                                                                                    flat=True))
                             options.extend(options_trans)
-                            return '[{}]: "{}" not found in {}. Options are {}'.\
-                                format(reference, cell.value, field, options)
-                        return '[{}]: "{}" not found in {}.'.format(reference, cell.value, field)
-    return
+                            messages.append('[{}]: "{}" not found in {}. Options are {}'.\
+                                format(reference, cell.value, field, options))
+                        messages.append('[{}]: "{}" not found in {}.'.format(reference,
+                                        cell.value, field))
+    return messages
