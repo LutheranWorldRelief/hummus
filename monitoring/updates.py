@@ -94,7 +94,8 @@ def validate_data(row, mapping, start_row=0, date_format=None):
         model = apps.get_model(app_name, map_models[model_name])
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
-            reference = "{}{}".format(cell.column_letter, cell.row + start_row - 1)
+            offset = start_row - 1
+            reference = "{}{}".format(cell.column_letter, cell.row + offset)
             value = cell.value
 
             # validates required fields
@@ -110,9 +111,9 @@ def validate_data(row, mapping, start_row=0, date_format=None):
 
                 # validates date feilds
                 if model._meta.get_field(field).get_internal_type() == 'DateField':
-                    if not cell.is_date and not parse_date(value):
-                        messages.append('[{}]: {} "{}" is not a valid date.'.
-                                        format(reference, field, value, ))
+                    if not cell.is_date and not parse_date(value, date_format):
+                        messages.append('[{}]: {} "{}" is not a valid date. Use {}.'.
+                                        format(reference, field, value, date_format))
 
                 # validates foreign keys
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
@@ -131,5 +132,5 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                                             format(reference, value, field))
     error_message = []
     if messages:
-        error_message.append({'row': 'Row #{}'.format(row[0].row), 'msgs': messages})
+        error_message.append({'row': 'Row #{}'.format(row[0].row + offset), 'msgs': messages})
     return error_message

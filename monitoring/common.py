@@ -141,6 +141,11 @@ def parse_date(string, date_format=None):
     if isinstance(string, datetime.date):
         return string
 
+    # fixes date_format
+    date_format_maps = {'m/d/Y': '%m/%d/%Y', 'd/m/Y': '%d/%m/%Y', 'Y-m-d': '%Y-%m-%d'}
+    if date_format in date_format_maps:
+        date_format = date_format_maps[date_format]
+
     # do parse
     date_formats = settings.DATE_INPUT_FORMATS
     date_formats.extend(settings.DATETIME_INPUT_FORMATS)
