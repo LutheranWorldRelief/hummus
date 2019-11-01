@@ -71,10 +71,10 @@
                                             <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
                                             <ul>
                                             {% for message in messages_error %}
-                                            <li>foo</li>
+                                            <li>{{ message.0.row }}</li>
                                             <ul>
-                                                {% for submessage in message %}
-                                                <li>{{ submessage }}</li>
+                                                {% for submessage in message.0.msgs %}
+                                                    <li>{{ submessage }}</li>
                                                 {% endfor %}
                                             </ul>
                                             {% endfor %}
