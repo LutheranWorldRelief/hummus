@@ -213,7 +213,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 contact_organization = Organization()
                 contact_organization.name = row_dict['organization']
                 contact_organization.created_user = request.user.username
-                contact_organzation.log = log
+                contact_organization.log = log
                 contact_organization.save()
 
             # create contact if needed
