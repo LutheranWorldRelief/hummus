@@ -365,16 +365,15 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 mapping[model][field_name]['column'] = headers[column_header]
 
         # validate rows
-        bad_rows = []
         for row in uploaded_ws.iter_rows():
             # quick data validation
             error_message = validate_data(row, mapping, start_row, date_format)
             if error_message:
-                bad_rows.append(row)
                 messages_error.append(error_message)
 
         context['messages_error'] = messages_error
-        context['data'] = bad_rows
+        context['data'] = uploaded_ws
+        context['max_data'] = 20 if uploaded_ws.max_row > 20 else uploaded_ws.max_row
         context['columns_required'] = columns_required
         context['start_row'] = start_row
         context['date_format'] = date_format
