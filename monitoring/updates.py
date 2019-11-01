@@ -114,7 +114,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                         if related_model.objects.count() <= 10:
                             options = list(related_model.objects.values_list('name', flat=True))
                             options_trans = list(related_model.objects.values_list(__('name'),
-                                                 flat=True))
+                                                                                   flat=True))
                             options.extend(options_trans)
                             return '[{}]: "{}" not found in {}. Options are {}'.\
                                 format(reference, cell.value, field, options)
