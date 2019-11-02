@@ -9,6 +9,30 @@ from .common import get_localized_name as __, parse_date
 from .models import Sex, Education, Country, Product
 
 
+def try_to_find(model, value, exists=False):
+    """ tries to find value in model """
+
+    if not value:
+        return
+
+    filter_type = 'iexact'
+    fields = ['name', 'varname']
+    condition = Q(pk=None)  # start with always false
+
+    for field in fields.copy():
+        fields.append(__(field))
+
+    for field in fields:
+        field_filter = '{}__{}'.format(field, filter_type)
+        if hasattr(model, field):
+            condition = (condition | Q(**{field_filter: value}))
+
+    if exists:
+        return model.objects.filter(condition).exists()
+    else:
+        return model.objects.filter(condition).first()
+
+
 def update_contact(request, contact, row):
     if request:
         if contact.id:
@@ -33,17 +57,9 @@ def update_contact(request, contact, row):
     contact.location = row.get('location')
     contact.log = row.get('log')
 
-    sex = row.get('sex')
-    if sex:
-        sex = Sex.objects.filter(Q(**{columna_name: sex}) |
-                                 Q(**{columna_varname: sex})).first()
-    education = row.get('education')
-    if education:
-        education = Education.objects.filter(Q(**{columna_name: education}) |
-                                             Q(**{columna_varname: education})).first()
-    country = row.get('country')
-    if country:
-        country = Country.objects.filter(**{columna_name: country}).first()
+    sex = try_to_find(Sex, row.get('sex'))
+    education = try_to_find(Education, row.get('education'))
+    country = try_to_find(Country, row.get('country'))
 
     contact.sex_id = sex.id if sex else None
     contact.education_id = education.id if education else None
@@ -66,28 +82,6 @@ def update_project_contact(request, project_contact, row):
     project_contact.save()
 
 
-def try_to_find(model, value):
-    """ tries to find value in model """
-
-    name = "name"
-    name_trans = __(name)
-    varname = "varname"
-    varname_trans = __(varname)
-
-    condition = Q(**{name: value})
-    if hasattr(model, name_trans):
-        condition = (condition | Q(**{name_trans: value}))
-        condition = (condition | Q(**{name_trans: value.title()}))
-    if hasattr(model, varname):
-        condition = (condition | Q(**{varname: value}))
-        condition = (condition | Q(**{varname: value.title()}))
-    if hasattr(model, varname_trans):
-        condition = (condition | Q(**{varname_trans: value}))
-        condition = (condition | Q(**{varname_trans: value.title()}))
-
-    return model.objects.filter(condition).exists()
-
-
 def validate_data(row, mapping, start_row=0, date_format=None):
     """ validates an excel row """
     messages = []
@@ -95,6 +89,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
     map_models = {'project': 'SubProject', 'contact': 'Contact',
                   'project_contact': 'ProjectContact'}
     offset = start_row - 1
+    filter_type = 'iexact'
 
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
@@ -107,10 +102,11 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 value = row[field_data['column']].value
                 if value and field_name == 'name' and '=>' in value:
                     code, value = value.split('=>', 2)
-                if field_name == 'name' and not subproject.filter(name=value).exists():
+                if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
                     field_name = 'project'
                 if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
                     field_name = "{}__name".format(field_name)
+                field_name = '{}__{}'.format(field_name, filter_type)
                 subproject = subproject.filter(**{field_name: value})
             if not subproject:
                 project = row[model_fields['name']['column']].value
@@ -149,7 +145,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 # validates foreign keys
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
                     related_model = model._meta.get_field(field).related_model
-                    found = try_to_find(related_model, value)
+                    found = try_to_find(related_model, value, exists=True)
                     # TODO exception should be mapped like: "autoadd: True"
                     is_exception = model_name == 'contact' and field == 'organization'
                     if not found and not is_exception:
