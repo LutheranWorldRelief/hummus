@@ -60,7 +60,7 @@ class ImportTestCase(TestCase):
                 column += 1
         row += 1
         default_storage.save('{}/{}'.
-            format('tmp', tmp_excel_name), ContentFile(save_virtual_workbook(workbook)))
+                             format('tmp', tmp_excel_name), ContentFile(save_virtual_workbook(workbook)))
 
     def test_step3(self):
         admin = User.objects.create_superuser('admin', email=None, password=None)
