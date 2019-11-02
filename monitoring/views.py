@@ -37,72 +37,115 @@ from .catalog import create_catalog
 from .updates import update_contact, update_project_contact, validate_data
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class Capture(TemplateView):
-    template_name = 'capture.html'
+class GetExcelToImport(DomainRequiredMixin, View):
+    """
+    Also known as 'step1'.
+    Receives the excel file from user and sets advanced options.
+    """
 
-    # TODO: GET should be removed
-    def get(self, request, *args, **kwargs):
+    template_name = 'import/step1.html'
+
+    def get(self, request):
         context = {}
-        context['meta'] = request.META
-        context['body'] = request.body.decode('utf-8')
+        languages = [{'value': short_name,
+                      'name': long_name} for (short_name, long_name) in
+                     Profile.LANGUAGE_CHOICES]
+        templates = Template.objects.values(template_id=F('id'),
+                                            template_name=F(__('name')))
+        context['short_date_format'] = settings.SHORT_DATE_FORMAT
+        context['languages'] = languages
+        context['templates'] = templates
         return render(request, self.template_name, context)
+
+
+class ValidateExcel(DomainRequiredMixin, FormView):
+    """
+    Also known as 'step2'.
+    Validates the excel file and gets user confirmation to import.
+    """
 
     def post(self, request, *args, **kwargs):
-        messages = []
+        messages_error = []
+
+        # get advanced options
+        language = request.POST.get('language', settings.LANGUAGE_CODE)
+        start_row = int(request.POST.get('start_row', config.START_ROW))
+        header_row = int(request.POST.get('header_row', config.HEADER_ROW))
+        template = request.POST.get('template', config.DEFAULT_TEMPLATE)
+        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
+
+        # get file and set name
+        excel_file = request.FILES['excel_file']
+        tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
+                                           excel_file.name)
+        default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
+        uploaded_wb = load_workbook(filename=excel_file)
+
+        # gets the data sheet, tries all languages
+        uploaded_ws = None
+        if _('data') in uploaded_wb.sheetnames:
+            uploaded_ws = uploaded_wb[_('data')]
+        else:
+            for other_lang in [lang[0] for lang in settings.LANGUAGES]:
+                with translation.override(other_lang):
+                    if _('data') in uploaded_wb.sheetnames:
+                        uploaded_ws = uploaded_wb[_('data')]
+                        continue
+        if not uploaded_ws:
+            uploaded_ws = uploaded_wb.active
+
+        # check headers
+        template_obj = Template.objects.get(id=template)
+        mapping = getattr(template_obj, __('mapping', language))
+        columns_required = []
+        headers = [cell.value for cell in uploaded_ws[header_row]]
+
+        # checks columns from mapping exist in uploaded file
+        for model, fields in mapping.items():
+            for field_name, field_data in fields.items():
+                column_header = field_data['name']
+
+                if column_header not in headers:
+                    raise Exception('Column "{}" not found, choices are: {}'
+                                    .format(column_header, ', '.join(filter(None, headers))))
+
+                if field_data['required']:
+                    columns_required.append(column_header)
+
         context = {}
-        row = Request()
-        row.meta = request.META
-        row.body = request.body.decode('utf-8')
-        body = json.loads(row.body)
-        row_dict = {}
-        project_name = body['form'].get('project')
-        project = Project.objects.get(name=project_name)
-        try:
-            row_dict['name'] = body['form'].get('name', '')
-            row_dict['first_name'] = body['form'].get('first_name', '')
-            row_dict['last_name'] = body['form'].get('last_name', '')
-            row_dict['name'] = body['form'].get('name', '')
-            row_dict['sex'] = body['form'].get('sex', '')
-            row_dict['country'] = body['form'].get('country', '')
-            row_dict['education'] = body['form'].get('education', '')
-            row_dict['document'] = body['form'].get('id', '')
-            row_dict['source_id'] = 'commcare'
-        except KeyError as e:
-            print('KeyError in data forwarding : "%s"' % str(e))
+        context['columns'] = uploaded_ws[header_row]
 
-        # try to find contact
-        contact = Contact.objects.filter(document=row_dict['document'],
-                                         first_name=row_dict['first_name'],
-                                         last_name=row_dict['last_name']).first()
+        headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
+        uploaded_ws.delete_rows(0, amount=start_row - 1)
 
-        # using MDC sometimes only 'name' is collected, try to find contact
-        if not contact:
-            contact = Contact.objects.filter(document=row_dict['document'],
-                                             name=row_dict['name']).first()
+        # map headers to columns
+        for model, fields in mapping.items():
+            for field_name, field_data in fields.items():
+                column_header = field_data['name']
+                mapping[model][field_name]['column'] = headers[column_header]
 
-        if not contact:
-            print('Create contact: {} {} {}'.format(row_dict['name'],
-                                                    row_dict['first_name'], row_dict['last_name']))
-            contact = Contact()
-            update_contact(request, contact, row_dict)
-        else:
-            print('Update contact: {} {} {}'.format(row_dict['name'],
-                                                    row_dict['first_name'], row_dict['last_name']))
-            update_contact(request, contact, row_dict)
+        # validate rows
+        for row in uploaded_ws.iter_rows():
+            # quick data validation
+            error_message = validate_data(row, mapping, start_row, date_format)
+            if error_message:
+                messages_error.append(error_message)
 
-        project_contact = ProjectContact.objects.filter(project__name=project_name,
-                                                        contact=contact).first()
-        if not project_contact:
-            print('Create project contact: {} {}'.format(project.name, row_dict['name']))
-            project_contact = ProjectContact()
-            project_contact.contact = contact
-            project_contact.project = project
-            update_project_contact(request, project_contact, row_dict)
-        else:
-            print('Update project contact: {} {}'.format(project.name, row_dict['first_name']))
-            update_project_contact(request, project_contact, row_dict)
+        context['messages_error'] = messages_error
+        context['data'] = uploaded_ws
+        context['max_data'] = 20 if uploaded_ws.max_row > 20 else uploaded_ws.max_row
+        context['columns_required'] = columns_required
+        context['start_row'] = start_row
+        context['date_format'] = date_format
+        context['excel_file'] = tmp_excel_name
+        context['template'] = template
+        context['header_row'] = header_row
+        context['language'] = language
+        context['sheet'] = uploaded_ws.title
+
         return render(request, self.template_name, context)
+
+    template_name = 'import/step2.html'
 
 
 class ImportParticipants(DomainRequiredMixin, FormView):
@@ -306,114 +349,71 @@ class ImportParticipants(DomainRequiredMixin, FormView):
     template_name = 'import/step3.html'
 
 
-class ValidateExcel(DomainRequiredMixin, FormView):
-    """
-    Also known as 'step2'.
-    Validates the excel file and gets user confirmation to import.
-    """
+@method_decorator(csrf_exempt, name='dispatch')
+class Capture(TemplateView):
+    template_name = 'capture.html'
 
-    def post(self, request, *args, **kwargs):
-        messages_error = []
-
-        # get advanced options
-        language = request.POST.get('language', settings.LANGUAGE_CODE)
-        start_row = int(request.POST.get('start_row', config.START_ROW))
-        header_row = int(request.POST.get('header_row', config.HEADER_ROW))
-        template = request.POST.get('template', config.DEFAULT_TEMPLATE)
-        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
-
-        # get file and set name
-        excel_file = request.FILES['excel_file']
-        tmp_excel_name = "{}-{}-{}".format(request.user.username, time.strftime("%Y%m%d-%H%M%S"),
-                                           excel_file.name)
-        default_storage.save('tmp/{}'.format(tmp_excel_name), excel_file)
-        uploaded_wb = load_workbook(filename=excel_file)
-
-        # gets the data sheet, tries all languages
-        uploaded_ws = None
-        if _('data') in uploaded_wb.sheetnames:
-            uploaded_ws = uploaded_wb[_('data')]
-        else:
-            for other_lang in [lang[0] for lang in settings.LANGUAGES]:
-                with translation.override(other_lang):
-                    if _('data') in uploaded_wb.sheetnames:
-                        uploaded_ws = uploaded_wb[_('data')]
-                        continue
-        if not uploaded_ws:
-            uploaded_ws = uploaded_wb.active
-
-        # check headers
-        template_obj = Template.objects.get(id=template)
-        mapping = getattr(template_obj, __('mapping', language))
-        columns_required = []
-        headers = [cell.value for cell in uploaded_ws[header_row]]
-
-        # checks columns from mapping exist in uploaded file
-        for model, fields in mapping.items():
-            for field_name, field_data in fields.items():
-                column_header = field_data['name']
-
-                if column_header not in headers:
-                    raise Exception('Column "{}" not found, choices are: {}'
-                                    .format(column_header, ', '.join(filter(None, headers))))
-
-                if field_data['required']:
-                    columns_required.append(column_header)
-
+    # TODO: GET should be removed
+    def get(self, request, *args, **kwargs):
         context = {}
-        context['columns'] = uploaded_ws[header_row]
-
-        headers = {cell.value: cell.col_idx - 1 for cell in uploaded_ws[header_row]}
-        uploaded_ws.delete_rows(0, amount=start_row - 1)
-
-        # map headers to columns
-        for model, fields in mapping.items():
-            for field_name, field_data in fields.items():
-                column_header = field_data['name']
-                mapping[model][field_name]['column'] = headers[column_header]
-
-        # validate rows
-        for row in uploaded_ws.iter_rows():
-            # quick data validation
-            error_message = validate_data(row, mapping, start_row, date_format)
-            if error_message:
-                messages_error.append(error_message)
-
-        context['messages_error'] = messages_error
-        context['data'] = uploaded_ws
-        context['max_data'] = 20 if uploaded_ws.max_row > 20 else uploaded_ws.max_row
-        context['columns_required'] = columns_required
-        context['start_row'] = start_row
-        context['date_format'] = date_format
-        context['excel_file'] = tmp_excel_name
-        context['template'] = template
-        context['header_row'] = header_row
-        context['language'] = language
-        context['sheet'] = uploaded_ws.title
-
+        context['meta'] = request.META
+        context['body'] = request.body.decode('utf-8')
         return render(request, self.template_name, context)
 
-    template_name = 'import/step2.html'
-
-
-class GetExcelToImport(DomainRequiredMixin, View):
-    """
-    Also known as 'step1'.
-    Receives the excel file from user and sets advanced options.
-    """
-
-    template_name = 'import/step1.html'
-
-    def get(self, request):
+    def post(self, request, *args, **kwargs):
+        messages = []
         context = {}
-        languages = [{'value': short_name,
-                      'name': long_name} for (short_name, long_name) in
-                     Profile.LANGUAGE_CHOICES]
-        templates = Template.objects.values(template_id=F('id'),
-                                            template_name=F(__('name')))
-        context['short_date_format'] = settings.SHORT_DATE_FORMAT
-        context['languages'] = languages
-        context['templates'] = templates
+        row = Request()
+        row.meta = request.META
+        row.body = request.body.decode('utf-8')
+        body = json.loads(row.body)
+        row_dict = {}
+        project_name = body['form'].get('project')
+        project = Project.objects.get(name=project_name)
+        try:
+            row_dict['name'] = body['form'].get('name', '')
+            row_dict['first_name'] = body['form'].get('first_name', '')
+            row_dict['last_name'] = body['form'].get('last_name', '')
+            row_dict['name'] = body['form'].get('name', '')
+            row_dict['sex'] = body['form'].get('sex', '')
+            row_dict['country'] = body['form'].get('country', '')
+            row_dict['education'] = body['form'].get('education', '')
+            row_dict['document'] = body['form'].get('id', '')
+            row_dict['source_id'] = 'commcare'
+        except KeyError as e:
+            print('KeyError in data forwarding : "%s"' % str(e))
+
+        # try to find contact
+        contact = Contact.objects.filter(document=row_dict['document'],
+                                         first_name=row_dict['first_name'],
+                                         last_name=row_dict['last_name']).first()
+
+        # using MDC sometimes only 'name' is collected, try to find contact
+        if not contact:
+            contact = Contact.objects.filter(document=row_dict['document'],
+                                             name=row_dict['name']).first()
+
+        if not contact:
+            print('Create contact: {} {} {}'.format(row_dict['name'],
+                                                    row_dict['first_name'], row_dict['last_name']))
+            contact = Contact()
+            update_contact(request, contact, row_dict)
+        else:
+            print('Update contact: {} {} {}'.format(row_dict['name'],
+                                                    row_dict['first_name'], row_dict['last_name']))
+            update_contact(request, contact, row_dict)
+
+        project_contact = ProjectContact.objects.filter(project__name=project_name,
+                                                        contact=contact).first()
+        if not project_contact:
+            print('Create project contact: {} {}'.format(project.name, row_dict['name']))
+            project_contact = ProjectContact()
+            project_contact.contact = contact
+            project_contact.project = project
+            update_project_contact(request, project_contact, row_dict)
+        else:
+            print('Update project contact: {} {}'.format(project.name, row_dict['first_name']))
+            update_project_contact(request, project_contact, row_dict)
         return render(request, self.template_name, context)
 
 
