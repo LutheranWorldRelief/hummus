@@ -32,7 +32,7 @@ def updateOrganization(hummus_record, salesforce_record, options):
         print(salesforce_record['Name'])
     fields_map = {'status': 'Organization_Status__c', 'name': 'Name', 'varname': 'Acronym__c',
                   'country': 'BillingCountry', 'salesforce': 'Id'}
-            # 'country': ['BillingCountry', 'Name'],}
+      # 'country': ['BillingCountry', 'Name'],}
     update = False
     for field in fields_map:
         if isinstance(fields_map[field], list):
