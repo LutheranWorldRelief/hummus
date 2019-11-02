@@ -150,7 +150,9 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
                     related_model = model._meta.get_field(field).related_model
                     found = try_to_find(related_model, value)
-                    if not found:
+                    # TODO exception should be mapped like: "autoadd: True"
+                    is_exception = model_name == 'contact' and field == 'organization'
+                    if not found and not is_exception:
                         if related_model.objects.count() <= 10:
                             options = list(related_model.objects.values_list('name', flat=True))
                             options_trans = list(related_model.objects.values_list(__('name'),
