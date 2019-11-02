@@ -17,7 +17,7 @@ def try_to_find(model, value, exists=False):
 
     filter_type = 'iexact'
     fields = ['name', 'varname']
-    condition = Q(pk=None) # start with always false
+    condition = Q(pk=None)  # start with always false
 
     for field in fields.copy():
         fields.append(__(field))
