@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
 from django.core.files.storage import default_storage
 from django.test import TestCase, Client
-from django.utils.translation import gettext_lazy as _
 from django.core.files.base import ContentFile
 
 from constance import config
@@ -60,8 +59,8 @@ class ImportTestCase(TestCase):
                 sheet.cell(row=row, column=column).value = field_details['name']
                 column += 1
         row += 1
-        excel_file = default_storage.save('{}/{}'.
-                                          format('tmp', tmp_excel_name), ContentFile(save_virtual_workbook(workbook)))
+        default_storage.save('{}/{}'.
+                             format('tmp', tmp_excel_name), ContentFile(save_virtual_workbook(workbook)))
 
     def test_step3(self):
         admin = User.objects.create_superuser('admin', email=None, password=None)
