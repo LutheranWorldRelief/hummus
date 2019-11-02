@@ -14,11 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='organization',
             name='salesforce',
-            field=models.CharField(blank=True, max_length=255, null=True, unique=True, verbose_name='Salesforce Id'),
+            field=models.CharField(blank=True, max_length=255, null=True,
+                                   unique=True, verbose_name='Salesforce Id'),
         ),
         migrations.AlterField(
             model_name='contact',
             name='contact_type',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='monitoring.ContactType', verbose_name='Contact Type'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='monitoring.ContactType', verbose_name='Contact Type'),
         ),
     ]

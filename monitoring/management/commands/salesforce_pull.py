@@ -32,7 +32,7 @@ def updateOrganization(hummus_record, salesforce_record, options):
         print(salesforce_record['Name'])
     fields_map = {'status': 'Organization_Status__c', 'name': 'Name', 'varname': 'Acronym__c',
                   'country': 'BillingCountry', 'salesforce': 'Id'}
-                  #'country': ['BillingCountry', 'Name'],}
+            # 'country': ['BillingCountry', 'Name'],}
     update = False
     for field in fields_map:
         if isinstance(fields_map[field], list):
@@ -135,9 +135,11 @@ class Command(BaseCommand):
 
         # Named (optional) arguments
         parser.add_argument('--verbose', action='store_true', help='Be verbose about changes',)
-        parser.add_argument('--skip-organizations', action='store_true', help='Skips Organizations sync',)
+        parser.add_argument('--skip-organizations', action='store_true',
+                            help='Skips Organizations sync',)
         parser.add_argument('--skip-projects', action='store_true', help='Skips Projects sync',)
-        parser.add_argument('--skip-subprojects', action='store_true', help='Skips SubProjects sync',)
+        parser.add_argument('--skip-subprojects', action='store_true',
+                            help='Skips SubProjects sync',)
 
     def handle(self, *args, **options):
         username = settings.SALESFORCE_USERNAME
@@ -150,20 +152,24 @@ class Command(BaseCommand):
         if not options['skip_organizations']:
             hummus_organizations = Organization.objects.all()
             sf_fields = "Id, Name, Organization_Status__c, Acronym__c, BillingCountry"
-            organizations =  sf.query_all("SELECT %s FROM Account" % (sf_fields,))
+            organizations = sf.query_all("SELECT %s FROM Account" % (sf_fields,))
             for organization in organizations['records']:
-                hummus_organization = hummus_organizations.filter(salesforce=organization['Id']).first()
+                hummus_organization = hummus_organizations.filter(
+                    salesforce=organization['Id']).first()
                 if not hummus_organization and organization['Name']:
-                    hummus_organization = hummus_organizations.filter(name=organization['Name']).first()
-                #if not hummus_organization and organization['Acronym__c']:
+                    hummus_organization = hummus_organizations.filter(
+                        name=organization['Name']).first()
+                # if not hummus_organization and organization['Acronym__c']:
                 #    hummus_organization = hummus_organizations.filter(Q(name=organization['Acronym__c']) | Q(varname=organization['Acronym__c'])).first()
                 if hummus_organization:
                     if updateOrganization(hummus_organization, organization, options):
-                        self.stdout.write(self.style.SUCCESS('Successfully updated organization %s: "%s"' % (organization['Id'], organization['Name'])))
+                        self.stdout.write(self.style.SUCCESS(
+                            'Successfully updated organization %s: "%s"' % (organization['Id'], organization['Name'])))
                 else:
                     hummus_organization = Organization()
                     updateOrganization(hummus_organization, organization, options)
-                    self.stdout.write(self.style.SUCCESS('Successfully created organization %s: "%s"' % (organization['Id'], organization['Name'])))
+                    self.stdout.write(self.style.SUCCESS(
+                        'Successfully created organization %s: "%s"' % (organization['Id'], organization['Name'])))
 
         # Get Projects
 
