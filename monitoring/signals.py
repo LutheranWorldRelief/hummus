@@ -11,6 +11,8 @@ from monitoring.models import Profile
 
 @receiver(user_logged_in)
 def on_login(sender, request, **kwargs):
+    if not hasattr(request, 'user'):
+        return
     language_user = Profile.objects.filter(user_id=request.user.id).values('language').first()
     if language_user:
         translation.activate(language_user['language'])
