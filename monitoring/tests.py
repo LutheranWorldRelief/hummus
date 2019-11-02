@@ -20,6 +20,7 @@ from monitoring.models import Contact, Sex, Template
 from monitoring.updates import update_contact
 from monitoring.common import parse_date, language_no_region
 
+
 class ImportTestCase(TestCase):
 
     language = language_no_region(settings.LANGUAGE_CODE)
