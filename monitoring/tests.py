@@ -1,21 +1,84 @@
 """
 Tests for 'monitoring'
 """
-import json
 import datetime
+import json
+import time
 
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
+from django.core.files.storage import default_storage
 from django.test import TestCase, Client
+from django.utils.translation import gettext_lazy as _
+from django.core.files.base import ContentFile
 
-from monitoring.models import Contact, Sex
+from constance import config
+from openpyxl import Workbook
+from openpyxl.writer.excel import save_virtual_workbook
+
+from monitoring.models import Contact, Sex, Template
 from monitoring.updates import update_contact
-from monitoring.common import parse_date
+from monitoring.common import parse_date, language_no_region
+
+
+class ImportTestCase(TestCase):
+
+    language = language_no_region(settings.LANGUAGE_CODE)
+    start_row = config.START_ROW
+    header_row = config.HEADER_ROW
+    template = config.DEFAULT_TEMPLATE
+    date_format = settings.SHORT_DATE_FORMAT
+    params = {'language': language, 'start_row': start_row, 'header_row': header_row,
+              'template': template, 'date_format': date_format, }
+
+    def setUp(self):
+
+        # creates template
+        clean_template = Template()
+        clean_template.id = self.template
+        clean_template.name = 'Test Template'
+        clean_template.mapping = json.loads('{"contact": {"sex": {"name": "Sexo", "varname": "sex", "required": false}, "country": {"name": "País", "varname": "country", "required": true}, "document": {"name": "Número de Identificación", "varname": "document", "required": false}, "men_home": {"name": "Hombres en su familia", "varname": "men_home", "required": false}, "birthdate": {"name": "Fecha de Nacimiento", "varname": "birthdate", "required": false}, "community": {"name": "Comunidad", "varname": "community", "required": false}, "education": {"name": "Educación", "varname": "education", "required": false}, "last_name": {"name": "Apellidos", "varname": "last_name", "required": false}, "first_name": {"name": "Nombres", "varname": "first_name", "required": true}, "women_home": {"name": "Mujeres en su familia", "varname": "women_home", "required": false}, "municipality": {"name": "Departamento", "varname": "municipality", "required": false}, "organization": {"name": "Organización Perteneciente", "varname": "organization", "required": false}, "phone_personal": {"name": "Teléfono", "varname": "phone_personal", "required": false}}, "project": {"name": {"name": "Nombre de Proyecto", "varname": "name", "required": true}, "organization": {"name": "Organización Implementadora", "varname": "organization", "required": true}}, "project_contact": {"date_entry_project": {"name": "Fecha de ingreso al proyecto", "varname": "date_entry_project", "required": true}}}')
+        clean_template.save()
+
+        # creates excel file
+        excel_name = 'test_excel_file.xlsx'
+        tmp_excel_name = "{}-{}-{}".format('test', time.strftime("%Y%m%d-%H%M%S"),
+                                           excel_name)
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = 'data'
+        self.params['excel_file'] = tmp_excel_name
+
+        # creates excel content
+        row = 1
+        column = 1
+        sheet.cell(row=row, column=column).value = 'Merged titles'
+        row += 1
+        for model in clean_template.mapping:
+            for field_name, field_details in clean_template.mapping[model].items():
+                sheet.cell(row=row, column=column).value = field_details['name']
+                column += 1
+        row += 1
+        excel_file = default_storage.save('{}/{}'.
+                                          format('tmp', tmp_excel_name), ContentFile(save_virtual_workbook(workbook)))
+
+    def test_step3(self):
+        admin = User.objects.create_superuser('admin', email=None, password=None)
+        c = Client()
+        c.force_login(admin)
+        response = c.post('/import/participants/step3', self.params)
+        self.assertEqual(response.status_code, 200)
 
 
 class CommonTestCase(TestCase):
 
     def test_parse_date(self):
         test_date = datetime.date(2000, 12, 31)
+        test_datetime = datetime.datetime(2000, 12, 31, 0, 0, 0, 0)
+        self.assertEqual(test_date, parse_date('2000-12-31 00:00:00'))
+        self.assertEqual(test_date, parse_date(test_datetime))
+        self.assertEqual(test_date, parse_date(test_date))
         self.assertEqual(test_date, parse_date('2000-12-31'))
         self.assertEqual(test_date, parse_date('12/31/2000'))
         self.assertEqual(None, parse_date(1))
