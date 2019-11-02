@@ -9,7 +9,7 @@ from .common import get_localized_name as __, parse_date
 from .models import Sex, Education, Country, Product
 
 
-def try_to_find(model, value, exist=False):
+def try_to_find(model, value, exists=False):
     """ tries to find value in model """
 
     if not value:
@@ -27,10 +27,10 @@ def try_to_find(model, value, exist=False):
         if hasattr(model, field):
             condition = (condition | Q(**{field_filter: value}))
 
-    if exist:
-        return model.objects.filter(condition).exist()
+    if exists:
+        return model.objects.filter(condition).exists()
     else:
-        return model.objects.filter(condition)
+        return model.objects.filter(condition).first()
 
 
 def update_contact(request, contact, row):
@@ -105,7 +105,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
                     field_name = 'project'
                 if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
-                    field_name = "{}__name__iexact".format(field_name)
+                    field_name = "{}__name".format(field_name)
                 field_name = '{}__{}'.format(field_name, filter_type)
                 subproject = subproject.filter(**{field_name: value})
             if not subproject:
@@ -145,7 +145,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 # validates foreign keys
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
                     related_model = model._meta.get_field(field).related_model
-                    found = try_to_find(related_model, value, exist=True)
+                    found = try_to_find(related_model, value, exists=True)
                     # TODO exception should be mapped like: "autoadd: True"
                     is_exception = model_name == 'contact' and field == 'organization'
                     if not found and not is_exception:

@@ -237,6 +237,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     if model._meta.get_field(field_name).get_internal_type() == 'PointField':
                         (lat, lng) = value.split(' ')[:2]
                         value = Point(float(lng), float(lat))
+                    if model._meta.get_field(field_name).get_internal_type() == 'CharField':
+                        value = str(value)
                     if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
                             value = parse_date(value, date_format)
