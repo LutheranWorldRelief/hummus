@@ -361,7 +361,6 @@ class Capture(TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        messages = []
         context = {}
         row = Request()
         row.meta = request.META
