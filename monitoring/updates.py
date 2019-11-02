@@ -69,23 +69,22 @@ def update_project_contact(request, project_contact, row):
 def try_to_find(model, value):
     """ tries to find value in model """
 
-    name = "name"
-    name_trans = __(name)
-    varname = "varname"
-    varname_trans = __(varname)
+    if not value:
+        return
 
-    condition = Q(**{name: value})
-    if hasattr(model, name_trans):
-        condition = (condition | Q(**{name_trans: value}))
-        condition = (condition | Q(**{name_trans: value.title()}))
-    if hasattr(model, varname):
-        condition = (condition | Q(**{varname: value}))
-        condition = (condition | Q(**{varname: value.title()}))
-    if hasattr(model, varname_trans):
-        condition = (condition | Q(**{varname_trans: value}))
-        condition = (condition | Q(**{varname_trans: value.title()}))
+    filter_type = 'iexact'
+    fields = ['name', 'varname']
+    condition = Q(pk=None) # start with always false
 
-    return model.objects.filter(condition).exists()
+    for field in fields.copy():
+        fields.append(__(field))
+
+    for field in fields:
+        field_filter = '{}__{}'.format(field, filter_type)
+        if hasattr(model, field):
+            condition = (condition | Q(**{field_filter: value}))
+
+    return model.objects.filter(condition)
 
 
 def validate_data(row, mapping, start_row=0, date_format=None):

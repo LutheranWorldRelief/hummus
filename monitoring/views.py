@@ -201,6 +201,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
             # get subproject, project and organization
             model = SubProject
+            filter_type = 'iexact'
             if 'project' in mapping:
                 subproject = model.objects.all()
                 model_fields = mapping['project']
@@ -211,10 +212,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                         value = value.strip()
                     if field_name == 'name' and '=>' in value:
                         code, value = value.split('=>', 2)
-                    if field_name == 'name' and not subproject.filter(name=value).exists():
+                    if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
                         field_name = 'project'
                     if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
-                        field_name = "{}__name".format(field_name)
+                        field_name = '{}__name'.format(field_name)
+                    field_name = '{}__{}'.format(field_name, filter_type)
                     subproject = subproject.filter(**{field_name: value})
                 if not subproject:
                     messages_error.append('Problem to import record #{} : Subproject with Project '
@@ -249,21 +251,21 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
             # there are two ways to look up a contact: name+doc and firstname+lastname+doc
             if {'name', 'document'} <= set(model_fields):
-                contact = Contact.objects.filter(name=row_dict['name'],
-                                                 document=row_dict['document)']).first()
+                contact = Contact.objects.filter(name__iexact=row_dict['name'],
+                                                 document__iexact=row_dict['document)']).first()
             elif {'first_name', 'last_name', 'document'} <= set(model_fields):
-                contact = Contact.objects.filter(first_name=row_dict['first_name'],
-                                                 last_name=row_dict['last_name'],
-                                                 document=row_dict['document']).first()
+                contact = Contact.objects.filter(first_name__iexact=row_dict['first_name'],
+                                                 last_name__iexact=row_dict['last_name'],
+                                                 document__iexact=row_dict['document']).first()
             else:
                 raise Exception('Mapping needs more contact data fields')
 
             # create new organization if needed
             contact_organization = Organization.objects.filter(
-                name=row_dict['organization']).first()
+                name__iexact=row_dict['organization']).first()
             if not contact_organization and row_dict['organization']:
                 contact_organization = Organization.objects.filter(
-                    varname=row_dict['organization']).first()
+                    varname__iexact=row_dict['organization']).first()
             if not contact_organization and row_dict['organization']:
                 messages_info.append('Create organization: {}'.format(row_dict['organization']))
                 contact_organization = Organization()
@@ -386,14 +388,14 @@ class Capture(TemplateView):
             print('KeyError in data forwarding : "%s"' % str(e))
 
         # try to find contact
-        contact = Contact.objects.filter(document=row_dict['document'],
-                                         first_name=row_dict['first_name'],
-                                         last_name=row_dict['last_name']).first()
+        contact = Contact.objects.filter(document__iexact=row_dict['document'],
+                                         first_name__iexact=row_dict['first_name'],
+                                         last_name__iexact=row_dict['last_name']).first()
 
         # using MDC sometimes only 'name' is collected, try to find contact
         if not contact:
-            contact = Contact.objects.filter(document=row_dict['document'],
-                                             name=row_dict['name']).first()
+            contact = Contact.objects.filter(document__iexact=row_dict['document'],
+                                             name__iexact=row_dict['name']).first()
 
         if not contact:
             print('Create contact: {} {} {}'.format(row_dict['name'],
@@ -405,7 +407,7 @@ class Capture(TemplateView):
                                                     row_dict['first_name'], row_dict['last_name']))
             update_contact(request, contact, row_dict)
 
-        project_contact = ProjectContact.objects.filter(project__name=project_name,
+        project_contact = ProjectContact.objects.filter(project__name__iexact=project_name,
                                                         contact=contact).first()
         if not project_contact:
             print('Create project contact: {} {}'.format(project.name, row_dict['name']))
@@ -527,6 +529,7 @@ class CityDetailView(DetailView):
         country_id = self.kwargs.get('country_id')
         obj = City.objects.all()
         if country_id:
-            obj = obj.filter(Q(country_id=country_id.upper()) | Q(country__name__iexact=country_id))
+            obj = obj.filter(Q(country_id__iexact=country_id.upper()) |
+                             Q(country__name__iexact=country_id))
         obj = obj.filter(name__iexact=name).first()
         return obj
