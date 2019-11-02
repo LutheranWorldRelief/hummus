@@ -396,7 +396,12 @@ class ValidateExcel(DomainRequiredMixin, FormView):
     template_name = 'import/step2.html'
 
 
-class ImportParticipantsStep1(DomainRequiredMixin, View):
+class GetExcelToImport(DomainRequiredMixin, View):
+    """
+    Also known as 'step1'.
+    Receives the excel file from user and sets advanced options.
+    """
+
     template_name = 'import/step1.html'
 
     def get(self, request):
