@@ -32,7 +32,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
                      Request, City, Profile, Log)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
-                     RegexpReplace, parse_date)
+                     RegexpReplace, parse_date, language_no_region)
 from .catalog import create_catalog
 from .updates import update_contact, update_project_contact, validate_data
 
@@ -119,7 +119,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         counter_records_created = 0
 
         # get advanced options
-        language = request.POST.get('language', settings.LANGUAGE_CODE)
+        language = request.POST.get('language', language_no_region(settings.LANGUAGE_CODE))
         start_row = int(request.POST.get('start_row', config.START_ROW))
         header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
@@ -163,6 +163,9 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 model_fields = mapping['project']
                 for field_name, field_data in model_fields.items():
                     value = row[field_data['column']].value
+                    # removes extra spaces if string
+                    if isinstance(value, str):
+                        value = value.strip()
                     if field_name == 'name' and '=>' in value:
                         code, value = value.split('=>', 2)
                     if field_name == 'name' and not subproject.filter(name=value).exists():
@@ -194,6 +197,11 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                             value = parse_date(value, date_format)
                 else:
                     value = None
+
+                # removes extra spaces if string
+                if isinstance(value, str):
+                    value = value.strip()
+
                 row_dict[field_name] = value
 
             # there are two ways to look up a contact: name+doc and firstname+lastname+doc
