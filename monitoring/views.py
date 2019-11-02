@@ -160,6 +160,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         imported_ids = []
         counter_records_updated = 0
         counter_records_created = 0
+        filter_type = 'iexact'
 
         # get advanced options
         language = request.POST.get('language', language_no_region(settings.LANGUAGE_CODE))
@@ -201,7 +202,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
             # get subproject, project and organization
             model = SubProject
-            filter_type = 'iexact'
             if 'project' in mapping:
                 subproject = model.objects.all()
                 model_fields = mapping['project']
