@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.apps import apps
 
 from .common import get_localized_name as __, parse_date
-from .models import Sex, Education, Country, Product, Organization
+from .models import Sex, Education, Country, Organization
 
 
 def try_to_find(model, value, exists=False):
