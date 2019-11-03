@@ -14,10 +14,10 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 
-def smart_assign(a, b):
-    if b:
-        a = b
-    return a
+def smart_assign(original, new):
+    if new:
+        return new
+    return original
 
 def domain_required():
     def check_domain(user):
@@ -132,9 +132,9 @@ class JSONResponseMixin:
         return context
 
 
-def xstr(s):
+def xstr(string):
     """ return empty instead of None. credit to https://stackoverflow.com/a/1034598/1170404 """
-    return '' if s is None else str(s)
+    return '' if string is None else str(string)
 
 
 def parse_date(string, date_format=None):
@@ -149,7 +149,7 @@ def parse_date(string, date_format=None):
     # fixes date_format
     date_format_maps = {'m/d/Y': '%m/%d/%Y', 'd/m/Y': '%d/%m/%Y', 'Y-m-d': '%Y-%m-%d'}
     if date_format in date_format_maps:
-        date_format = date_format_maps[date_format]
+        date_format = date_format_maps.get(date_format)
 
     # do parse
     date_formats = settings.DATE_INPUT_FORMATS
@@ -161,7 +161,7 @@ def parse_date(string, date_format=None):
             return datetime.datetime.strptime(str(string), fmt).date()
         except ValueError:
             pass
-    return
+    return None
 
 
 class RegexpReplace(Func):

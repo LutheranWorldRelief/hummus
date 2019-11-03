@@ -13,7 +13,7 @@ def try_to_find(model, value, exists=False):
     """ tries to find value in model """
 
     if not value:
-        return
+        return None
 
     filter_type = 'iexact'
     fields = ['name', 'varname']
@@ -29,8 +29,8 @@ def try_to_find(model, value, exists=False):
 
     if exists:
         return model.objects.filter(condition).exists()
-    else:
-        return model.objects.filter(condition).first()
+
+    return model.objects.filter(condition).first()
 
 
 def update_contact(request, contact, row):
@@ -40,22 +40,19 @@ def update_contact(request, contact, row):
         else:
             contact.created_user = request.user.username
 
-    columna_name = __('name')
-    columna_varname = __('varname')
-
-    contact.name = smart_assign(contact.name , row.get('name'))
-    contact.first_name = smart_assign(contact.first_name , row.get('first_name'))
-    contact.last_name = smart_assign(contact.last_name , row.get('last_name'))
-    contact.source_id = smart_assign(contact.source_id , row.get('source_id'))
-    contact.document = smart_assign(contact.document , row.get('document'))
-    contact.phone_personal = smart_assign(contact.phone_personal , row.get('phone_personal'))
-    contact.women_home = smart_assign(contact.women_home , row.get('women_home'))
-    contact.men_home = smart_assign(contact.men_home , row.get('men_home'))
-    contact.birthdate = smart_assign(contact.birthdate , row.get('birthdate'))
-    contact.municipality = smart_assign(contact.municipality , row.get('municipality'))
-    contact.community = smart_assign(contact.community , row.get('community'))
-    contact.location = smart_assign(contact.location , row.get('location'))
-    contact.log = smart_assign(contact.log , row.get('log'))
+    contact.name = smart_assign(contact.name, row.get('name'))
+    contact.first_name = smart_assign(contact.first_name, row.get('first_name'))
+    contact.last_name = smart_assign(contact.last_name, row.get('last_name'))
+    contact.source_id = smart_assign(contact.source_id, row.get('source_id'))
+    contact.document = smart_assign(contact.document, row.get('document'))
+    contact.phone_personal = smart_assign(contact.phone_personal, row.get('phone_personal'))
+    contact.women_home = smart_assign(contact.women_home, row.get('women_home'))
+    contact.men_home = smart_assign(contact.men_home, row.get('men_home'))
+    contact.birthdate = smart_assign(contact.birthdate, row.get('birthdate'))
+    contact.municipality = smart_assign(contact.municipality, row.get('municipality'))
+    contact.community = smart_assign(contact.community, row.get('community'))
+    contact.location = smart_assign(contact.location, row.get('location'))
+    contact.log = smart_assign(contact.log, row.get('log'))
 
     organization = try_to_find(Organization, row.get('organization'))
     sex = try_to_find(Sex, row.get('sex'))
@@ -77,7 +74,8 @@ def update_project_contact(request, project_contact, row):
         project_contact.created_user = request.user.username
 
     project_contact.organization = row.get('organization')
-    project_contact.date_entry_project = row.get('date_entry_project')
+    project_contact.date_entry_project = smart_assign(project_contact.date_entry_project,
+                                                      row.get('date_entry_project'))
     project_contact.source_id = row.get('source_id')
     project_contact.log = row.get('log')
 
