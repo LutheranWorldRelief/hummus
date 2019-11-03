@@ -14,6 +14,11 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 
+def smart_assign(a, b):
+    if b:
+        a = b
+    return a
+
 def domain_required():
     def check_domain(user):
         # domain required

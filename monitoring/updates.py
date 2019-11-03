@@ -5,7 +5,7 @@ updates and saves models. used by importers.
 from django.db.models import Q
 from django.apps import apps
 
-from .common import get_localized_name as __, parse_date
+from .common import get_localized_name as __, parse_date, smart_assign
 from .models import Sex, Education, Country, Organization
 
 
@@ -43,29 +43,29 @@ def update_contact(request, contact, row):
     columna_name = __('name')
     columna_varname = __('varname')
 
-    contact.name = row.get('name', '')
-    contact.first_name = row.get('first_name')
-    contact.last_name = row.get('last_name')
-    contact.source_id = row.get('source_id')
-    contact.document = row.get('document')
-    contact.phone_personal = row.get('phone_personal')
-    contact.women_home = row.get('women_home')
-    contact.men_home = row.get('men_home')
-    contact.birthdate = row.get('birthdate')
-    contact.municipality = row.get('municipality')
-    contact.community = row.get('community')
-    contact.location = row.get('location')
-    contact.log = row.get('log')
+    contact.name = smart_assign(contact.name , row.get('name'))
+    contact.first_name = smart_assign(contact.first_name , row.get('first_name'))
+    contact.last_name = smart_assign(contact.last_name , row.get('last_name'))
+    contact.source_id = smart_assign(contact.source_id , row.get('source_id'))
+    contact.document = smart_assign(contact.document , row.get('document'))
+    contact.phone_personal = smart_assign(contact.phone_personal , row.get('phone_personal'))
+    contact.women_home = smart_assign(contact.women_home , row.get('women_home'))
+    contact.men_home = smart_assign(contact.men_home , row.get('men_home'))
+    contact.birthdate = smart_assign(contact.birthdate , row.get('birthdate'))
+    contact.municipality = smart_assign(contact.municipality , row.get('municipality'))
+    contact.community = smart_assign(contact.community , row.get('community'))
+    contact.location = smart_assign(contact.location , row.get('location'))
+    contact.log = smart_assign(contact.log , row.get('log'))
 
     organization = try_to_find(Organization, row.get('organization'))
     sex = try_to_find(Sex, row.get('sex'))
     education = try_to_find(Education, row.get('education'))
     country = try_to_find(Country, row.get('country'))
 
-    contact.organization_id = organization.id if organization else None
-    contact.sex_id = sex.id if sex else None
-    contact.education_id = education.id if education else None
-    contact.country_id = country.id if country else None
+    contact.organization_id = organization.id if organization else contact.organization_id
+    contact.sex_id = sex.id if sex else contact.sex_id
+    contact.education_id = education.id if education else contact.education_id
+    contact.country_id = country.id if country else contact.country_id
 
     contact.save()
 
