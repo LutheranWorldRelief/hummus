@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.apps import apps
 
 from .common import get_localized_name as __, parse_date
-from .models import Sex, Education, Country, Product
+from .models import Sex, Education, Country, Product, Organization
 
 
 def try_to_find(model, value, exists=False):
@@ -57,10 +57,12 @@ def update_contact(request, contact, row):
     contact.location = row.get('location')
     contact.log = row.get('log')
 
+    organization = try_to_find(Organization, row.get('organization'))
     sex = try_to_find(Sex, row.get('sex'))
     education = try_to_find(Education, row.get('education'))
     country = try_to_find(Country, row.get('country'))
 
+    contact.organization_id = organization.id if organization else None
     contact.sex_id = sex.id if sex else None
     contact.education_id = education.id if education else None
     contact.country_id = country.id if country else None
