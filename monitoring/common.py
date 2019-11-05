@@ -154,7 +154,7 @@ def parse_date(string, date_format=None):
         'm/d/y': '%m/%d/%y',
         'm-d-y': '%m-%d-%y',
         'd/m/y': '%d/%m/%y',
-                        'd-m-y': '%d-%m-%y',
+        'd-m-y': '%d-%m-%y',
     }
     if date_format in date_format_maps:
         date_format = date_format_maps.get(date_format)
