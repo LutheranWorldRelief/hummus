@@ -147,7 +147,15 @@ def parse_date(string, date_format=None):
         return string
 
     # fixes date_format
-    date_format_maps = {'m/d/Y': '%m/%d/%Y', 'd/m/Y': '%d/%m/%Y', 'Y-m-d': '%Y-%m-%d'}
+    date_format_maps = {
+                        'm/d/Y': '%m/%d/%Y',
+                        'd/m/Y': '%d/%m/%Y',
+                        'Y-m-d': '%Y-%m-%d',
+                        'm/d/y': '%m/%d/%y',
+                        'm-d-y': '%m-%d-%y',
+                        'd/m/y': '%d/%m/%y',
+                        'd-m-y': '%d-%m-%y',
+                        }
     if date_format in date_format_maps:
         date_format = date_format_maps.get(date_format)
 
