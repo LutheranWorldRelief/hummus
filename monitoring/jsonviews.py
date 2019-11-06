@@ -242,7 +242,7 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
             return context
 
         contacts_dupes = Contact.objects.filter(
-            Q(name=contact.name) | Q(document=contact.document)).exclude(id=contact_id).values()
+            Q(name=contact.name) | Q(document=contact.document)).values()
 
         # make Point JSON serializable
         for row in contacts_dupes:
