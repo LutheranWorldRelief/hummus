@@ -416,7 +416,7 @@ class ProjectQuerySet(models.QuerySet):
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'), unique=True)
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
     STATUS_CHOICES = [
         ('In Development', _('In Development')),
         ('Active', _('Active')),
@@ -519,7 +519,7 @@ class SubProject(models.Model):
         ('Terminated', _('Terminated')),
         ('Closed', _('Closed')),
     ]
-    name = models.CharField(max_length=255, verbose_name=_('Name'), unique=True)
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
     code = models.CharField(max_length=255, unique=False, verbose_name=_('Code'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
                                   verbose_name=_('Salesforce Id'))
