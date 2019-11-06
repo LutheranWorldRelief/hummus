@@ -48,7 +48,7 @@ let app = new Vue({
             'country',
             'organization_id',
             'education_id',
-            'type_id',
+            'contact_type_id',
             'created',
             'modified',
             'errors',
