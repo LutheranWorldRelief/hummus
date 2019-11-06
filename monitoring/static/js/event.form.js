@@ -8,7 +8,7 @@ function AttendanceModel() {
         sex: "",
         country_id: "",
         community: "",
-        type_id: "",
+        contact_type_id: "",
         type_tags: "",
         phone_personal: "",
         errors: {},
@@ -89,7 +89,7 @@ var newForm = new Vue({
             m.org_name = event.org_name;
             m.country_id = event.country_id;
             m.community = event.community;
-            m.type_id = event.type_id;
+            m.contact_type_id = event.contact_type_id;
             m.phone_personal = event.phone_personal;
         },
         afterSelectDoc: function (event, m, index) {
@@ -102,7 +102,7 @@ var newForm = new Vue({
             m.org_name = event.org_name;
             m.country_id = event.country_id;
             m.community = event.community;
-            m.type_id = event.type_id;
+            m.contact_type_id = event.contact_type_id;
             m.phone_personal = event.phone_personal;
         },
         afterSelectOrg: function (event, m, index) {

@@ -187,8 +187,8 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         if values['sex_id'].strip() != '':
             contact.sex_id = values['sex_id']
 
-        if values['type_id'].strip() != '':
-            contact.type_id = values['type_id']
+        if values['contact_type_id'].strip() != '':
+            contact.contact_type_id = values['contact_type_id']
 
         if values['education_id'].strip() != '':
             contact.education_id = values['education_id']
