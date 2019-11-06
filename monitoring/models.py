@@ -344,7 +344,7 @@ class OrganizationQuerySet(models.QuerySet):
 
 
 class Organization(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'), unique=True)
     varname = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Acronym'))
     status = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Status'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
