@@ -1,10 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
-from django.db.models import Count, Q, Value, F
+from django.core.management.base import BaseCommand
+from django.db.models import Count
 
 import requests
 
-from monitoring.models import Contact, ProjectContact, Organization
+from monitoring.models import Contact, ProjectContact
 
 class Command(BaseCommand):
     help = 'Tries to de duplicate Contacts'
