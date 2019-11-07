@@ -659,7 +659,7 @@ class ProjectContact(models.Model):
         db_table = 'project_contact'
         verbose_name = _('Project Contact')
         verbose_name_plural = _('Project Contacts')
-        unique_together = [['project', 'contact']]
+        #unique_together = [['project', 'contact']]
 
 
 class Education(models.Model):

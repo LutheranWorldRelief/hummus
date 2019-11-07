@@ -64,3 +64,32 @@ class Command(BaseCommand):
             print('{}: {} in {} has {} duplicates, winner: {} (looser: {}).  Deletes {}.'.
                   format(winner.id, winner.contact, winner.project, subdupes.count(), winner.score,
                          looser.score, deletes))
+
+
+        # De dupes Contact with no first or last name
+        duplicates = Contact.objects.values('name', 'document',
+                                            'country').annotate(name_count=Count('*')).\
+            filter(name_count__gt=1)
+        print('There are {} "Contact" (only "name") duplicates'.format(duplicates.count()))
+        for duplicate in duplicates:
+            ids = []
+            subdupes = Contact.objects.filter(name=duplicate['name'],
+                                              document=duplicate['document'],
+                                              country=duplicate['country'])
+            for subdupe in subdupes:
+                score = 0
+                for field in Contact._meta.get_fields():
+                    if hasattr(subdupe, field.name) and getattr(subdupe, field.name):
+                        score += 1
+                subdupe.score = score
+                ids.append(subdupe.id)
+            winner = max(subdupes, key=lambda x: x.score)
+            looser = min(subdupes, key=lambda x: x.score)
+            loosers = [x.id for x in subdupes if x.id != winner.id]
+
+            updates = ProjectContact.objects.filter(contact_id__in=ids).update(contact_id=winner.id)
+            deletes = Contact.objects.filter(id__in=loosers).delete()
+            print('{}: {} has {} duplicates, winner: {} (looser: {}).  Update: {}. Deletes {}.'.
+                  format(winner.id, winner.name, subdupes.count(), winner.score, looser.score,
+                         updates, deletes))
+
