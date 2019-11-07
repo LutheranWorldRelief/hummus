@@ -5,6 +5,7 @@ import requests
 
 from monitoring.models import Contact, ProjectContact
 
+
 class Command(BaseCommand):
     help = 'Tries to de duplicate Contacts'
 
@@ -12,7 +13,7 @@ class Command(BaseCommand):
         # De dupes Contact
         duplicates = Contact.objects.values('first_name', 'last_name', 'name', 'document',
                                             'country').annotate(name_count=Count('*')).\
-                                            filter(name_count__gt=1)
+            filter(name_count__gt=1)
         print('There are {} "Contact" duplicates'.format(duplicates.count()))
         for duplicate in duplicates:
             ids = []
@@ -34,9 +35,9 @@ class Command(BaseCommand):
 
             updates = ProjectContact.objects.filter(contact_id__in=ids).update(contact_id=winner.id)
             deletes = Contact.objects.filter(id__in=loosers).delete()
-            print('{}: {} has {} duplicates, winner: {} (looser: {}).  Update: {}. Deletes {}.'.\
-                format(winner.id, winner.name, subdupes.count(), winner.score, looser.score,
-                       updates, deletes))
+            print('{}: {} has {} duplicates, winner: {} (looser: {}).  Update: {}. Deletes {}.'.
+                  format(winner.id, winner.name, subdupes.count(), winner.score, looser.score,
+                         updates, deletes))
 
         # De dupes Project Contact
         duplicates = ProjectContact.objects.values('project', 'contact').\
@@ -45,15 +46,15 @@ class Command(BaseCommand):
         for duplicate in duplicates:
             ids = []
             subdupes = ProjectContact.objects.filter(contact=duplicate['contact'],
-                                              project=duplicate['project'],)
+                                                     project=duplicate['project'],)
             for subdupe in subdupes:
                 score = 0
                 for field in ProjectContact._meta.get_fields():
                     if hasattr(subdupe, field.name) and getattr(subdupe, field.name):
                         score += 1
                 if subdupe.date_entry_project and\
-                    (subdupe.date_entry_project < subdupe.project.start or\
-                    subdupe.date_entry_project > subdupe.project.end):
+                    (subdupe.date_entry_project < subdupe.project.start or
+                     subdupe.date_entry_project > subdupe.project.end):
                     score -= 1
                 subdupe.score = score
                 ids.append(subdupe.id)
@@ -62,6 +63,6 @@ class Command(BaseCommand):
             loosers = [x.id for x in subdupes if x.id != winner.id]
 
             deletes = ProjectContact.objects.filter(id__in=loosers).delete()
-            print('{}: {} in {} has {} duplicates, winner: {} (looser: {}).  Deletes {}.'.\
-                format(winner.id, winner.contact, winner.project, subdupes.count(), winner.score,
-                       looser.score, deletes))
+            print('{}: {} in {} has {} duplicates, winner: {} (looser: {}).  Deletes {}.'.
+                  format(winner.id, winner.contact, winner.project, subdupes.count(), winner.score,
+                         looser.score, deletes))
