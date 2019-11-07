@@ -273,7 +273,7 @@ class Contact(models.Model):
         indexes = [
             models.Index(fields=['first_name', 'last_name']),
         ]
-        unique_together = [['name', 'first_name', 'last_name', 'document', 'country']]
+        #unique_together = [['name', 'first_name', 'last_name', 'document', 'country']]
 
 
 class CountryQuerySet(models.QuerySet):
