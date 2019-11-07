@@ -1,8 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 
-import requests
-
 from monitoring.models import Contact, ProjectContact
 
 
