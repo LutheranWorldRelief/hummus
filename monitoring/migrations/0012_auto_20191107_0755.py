@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='contact',
             name='document',
-            field=models.CharField(blank=True, db_index=True, max_length=40, null=True, verbose_name='Document'),
+            field=models.CharField(blank=True, db_index=True, max_length=40,
+                                   null=True, verbose_name='Document'),
         ),
         migrations.AlterField(
             model_name='contact',
@@ -33,7 +34,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='project',
             name='salesforce',
-            field=models.CharField(blank=True, db_index=True, max_length=255, null=True, unique=True, verbose_name='Salesforce Id'),
+            field=models.CharField(blank=True, db_index=True, max_length=255,
+                                   null=True, unique=True, verbose_name='Salesforce Id'),
         ),
         migrations.AlterField(
             model_name='subproject',
@@ -48,7 +50,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='subproject',
             name='salesforce',
-            field=models.CharField(blank=True, db_index=True, max_length=255, null=True, unique=True, verbose_name='Salesforce Id'),
+            field=models.CharField(blank=True, db_index=True, max_length=255,
+                                   null=True, unique=True, verbose_name='Salesforce Id'),
         ),
         migrations.AlterUniqueTogether(
             name='contact',
@@ -60,6 +63,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name='contact',
-            index=models.Index(fields=['first_name', 'last_name'], name='contact_first_n_af86f4_idx'),
+            index=models.Index(fields=['first_name', 'last_name'],
+                               name='contact_first_n_af86f4_idx'),
         ),
     ]

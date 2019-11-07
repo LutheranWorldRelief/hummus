@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='organization',
             name='varname',
-            field=models.CharField(blank=True, db_index=True, max_length=255, null=True, verbose_name='Acronym'),
+            field=models.CharField(blank=True, db_index=True, max_length=255,
+                                   null=True, verbose_name='Acronym'),
         ),
     ]

@@ -196,7 +196,7 @@ class Contact(models.Model):
                                   verbose_name=_('First Name'))
     birthdate = models.DateField(blank=True, null=True, verbose_name=_('Birthdate'))
     document = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Document'),
-				db_index=True)
+                                db_index=True)
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Title'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
                                      null=True, verbose_name=_('Organization'))
