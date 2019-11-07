@@ -65,7 +65,6 @@ class Command(BaseCommand):
                   format(winner.id, winner.contact, winner.project, subdupes.count(), winner.score,
                          looser.score, deletes))
 
-
         # De dupes Contact with no first or last name
         duplicates = Contact.objects.values('name', 'document',
                                             'country').annotate(name_count=Count('*')).\
@@ -92,4 +91,3 @@ class Command(BaseCommand):
             print('{}: {} has {} duplicates, winner: {} (looser: {}).  Update: {}. Deletes {}.'.
                   format(winner.id, winner.name, subdupes.count(), winner.score, looser.score,
                          updates, deletes))
-
