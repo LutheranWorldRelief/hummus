@@ -190,12 +190,13 @@ class ContactQuerySet(models.QuerySet):
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'), db_index=True)
     last_name = models.CharField(max_length=80, blank=True, null=True, verbose_name=_('Last Name'))
     first_name = models.CharField(max_length=80, blank=True, null=True,
                                   verbose_name=_('First Name'))
     birthdate = models.DateField(blank=True, null=True, verbose_name=_('Birthdate'))
-    document = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Document'))
+    document = models.CharField(max_length=40, blank=True, null=True, verbose_name=_('Document'),
+				db_index=True)
     title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Title'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
                                      null=True, verbose_name=_('Organization'))
@@ -269,6 +270,10 @@ class Contact(models.Model):
         db_table = 'contact'
         verbose_name = _('Contact')
         verbose_name_plural = _('Contacts')
+        indexes = [
+            models.Index(fields=['first_name', 'last_name']),
+        ]
+        unique_together = [['name', 'first_name', 'last_name', 'document', 'country']]
 
 
 class CountryQuerySet(models.QuerySet):
@@ -344,8 +349,9 @@ class OrganizationQuerySet(models.QuerySet):
 
 
 class Organization(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'), unique=True)
-    varname = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Acronym'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'), db_index=True)
+    varname = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Acronym'),
+                               db_index=True)
     status = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Status'))
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
                                   verbose_name=_('Salesforce Id'))
@@ -416,7 +422,7 @@ class ProjectQuerySet(models.QuerySet):
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'), db_index=True)
     STATUS_CHOICES = [
         ('In Development', _('In Development')),
         ('Active', _('Active')),
@@ -425,9 +431,9 @@ class Project(models.Model):
         ('Suspended', _('Suspended')),
         ('Terminated', _('Terminated')),
     ]
-    code = models.CharField(max_length=255, unique=True, verbose_name=_('Code'))
+    code = models.CharField(max_length=255, unique=True, verbose_name=_('Code'), db_index=True)
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
-                                  verbose_name=_('Salesforce Id'))
+                                  db_index=True, verbose_name=_('Salesforce Id'))
     logo = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Logo'))
     colors = models.CharField(max_length=150, blank=True, null=True, verbose_name=_('Colors'))
     url = models.URLField(blank=True, null=True, verbose_name=_('Url'))
@@ -519,10 +525,10 @@ class SubProject(models.Model):
         ('Terminated', _('Terminated')),
         ('Closed', _('Closed')),
     ]
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
-    code = models.CharField(max_length=255, unique=False, verbose_name=_('Code'))
+    name = models.CharField(max_length=255, verbose_name=_('Name'), db_index=True)
+    code = models.CharField(max_length=255, unique=False, verbose_name=_('Code'), db_index=True)
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
-                                  verbose_name=_('Salesforce Id'))
+                                  db_index=True, verbose_name=_('Salesforce Id'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
                               verbose_name=_('Status'))
@@ -653,6 +659,7 @@ class ProjectContact(models.Model):
         db_table = 'project_contact'
         verbose_name = _('Project Contact')
         verbose_name_plural = _('Project Contacts')
+        unique_together = [['project', 'contact']]
 
 
 class Education(models.Model):
