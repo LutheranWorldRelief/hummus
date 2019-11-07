@@ -216,8 +216,13 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         result['Proyectos-Contactos'] = {}
         result['Eliminado'] = {}
         for row in contacts:
-            result['Proyectos-Contactos'][row.id] = ProjectContact.objects.filter(
-                contact_id=row.id).update(contact_id=contact.id)
+            # avoid unique together (contact, project) constraint
+            result['Proyectos-Contactos'][row.id] = 0
+            their_projects = ProjectContact.objects.filter(contact_id=row.id)
+            for project_contact in their_projects:
+                if not their_projects.filter(project_id=project_contact.project_id).exists():
+                    project_contact.update(contact_id=contact.id)
+                    result['Proyectos-Contactos'][row.id] += 1
             result['Eliminado'][row.id] = row.delete()
 
         context['save'] = True
