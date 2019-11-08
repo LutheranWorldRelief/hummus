@@ -247,7 +247,7 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
             return context
         condition = Q(name__iexact=contact.name)
         if contact.document:
-            contition = (condition | Q(document__iexact=contact.document))
+            condition = (condition | Q(document__iexact=contact.document))
         contacts_dupes = Contact.objects.filter(condition).values()
 
         # make Point JSON serializable
