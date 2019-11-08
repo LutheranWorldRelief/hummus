@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
 from .models import Contact, ProjectContact
-from .common import JSONResponseMixin, RegexpReplace, get_post_array
+from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
 class ContactEmpty(JSONResponseMixin, TemplateView):
