@@ -18,7 +18,7 @@ from openpyxl.writer.excel import save_virtual_workbook
 
 from monitoring.models import Contact, Sex, Template
 from monitoring.updates import update_contact
-from monitoring.common import parse_date, language_no_region
+from monitoring.common import parse_date, language_no_region, xstr
 
 
 class ImportTestCase(TestCase):
@@ -71,6 +71,19 @@ class ImportTestCase(TestCase):
 
 
 class CommonTestCase(TestCase):
+
+    def test_xstr(self):
+        self.assertEqual('', xstr(None))
+        self.assertEqual('', xstr(''))
+        self.assertEqual('Rosita Oconnor', xstr('Rosita Oconnor'))
+        self.assertEqual('Rosita Oconnor', xstr('Rosita  Oconnor'))
+        self.assertEqual('Rosita Oconnor', xstr('Rosita   Oconnor'))
+        self.assertEqual('Rosita Oconnor', xstr('Rosita Oconnor '))
+        self.assertEqual('Rosita Oconnor', xstr('Rosita Oconnor   '))
+        self.assertEqual('Rosita Oconnor', xstr(' Rosita Oconnor'))
+        self.assertEqual('Rosita Oconnor', xstr('  Rosita Oconnor'))
+        self.assertEqual('Rosita Oconnor', xstr('   Rosita Oconnor'))
+        self.assertEqual('Rosita Oconnor', xstr('   Rosita    Oconnor   '))
 
     def test_parse_date(self):
         test_date = datetime.date(2000, 12, 31)
