@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
 from .models import Contact, ProjectContact
-from .common import JSONResponseMixin, RegexpReplace, get_post_array
+from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
 class ContactEmpty(JSONResponseMixin, TemplateView):
@@ -128,7 +128,7 @@ class ContactNameValues(JSONResponseMixin, TemplateView):
             for row in queryset:
                 if row[f.column] and row[f.column] not in values[f.column] \
                         and isinstance(values[f.column], str):
-                    values[f.column].append(row[f.column].strip())
+                    values[f.column].append(xstr(row[f.column]))
                 else:
                     values[f.column].append(row[f.column])
 
@@ -169,41 +169,41 @@ class ContactFusion(JSONResponseMixin, TemplateView):
             context['error'] = _('Selected record not found.')
             return self.render_to_response(context, status=500)
 
-        contact.name = contact.name.strip().replace('  ', ' ')
+        contact.name = xstr(contact.name)
         if contact.first_name:
-            contact.first_name = contact.first_name.strip().replace('  ', ' ')
+            contact.first_name = xstr(contact.first_name)
         if contact.last_name:
-            contact.last_name = contact.last_name.strip().replace('  ', ' ')
+            contact.last_name = xstr(contact.last_name)
 
         if not contact.birthdate and values['birthdate'] != '':
             contact.birthdate = values['birthdate']
 
-        if values['document'].strip() != '':
-            contact.document = values['document'].strip()
+        if xstr(values['document']) != '':
+            contact.document = xstr(values['document'])
 
-        if values['organization_id'].strip() != '':
-            contact.organization_id = int(values['organization_id'])
+        if xstr(values['organization_id']) != '':
+            contact.organization_id = int(xstr(values['organization_id']))
 
-        if values['sex_id'].strip() != '':
-            contact.sex_id = values['sex_id']
+        if xstr(values['sex_id']) != '':
+            contact.sex_id = xstr(values['sex_id'])
 
-        if values['contact_type_id'].strip() != '':
-            contact.contact_type_id = values['contact_type_id']
+        if xstr(values['contact_type_id']) != '':
+            contact.contact_type_id = xstr(values['contact_type_id'])
 
-        if values['education_id'].strip() != '':
-            contact.education_id = values['education_id']
+        if xstr(values['education_id']) != '':
+            contact.education_id = xstr(values['education_id'])
 
-        if values['phone_work'].strip() != '':
-            contact.phone_work = values['phone_work']
+        if xstr(values['phone_work']) != '':
+            contact.phone_work = xstr(values['phone_work'])
 
-        if values['phone_personal'].strip() != '':
-            contact.phone_personal = values['phone_personal']
+        if xstr(values['phone_personal']) != '':
+            contact.phone_personal = xstr(values['phone_personal'])
 
-        if values['men_home'].strip() != '':
-            contact.men_home = values['men_home']
+        if xstr(values['men_home']) != '':
+            contact.men_home = xstr(values['men_home'])
 
-        if values['women_home'].strip() != '':
-            contact.women_home = values['women_home']
+        if xstr(values['women_home']) != '':
+            contact.women_home = xstr(values['women_home'])
 
         contact.updated_user = request.user.username
         contact.save()
