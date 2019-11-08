@@ -245,9 +245,10 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
         if not contact:
             context['models'] = {}
             return context
-
-        contacts_dupes = Contact.objects.filter(
-            Q(name=contact.name) | Q(document=contact.document)).values()
+        condition = Q(name__iexact=contact.name)
+        if contact.document:
+            condition = (condition | Q(document__iexact=contact.document))
+        contacts_dupes = Contact.objects.filter(condition).values()
 
         # make Point JSON serializable
         for row in contacts_dupes:
