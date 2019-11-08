@@ -134,7 +134,9 @@ class JSONResponseMixin:
 
 def xstr(string):
     """ return empty instead of None. credit to https://stackoverflow.com/a/1034598/1170404 """
-    return '' if string is None else str(string)
+    string = '' if string is None else str(string).strip()
+    string = re.sub(r'\s+', ' ', string)
+    return string
 
 
 def parse_date(string, date_format=None):
