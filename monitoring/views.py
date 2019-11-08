@@ -209,7 +209,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     value = row[field_data['column']].value
                     # removes extra spaces if string
                     if isinstance(value, str):
-                        value = value.strip()
+                        value = xstr(value)
                     if field_name == 'name' and '=>' in value:
                         code, value = value.split('=>', 2)
                     if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
@@ -247,7 +247,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
                 # removes extra spaces if string
                 if isinstance(value, str):
-                    value = value.strip()
+                    value = xstr(value)
 
                 row_dict[field_name] = value
 
@@ -257,7 +257,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                                                  document__iexact=row_dict['document)']).first()
             elif {'first_name', 'last_name', 'document'} <= set(model_fields):
                 name = "{} {}".format(xstr(row_dict['first_name']), xstr(row_dict['last_name']))
-                row_dict['name'] = name.strip()
+                row_dict['name'] = xstr(name)
                 contact = Contact.objects.filter(Q(name__iexact=row_dict['name'],
                                                  document__iexact=row_dict['document']) |
                                                  Q(first_name__iexact=row_dict['name'],

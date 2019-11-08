@@ -247,7 +247,7 @@ class Contact(models.Model):
             if isinstance(field, models.CharField):
                 value = getattr(self, field.name)
                 if value:
-                    value = str(value).strip()
+                    value = xstr(value)
                     # detect snake_name, change to Snake Name
                     simple_value = value
                     simple_value = simple_value.replace(' ', '')
@@ -259,7 +259,7 @@ class Contact(models.Model):
         # compute  'name' from first and last name, if needed
         if not self.name and (self.first_name or self.last_name):
             self.name = "{} {}".format(xstr(self.first_name), xstr(self.last_name))
-            self.name = self.name.strip()
+            self.name = xstr(self.name)
         elif not self.name:
             raise ValueError(_("We need a name! name, first_name and last_name seem to be empty."))
 
