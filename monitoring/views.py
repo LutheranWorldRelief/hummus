@@ -32,7 +32,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
                      Request, City, Profile, Log)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
-                     RegexpReplace, parse_date, language_no_region)
+                     RegexpReplace, parse_date, language_no_region, xstr)
 from .catalog import create_catalog
 from .updates import update_contact, update_project_contact, validate_data
 
@@ -256,9 +256,13 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 contact = Contact.objects.filter(name__iexact=row_dict['name'],
                                                  document__iexact=row_dict['document)']).first()
             elif {'first_name', 'last_name', 'document'} <= set(model_fields):
-                contact = Contact.objects.filter(first_name__iexact=row_dict['first_name'],
+                name = "{} {}".format(xstr(row_dict['first_name']), xstr(row_dict['last_name']))
+                row_dict['name'] = name.strip()
+                contact = Contact.objects.filter(Q(name__iexact=row_dict['name'],
+                                                 document__iexact=row_dict['document']) |
+                                                 Q(first_name__iexact=row_dict['name'],
                                                  last_name__iexact=row_dict['last_name'],
-                                                 document__iexact=row_dict['document']).first()
+                                                 document__iexact=row_dict['document'])).first()
             else:
                 raise Exception('Mapping needs more contact data fields')
 
