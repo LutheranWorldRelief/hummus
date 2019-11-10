@@ -80,12 +80,11 @@ urlpatterns = [
     path('opt/api-doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
     path('opt/api-name/<str:name>/', jsonviews.ContactNameDupesDetails.as_view(), ),
     path('opt/api-organizations/', jsonviews.JsonIdName.as_view(
-        queryset=models.Organization.objects.filter(projectcontact__isnull=False).distinct())),
+        queryset=models.Organization.objects.all())),
     path('opt/api-countries/',
-         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.filter(
-             project__isnull=False).distinct())),
+         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all())),
     path('opt/api-projects/',
-         jsonviews.JsonIdName.as_view(queryset=models.Project.objects.filter(status='Active'))),
+         jsonviews.JsonIdName.as_view(queryset=models.Project.objects.all())),
     path('opt/api-types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
     path('opt/api-education/',
          jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), )
