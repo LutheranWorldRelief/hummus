@@ -31,7 +31,12 @@ class Command(BaseCommand):
             looser = min(subdupes, key=lambda x: x.score)
             loosers = [x.id for x in subdupes if x.id != winner.id]
 
-            updates = ProjectContact.objects.filter(contact_id__in=ids).update(contact_id=winner.id)
+            updates = 0
+            their_projects = ProjectContact.objects.filter(contact_id__in=ids)
+            for project_contact in their_projects:
+                if not their_projects.filter(project_id=project_contact.project_id).exists():
+                    update = project_contact.update(contact_id=winner.id)
+                    updates += update
             deletes = Contact.objects.filter(id__in=loosers).delete()
             print('{}: {} has {} duplicates, winner: {} (looser: {}).  Update: {}. Deletes {}.'.
                   format(winner.id, winner.name, subdupes.count(), winner.score, looser.score,
