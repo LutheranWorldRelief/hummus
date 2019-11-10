@@ -46,7 +46,10 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
                       'organizationId': 'organization_id',
                       'nameSearch': 'name__icontains'}
         filter_kwargs = filter_by(parameters, self.request)
-        qs = Contact.objects.filter(**filter_kwargs).annotate(
+        contacts = Contact.objects.all()
+        if self.request.user:
+            contacts = contacts.for_user(self.request.user)
+        qs = contacts.filter(**filter_kwargs).annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
         queryset = qs.values('name_uc').order_by('name_uc').annotate(
             cuenta=Count('name_uc')).filter(cuenta__gt=1)
@@ -84,7 +87,10 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
                       'organizationId': 'organization_id',
                       'nameSearch': 'name__icontains'}
         filter_kwargs = filter_by(parameters, self.request)
-        queryset = Contact.objects.filter(**filter_kwargs).filter(
+        contacts = Contact.objects.all()
+        if self.request.user:
+            contacts = contacts.for_user(self.request.user)
+        queryset = contacts.filter(**filter_kwargs).filter(
             document__isnull=False).exclude(document='').values('document').order_by(
             'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
         for row in queryset:
@@ -272,6 +278,8 @@ class JsonIdName(JSONResponseMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         result = {}
+        if request.user and hasattr(self.queryset.model.objects, 'for_user'):
+            self.queryset = self.queryset.for_user(request.user)
         for row in self.queryset:
             result[row.id] = row.name
         return self.render_to_response(result)

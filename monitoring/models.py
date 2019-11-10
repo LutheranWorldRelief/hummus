@@ -178,12 +178,12 @@ class City(models.Model):
 class ContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
-            if user.profile.lwrregions.exists():
-                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
-            if user.profile.countries.exists():
-                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
             if user.profile.projects.exists():
                 return self.filter(projectcontact__project__in=user.profile.projects.all())
+            if user.profile.countries.exists():
+                return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
+            if user.profile.lwrregions.exists():
+                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -279,6 +279,10 @@ class Contact(models.Model):
 class CountryQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
+            if user.profile.projects.exists():
+                return self.filter(subproject__project__in=user.profile.projects.all())
+            if user.profile.lwrregions.exists():
+                return self.filter(lwrregion__in=user.profile.lwrregions.all())
             if user.profile.countries.exists():
                 return user.profile.countries
         else:
@@ -337,12 +341,12 @@ class Filter(models.Model):
 class OrganizationQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
-            if user.profile.lwrregions.exists():
-                return self.filter(country__lwrregion__in=user.profile.lwrregions.all())
+            if user.profile.projects.exists():
+                return self.filter(subproject__project__in=user.profile.projects.all())
             if user.profile.countries.exists():
                 return self.filter(country__in=user.profile.countries.all())
-            if user.profile.projects.exists():
-                return self.filter(projectcontact__project__in=user.profile.projects.all())
+            if user.profile.lwrregions.exists():
+                return self.filter(country__lwrregion__in=user.profile.lwrregions.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -410,12 +414,12 @@ class OrganizationType(models.Model):
 class ProjectQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
-            if user.profile.lwrregions.exists():
-                return self.filter(lwrregion__in=user.profile.lwrregions.all())
-            if user.profile.countries.exists():
-                return self.filter(countries__in=user.profile.countries.all())
             if user.profile.projects.exists():
                 return self.filter(profile=user.profile)
+            if user.profile.countries.exists():
+                return self.filter(countries__in=user.profile.countries.all())
+            if user.profile.lwrregions.exists():
+                return self.filter(lwrregion__in=user.profile.lwrregions.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -505,12 +509,12 @@ class Project(models.Model):
 class SubProjectQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
-            if user.profile.lwrregions.exists():
-                return self.filter(project__lwrregion__in=user.profile.lwrregions.all())
-            if user.profile.countries.exists():
-                return self.filter(project__countries__in=user.profile.countries.all())
             if user.profile.projects.exists():
                 return self.filter(project__profile=user.profile)
+            if user.profile.countries.exists():
+                return self.filter(project__countries__in=user.profile.countries.all())
+            if user.profile.lwrregions.exists():
+                return self.filter(project__lwrregion__in=user.profile.lwrregions.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
@@ -602,12 +606,12 @@ class Product(models.Model):
 class ProjectContactQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
-            if user.profile.lwrregions.exists():
-                return self.filter(project__countries__lwrregion__in=user.profile.lwrregions.all())
-            if user.profile.countries.exists():
-                return self.filter(project__countries__in=user.profile.countries.all())
             if user.profile.projects.exists():
                 return self.filter(project__in=user.profile.projects.all())
+            if user.profile.countries.exists():
+                return self.filter(project__countries__in=user.profile.countries.all())
+            if user.profile.lwrregions.exists():
+                return self.filter(project__countries__lwrregion__in=user.profile.lwrregions.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
