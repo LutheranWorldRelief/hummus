@@ -183,8 +183,7 @@ class ContactQuerySet(models.QuerySet):
             if user.profile.countries.exists():
                 return self.filter(projectcontact__project__countries__in=user.profile.countries.all())
             if user.profile.lwrregions.exists():
-                return self.filter(projectcontact__project__countries__lwrregion__in=\
-                    user.profile.lwrregions.all())
+                return self.filter(projectcontact__project__countries__lwrregion__in=user.profile.lwrregions.all())
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
