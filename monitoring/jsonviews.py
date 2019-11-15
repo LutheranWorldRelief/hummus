@@ -164,7 +164,11 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         ids = request.POST.getlist('ids[]')
         values = get_post_array('values', request.POST)
         context = {}
+
+        # all contacts to be deleted
         contacts = Contact.objects.filter(id__in=ids).exclude(id=contact_id)
+
+        # the contact to remain, the chosen one
         contact = Contact.objects.get(id=contact_id)
 
         if len(contacts) < 1:
@@ -224,10 +228,14 @@ class ContactFusion(JSONResponseMixin, TemplateView):
         for row in contacts:
             # avoid unique together (contact, project) constraint
             result['Proyectos-Contactos'][row.id] = 0
+            # gets participations of contact to be deleted
             their_projects = ProjectContact.objects.filter(contact_id=row.id)
             for project_contact in their_projects:
-                if not their_projects.filter(project_id=project_contact.project_id).exists():
-                    project_contact.update(contact_id=contact.id)
+                # updates to use chosen-one, if he is not already participating
+                if not ProjectContact.objects.filter(project_id=project_contact.project_id,
+                    contact_id=contact.id).exists():
+                    project_contact.contact_id=contact.id
+                    project_contact.save()
                     result['Proyectos-Contactos'][row.id] += 1
             result['Eliminado'][row.id] = row.delete()
 

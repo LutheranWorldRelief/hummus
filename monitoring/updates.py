@@ -15,7 +15,7 @@ def try_to_find(model, value, exists=False):
     if not value:
         return None
 
-    filter_type = 'iexact'
+    filter_type = 'iexact' # be case insensitive
     fields = ['name', 'varname']
     condition = Q(pk=None)  # start with always false
 
