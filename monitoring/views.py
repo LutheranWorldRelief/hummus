@@ -13,7 +13,7 @@ from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from django.utils import translation
+from django.utils import translation, formats
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView, DetailView, FormView
@@ -52,7 +52,7 @@ class GetExcelToImport(DomainRequiredMixin, View):
                      Profile.LANGUAGE_CHOICES]
         templates = Template.objects.values(template_id=F('id'),
                                             template_name=F(__('name')))
-        context['short_date_format'] = settings.SHORT_DATE_FORMAT
+        context['short_date_format'] = formats.get_format("SHORT_DATE_FORMAT")
         context['languages'] = languages
         context['templates'] = templates
         return render(request, self.template_name, context)
@@ -72,7 +72,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         start_row = int(request.POST.get('start_row', config.START_ROW))
         header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
-        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
+        date_format = request.POST.get('date_format', formats.get_format("SHORT_DATE_FORMAT"))
 
         # get file and set name
         excel_file = request.FILES['excel_file']
@@ -163,11 +163,12 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         filter_type = 'iexact'
 
         # get advanced options
-        language = request.POST.get('language', language_no_region(settings.LANGUAGE_CODE))
+        language = request.POST.get('language', translation.get_supported_language_variant(
+                                    settings.LANGUAGE_CODE))
         start_row = int(request.POST.get('start_row', config.START_ROW))
         header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
-        date_format = request.POST.get('date_format', settings.SHORT_DATE_FORMAT)
+        date_format = request.POST.get('date_format', formats.get_format("SHORT_DATE_FORMAT"))
 
         # read excel file and sheet
         sheet = request.POST.get('sheet', _('data'))
