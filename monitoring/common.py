@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Func, Value
 from django.http import JsonResponse
-from django.utils import translation
+from django.utils import translation, formats
 from django.utils.translation import gettext_lazy as _
 
 
@@ -59,9 +59,9 @@ def language_no_region(language):
 
 
 def get_localized_name(column, language=None):
-    default_language = language_no_region(settings.LANGUAGE_CODE)
+    default_language = translation.get_supported_language_variant(settings.LANGUAGE_CODE)
     if not language:
-        language = language_no_region(translation.get_language())
+        language = translation.get_supported_language_variant(translation.get_language())
     return column if language in default_language else "%s_%s" % (column, language)
 
 
@@ -153,17 +153,13 @@ def parse_date(string, date_format=None):
         'm/d/Y': '%m/%d/%Y',
         'd/m/Y': '%d/%m/%Y',
         'Y-m-d': '%Y-%m-%d',
-        'm/d/y': '%m/%d/%y',
-        'm-d-y': '%m-%d-%y',
-        'd/m/y': '%d/%m/%y',
-        'd-m-y': '%d-%m-%y',
     }
     if date_format in date_format_maps:
         date_format = date_format_maps.get(date_format)
 
     # do parse
-    date_formats = settings.DATE_INPUT_FORMATS
-    date_formats.extend(settings.DATETIME_INPUT_FORMATS)
+    date_formats = formats.get_format("DATE_INPUT_FORMATS")
+    date_formats.extend(formats.get_format("DATETIME_INPUT_FORMATS"))
     if date_format:
         date_formats.insert(0, date_format)
     for fmt in date_formats:

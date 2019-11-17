@@ -139,6 +139,7 @@ USE_TZ = True
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, "locale"),
 )
+FORMAT_MODULE_PATH = ['formats']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -238,8 +239,6 @@ SALESFORCE_URL = env('SALESFORCE_URL', default='https://example.my.salesforce.co
 
 # Django Constance Dynamic settings
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
-
-ALLOWED_DATE_FORMATS = ('%d/%m/%Y', '%m/%d/%Y')
 
 LOGIN_REDIRECT_URL = '/dashboard'
 

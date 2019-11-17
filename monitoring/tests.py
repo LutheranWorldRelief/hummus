@@ -8,9 +8,10 @@ import time
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
+from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.test import TestCase, Client
-from django.core.files.base import ContentFile
+from django.utils import translation, formats
 
 from constance import config
 from openpyxl import Workbook
@@ -23,11 +24,11 @@ from monitoring.common import parse_date, language_no_region, xstr
 
 class ImportTestCase(TestCase):
 
-    language = language_no_region(settings.LANGUAGE_CODE)
+    language = translation.get_supported_language_variant(translation.get_language())
     start_row = config.START_ROW
     header_row = config.HEADER_ROW
     template = config.DEFAULT_TEMPLATE
-    date_format = settings.SHORT_DATE_FORMAT
+    date_format = formats.get_format("SHORT_DATE_FORMAT")
     params = {'language': language, 'start_row': start_row, 'header_row': header_row,
               'template': template, 'date_format': date_format, }
 
