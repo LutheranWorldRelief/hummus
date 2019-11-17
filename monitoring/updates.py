@@ -5,7 +5,7 @@ updates and saves models. used by importers.
 from django.db.models import Q
 from django.apps import apps
 
-from .common import get_localized_name as __, parse_date, smart_assign
+from .common import get_localized_name as __, parse_date, smart_assign, xstr
 from .models import Sex, Education, Country, Organization
 
 
@@ -14,6 +14,9 @@ def try_to_find(model, value, exists=False):
 
     if not value:
         return None
+
+    if isinstance(value, str):
+        value = xstr(value)
 
     filter_type = 'iexact' # be case insensitive
     fields = ['name', 'varname']
