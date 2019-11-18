@@ -145,7 +145,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 grouped_messages[clean_msg]['message'].append(reference)
 
         grouped_messages = sorted(grouped_messages.items(),
-                key=lambda k_v: k_v[1]['count'], reverse=True)
+                                  key=lambda k_v: k_v[1]['count'], reverse=True)
 
         context['grouped_messages'] = grouped_messages
         context['messages_error'] = messages_error
