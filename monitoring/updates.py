@@ -2,8 +2,10 @@
 updates and saves models. used by importers.
 """
 
-from django.db.models import Q
 from django.apps import apps
+from django.core.cache import cache
+from django.db.models import Q
+from django.utils.text import slugify
 
 from .common import get_localized_name as __, parse_date, smart_assign, xstr
 from .models import Sex, Education, Country, Organization
@@ -18,22 +20,27 @@ def try_to_find(model, value, exists=False):
     if isinstance(value, str):
         value = xstr(value)
 
-    filter_type = 'iexact' # be case insensitive
-    fields = ['name', 'varname']
-    condition = Q(pk=None)  # start with always false
+    cache_key = "{}.{}.{}".format(model._meta.model_name, slugify(value), exists)
+    found = cache.get(cache_key)
+    if not found:
+        filter_type = 'iexact'  # be case insensitive
+        fields = ['name', 'varname']
+        condition = Q(pk=None)  # start with always false
 
-    for field in fields.copy():
-        fields.append(__(field))
+        for field in fields.copy():
+            fields.append(__(field))
 
-    for field in fields:
-        field_filter = '{}__{}'.format(field, filter_type)
-        if hasattr(model, field):
-            condition = (condition | Q(**{field_filter: value}))
+        for field in fields:
+            field_filter = '{}__{}'.format(field, filter_type)
+            if hasattr(model, field):
+                condition = (condition | Q(**{field_filter: value}))
 
-    if exists:
-        return model.objects.filter(condition).exists()
-
-    return model.objects.filter(condition).first()
+        if exists:
+            found = model.objects.filter(condition).exists()
+        else:
+            found = model.objects.filter(condition).first()
+    cache.set(cache_key, found)
+    return found
 
 
 def update_contact(request, contact, row):

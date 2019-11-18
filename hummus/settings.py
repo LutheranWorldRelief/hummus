@@ -27,6 +27,9 @@ SECRET_KEY = env('SECRET_KEY')
 DATABASES = {
     'default': env.db(),
 }
+CACHES = {
+    'default': env.cache(),
+}
 
 # Localization and translation
 LANGUAGES = [
