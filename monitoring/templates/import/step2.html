@@ -40,7 +40,7 @@
                                                    href="{% url 'monitoring:import-step1' %}">
                                                     <i class="fa fa-backward"></i>{% trans 'Cancel' %} </a>
                                             </li>
-                                            {% if not messages_error or config.ALLOW_INVALID_IMPORT %}
+                                            {% if not grouped_errors or config.ALLOW_INVALID_IMPORT %}
                                                 <li>
                                                     <button type="submit"
                                                             class="btn btn-success btn-block pull-right">
@@ -55,7 +55,7 @@
                                 <br>
                                 <hr>
 
-                                {% if messages_error %}
+                                {% if grouped_errors %}
                                 <div class="row">
                                     <div class="col-lg-5 col-lg-offset-1">
                                         <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
@@ -73,7 +73,7 @@
                                             {# lists grouped error messages #}
                                             <div class="row">
                                             <ul>
-                                            {% for message, details in grouped_messages %}
+                                            {% for message, details in grouped_errors %}
                                                 <li>{% if details.count > 1 %}{{ details.count }}:{% endif %}
                                                 {{ message }} Reference: {{ details.message }}</li>
                                             {% endfor %}
@@ -124,7 +124,7 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                {% if not messages_error or config.ALLOW_INVALID_IMPORT %}
+                                {% if not grouped_errors or config.ALLOW_INVALID_IMPORT %}
                                     <div class="row">
                                         <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
                                              style="margin: 10px 20px 10px 10px">

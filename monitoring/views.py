@@ -134,25 +134,22 @@ class ValidateExcel(DomainRequiredMixin, FormView):
             if error_message:
                 messages_error.append(error_message)
 
-        grouped_messages = {}
+        grouped_errors = {}
         for row in messages_error:
             row_messages = row['msgs']
             for row_message in row_messages:
                 reference, clean_msg = row_message.split(': ', 2)
-                if clean_msg not in grouped_messages:
-                    grouped_messages[clean_msg] = {}
-                    grouped_messages[clean_msg]['message'] = []
-                    grouped_messages[clean_msg]['count'] = 0
-                grouped_messages[clean_msg]['count'] += 1
-                grouped_messages[clean_msg]['message'].append(reference)
+                if clean_msg not in grouped_errors:
+                    grouped_errors[clean_msg] = {}
+                    grouped_errors[clean_msg]['message'] = []
+                    grouped_errors[clean_msg]['count'] = 0
+                grouped_errors[clean_msg]['count'] += 1
+                grouped_errors[clean_msg]['message'].append(reference)
 
-        grouped_messages = sorted(grouped_messages.items(),
+        grouped_errors = sorted(grouped_errors.items(),
                                   key=lambda k_v: k_v[1]['count'], reverse=True)
 
-        context['grouped_messages'] = grouped_messages
-        context['messages_error'] = messages_error
-        print(messages_error)
-        print(grouped_messages)
+        context['grouped_errors'] = grouped_errors
         context['data'] = uploaded_ws
         context['max_data'] = 20 if uploaded_ws.max_row > 20 else uploaded_ws.max_row
         context['columns_required'] = columns_required
