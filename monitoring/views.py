@@ -3,7 +3,6 @@
 """
 import json
 import time
-from collections import OrderedDict
 from os.path import basename
 
 from django.conf import settings
