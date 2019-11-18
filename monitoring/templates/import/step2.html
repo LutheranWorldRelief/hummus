@@ -54,6 +54,7 @@
                                 </div>
                                 <br>
                                 <hr>
+
                                 {% if messages_error %}
                                 <div class="row">
                                     <div class="col-lg-5 col-lg-offset-1">
@@ -69,16 +70,16 @@
                                     <div class="row">
                                         <div class="col-lg-10 col-lg-offset-1">
                                             <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
+                                            {# lists grouped error messages #}
+                                            <div class="row">
                                             <ul>
-                                            {% for message in messages_error %}
-                                            <li>{{ message.0.row }}</li>
-                                            <ul>
-                                                {% for submessage in message.0.msgs %}
-                                                    <li>{{ submessage }}</li>
-                                                {% endfor %}
-                                            </ul>
+                                            {% for message, details in grouped_messages %}
+                                                <li>{% if details.count > 1 %}{{ details.count }}:{% endif %}
+                                                {{ message }} Reference: {{ details.message }}</li>
                                             {% endfor %}
                                             </ul>
+                                            </div>
+
                                         </div>
                                     </div>
                                 {% else %}

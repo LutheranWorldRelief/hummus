@@ -169,7 +169,4 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                         else:
                             messages.append('[{}]: "{}" not found in {}.'.
                                             format(reference, value, field))
-    error_message = []
-    if messages:
-        error_message.append({'row': 'Row #{}'.format(row[0].row + offset), 'msgs': messages})
-    return error_message
+    return {'row': 'Row #{}'.format(row[0].row + offset), 'msgs': messages}
