@@ -127,7 +127,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         # validate rows
         for row in uploaded_ws.iter_rows():
             # skips empty row
-            if row[0].value is None and row[1].value is None and row[2].value is None:
+            if xstr(row[0].value) == '' and xstr(row[1].value) == '' and xstr(row[2].value) == '':
                 continue
             # quick data validation
             error_message = validate_data(row, mapping, start_row, date_format)
@@ -214,8 +214,8 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         # import
         uploaded_ws.delete_rows(0, amount=start_row - 1)
         for row in uploaded_ws.iter_rows():
-            # skips empty row
-            if row[0].value is None and row[1].value is None and row[2].value is None:
+            # skips empty row, based on first 3 values
+            if xstr(row[0].value) == '' and xstr(row[1].value) == '' and xstr(row[2].value) == '':
                 continue
 
             # quick data validation
