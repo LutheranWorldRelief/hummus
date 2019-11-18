@@ -3,9 +3,10 @@
 """
 import json
 import time
+from collections import OrderedDict
 from os.path import basename
-from django.conf import settings
 
+from django.conf import settings
 from django.db.models import Count, Q, Value, F
 from django.db.models.functions import Upper, Trim, Coalesce
 from django.contrib.gis.geos import Point
@@ -131,6 +132,22 @@ class ValidateExcel(DomainRequiredMixin, FormView):
             if error_message:
                 messages_error.append(error_message)
 
+        grouped_messages = {}
+        for row in messages_error:
+            row_messages = row['msgs']
+            for row_message in row_messages:
+                reference, clean_msg = row_message.split(': ', 2)
+                if clean_msg not in grouped_messages:
+                    grouped_messages[clean_msg] = {}
+                    grouped_messages[clean_msg]['message'] = []
+                    grouped_messages[clean_msg]['count'] = 0
+                grouped_messages[clean_msg]['count'] += 1
+                grouped_messages[clean_msg]['message'].append(reference)
+
+        grouped_messages = sorted(grouped_messages.items(),
+                key=lambda k_v: k_v[1]['count'], reverse=True)
+
+        context['grouped_messages'] = grouped_messages
         context['messages_error'] = messages_error
         context['data'] = uploaded_ws
         context['max_data'] = 20 if uploaded_ws.max_row > 20 else uploaded_ws.max_row
