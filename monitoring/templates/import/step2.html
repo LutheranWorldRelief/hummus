@@ -74,8 +74,8 @@
                                             <div class="row">
                                             <ul>
                                             {% for message, details in grouped_errors %}
-                                                <li>{% if details.count > 1 %}{{ details.count }}:{% endif %}
-                                                {{ message }} Reference: {{ details.message }}</li>
+                                                <li>{% if details.count > 1 %}<span class="badge badge-pill badge-danger">{{ details.count }}</span>:{% endif %}
+                                                {{ message }} Reference: {% for reference in details.reference %}<span class="badge">{{ reference }}</span>{% endfor %}</li>
                                             {% endfor %}
                                             </ul>
                                             </div>

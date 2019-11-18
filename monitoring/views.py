@@ -141,10 +141,10 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 reference, clean_msg = row_message.split(': ', 2)
                 if clean_msg not in grouped_errors:
                     grouped_errors[clean_msg] = {}
-                    grouped_errors[clean_msg]['message'] = []
+                    grouped_errors[clean_msg]['reference'] = []
                     grouped_errors[clean_msg]['count'] = 0
                 grouped_errors[clean_msg]['count'] += 1
-                grouped_errors[clean_msg]['message'].append(reference)
+                grouped_errors[clean_msg]['reference'].append(reference)
 
         grouped_errors = sorted(grouped_errors.items(),
                                   key=lambda k_v: k_v[1]['count'], reverse=True)

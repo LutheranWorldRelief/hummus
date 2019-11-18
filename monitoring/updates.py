@@ -149,7 +149,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 # validates date feilds
                 if model._meta.get_field(field).get_internal_type() == 'DateField':
                     if not cell.is_date and not parse_date(value, date_format):
-                        messages.append('[{}]: {} "{}" is not a valid date. Use {}.'.
+                        messages.append('{}: {} "{}" is not a valid date. Use {}.'.
                                         format(reference, field, value, date_format))
 
                 # validates foreign keys
@@ -164,10 +164,10 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                             options_trans = list(related_model.objects.values_list(__('name'),
                                                                                    flat=True))
                             options.extend(options_trans)
-                            messages.append('[{}]: "{}" not found in {}. Options are {}'.
+                            messages.append('{}: "{}" not found in {}. Options are {}'.
                                             format(reference, value, field, options))
                         else:
-                            messages.append('[{}]: "{}" not found in {}.'.
+                            messages.append('{}: "{}" not found in {}.'.
                                             format(reference, value, field))
     if not messages:
         return None
