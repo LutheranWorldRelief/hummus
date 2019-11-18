@@ -23,7 +23,7 @@ def try_to_find(model, value, exists=False):
     cache_key = "{}.{}.{}".format(model._meta.model_name, slugify(value), exists)
     found = cache.get(cache_key)
     if not found:
-        filter_type = 'iexact' # be case insensitive
+        filter_type = 'iexact'  # be case insensitive
         fields = ['name', 'varname']
         condition = Q(pk=None)  # start with always false
 
