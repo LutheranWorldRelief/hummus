@@ -172,4 +172,3 @@ def validate_data(row, mapping, start_row=0, date_format=None):
     if not messages:
         return None
     return {'row': 'Row #{}'.format(row[0].row + offset), 'msgs': messages}
-
