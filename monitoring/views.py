@@ -151,6 +151,8 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         context['grouped_messages'] = grouped_messages
         context['messages_error'] = messages_error
+        print(messages_error)
+        print(grouped_messages)
         context['data'] = uploaded_ws
         context['max_data'] = 20 if uploaded_ws.max_row > 20 else uploaded_ws.max_row
         context['columns_required'] = columns_required
