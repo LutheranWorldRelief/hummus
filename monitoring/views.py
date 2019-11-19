@@ -68,7 +68,8 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         messages_error = []
 
         # get advanced options
-        language = request.POST.get('language', settings.LANGUAGE_CODE)
+        language = request.POST.get('language', translation.get_supported_language_variant(
+                                    settings.LANGUAGE_CODE))
         start_row = int(request.POST.get('start_row', config.START_ROW))
         header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
@@ -130,7 +131,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
             if xstr(row[0].value) == '' and xstr(row[1].value) == '' and xstr(row[2].value) == '':
                 continue
             # quick data validation
-            error_message = validate_data(row, mapping, start_row, date_format)
+            error_message = validate_data(row, mapping, start_row, date_format, language)
             if error_message:
                 messages_error.append(error_message)
 

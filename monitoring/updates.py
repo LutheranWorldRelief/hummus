@@ -3,15 +3,17 @@ updates and saves models. used by importers.
 """
 
 from django.apps import apps
+from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Q
+from django.utils import translation
 from django.utils.text import slugify
 
 from .common import get_localized_name as __, parse_date, smart_assign, xstr
 from .models import Sex, Education, Country, Organization
 
 
-def try_to_find(model, value, exists=False):
+def try_to_find(model, value, exists=False, language=None):
     """ tries to find value in model """
 
     if not value:
@@ -28,7 +30,7 @@ def try_to_find(model, value, exists=False):
         condition = Q(pk=None)  # start with always false
 
         for field in fields.copy():
-            fields.append(__(field))
+            fields.append(__(field, language))
 
         for field in fields:
             field_filter = '{}__{}'.format(field, filter_type)
@@ -92,7 +94,7 @@ def update_project_contact(request, project_contact, row):
     project_contact.save()
 
 
-def validate_data(row, mapping, start_row=0, date_format=None):
+def validate_data(row, mapping, start_row=0, date_format=None, language=None):
     """ validates an excel row """
     messages = []
     app_name = 'monitoring'
@@ -100,6 +102,7 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                   'project_contact': 'ProjectContact'}
     offset = start_row - 1
     filter_type = 'iexact'
+    default_language = translation.get_supported_language_variant(settings.LANGUAGE_CODE)
 
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
@@ -155,14 +158,15 @@ def validate_data(row, mapping, start_row=0, date_format=None):
                 # validates foreign keys
                 if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
                     related_model = model._meta.get_field(field).related_model
-                    found = try_to_find(related_model, value, exists=True)
+                    found = try_to_find(related_model, value, exists=True, language=language)
                     # TODO exception should be mapped like: "autoadd: True"
                     is_exception = model_name == 'contact' and field == 'organization'
                     if not found and not is_exception:
                         if related_model.objects.count() <= 10:
                             options = list(related_model.objects.values_list('name', flat=True))
-                            options_trans = list(related_model.objects.values_list(__('name'),
-                                                                                   flat=True))
+                            if language and language != default_language:
+                                options_trans = list(related_model.objects.
+                                                     values_list(__('name', language), flat=True))
                             options.extend(options_trans)
                             messages.append('{}: "{}" not found in {}. Options are {}'.
                                             format(reference, value, field, options))
