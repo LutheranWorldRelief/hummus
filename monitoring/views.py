@@ -32,7 +32,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
                      Request, City, Profile, Log)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
-                     RegexpReplace, parse_date, language_no_region, xstr)
+                     RegexpReplace, parse_date, xstr)
 from .catalog import create_catalog
 from .updates import update_contact, update_project_contact, validate_data
 
@@ -348,19 +348,30 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 update_project_contact(request, project_contact, row_dict)
 
         # gets dupes
-        qs = Contact.objects.annotate(name_uc=Trim(Upper(RegexpReplace(F('name'),
-                                                                       r'\s+', ' ', 'g'))))
-        queryset1 = qs.values('name_uc').order_by('name_uc').annotate(cuenta=Count(
-            'name_uc')).filter(cuenta__gt=1)
-        names_uc = [row['name_uc'] for row in queryset1]
-        contacts_names_ids = qs.values_list('id', flat=True).filter(name_uc__in=names_uc)
+        contacts = Contact.objects.all()
+        if self.request.user:
+            contacts = contacts.for_user(self.request.user)
+        contacts = contacts.filter(**filter_kwargs).annotate(
+            name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
 
-        queryset2 = Contact.objects.filter(document__isnull=False) \
-            .exclude(document='').values('document') \
-            .order_by('document') \
-            .annotate(cuenta=Count('document')) \
-            .filter(cuenta__gt=1)
-        documents = [row['document'] for row in queryset2]
+        # manually (python) counts dupes, because count messed up the distinct() filter
+        names = {}
+        for row in contacts:
+            if row.name_uc not in names:
+                names[row.name_uc] = 0
+            names[row.name_uc] += 1
+        names_uc = list(k_v[0] for k_v in names.items() if k_v[1] > 1)
+
+        contacts_names_ids = contacts.values_list('id', flat=True).filter(name_uc__in=names_uc)
+
+        # manually (python) counts dupes, because count messed up the distinct() filter
+        contacts = contacts.filter(document__isnull=False).exclude(document='')
+        docs = {}
+        for row in contacts:
+            if row.document not in docs:
+                docs[row.document] = 0
+            docs[row.document] += 1
+        documents = list(k_v[0] for k_v in docs.items() if k_v[1] > 1)
 
         contacts = Contact.objects.filter(id__in=imported_ids) \
             .filter(Q(id__in=contacts_names_ids) | Q(document__in=documents)) \
