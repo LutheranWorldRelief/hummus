@@ -351,7 +351,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
         contacts = Contact.objects.all()
         if self.request.user:
             contacts = contacts.for_user(self.request.user)
-        contacts = contacts.filter(**filter_kwargs).annotate(
+        contacts = contacts.annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
 
         # manually (python) counts dupes, because count messed up the distinct() filter
