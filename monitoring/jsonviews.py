@@ -49,13 +49,20 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
         contacts = Contact.objects.all()
         if self.request.user:
             contacts = contacts.for_user(self.request.user)
-        qs = contacts.filter(**filter_kwargs).annotate(
+        contacts = contacts.filter(**filter_kwargs).annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
-        queryset = qs.values('name_uc').order_by('name_uc').annotate(
-            cuenta=Count('name_uc')).filter(cuenta__gt=1)
-        for row in queryset:
-            row['name'] = row['name_uc']
-        context = list(queryset)
+
+        # manually (python) counts dupes, because count messed up the distinct() filter
+        names = {}
+        for row in contacts:
+            if row.name_uc not in names:
+                names[row.name_uc] = 0
+            names[row.name_uc] += 1
+        dupes = dict(filter(lambda k_v: k_v[1] > 1, names.items()))
+        dupes_list = []
+        for row in dupes:
+            dupes_list.append({'name': row, 'count': dupes[row]})
+        context = dupes_list
         return context
 
 
@@ -90,13 +97,24 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
         contacts = Contact.objects.all()
         if self.request.user:
             contacts = contacts.for_user(self.request.user)
-        queryset = contacts.filter(**filter_kwargs).filter(
-            document__isnull=False).exclude(document='').values('document').order_by(
-            'document').annotate(cuenta=Count('document')).filter(cuenta__gt=1)
-        for row in queryset:
+
+        # manually (python) counts dupes, because count messed up the distinct() filter
+        contacts = contacts.filter(**filter_kwargs).filter(document__isnull=False).\
+            exclude(document='')
+        docs = {}
+        for row in contacts:
+            if row.document not in docs:
+                docs[row.document] = 0
+            docs[row.document] += 1
+        dupes = dict(filter(lambda k_v: k_v[1] > 1, docs.items()))
+        dupes_list = []
+        for row in dupes:
+            dupes_list.append({'document': row, 'cuenta': dupes[row]})
+
+        for row in dupes_list:
             row['name'] = ','.join(Contact.objects.filter(
                 document=row['document']).values_list('name', flat=True))
-        context = list(queryset)
+        context = dupes_list
         return context
 
 
