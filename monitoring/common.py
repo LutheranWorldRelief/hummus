@@ -52,12 +52,6 @@ class DomainRequiredMixin(UserPassesTestMixin):
         return domain or superuser or permission
 
 
-def language_no_region(language):
-    if '-' in language:
-        language = language.lower().partition('-')[0]
-    return language
-
-
 def get_localized_name(column, language=None):
     default_language = translation.get_supported_language_variant(settings.LANGUAGE_CODE)
     if not language:

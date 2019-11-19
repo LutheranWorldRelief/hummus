@@ -19,7 +19,7 @@ from openpyxl.writer.excel import save_virtual_workbook
 
 from monitoring.models import Contact, Sex, Template
 from monitoring.updates import update_contact
-from monitoring.common import parse_date, language_no_region, xstr
+from monitoring.common import parse_date, xstr
 
 
 class ImportTestCase(TestCase):
