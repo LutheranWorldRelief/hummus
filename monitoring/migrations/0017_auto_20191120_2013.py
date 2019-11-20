@@ -14,12 +14,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='projectcontact',
             name='organization',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='monitoring.Organization', verbose_name='Organization'),
+            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT,
+                                    to='monitoring.Organization', verbose_name='Organization'),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='subproject',
             name='project',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='monitoring.Project', verbose_name='Project'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                                    to='monitoring.Project', verbose_name='Project'),
         ),
     ]
