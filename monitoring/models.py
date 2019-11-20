@@ -533,7 +533,7 @@ class SubProject(models.Model):
     code = models.CharField(max_length=255, unique=False, verbose_name=_('Code'), db_index=True)
     salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
                                   db_index=True, verbose_name=_('Salesforce Id'))
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
+    project = models.ForeignKey('Project', on_delete=models.PROTECT, verbose_name=_('Project'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
                               verbose_name=_('Status'))
     start = models.DateField(blank=True, null=True, verbose_name=_('Start'))
@@ -637,8 +637,8 @@ class ProjectContact(models.Model):
     date_entry_project = models.DateField(blank=True, null=True,
                                           verbose_name=_('Date Entry Project'))
     date_end_project = models.DateField(blank=True, null=True, verbose_name=_('Date End Project'))
-    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
-                                     null=True, verbose_name=_('Organization'))
+    organization = models.ForeignKey('Organization', on_delete=models.PROTECT,
+                                     verbose_name=_('Organization'))
     extra = JSONField(null=True, blank=True, verbose_name=_('Extra Data'))
 
     # Project Contact meta data fields
