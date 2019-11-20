@@ -4,6 +4,9 @@
 <p>{% trans 'Name' %}: <a href="{% url 'admin:monitoring_contact_change' object.id %}">{{ object.name }}</a></p>
 <p>{% trans 'First Name' %}: {{ object.first_name }}</p>
 <p>{% trans 'Last Name' %}: {{ object.last_name }}</p>
+<p>{% trans 'Document' %}: {{ object.document }}</p>
+<p>{% trans 'Sex' %}: {% trans object.sex.name %}</p>
+<p>{% trans 'Education' %}: {% trans object.education.name %}</p>
 <p>{% trans 'Country' %}: {{ object.country }}</p>
 <p>{% trans 'Projects' %}:</p>
 <ul>
