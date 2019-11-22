@@ -139,7 +139,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         for row in messages_error:
             row_messages = row['msgs']
             for row_message in row_messages:
-                reference, clean_msg = row_message.split(': ', 2)
+                reference, clean_msg = row_message.split(': ', 1)
                 if clean_msg not in grouped_errors:
                     grouped_errors[clean_msg] = {}
                     grouped_errors[clean_msg]['reference'] = []
@@ -235,7 +235,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                     if isinstance(value, str):
                         value = xstr(value)
                     if field_name == 'name' and '=>' in value:
-                        code, value = value.split('=>', 2)
+                        code, value = value.split('=>', 1)
                     if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
                         field_name = 'project'
                     if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':

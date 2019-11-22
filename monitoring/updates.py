@@ -114,7 +114,7 @@ def validate_data(row, mapping, start_row=0, date_format=None, language=None):
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
                 if value and field_name == 'name' and '=>' in value:
-                    code, value = value.split('=>', 2)
+                    code, value = value.split('=>', 1)
                 if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
                     field_name = 'project'
                 if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
@@ -145,7 +145,7 @@ def validate_data(row, mapping, start_row=0, date_format=None, language=None):
             if model_name == 'project' and field == 'name':
                 field = 'project'
                 if value and '=>' in value:
-                    code, value = value.split('=>', 2)
+                    code, value = value.split('=>', 1)
 
             if value and hasattr(model, field):
 
