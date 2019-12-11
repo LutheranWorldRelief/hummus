@@ -65,28 +65,31 @@ urlpatterns = [
     path('export/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
 
     # dupes
-    path('validate/dupes-doc/', views.ValidateDupesDoc.as_view(), name='validate-dupes-doc'),
-    path('validate/dupes-name/', views.ValidateDupesName.as_view(), name='validate-dupes-name'),
+    path('dupes/doc/', views.ValidateDupesDoc.as_view(), name='dupes-doc'),
+    path('dupes/name/', views.ValidateDupesName.as_view(), name='dupes-name'),
+    path('dupes/name-fuzzy/', views.ValidateDupesNameFuzzy.as_view(), name='dupes-name-fuzzy'),
 
     # APIs misc
-    path('opt/api-fusion/', jsonviews.ContactFusion.as_view(), ),
-    path('opt/api-contact/<int:id>/', jsonviews.ContactImportDupes.as_view(), ),
-    path('opt/api-name-values/', jsonviews.ContactNameValues.as_view(), ),
-    path('opt/api-doc-values/', jsonviews.ContactNameValues.as_view(), ),
-    path('opt/api-empty/', jsonviews.ContactEmpty.as_view(), ),
-    path('opt/api-labels/', jsonviews.ContactLabels.as_view(), ),
-    path('opt/api-docs/', jsonviews.ContactDocDupes.as_view(), ),
-    path('opt/api-names/', jsonviews.ContactNameDupes.as_view(), ),
-    path('opt/api-doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
-    path('opt/api-name/<str:name>/', jsonviews.ContactNameDupesDetails.as_view(), ),
-    path('opt/api-organizations/', jsonviews.JsonIdName.as_view(
+    path('api/fusion/', jsonviews.ContactFusion.as_view(), ),
+    path('api/contact/<int:id>/', jsonviews.ContactImportDupes.as_view(), ),
+    path('api/name-values/', jsonviews.ContactNameValues.as_view(), ),
+    path('api/doc-values/', jsonviews.ContactNameValues.as_view(), ),
+    path('api/empty/', jsonviews.ContactEmpty.as_view(), ),
+    path('api/labels/', jsonviews.ContactLabels.as_view(), ),
+    path('api/docs/', jsonviews.ContactDocDupes.as_view(), ),
+    path('api/names/', jsonviews.ContactNameDupes.as_view(), ),
+    path('api/names-fuzzy/', jsonviews.ContactNameFuzzyDupes.as_view(), ),
+    path('api/doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
+    path('api/name/<str:name>/', jsonviews.ContactNameDupesDetails.as_view(), ),
+    path('api/ids/<int:id1>/<int:id2>/', jsonviews.ContactIdsDupesDetails.as_view(), ),
+    path('api/organizations/', jsonviews.JsonIdName.as_view(
         queryset=models.Organization.objects.all())),
-    path('opt/api-countries/',
+    path('api/countries/',
          jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all())),
-    path('opt/api-projects/',
+    path('api/projects/',
          jsonviews.JsonIdName.as_view(queryset=models.Project.objects.all())),
-    path('opt/api-types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
-    path('opt/api-education/',
+    path('api/types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
+    path('api/education/',
          jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), )
 
 ]
