@@ -57,7 +57,6 @@ class ContactNameFuzzyDupes(JSONResponseMixin, TemplateView):
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
 
         # manually (python) counts dupes, because count messed up the distinct() filter
-        names = {}
         dupes_list = []
         counter = 0
         for row in contacts:
