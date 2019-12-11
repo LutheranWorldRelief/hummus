@@ -14,3 +14,4 @@ django-tables2==2.1.1
 openpyxl==3.0.0
 pandas==0.25.1
 simple-salesforce==0.74.3
+python-Levenshtein==0.12.0
