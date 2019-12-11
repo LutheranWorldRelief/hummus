@@ -488,6 +488,10 @@ class ValidateDupesName(DomainRequiredMixin, TemplateView):
     template_name = 'dupes_name.html'
 
 
+class ValidateDupesNameFuzzy(DomainRequiredMixin, TemplateView):
+    template_name = 'dupes_name_fuzzy.html'
+
+
 class SubProjectTableView(DomainRequiredMixin, PagedFilteredTableView):
     model = SubProject
     table_class = SubProjectTable

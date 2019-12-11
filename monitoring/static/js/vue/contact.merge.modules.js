@@ -13,55 +13,63 @@ var MergeUrls = {
             return this.baseurl + append;
         },
         getUrlAll: function () {
-            return this.createUrl('opt/api-names/');
+            return this.createUrl('api/names/');
+        },
+        getUrlAllFuzzy: function () {
+            return this.createUrl('api/names-fuzzy/');
         },
         getUrlModelLabels: function () {
-            return this.createUrl('opt/api-labels/');
+            return this.createUrl('api/labels/');
         },
         getUrlModelEmpty: function () {
-            return this.createUrl('opt/api-empty/');
+            return this.createUrl('api/empty/');
         },
         getUrlId: function (id) {
             if (!id)
                 return null;
-            return this.createUrl('opt/api-contact/' + id + '/');
+            return this.createUrl('api/contact/' + id + '/');
+        },
+        getUrlIds: function (id1, id2) {
+            if (!id1 || !id2)
+                return null;
+            return this.createUrl('api/ids/' + id1 + '/' + id2 + '/');
         },
         getUrlName: function (name) {
             if (!name)
                 return null;
-            return this.createUrl('opt/api-name/' + name + '/');
+            return this.createUrl('api/name/' + name + '/');
         },
         getUrlNameValues: function () {
-            return this.createUrl('opt/api-name-values/');
+            return this.createUrl('api/name-values/');
         },
         getUrlFusion: function () {
-            return this.createUrl('opt/api-fusion/');
+            return this.createUrl('api/fusion/');
         },
         getUrlAllDocs: function () {
-            return this.createUrl('opt/api-docs/');
+            return this.createUrl('api/docs/');
         },
         getUrlDoc: function (doc) {
             if (!doc)
                 return null;
-            return this.createUrl('opt/api-doc/' + doc + '/');
+            return this.createUrl('api/doc/' + doc + '/');
         },
         getUrlDocValues: function () {
-            return this.createUrl('opt/api-doc-values/');
+            return this.createUrl('api/doc-values/');
         },
         getUrlOrganizations: function () {
-            return this.createUrl('opt/api-organizations/');
+            return this.createUrl('api/organizations/');
         },
         getUrlProjects: function () {
-            return this.createUrl('opt/api-projects/');
+            return this.createUrl('api/projects/');
         },
         getUrlCountries: function () {
-            return this.createUrl('opt/api-countries/');
+            return this.createUrl('api/countries/');
         },
         getUrlTypes: function () {
-            return this.createUrl('opt/api-types/');
+            return this.createUrl('api/types/');
         },
         getUrlEducation: function () {
-            return this.createUrl('opt/api-education/');
+            return this.createUrl('api/education/');
         },
     }
 };
