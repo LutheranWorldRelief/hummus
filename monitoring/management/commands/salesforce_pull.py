@@ -57,6 +57,7 @@ def updateProject(hummus_record, salesforce_record, options):
         print(salesforce_record['Name'])
     fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c',
                   'recordtype': ['RecordType', 'Name'], 'lwrregion': 'LWR_Region__c',
+                  'atype': 'Project_Type__c',
                   'countries': 'Search_Strings__c',
                   'actualmen': 'Men_Direct_Rollup__c', 'actualwomen': 'Women_Direct_Rollup__c',
                   'targetmen': 'Target_Men_Direct_Rollup__c', 'targetwomen': 'Target_Women_Direct_Rollup__c',
@@ -96,6 +97,7 @@ def updateProject(hummus_record, salesforce_record, options):
 def updateSubProject(hummus_record, salesforce_record, options):
     fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c',
                   'recordtype': ['RecordType', 'Name'], 'country': ['Country__r', 'Name'],
+                  'atype': 'Type__c',
                   'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c',
                   'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c',
                   'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c',
