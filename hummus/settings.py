@@ -26,7 +26,10 @@ DEFAULT_LOGGING['handlers']['console']['filters'] = []
 SECRET_KEY = env('SECRET_KEY')
 DATABASES = {
     'default': env.db(),
+    'readonly': env.db('RODATABASE_URL'),
 }
+EXPLORER_CONNECTIONS = { 'Default': 'readonly' }
+EXPLORER_DEFAULT_CONNECTION = 'readonly'
 CACHES = {
     'default': env.cache(),
 }
@@ -70,6 +73,7 @@ INSTALLED_APPS = [
     'constance.backends.database',
     'rest_framework',
     'django_select2',
+    'explorer',
     # my apps
     'monitoring',
 ]
