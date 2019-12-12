@@ -41,8 +41,12 @@
                     <div class="col-md-12 ">
                         <div class="panel panel-default">
                             <div class="panel-body table-responsive" style="font-size: 12px">
-                                <h2 class="text-maroon">{% verbatim %} {{ modelsNames.length }} {% endverbatim %}
-                                    {% trans 'Cases duplicated by name' %}</h2>
+                                <h2 v-if="modelsNames.length > 0" class="text-maroon">
+                                    {% verbatim %} {{ modelsNames.length }} {% endverbatim %}
+                                    {% trans 'Cases duplicated by name' %}
+                                <h2 v-else class="text-maroon">
+                                    No results. Try using filters.
+                                </h2>
                                 <div class="row">
                                     <div class="col-lg-12">{% include "_filter_form.html" %}</div>
                                 </div>
