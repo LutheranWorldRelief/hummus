@@ -92,6 +92,9 @@ class Profile(models.Model):
     def __str__(self):
         return "%s" % (self.user)
 
+    def has_filters(self):
+        return self.lwrregions.exists() or self.countries.exists() or self.projects.exists()
+
     class Meta:
         ordering = ['user']
         verbose_name = _('Profile')
