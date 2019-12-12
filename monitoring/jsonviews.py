@@ -94,9 +94,12 @@ class ContactNameDupes(JSONResponseMixin, TemplateView):
                       'organizationId': 'organization_id',
                       'nameSearch': 'name__icontains'}
         filter_kwargs = filter_by(parameters, self.request)
-        contacts = Contact.objects.all()
-        if self.request.user:
+        if self.request.user and (self.request.user.profile.has_filters() or filter_kwargs):
+            contacts = Contact.objects.all()
             contacts = contacts.for_user(self.request.user)
+        else:
+            context = {'nofilters': True}
+            return context
         contacts = contacts.filter(**filter_kwargs).annotate(
             name_uc=Trim(Upper(RegexpReplace(F('name'), r'\s+', ' ', 'g'))))
 
