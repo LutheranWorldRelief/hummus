@@ -13,11 +13,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='project',
             name='atype',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Project Type'),
+            field=models.CharField(blank=True, max_length=100, null=True,
+                                   verbose_name='Project Type'),
         ),
         migrations.AddField(
             model_name='subproject',
             name='atype',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='SubProject Type'),
+            field=models.CharField(blank=True, max_length=100, null=True,
+                                   verbose_name='SubProject Type'),
         ),
     ]

@@ -491,7 +491,7 @@ class Project(models.Model):
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
                                   verbose_name=_('LWR Region'))
     atype = models.CharField(max_length=100, null=True, blank=True,
-                                  verbose_name=_('Project Type'))
+                             verbose_name=_('Project Type'))
     recordtype = models.CharField(max_length=100, null=True, blank=True,
                                   verbose_name=_('Record Type'))
 
@@ -579,11 +579,11 @@ class SubProject(models.Model):
     recordtype = models.CharField(max_length=100, null=True, blank=True,
                                   verbose_name=_('Record Type'))
     atype = models.CharField(max_length=100, null=True, blank=True,
-                                  verbose_name=_('SubProject Type'))
-    agriculture =  models.IntegerField(null=True, blank=True)
-    agriculture_count =  models.IntegerField(null=True, blank=True)
-    eoperations_count =  models.IntegerField(null=True, blank=True)
-    climatechange_count =  models.IntegerField(null=True, blank=True)
+                             verbose_name=_('SubProject Type'))
+    agriculture = models.IntegerField(null=True, blank=True)
+    agriculture_count = models.IntegerField(null=True, blank=True)
+    eoperations_count = models.IntegerField(null=True, blank=True)
+    climatechange_count = models.IntegerField(null=True, blank=True)
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
