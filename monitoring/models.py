@@ -98,6 +98,31 @@ class Profile(models.Model):
         verbose_name_plural = _('Profiles')
 
 
+class Beneficiaries(models.Model):
+    salesforce = models.CharField(max_length=255, null=True, blank=True, unique=True,
+                                  verbose_name=_('Salesforce Id'))
+    subproject = models.ForeignKey('SubProject', on_delete=models.CASCADE,
+                                   verbose_name=_('Sub Project'))
+    fiscalyear = models.IntegerField(verbose_name=_('Fiscal Year'))
+    quarter = models.IntegerField(verbose_name=_('Quarter'))
+    actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
+    actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
+    actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
+    actualiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Actual Indirect Women'))
+    targetmen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Men'))
+    targetwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Direct Women'))
+    targetimen = models.IntegerField(blank=True, null=True, verbose_name=_('Target Indirect Men'))
+    targetiwomen = models.IntegerField(blank=True, null=True,
+                                       verbose_name=_('Target Indirect Women'))
+
+    def __str__(self):
+        return "%s: %s%s" % (self.subproject.id, self.fiscalyear, self.quarter)
+
+    class Meta:
+        ordering = ['fiscalyear', 'quarter', 'subproject']
+
+
 class Sex(models.Model):
     id = models.CharField(primary_key=True, max_length=1, verbose_name=_('Id'))
     name = models.CharField(max_length=255, verbose_name=_('Name'))
