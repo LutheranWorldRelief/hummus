@@ -474,6 +474,7 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
                               verbose_name=_('Status'))
+    owner = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Owner'))
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
@@ -579,6 +580,10 @@ class SubProject(models.Model):
                                   verbose_name=_('Record Type'))
     atype = models.CharField(max_length=100, null=True, blank=True,
                                   verbose_name=_('SubProject Type'))
+    agriculture =  models.IntegerField(null=True, blank=True)
+    agriculture_count =  models.IntegerField(null=True, blank=True)
+    eoperations_count =  models.IntegerField(null=True, blank=True)
+    climatechange_count =  models.IntegerField(null=True, blank=True)
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
