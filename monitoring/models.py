@@ -124,6 +124,7 @@ class Beneficiaries(models.Model):
 
     class Meta:
         ordering = ['fiscalyear', 'quarter', 'subproject']
+        db_table = 'beneficiaries'
 
 
 class Sex(models.Model):
@@ -473,6 +474,7 @@ class Project(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, null=True, blank=True,
                               verbose_name=_('Status'))
+    owner = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('Owner'))
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))
@@ -488,6 +490,8 @@ class Project(models.Model):
     countries = models.ManyToManyField('Country', verbose_name=_('Countries'), blank=True)
     lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
                                   verbose_name=_('LWR Region'))
+    atype = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_('Project Type'))
     recordtype = models.CharField(max_length=100, null=True, blank=True,
                                   verbose_name=_('Record Type'))
 
@@ -568,10 +572,18 @@ class SubProject(models.Model):
     end = models.DateField(blank=True, null=True, verbose_name=_('End'))
     country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name=_('Country'))
+    lwrregion = models.ForeignKey('LWRRegion', on_delete=models.SET_NULL, null=True, blank=True,
+                                  verbose_name=_('LWR Region'))
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, blank=True,
                                      null=True, verbose_name=_('Implementing Organization'))
     recordtype = models.CharField(max_length=100, null=True, blank=True,
                                   verbose_name=_('Record Type'))
+    atype = models.CharField(max_length=100, null=True, blank=True,
+                             verbose_name=_('SubProject Type'))
+    agriculture = models.IntegerField(null=True, blank=True)
+    agriculture_count = models.IntegerField(null=True, blank=True)
+    eoperations_count = models.IntegerField(null=True, blank=True)
+    climatechange_count = models.IntegerField(null=True, blank=True)
     actualmen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Men'))
     actualwomen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Direct Women'))
     actualimen = models.IntegerField(blank=True, null=True, verbose_name=_('Actual Indirect Men'))

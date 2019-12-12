@@ -57,7 +57,7 @@ def updateProject(hummus_record, salesforce_record, options):
         print(salesforce_record['Name'])
     fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c',
                   'recordtype': ['RecordType', 'Name'], 'lwrregion': 'LWR_Region__c',
-                  'countries': 'Search_Strings__c',
+                  'owner': ['Owner', 'Name'], 'atype': 'Project_Type__c', 'countries': 'Search_Strings__c',
                   'actualmen': 'Men_Direct_Rollup__c', 'actualwomen': 'Women_Direct_Rollup__c',
                   'targetmen': 'Target_Men_Direct_Rollup__c', 'targetwomen': 'Target_Women_Direct_Rollup__c',
                   'actualimen': 'Men_Indirect_Rollup__c', 'actualiwomen': 'Women_Indirect_Rollup__c',
@@ -95,7 +95,12 @@ def updateProject(hummus_record, salesforce_record, options):
 
 def updateSubProject(hummus_record, salesforce_record, options):
     fields_map = {'status': 'Status__c', 'start': 'Start_Date__c', 'end': 'End_Date__c',
-                  'recordtype': ['RecordType', 'Name'], 'country': ['Country__r', 'Name'],
+                  'recordtype': ['RecordType', 'Name'], 'lwrregion': 'LWR_Region__c',
+                  'country': ['Country__r', 'Name'], 'atype': 'Type__c',
+                  'agriculture': 'Agriculture__c',
+                  'agriculture_count': 'Agriculture_Count__c',
+                  'eoperations_count': 'Emergency_Operations_Count__c',
+                  'climatechange_count': 'Climate_Change_Count__c',
                   'actualmen': 'Men_Direct_Actual__c', 'actualwomen': 'Women_Direct_Actual__c',
                   'targetmen': 'Men_Direct_Target__c', 'targetwomen': 'Women_Direct_Target__c',
                   'actualimen': 'Men_Indirect_Actual__c', 'actualiwomen': 'Women_Direct_Actual__c',
@@ -113,6 +118,8 @@ def updateSubProject(hummus_record, salesforce_record, options):
             salesforce_value = int(salesforce_value)
         if field == 'organization':
             salesforce_value = getByName(Organization, salesforce_value)
+        if field == 'lwrregion':
+            salesforce_value = getByName(LWRRegion, salesforce_value)
         if field == 'country':
             salesforce_value = getByName(Country, salesforce_value)
         if str(getattr(hummus_record, field)) != str(salesforce_value):
@@ -176,7 +183,7 @@ class Command(BaseCommand):
         hummus_projects = Project.objects.all()
 
         if not options['skip_projects']:
-            sf_fields = "Id, Name, RecordType.Name, Project_Type__c, LWR_Region__c, Search_Strings__c, Status__c, Start_Date__c, End_Date__c, CreatedBy.Name, Project_Identifier__c, Men_Direct_Rollup__c, Women_Direct_Rollup__c, Target_Men_Direct_Rollup__c, Target_Women_Direct_Rollup__c, Men_Indirect_Rollup__c, Women_Indirect_Rollup__c, Target_Men_Indirect_Rollup__c, Target_Women_Indirect_Rollup__c"
+            sf_fields = "Id, Name, RecordType.Name, Project_Type__c, Owner.Name, LWR_Region__c, Search_Strings__c, Status__c, Start_Date__c, End_Date__c, CreatedBy.Name, Project_Identifier__c, Men_Direct_Rollup__c, Women_Direct_Rollup__c, Target_Men_Direct_Rollup__c, Target_Women_Direct_Rollup__c, Men_Indirect_Rollup__c, Women_Indirect_Rollup__c, Target_Men_Indirect_Rollup__c, Target_Women_Indirect_Rollup__c"
             if options['project_ids']:
                 projects = sf.query_all("SELECT %s FROM Project__c WHERE Id IN %s" % (sf_fields, options['project_ids']))
             else:
@@ -205,7 +212,7 @@ class Command(BaseCommand):
 
         if not options['skip_subprojects']:
             hummus_subprojects = SubProject.objects.all()
-            sf_fields = "Id, Name, RecordType.Name, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Implementer__r.Name, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c, Men_Direct_Actual__c, Men_Indirect_Actual__c, Women_Direct_Actual__c, Women_Indirect_Actual__c"
+            sf_fields = "Id, Name, RecordType.Name, Type__c, LWR_Region__c, Country__r.Name, CreatedBy.Name, Sub_Project_Identifier__c, Project__r.Id, Start_Date__c, End_Date__c, Status__c, Implementer__r.Name, Men_Direct_Target__c, Men_Indirect_Target__c, Women_Direct_Target__c, Women_Indirect_Target__c, Men_Direct_Actual__c, Men_Indirect_Actual__c, Women_Direct_Actual__c, Women_Indirect_Actual__c, Agriculture__c, Agriculture_Count__c, Emergency_Operations_Count__c, Climate_Change_Count__c"
             if options['project_ids']:
                 subprojects = sf.query_all("SELECT %s FROM Sub_Project__c WHERE Project__r.Id IN %s" % (
                     sf_fields, options['project_ids']))
