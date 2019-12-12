@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
+    path('explorer/', include('explorer.urls')),
     path('', include('monitoring.urls')),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
