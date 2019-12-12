@@ -28,7 +28,7 @@ DATABASES = {
     'default': env.db(),
     'readonly': env.db('RODATABASE_URL'),
 }
-EXPLORER_CONNECTIONS = { 'Default': 'readonly' }
+EXPLORER_CONNECTIONS = {'Default': 'readonly'}
 EXPLORER_DEFAULT_CONNECTION = 'readonly'
 CACHES = {
     'default': env.cache(),
