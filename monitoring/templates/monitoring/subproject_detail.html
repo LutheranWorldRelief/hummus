@@ -7,9 +7,13 @@
     {% leaflet_css %}
 {% endblock %}
 {% block content %}
+<h1>{{ object.name }}</h1>
 <p>Name: {{ object.name }} <a target='_blank' href='{{ object.salesforce_url }}'>{{ object.code }}</a></p>
+<p>Implementer: {{ object.organization.name }}</a></p>
+<p>Project: <a href="{% url 'monitoring:project' pk=object.project.id %}">{{ object.project.name }}</a></p>
 <p>Start: {{ object.start }}</p>
 <p>End: {{ object.end }}</p>
+<h2>Salesforce data:</h2>
 <table><tr><td>
 <p>{% trans 'Target Direct Men' %}: {{ object.targetmen }}</p>
 <p>{% trans 'Target Direct Women' %}: {{ object.targetwomen }}</p>

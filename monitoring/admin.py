@@ -111,7 +111,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
     ]
     list_display = (
         'code', 'name', 'status', 'get_countries', 'lwrregion', 'targetmen', 'targetwomen',
-        'get_women', 'get_men', 'get_total')
+        'get_actualwomen', 'get_actualmen', 'get_total')
     list_per_page = 20
     list_max_show_all = 50
     list_display_links = ['name']

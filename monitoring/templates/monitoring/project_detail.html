@@ -7,9 +7,11 @@
     {% leaflet_css %}
 {% endblock %}
 {% block content %}
+<h1>{{ object.name }}</h1>
 <p>Name: {{ object.name }} <a target='_blank' href='{{ object.salesforce_url }}'>{{ object.code }}</a></p>
 <p>Start: {{ object.start }}</p>
 <p>End: {{ object.end }}</p>
+<h2>Salesforce data:</h2>
 <table><tr><td>
 <p>{% trans 'Target Direct Men' %}: {{ object.targetmen }}</p>
 <p>{% trans 'Target Direct Women' %}: {{ object.targetwomen }}</p>
@@ -21,16 +23,71 @@
 <p>{% trans 'Actual Indirect Men' %}: {{ object.actualimen }}</p>
 <p>{% trans 'Actual Indirect Women' %}: {{ object.actualiwomen }}</p>
 </td></tr></table>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<canvas id="canvas" width="500" height="300"></canvas>
+<script>
+        var data = {
+            labels: ["Men", "Women"],
+            datasets: [
+                {
+                    barPercentage: 0.75,
+                    label: "Actual",
+                    backgroundColor: 'rgba(0, 0, 255, 0.5)',
+                    data: [{{ object.actualmen }}, {{ object.actualwomen }}],
+                },
+                {
+                    label: "Target",
+                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    data: [{{ object.targetmen }}, {{ object.targetwomen }}],
+                }
+            ]
+        };
+
+        var options = {
+            responsive: false,
+            scales: {
+                xAxes: [{ stacked: true }],
+                yAxes: [{
+                    stacked: false,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        var ctx = document.getElementById("canvas").getContext("2d");
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+</script>
+<h2>Hummus data:</h2>
+<table><tr><td>
+<p>{% trans 'Actual Direct Men' %}: {{ object.get_actualmen }}</p>
+<p>{% trans 'Actual Direct Women' %}: {{ object.get_actualwomen }}</p>
+</td></tr></table>
+
+{% for subproject in object.subproject_set.all %}
+  {% if forloop.first %}
+    <h2>{% trans 'Related Sub-Projects' %}</h2>
+    <ul>
+  {% endif %}
+    <li><a href="{% url 'monitoring:subproject' pk=subproject.id %}">{{ subproject.name }}</a></li>
+{% endfor %}
+</ul>
+
 {% if contact_locations %}
 {% localize off %}
 <script type="text/javascript">
     function map_init_basic (map, options) {
         markers = [];
-		{% for row in contact_locations %}
+        {% for row in contact_locations %}
             marker = [{{row.contact.location.y}}, {{row.contact.location.x}}];
-			L.marker(marker).addTo(map);
+            L.marker(marker).addTo(map);
             markers.push(marker);
-		{% endfor %}
+        {% endfor %}
         map.fitBounds([markers]);
     }
 </script>

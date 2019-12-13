@@ -521,16 +521,20 @@ class Project(models.Model):
     def get_absolute_url(self):
         return "/project/%i/" % self.id
 
-    def get_women(self):
-        return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
-    get_women.short_description = _('Women')
+    def get_actualwomen(self):
+        actualwomen = self.projectcontact_set.filter(contact__sex_id='F').count()
+        return actualwomen
+        #return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
+    get_actualwomen.short_description = _('Women')
 
-    def get_men(self):
-        return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
-    get_men.short_description = _('Men')
+    def get_actualmen(self):
+        actualmen = self.projectcontact_set.filter(contact__sex_id='M').count()
+        return actualmen
+        #return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
+    get_actualmen.short_description = _('Men')
 
     def get_total(self):
-        return self.get_women() + self.get_men()
+        return self.get_actualwomen() + self.get_actualmen()
     get_total.short_description = _('Total')
 
     @property
