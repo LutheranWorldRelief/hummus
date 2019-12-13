@@ -1855,7 +1855,7 @@ span a {
       padding-right: 15px; }
     .sidebar .sidebar-menu > li.active > a,
     .sidebar .sidebar-menu > li.active > a:hover {
-      background-color: #85CE36 !important;
+      border-left: 3px solid #85CE36;
       color: #ffffff !important; }
     .sidebar .sidebar-menu > li.open > a {
       background-color: #333e48; }
