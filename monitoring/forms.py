@@ -51,7 +51,7 @@ class FilterDashboardForm(forms.Form):
     )
 
     end_date = forms.DateField(
-        label=_('Until'),
+        label=_('To'),
         widget=forms.DateField.widget(
             attrs={
                 'class': 'form-control',
