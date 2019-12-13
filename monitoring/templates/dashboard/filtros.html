@@ -103,6 +103,15 @@
     </div>
 </div>
 <br>
+<ul>
+{% for project in request.user.profile.projects.all %}
+  {% if forloop.first %}
+    {% trans 'My Projects' %}
+  {% endif %}
+  <li><a href="{% url 'monitoring:project' pk=project.id %}">{{ project.name }}</a></li>
+{% endfor %}
+</ul>
+<br>
 <script>
     jQuery(function ($) {
         jQuery.fn.kvDatepicker.dates = {};
