@@ -97,7 +97,7 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 stat-col">
                                     <div class="stat-icon">
-                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-flag-checkered text-dark"></i>
                                     </div>
                                     <div class="stat text-dark">
                                         <div class="value"> 5407</div>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 align-self-center stat-col mb-4">
                             <div class="stat-icon">
-                                <i class="fa fa-users"></i>
+                                <i class="fa fa-star-o"></i>
                             </div>
                             <div class="stat text-dark">
                                 <div class="value"> 100 {% trans '% of goal completed' %}</div>
@@ -118,6 +118,41 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# section Beneficiares Information Graphics #}
+    <div class="title-block mt-1 text-center">
+        <h1 class="title"> {% trans 'Beneficiary Information' %} </h1>
+        <p class="title-description"> {% trans 'Graphics' %} </p>
+    </div>
+    <div class="row sameheight-container">
+        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col">
+            <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+                <div class="card-body">
+                    <div id="TrimestralGraph"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
+            <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+                <div class="card-body">
+                    <div id="FiscalYearGraph"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
+            <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+                <div class="card-body">
+                    <div id="SexAgeGraph"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col">
+            <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+                <div class="card-body">
+                    <div id="EducationGraph"></div>
                 </div>
             </div>
         </div>
