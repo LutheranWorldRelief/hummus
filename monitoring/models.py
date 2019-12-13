@@ -524,13 +524,13 @@ class Project(models.Model):
     def get_actualwomen(self):
         actualwomen = self.projectcontact_set.filter(contact__sex_id='F').count()
         return actualwomen
-        #return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
+        # return self.subproject_set.aggregate(women=Sum('actualwomen')).get('women') or 0
     get_actualwomen.short_description = _('Women')
 
     def get_actualmen(self):
         actualmen = self.projectcontact_set.filter(contact__sex_id='M').count()
         return actualmen
-        #return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
+        # return self.subproject_set.aggregate(men=Sum('actualmen')).get('men') or 0
     get_actualmen.short_description = _('Men')
 
     def get_total(self):
