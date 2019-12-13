@@ -6,7 +6,7 @@ import time
 from os.path import basename
 
 from django.conf import settings
-from django.db.models import Count, Q, Value, F
+from django.db.models import Q, Value, F
 from django.db.models.functions import Upper, Trim, Coalesce
 from django.contrib.gis.geos import Point
 from django.core.files.storage import default_storage
@@ -18,6 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView, DetailView, FormView
 from django.views.decorators.csrf import csrf_exempt
+from .forms import FilterDashboardForm
 
 from constance import config
 from openpyxl import load_workbook
@@ -69,7 +70,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         # get advanced options
         language = request.POST.get('language', translation.get_supported_language_variant(
-                                    settings.LANGUAGE_CODE))
+            settings.LANGUAGE_CODE))
         start_row = int(request.POST.get('start_row', config.START_ROW))
         header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
@@ -148,7 +149,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
                 grouped_errors[clean_msg]['reference'].append(reference)
 
         grouped_errors = sorted(grouped_errors.items(),
-                                  key=lambda k_v: k_v[1]['count'], reverse=True)
+                                key=lambda k_v: k_v[1]['count'], reverse=True)
 
         context['grouped_errors'] = grouped_errors
         context['data'] = uploaded_ws
@@ -183,7 +184,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
 
         # get advanced options
         language = request.POST.get('language', translation.get_supported_language_variant(
-                                    settings.LANGUAGE_CODE))
+            settings.LANGUAGE_CODE))
         start_row = int(request.POST.get('start_row', config.START_ROW))
         header_row = int(request.POST.get('header_row', config.HEADER_ROW))
         template = request.POST.get('template', config.DEFAULT_TEMPLATE)
@@ -283,10 +284,10 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 name = "{} {}".format(xstr(row_dict['first_name']), xstr(row_dict['last_name']))
                 row_dict['name'] = xstr(name)
                 contact = Contact.objects.filter(Q(name__iexact=row_dict['name'],
-                                                 document__iexact=row_dict['document']) |
+                                                   document__iexact=row_dict['document']) |
                                                  Q(first_name__iexact=row_dict['name'],
-                                                 last_name__iexact=row_dict['last_name'],
-                                                 document__iexact=row_dict['document'])).first()
+                                                   last_name__iexact=row_dict['last_name'],
+                                                   document__iexact=row_dict['document'])).first()
             else:
                 raise Exception('Mapping needs more contact data fields')
 
@@ -528,11 +529,15 @@ class ProjectContactTableView(DomainRequiredMixin, ReportExportMixin, PagedFilte
     formhelper_class = ProjectContactFilterFormHelper
 
 
-class DashboardView(DomainRequiredMixin, TemplateView):
-    template_name = 'modular_template/helloworld.html'
+class DashboardView(DomainRequiredMixin, FormView):
+    template_name = 'modular_template/dashboard.html'
+    form_class = FilterDashboardForm
+
+    def form_invalid(self, form):
+        return super(DashboardView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(DashboardView, self).get_context_data(**kwargs)
         context['months'] = MONTHS
         context['projects'] = Project.objects.values('id', 'name')
         return context
