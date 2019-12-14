@@ -1,5 +1,8 @@
+import datetime
 from django import forms
+from .models import LWRRegion, Country
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Group, User
 
 
@@ -32,3 +35,43 @@ class GroupAdminForm(forms.ModelForm):
         # Save many-to-many data
         self.save_m2m()
         return instance
+
+
+class FilterDashboardForm(forms.Form):
+    start_date = forms.DateField(
+        label=_('From'),
+        widget=forms.DateField.widget(
+            attrs={
+                'class': 'form-control',
+                'type': 'date',
+                'value': datetime.date.today(),
+                'max': datetime.date.today(),
+            }
+        )
+    )
+
+    end_date = forms.DateField(
+        label=_('Until'),
+        widget=forms.DateField.widget(
+            attrs={
+                'class': 'form-control',
+                'type': 'date',
+                'value': datetime.date.today(),
+                'max': datetime.date.today(),
+            }
+        )
+    )
+
+    region = forms.ModelChoiceField(
+        queryset=LWRRegion.objects.all(),
+        widget=forms.ModelChoiceField.widget(
+            attrs={'class': 'form-control'}
+        )
+    )
+
+    country = forms.ModelChoiceField(
+        queryset=Country.objects.all(),
+        widget=forms.ModelChoiceField.widget(
+            attrs={'class': 'form-control'}
+        )
+    )

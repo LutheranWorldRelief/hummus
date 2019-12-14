@@ -1,0 +1,245 @@
+{% load static i18n %}
+<aside class="sidebar">
+    <div class="sidebar-container">
+        <div class="sidebar-header">
+            <div class="brand">
+                <div class="logo">
+                    <span class="l l1"></span>
+                    <span class="l l2"></span>
+                    <span class="l l3"></span>
+                    <span class="l l4"></span>
+                    <span class="l l5"></span>
+                </div>
+                LWR
+            </div>
+        </div>
+        <nav class="menu">
+            <ul class="sidebar-menu metismenu" id="sidebar-menu">
+
+                {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                    <li>
+                        <a href="{% url 'monitoring:import-step1' %}">
+                            <i class="fa fa-upload"></i> {% trans 'Import Beneficiaries' %} </a>
+                    </li>
+                {% endif %}
+
+                {% if perms.monitoring.view_contact or perms.monitoring.add_contact %}
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-users"></i>
+                            {% trans 'Participants' %}
+                            <i class="fa arrow"></i>
+                        </a>
+                        <ul class="sidebar-nav">
+                            {% if perms.monitoring.view_contact or perms.monitoring.add_contact or perms.monitoring.change_contact %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_contact_changelist' %}">
+                                        {% trans 'Participants' %}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                                <li>
+                                    <a href="javascript:;">
+                                        {% trans 'Duplicates' %}
+                                        <i class="fa arrow"></i>
+                                    </a>
+                                    <ul class="sidebar-nav">
+                                        <li>
+                                            <a href="{% url 'monitoring:dupes-name' %}">
+                                                {% trans 'Name' %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'monitoring:dupes-name-fuzzy' %}">
+                                                {% trans 'Fuzzy Names' %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'monitoring:dupes-doc' %}">
+                                                {% trans 'Document' %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-print"></i>
+                            {% trans 'Reports' %}
+                            <i class="fa arrow"></i>
+                        </a>
+                        <ul class="sidebar-nav">
+                            <li>
+                                <a href="{% url 'monitoring:export' %}">
+                                    {% trans 'Project Participants' %}
+                                </a>
+                            </li>
+
+                            {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
+                                <li>
+                                    <a href="{% url 'monitoring:template-clean' %}">
+                                        {% trans 'Clean template' %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <li class="active">
+                    <a href="{% url 'monitoring:dashboard' %}">
+                        <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
+                </li>
+
+                <li>
+                    <a href="javascript:;">
+                        <i class="fa fa-cogs"></i>
+                        {% trans 'Configurations' %}
+                        <i class="fa arrow"></i>
+                    </a>
+                    <ul class="sidebar-nav">
+                        {% if perms.monitoring.view_project %}
+                            <li>
+                                <a href="{% url 'admin:monitoring_project_changelist' %}">
+                                    <i class="fa fa-folder-open-o"></i>
+                                    {% trans 'Projects' %}
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if perms.monitoring.view_organization or perms.monitoring.view_organizationtype %}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="fa fa-building"></i>
+                                    {% trans 'Organizations' %}
+                                    <i class="fa arrow"></i>
+                                </a>
+                                <ul class="sidebar-nav">
+                                    {% if perms.monitoring.view_organization %}
+
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_organization_changelist' %}">
+                                                <i class="fa fa-list"></i>
+                                                {% trans 'List' %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.monitoring.view_organizationtype %}
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
+                                                <i class="fa fa-list"></i>
+                                                {% trans 'Types' %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+
+                        {% if perms.monitoring.view_sex or perms.monitoring.view_country or perms.monitoring.view_contacttype or perms.monitoring.view_education or perms.monitoring.view_lwrregion %}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="fa fa-book"></i>
+                                    {% trans 'Catalogs' %}
+                                    <i class="fa arrow"></i>
+                                </a>
+                                <ul class="sidebar-nav">
+                                    {% if perms.monitoring.view_country %}
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_country_changelist' %}">
+                                                <i class="fa fa-globe"></i>
+                                                {% trans 'Countries' %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.monitoring.view_contacttype %}
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
+                                                <i class="fa fa-list"></i>
+                                                <span>{% trans 'Contact Types' %}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.monitoring.view_education %}
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_education_changelist' %}">
+                                                <i class="fa fa-graduation-cap"></i>
+                                                <span>{% trans 'Educations' %}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.monitoring.view_sex %}
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_sex_changelist' %}">
+                                                <i class="fa fa-venus-mars"></i>
+                                                <span>{% trans 'Sex' %}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.monitoring.view_lwrregion %}
+                                        <li>
+                                            <a href="{% url 'admin:monitoring_lwrregion_changelist' %}">
+                                                <i class="fa fa-venus-mars"></i>
+                                                <span>{% trans 'Regions' %}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+
+                        {% if perms.monitoring.view_filter %}
+                            <li>
+                                <a href="{% url 'admin:monitoring_filter_changelist' %}">
+                                    <i class="fa fa-filter"></i>
+                                    {% trans 'Segmentation' %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+
+                {% if request.user.is_superuser %}
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-lock"></i>
+                            {% trans 'Security' %}
+                            <i class="fa arrow"></i>
+                        </a>
+                        <ul class="sidebar-nav">
+                            <li>
+                                <a href="{% url 'admin:auth_user_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    {% trans 'Users' %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:auth_group_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    {% trans 'Roles' %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'admin:monitoring_profile_changelist' %}">
+                                    <i class="fa fa-circle-o"></i>
+                                    {% trans 'Profiles' %}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
+<div class="mobile-menu-handle"></div>

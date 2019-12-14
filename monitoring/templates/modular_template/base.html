@@ -1,0 +1,41 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% trans 'Hummus' %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+    {% block extra_header %}
+
+    {% endblock %}
+
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="app" id="app">
+        {% include 'modular_template/header.html' %}
+        {% include 'modular_template/sidebar.html' %}
+
+        <article class="content dashboard-page">
+            {% block main_content %}
+
+            {% endblock %}
+        </article>
+
+    </div>
+</div>
+
+<script src="{% static 'js/vendor.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+{% block extra_body %}
+
+{% endblock %}
+
+</body>
+</html>

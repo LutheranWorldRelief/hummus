@@ -1,0 +1,49 @@
+{% extends 'modular_template/base.html' %}
+{% load i18n %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block main_content %}
+    <section class="section">
+        <div class="row sameheight-container">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
+                <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+                    <div class="card-header bordered">
+                        <div class="header-block">{% trans 'Filters' %}</div>
+                    </div>
+                    <div class="card-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    {{ form.start_date.label }}
+                                    {{ form.start_date }}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    {{ form.end_date.label }}
+                                    {{ form.end_date }}
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    {{ form.region.label }}
+                                    {{ form.region }}
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    {{ form.country.label }}
+                                    {{ form.country }}
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2 mt-lg-4">
+                                    <button type="submit" class="btn btn-primary">{% trans 'Graph' %}</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body %}
+{% endblock %}
