@@ -1,31 +1,164 @@
-{% extends 'base.html' %}
-{% load leaflet_tags %}
-{% load l10n %}
-{% load i18n %}
+{% extends 'modular_template/base.html' %}
+
+{% load leaflet_tags l10n i18n %}
+
 {% block extra_header %}
     {% leaflet_js %}
     {% leaflet_css %}
 {% endblock %}
-{% block content %}
-<h1>{{ object.name }}</h1>
-<p>Name: {{ object.name }} <a target='_blank' href='{{ object.salesforce_url }}'>{{ object.code }}</a></p>
-<p>Start: {{ object.start }}</p>
-<p>End: {{ object.end }}</p>
-<h2>Salesforce data:</h2>
-<table><tr><td>
-<p>{% trans 'Target Direct Men' %}: {{ object.targetmen }}</p>
-<p>{% trans 'Target Direct Women' %}: {{ object.targetwomen }}</p>
-<p>{% trans 'Target Indirect Men' %}: {{ object.targetimen }}</p>
-<p>{% trans 'Target Indirect Women' %}: {{ object.targetiwomen }}</p>
-</td><td>
-<p>{% trans 'Actual Direct Men' %}: {{ object.actualmen }}</p>
-<p>{% trans 'Actual Direct Women' %}: {{ object.actualwomen }}</p>
-<p>{% trans 'Actual Indirect Men' %}: {{ object.actualimen }}</p>
-<p>{% trans 'Actual Indirect Women' %}: {{ object.actualiwomen }}</p>
-</td></tr></table>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-<canvas id="canvas" width="500" height="300"></canvas>
-<script>
+
+{% block main_content %}
+
+    <div class="title-block mt-1 text-center">
+        <h1 class="title"> {{ object.name }} </h1>
+        <p class="title-description">{% trans "Project" %}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card sameheight-item">
+                <div class="card-block">
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item">
+                            <a href="#GeneralInformation" class="nav-link active" data-target="#GeneralInformation"
+                               data-toggle="tab"
+                               aria-controls="GeneralInformation" role="tab"
+                               aria-selected="true">{% trans 'General Information' %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#SaleForces" class="nav-link" data-target="#SaleForces" aria-controls="SaleForces"
+                               data-toggle="tab" role="tab" aria-selected="false">{% trans 'Salesforce data' %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="HummusData" class="nav-link" data-target="#HummusData" aria-controls="HummusData"
+                               data-toggle="tab" role="tab" aria-selected="false">{% trans 'Hummus Data' %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="RelatedSub-Projects" class="nav-link" data-target="#RelatedSub-Projects"
+                               aria-controls="RelatedSub-Projects"
+                               data-toggle="tab" role="tab" aria-selected="false">{% trans 'Related Sub-Projects' %}</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content tabs-bordered">
+                        <div class="tab-pane fade in active show" id="GeneralInformation">
+                            <p>
+                                <strong>{% trans 'Name' %}:</strong>
+                                {{ object.name }}
+                                <a target='_blank' href='{{ object.salesforce_url }}'>{{ object.code }}</a>
+                            </p>
+                            <p>
+                                <strong>{% trans 'Start' %}:</strong>
+                                {{ object.start }}
+                            </p>
+                            <p>
+                                <strong>{% trans 'End' %}:</strong>
+                                {{ object.end }}
+                            </p>
+                        </div>
+                        <div class="tab-pane fade" id="SaleForces">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <p>{% trans 'Target Direct Men' %}: {{ object.targetmen }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{% trans 'Actual Direct Men' %}: {{ object.actualmen }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p>{% trans 'Target Direct Women' %}: {{ object.targetwomen }}</p>
+
+
+                                            </td>
+                                            <td>
+                                                <p>{% trans 'Actual Direct Women' %}: {{ object.actualwomen }}</p>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>{% trans 'Target Indirect Men' %}: {{ object.targetimen }}</p></td>
+                                            <td><p>{% trans 'Actual Indirect Men' %}: {{ object.actualimen }}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>{% trans 'Target Indirect Women' %}: {{ object.targetiwomen }}</p>
+                                            </td>
+                                            <td><p>{% trans 'Actual Indirect Women' %}: {{ object.actualiwomen }}</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <canvas id="canvas" width="500" height="300"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="HummusData">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <p>{% trans 'Actual Direct Men' %}: {{ object.get_actualmen }}</p>
+                                        <p>{% trans 'Actual Direct Women' %}: {{ object.get_actualwomen }}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="RelatedSub-Projects">
+                            <h2>{% trans 'Related Sub-Projects' %}</h2>
+                            <ul>
+                                {% for subproject in object.subproject_set.all %}
+
+                                    <li>
+                                        <a href="{% url 'monitoring:subproject' pk=subproject.id %}">{{ subproject.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-block -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    {% if contact_locations %}
+        {% localize off %}
+            <script type="text/javascript">
+                function map_init_basic(map, options) {
+                    markers = [];
+                    {% for row in contact_locations %}
+                        marker = [{{row.contact.location.y}}, {{row.contact.location.x}}];
+                        L.marker(marker).addTo(map);
+                        markers.push(marker);
+                    {% endfor %}
+                    map.fitBounds([markers]);
+                }
+            </script>
+        {% endlocalize %}
+        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+    {% endif %}
+{% endblock %}
+
+{% block extra_body %}
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+
+    <script>
         var data = {
             labels: ["Men", "Women"],
             datasets: [
@@ -46,7 +179,7 @@
         var options = {
             responsive: false,
             scales: {
-                xAxes: [{ stacked: true }],
+                xAxes: [{stacked: true}],
                 yAxes: [{
                     stacked: false,
                     ticks: {
@@ -62,36 +195,5 @@
             data: data,
             options: options
         });
-</script>
-<h2>Hummus data:</h2>
-<table><tr><td>
-<p>{% trans 'Actual Direct Men' %}: {{ object.get_actualmen }}</p>
-<p>{% trans 'Actual Direct Women' %}: {{ object.get_actualwomen }}</p>
-</td></tr></table>
-
-{% for subproject in object.subproject_set.all %}
-  {% if forloop.first %}
-    <h2>{% trans 'Related Sub-Projects' %}</h2>
-    <ul>
-  {% endif %}
-    <li><a href="{% url 'monitoring:subproject' pk=subproject.id %}">{{ subproject.name }}</a></li>
-{% endfor %}
-</ul>
-
-{% if contact_locations %}
-{% localize off %}
-<script type="text/javascript">
-    function map_init_basic (map, options) {
-        markers = [];
-        {% for row in contact_locations %}
-            marker = [{{row.contact.location.y}}, {{row.contact.location.x}}];
-            L.marker(marker).addTo(map);
-            markers.push(marker);
-        {% endfor %}
-        map.fitBounds([markers]);
-    }
-</script>
-{% endlocalize %}
-{% leaflet_map "yourmap" callback="window.map_init_basic" %}
-{% endif %}
+    </script>
 {% endblock %}
