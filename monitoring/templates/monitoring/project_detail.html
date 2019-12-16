@@ -38,6 +38,12 @@
                                aria-controls="RelatedSub-Projects"
                                data-toggle="tab" role="tab" aria-selected="false">{% trans 'Related Sub-Projects' %}</a>
                         </li>
+                        {% if contact_locations %}
+                            <li class="nav-item">
+                                <a href="#Location" class="nav-link" data-target="#Location" aria-controls="Location"
+                                   data-toggle="tab" role="tab" aria-selected="false">{% trans 'Location' %}</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content tabs-bordered">
@@ -120,6 +126,25 @@
                                 {% endfor %}
                             </ul>
                         </div>
+                        {% if contact_locations %}
+                            <div class="tab-pane fade" id="Location">
+
+                                {% localize off %}
+                                    <script type="text/javascript">
+                                        function map_init_basic(map, options) {
+                                            markers = [];
+                                            {% for row in contact_locations %}
+                                                marker = [{{row.contact.location.y}}, {{row.contact.location.x}}];
+                                                L.marker(marker).addTo(map);
+                                                markers.push(marker);
+                                            {% endfor %}
+                                            map.fitBounds([markers]);
+                                        }
+                                    </script>
+                                {% endlocalize %}
+                                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- /.card-block -->
@@ -127,31 +152,6 @@
             <!-- /.card -->
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-    {% if contact_locations %}
-        {% localize off %}
-            <script type="text/javascript">
-                function map_init_basic(map, options) {
-                    markers = [];
-                    {% for row in contact_locations %}
-                        marker = [{{row.contact.location.y}}, {{row.contact.location.x}}];
-                        L.marker(marker).addTo(map);
-                        markers.push(marker);
-                    {% endfor %}
-                    map.fitBounds([markers]);
-                }
-            </script>
-        {% endlocalize %}
-        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% endif %}
 {% endblock %}
 
 {% block extra_body %}
