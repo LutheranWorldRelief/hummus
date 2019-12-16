@@ -685,7 +685,8 @@ pre {
   height: 0px;
   -webkit-transform: scaleX(0);
           transform: scaleX(0); }
-
+.tab-pane{ padding-top: 15px; }
+a:focus { outline: 0; }
 .card {
   background-color: #fff;
   -webkit-box-shadow: 1px 1px 5px rgba(126, 142, 159, 0.1);
@@ -2384,7 +2385,6 @@ span a {
   border-radius: 10px;
   background-size: cover;
   background-position: center;
-  background-image: url("../assets/screenful/logo.png");
   background-repeat: no-repeat;
   display: inline-block;
   margin-bottom: 20px; }
