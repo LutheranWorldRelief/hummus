@@ -72,23 +72,25 @@
                                         <tr>
                                             <td>
                                                 <p>{% trans 'Target Direct Women' %}: {{ object.targetwomen }}</p>
-
-
                                             </td>
                                             <td>
                                                 <p>{% trans 'Actual Direct Women' %}: {{ object.actualwomen }}</p>
-
-
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><p>{% trans 'Target Indirect Men' %}: {{ object.targetimen }}</p></td>
-                                            <td><p>{% trans 'Actual Indirect Men' %}: {{ object.actualimen }}</p></td>
+                                            <td>
+                                                <p>{% trans 'Target Indirect Men' %}: {{ object.targetimen }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{% trans 'Actual Indirect Men' %}: {{ object.actualimen }}</p>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><p>{% trans 'Target Indirect Women' %}: {{ object.targetiwomen }}</p>
+                                            <td>
+                                                <p>{% trans 'Target Indirect Women' %}: {{ object.targetiwomen }}</p>
                                             </td>
-                                            <td><p>{% trans 'Actual Indirect Women' %}: {{ object.actualiwomen }}</p>
+                                            <td>
+                                                <p>{% trans 'Actual Indirect Women' %}: {{ object.actualiwomen }}</p>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -110,10 +112,8 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="RelatedSub-Projects">
-                            <h2>{% trans 'Related Sub-Projects' %}</h2>
                             <ul>
                                 {% for subproject in object.subproject_set.all %}
-
                                     <li>
                                         <a href="{% url 'monitoring:subproject' pk=subproject.id %}">{{ subproject.name }}</a>
                                     </li>
