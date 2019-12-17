@@ -382,7 +382,8 @@ class ProjectContactAPIListView(JSONResponseMixin, ListView):
             year = int(self.request.GET.get('year'))
             queryset = queryset.filter(date_entry_project__fyear=year)
         if self.request.GET.get('quarter'):
-            queryset = queryset.filter(date_entry_project__quarter=quarter)
+            quarter = int(self.request.GET.get('quarter'))
+            queryset = queryset.filter(date_entry_project__fquarter=quarter)
         if self.request.GET.get('lwrregion_id'):
             queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
         if self.request.GET.get('country_id'):

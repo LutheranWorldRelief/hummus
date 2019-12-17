@@ -197,19 +197,32 @@ class NotEqual(Lookup):
         params = lhs_params + rhs_params
         return '%s <> %s' % (lhs, rhs), params
 
-class FiscalYear(Transform):
-    lookup_name = 'fyear'
+
+class Fiscal(Transform):
+    lookup_name = None
+    extract_field = None
 
     def as_sql(self, compiler, connection):
         sql, params = compiler.compile(self.lhs)
         lhs_output_field = self.lhs.output_field
-        sql = "date_part('year', %s + interval '3 months')" % (sql,)
+        sql = "date_part('%s', %s + interval '3 months')" % (self.extract_field, sql,)
         return sql, params
 
     @property
     def output_field(self):
         return IntegerField()
 
+
+class FiscalYear(Fiscal):
+    lookup_name = 'fyear'
+    extract_field = 'year'
+
+class FiscalQuarter(Fiscal):
+    lookup_name = 'fquarter'
+    extract_field = 'quarter'
+
+
 from django.db.models.fields import Field, DateField, IntegerField
 Field.register_lookup(NotEqual)
 DateField.register_lookup(FiscalYear)
+DateField.register_lookup(FiscalQuarter)
