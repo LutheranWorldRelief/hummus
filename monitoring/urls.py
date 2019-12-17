@@ -89,6 +89,7 @@ urlpatterns = [
          jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all())),
     path('api/projects/',
          jsonviews.JsonIdName.as_view(queryset=models.Project.objects.all())),
+    path('api/years/', jsonviews.YearsAPI.as_view()),
     path('api/participants/', jsonviews.ProjectContactAPIListView.as_view()),
     path('api/subprojects/', jsonviews.SubProjectAPIListView.as_view()),
     path('api/subprojects/project/<int:project_id>/', jsonviews.SubProjectAPIListView.as_view()),
