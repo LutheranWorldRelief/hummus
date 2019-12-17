@@ -13,13 +13,24 @@ var app = new Vue({
         quantity_subprojects: 0
     },
     mounted() {
-        axios.post(UrlsAcciones.UrlDatosCantidadProyectos, this.convertToFormdata())
-            .then(((response) => {
-                let data = response.data;
-                this.quantity_projects = data.proyectos;
-            }));
+        this.loadDataForDashboard();
     },
     methods: {
+        loadDataForDashboard() {
+            axios
+                .post(UrlsAcciones.UrlDatosCantidadProyectos, this.convertToFormdata())
+                .then(((response) => {
+                    let data = response.data;
+                    this.quantity_projects = data.proyectos;
+                }));
+
+            axios
+                .post(UrlsAcciones.UrlDatosCantidadSubproyectos, this.convertToFormdata())
+                .then(((response) => {
+                    let data = response.data;
+                    this.quantity_subprojects = data.subproyectos;
+                }));
+        },
         convertToFormdata() {
             let form_data = new FormData();
             for (let key of Object.keys(this.formInputs)) {

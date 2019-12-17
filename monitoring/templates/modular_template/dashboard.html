@@ -15,46 +15,43 @@
                             <div class="header-block">{% trans 'Filters' %}</div>
                         </div>
                         <div class="card-body">
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="start_date">{% trans 'From' %}</label>
-                                        {% verbatim %}
-                                        <input v-model="formInputs.desde" type="date"
-                                               class="form-control" value=""
-                                               id="start_date" name="start_date">
-                                        {% endverbatim %}
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="end_date">{% trans 'To' %}</label>
-                                        {% verbatim %}
-                                        <input v-model="formInputs.hasta" type="date"
-                                               class="form-control" value=""
-                                               id="end_date" name="end_date">
-                                        {% endverbatim %}
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
-                                        <label for="project">{% trans 'Project' %}</label>
-                                        {% verbatim %}
-                                        <select v-model="formInputs.proyecto" name="project"
-                                                class="form-control" id="project">
-                                            {% endverbatim %}
-                                            {% for project in projects %}
-                                                <option value="{{ project.id }}">{{ project.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-2 col-md-2 col-sm-2 mt-lg-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-area-chart"></i>
-                                            {% trans 'Graph' %}
-                                        </button>
-                                    </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <label for="start_date">{% trans 'From' %}</label>
+                                    {% verbatim %}
+                                    <input v-model="formInputs.desde" type="date"
+                                           class="form-control" value=""
+                                           id="start_date" name="start_date">
+                                    {% endverbatim %}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <label for="end_date">{% trans 'To' %}</label>
+                                    {% verbatim %}
+                                    <input v-model="formInputs.hasta" type="date"
+                                           class="form-control" value=""
+                                           id="end_date" name="end_date">
+                                    {% endverbatim %}
                                 </div>
 
-                            </form>
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <label for="project">{% trans 'Project' %}</label>
+                                    {% verbatim %}
+                                    <select v-model="formInputs.proyecto" name="project"
+                                            class="form-control" id="project">
+                                        {% endverbatim %}
+                                        {% for project in projects %}
+                                            <option value="{{ project.id }}">{{ project.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2 mt-lg-4">
+                                    <button type="button" class="btn btn-primary" v-on:click="loadDataForDashboard">
+                                        <i class="fa fa-area-chart"></i>
+                                        {% trans 'Graph' %}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -69,7 +66,9 @@
                             <h4 class="title"> {% trans 'Summary' %} </h4>
                         </div>
                         <div class="row stats-container">
-                            <div class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
+                                {% verbatim %}
+                            <div v-if="quantity_projects > 0" class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
+                                {% endverbatim %}
                                 <div class="stat-icon text-primary">
                                     <i class="fa fa-folder-open"></i>
                                 </div>
@@ -402,6 +401,7 @@
             UrlDatosProyecto: "{% url 'monitoring:graphic-proyecto' %}",
             UrlDatosCantidadPaises: "{% url 'monitoring:cantidad-paises' %}",
             UrlDatosCantidadProyectos: "{% url 'monitoring:cantidad-proyectos' %}",
+            UrlDatosCantidadSubproyectos: "{% url 'monitoring:cantidad-subproyectos' %}",
             UrlDatosCantidadParticipantes: "{% url 'monitoring:cantidad-participantes' %}",
             UrlDatosPaises: "{% url 'monitoring:graphic-paises' %}",
             UrlDatosRubros: "{% url 'monitoring:graphic-rubros' %}",
@@ -410,7 +410,6 @@
             UrlDatosGraficoAnioFiscal: "{% url 'monitoring:grafico-anio-fiscal' %}",
             UrlDatosGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlDatosGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
-            UrlDatosGraficoEventos: "{% url 'monitoring:grafico-eventos' %}",
             UrlDatosGraficoTipoParticipante: "{% url 'monitoring:grafico-tipo-participante' %}",
             UrlDatosGraficoSexoParticipante: "{% url 'monitoring:grafico-sexo-participante' %}",
             UrlDatosGraficoNacionalidad: "{% url 'monitoring:grafico-nacionalidad' %}",
