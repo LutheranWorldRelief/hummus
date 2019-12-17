@@ -201,11 +201,12 @@ class NotEqual(Lookup):
 class Fiscal(Transform):
     lookup_name = None
     extract_field = None
+    offset = '3 months'
 
     def as_sql(self, compiler, connection):
         sql, params = compiler.compile(self.lhs)
         lhs_output_field = self.lhs.output_field
-        sql = "date_part('%s', %s + interval '3 months')" % (self.extract_field, sql,)
+        sql = "date_part('%s', %s + interval '%s')" % (self.extract_field, sql, self.offset)
         return sql, params
 
     @property
