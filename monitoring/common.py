@@ -8,7 +8,8 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
-from django.db.models import Func, Value
+from django.db.models import Func, Value, Lookup, Transform
+from django.db.models.fields import Field, DateField, IntegerField
 from django.http import JsonResponse
 from django.utils import translation, formats
 from django.utils.translation import gettext_lazy as _
@@ -186,3 +187,43 @@ class RegexpReplace(Func):
             replacement = Value(replacement)
         expressions = [expression, pattern, replacement, flags]
         super().__init__(*expressions, **extra)
+
+
+class NotEqual(Lookup):
+    lookup_name = 'ne'
+
+    def as_sql(self, compiler, connection):
+        lhs, lhs_params = self.process_lhs(compiler, connection)
+        rhs, rhs_params = self.process_rhs(compiler, connection)
+        params = lhs_params + rhs_params
+        return '%s <> %s' % (lhs, rhs), params
+
+
+class Fiscal(Transform):
+    lookup_name = None
+    extract_field = None
+    offset = '3 months'
+
+    def as_sql(self, compiler, connection):
+        sql, params = compiler.compile(self.lhs)
+        sql = "date_part('%s', %s + interval '%s')" % (self.extract_field, sql, self.offset)
+        return sql, params
+
+    @property
+    def output_field(self):
+        return IntegerField()
+
+
+class FiscalYear(Fiscal):
+    lookup_name = 'fyear'
+    extract_field = 'year'
+
+
+class FiscalQuarter(Fiscal):
+    lookup_name = 'fquarter'
+    extract_field = 'quarter'
+
+
+Field.register_lookup(NotEqual)
+DateField.register_lookup(FiscalYear)
+DateField.register_lookup(FiscalQuarter)

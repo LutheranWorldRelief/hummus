@@ -8,11 +8,11 @@ from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from Levenshtein import distance
 
-from .models import Contact, ProjectContact
+from .models import Contact, ProjectContact, SubProject
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
@@ -364,6 +364,56 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
         context['models'] = list(contacts_dupes)
 
         return context
+
+
+class ProjectContactAPIListView(JSONResponseMixin, ListView):
+    """
+    List of participants limit by several
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        json_context = {}
+        json_context['object_list'] = context['object_list']
+        return self.render_to_json_response(json_context, safe=False, **response_kwargs)
+
+    def get_queryset(self):
+        queryset = ProjectContact.objects.all()
+        if self.request.GET.get('year'):
+            year = int(self.request.GET.get('year'))
+            queryset = queryset.filter(date_entry_project__fyear=year)
+        if self.request.GET.get('quarter'):
+            quarter = int(self.request.GET.get('quarter'))
+            queryset = queryset.filter(date_entry_project__fquarter=quarter)
+        if self.request.GET.get('lwrregion_id'):
+            queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
+        if self.request.GET.get('country_id'):
+            queryset = queryset.filter(country_id=self.request.GET.get('country_id'))
+        if self.request.GET.get('subproject_id'):
+            queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
+        if self.request.GET.get('project_id'):
+            queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
+        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+        return list(queryset.values())
+
+
+class SubProjectAPIListView(JSONResponseMixin, ListView):
+    """
+    List of Subproojects using JSON (limit by Project if needed)
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        json_context = {}
+        json_context['object_list'] = context['object_list']
+        return self.render_to_json_response(json_context, safe=False, **response_kwargs)
+
+    def get_queryset(self):
+        queryset = SubProject.objects.all()
+        if 'project_id' in self.kwargs:
+            queryset = queryset.filter(project_id=self.kwargs['project_id'])
+        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+        return list(queryset.values())
 
 
 class JsonIdName(JSONResponseMixin, TemplateView):
