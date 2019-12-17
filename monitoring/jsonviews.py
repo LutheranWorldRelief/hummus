@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, ListView
 
 from Levenshtein import distance
 
-from .models import Contact, ProjectContact, SubProject
+from .models import Contact, ProjectContact, SubProject, Project
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
@@ -366,14 +366,30 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
         return context
 
 
-class ProjectContactAPIListView(JSONResponseMixin, ListView):
+class YearsAPI(JSONResponseMixin, ListView):
     """
-    List of participants limit by several
+    List of years used in projects
     """
 
     def render_to_response(self, context, **response_kwargs):
         json_context = {}
-        json_context['object_list'] = context['object_list']
+        json_context = context['object_list']
+        return self.render_to_json_response(json_context, safe=False, **response_kwargs)
+
+    def get_queryset(self):
+        queryset = Project.objects.order_by('start__year').\
+            values_list('start__year', flat=True).distinct()
+        return list(queryset)
+
+
+class ProjectContactAPIListView(JSONResponseMixin, ListView):
+    """
+    Count participants filter by several params
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        json_context = {}
+        json_context = context['object_list']
         return self.render_to_json_response(json_context, safe=False, **response_kwargs)
 
     def get_queryset(self):
@@ -394,7 +410,11 @@ class ProjectContactAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
-        return list(queryset.values())
+        queryset = queryset.order_by().values('contact__sex_id').annotate(total=Count('*')).\
+            values_list('contact__sex_id', 'total')
+        queryset = dict(queryset)
+        queryset['T'] = queryset['M'] + queryset['F']
+        return queryset
 
 
 class SubProjectAPIListView(JSONResponseMixin, ListView):
