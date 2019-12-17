@@ -218,12 +218,12 @@ class FiscalYear(Fiscal):
     lookup_name = 'fyear'
     extract_field = 'year'
 
+
 class FiscalQuarter(Fiscal):
     lookup_name = 'fquarter'
     extract_field = 'quarter'
 
 
-from django.db.models.fields import Field, DateField, IntegerField
 Field.register_lookup(NotEqual)
 DateField.register_lookup(FiscalYear)
 DateField.register_lookup(FiscalQuarter)
