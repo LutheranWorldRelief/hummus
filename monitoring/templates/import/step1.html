@@ -2,6 +2,7 @@
 {% load static i18n %}
 {% block extra_header %}
     <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.filer.css' %}">
 
 {% endblock %}
 {% block main_content %}
@@ -112,14 +113,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-5">
                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                     <input id="excel_file" name="excel_file" type="file"
                                            required accept=".xls,.xlsx">
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 text-right">
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        {% trans 'Import and Continue' %}
+                                    </button>
+                                </div>
+                            </div>
                         </fieldset>
-                        <button type="submit" class="next action-button">{% trans 'Import and Continue' %}</button>
                     </form>
                 </section>
                 <!-- End Multi step form -->
@@ -128,5 +137,16 @@
     </section>
 {% endblock %}
 {% block extra_body %}
+    <script src="{% static 'js/jquery.filer.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('#excel_file').filer({
+                limit: 1,
+                showThumbs: true,
+                addMore: true,
+                allowDuplicates: false
+            });
+        })
+    </script>
 
 {% endblock %}
