@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Func, Value, Lookup, Transform
+from django.db.models.fields import Field, DateField, IntegerField
 from django.http import JsonResponse
 from django.utils import translation, formats
 from django.utils.translation import gettext_lazy as _
@@ -205,7 +206,6 @@ class Fiscal(Transform):
 
     def as_sql(self, compiler, connection):
         sql, params = compiler.compile(self.lhs)
-        lhs_output_field = self.lhs.output_field
         sql = "date_part('%s', %s + interval '%s')" % (self.extract_field, sql, self.offset)
         return sql, params
 
@@ -218,12 +218,12 @@ class FiscalYear(Fiscal):
     lookup_name = 'fyear'
     extract_field = 'year'
 
+
 class FiscalQuarter(Fiscal):
     lookup_name = 'fquarter'
     extract_field = 'quarter'
 
 
-from django.db.models.fields import Field, DateField, IntegerField
 Field.register_lookup(NotEqual)
 DateField.register_lookup(FiscalYear)
 DateField.register_lookup(FiscalQuarter)
