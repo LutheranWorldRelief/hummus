@@ -377,8 +377,8 @@ class YearsAPI(JSONResponseMixin, ListView):
         return self.render_to_json_response(json_context, safe=False, **response_kwargs)
 
     def get_queryset(self):
-        queryset = Project.objects.order_by('start__year').\
-            values_list('start__year', flat=True).distinct()
+        queryset = Project.objects.order_by('start__fyear').\
+            values_list('start__fyear', flat=True).distinct()
         return list(queryset)
 
 
