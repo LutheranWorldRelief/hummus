@@ -1,162 +1,132 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-{% load i18n %}
+{% extends 'modular_template/base.html' %}
+{% load static i18n %}
 {% block extra_header %}
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
-    <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
+
 {% endblock %}
-{% block content %}
-    <div class="content-wrapper">
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
+{% block main_content %}
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <section class="multi_step_form">
+                    <form id="msform" action="{% url 'monitoring:import-step2' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                    {% include 'import/wizard.html' %}
-
-                    <div class="tab-content">
-                        <div class="tab-pane active container-fluid" role="tabpanel" id="step">
-                            <form id="w0" action="{% url 'monitoring:import-step2' %}" method="post"
-                                  enctype="multipart/form-data">
-                                {% csrf_token %}
-
-
-                                <div class="row">
-                                    <div class="col-lg-6 col-lg-offset-1">
-                                        <h3 class="text-info pull-left">{% trans 'Step 1' %}: {% trans 'Upload File' %}</h3>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <a href="{% url 'monitoring:template-clean' %}"
-                                           class="btn btn-info pull-right"><i
-                                                class="fa fa-download"></i>{% trans 'Download Template' %}</a>
-
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <button class="btn btn-primary pull-right" type="button" data-toggle="collapse"
-                                                data-target="#collapseExample" aria-expanded="false"
-                                                aria-controls="collapseExample">
-                                            <i class="fa fa-cogs"></i>
-                                            {% trans 'Advanced Options' %}
-                                        </button>
-                                    </div>
+                        {% include 'import/wizard.html' %}
+                        <fieldset class="container">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-lg-offset-3">
+                                    <h3>{% trans 'Step 1' %}: {% trans 'Upload File' %}</h3>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-lg-10 col-lg-offset-1">
-                                        <div class="collapse" id="collapseExample">
-                                            <div class="form-group row">
-                                                <label for="headerrow"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Header Row:' %}</label>
-                                                <div class="col-lg-7 col-md-7">
-                                                    <input type="number" class="form-control" name="header_row"
-                                                           id="headerrow" value="{{ config.HEADER_ROW }}"
-                                                           min="0" max="100">
-                                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <a role="button" href="{% url 'monitoring:template-clean' %}"
+                                       class="btn btn-pill-left btn-info text-white">
+                                        <i class="fa fa-download"></i>
+                                        {% trans 'Download Template' %}
+                                    </a>
+                                    <button type="button" class="btn btn-pill-right btn-primary"
+                                            data-toggle="collapse"
+                                            data-target="#collapseExample" aria-expanded="false"
+                                            aria-controls="collapseExample">
+                                        <i class="fa fa-cogs"></i>
+                                        {% trans 'Advanced Options' %}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                    <div class="collapse" id="collapseExample">
+                                        <div class="form-group row">
+                                            <label for="headerrow"
+                                                   class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Header Row:' %}</label>
+                                            <div class="col-lg-7 col-md-7">
+                                                <input type="number" class="form-control" name="header_row"
+                                                       id="headerrow" value="{{ config.HEADER_ROW }}"
+                                                       min="2" max="100">
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="startrow"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Data Start Row:' %}</label>
-                                                <div class="col-lg-7 col-md-7">
-                                                    <input type="number" class="form-control" name="start_row"
-                                                           id="startrow" value="{{ config.START_ROW }}"
-                                                           min="0" max="100">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="typedate"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Date Format:' %}</label>
-                                                <div class="col-lg-7 col-md-7">
-                                                    <select class="form-control" name="date_format"
-                                                            id="typedate">
-                                                        <option value="d/m/Y"
-                                                                {% if short_date_format == "d/m/Y" %}selected{% endif %}>{% trans 'dd/mm/yyyy' %}</option>
-                                                        <option value="m/d/Y"
-                                                                {% if short_date_format == "m/d/Y" %}selected{% endif %}>{% trans 'mm/dd/yyyy' %}</option>
-                                                        <option value="Y-m-d"
-                                                                {% if short_date_format == "Y-m-d" %}selected{% endif %}>{% trans 'yyyy-mm-dd' %}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="language"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Language:' %}</label>
-                                                <div class="col-lg-7 col-md-7">
-                                                    <select class="form-control" name="language"
-                                                            id="language">
-                                                        {% for language in languages %}
-                                                            <option value="{{ language.value }}"
-                                                                    {% if request.user.profile.language == language.value %}selected{% endif %}>
-                                                                {{ language.name }}
-                                                            </option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="saveextracolumns"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Save Extra Columns:' %}</label>
-                                                <div class="col-lg-7 col-md-7">
-                                                    <input type="checkbox" id="saveextracolumns" name="saveextracolumns"
-                                                           checked>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="template"
-                                                       class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Template format:' %}</label>
-                                                <div class="col-lg-7 col-md-7">
-                                                 <select class="form-control" name="template"
-                                                            id="template">
-                                                     {% for template in templates %}
-                                                            <option value="{{ template.template_id }}"
-                                                                    {% if template.template_id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
-                                                                {{ template.template_name }}
-                                                            </option>
-                                                        {% endfor %}
-                                                  </select>
-                                                </div>
-                                            </div>
-
                                         </div>
+                                        <div class="form-group row">
+                                            <label for="startrow"
+                                                   class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Data Start Row:' %}</label>
+                                            <div class="col-lg-7 col-md-7">
+                                                <input type="number" class="form-control" name="start_row"
+                                                       id="startrow" value="{{ config.START_ROW }}"
+                                                       min="0" max="100">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="typedate"
+                                                   class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Date Format:' %}</label>
+                                            <div class="col-lg-7 col-md-7">
+                                                <select class="form-control" name="date_format"
+                                                        id="typedate">
+                                                    <option value="d/m/Y"
+                                                            {% if short_date_format == "d/m/Y" %}selected{% endif %}>{% trans 'dd/mm/yyyy' %}</option>
+                                                    <option value="m/d/Y"
+                                                            {% if short_date_format == "m/d/Y" %}selected{% endif %}>{% trans 'mm/dd/yyyy' %}</option>
+                                                    <option value="Y-m-d"
+                                                            {% if short_date_format == "Y-m-d" %}selected{% endif %}>{% trans 'yyyy-mm-dd' %}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="language"
+                                                   class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Language:' %}</label>
+                                            <div class="col-lg-7 col-md-7">
+                                                <select class="form-control" name="language"
+                                                        id="language">
+                                                    {% for language in languages %}
+                                                        <option value="{{ language.value }}"
+                                                                {% if request.user.profile.language == language.value %}selected{% endif %}>
+                                                            {{ language.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="saveextracolumns"
+                                                   class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Save Extra Columns:' %}</label>
+                                            <div class="col-lg-7 col-md-7">
+                                                <input type="checkbox" id="saveextracolumns" name="saveextracolumns"
+                                                       checked>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="template"
+                                                   class="col-lg-3 col-md-3 col-form-label text-right">{% trans 'Template format:' %}</label>
+                                            <div class="col-lg-7 col-md-7">
+                                                <select class="form-control" name="template"
+                                                        id="template">
+                                                    {% for template in templates %}
+                                                        <option value="{{ template.template_id }}"
+                                                                {% if template.template_id == config.DEFAULT_TEMPLATE %}selected{% endif %}>
+                                                            {{ template.template_name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-lg-10 col-lg-offset-1">
-                                        <input id="input-b3" name="excel_file" type="file" class="file" multiple
-                                               data-show-upload="false" data-show-caption="true"
-                                               required accept=".xls,.xlsx"
-                                               data-msg-placeholder="{% trans 'Select {files} for upload' %}...">
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <input id="excel_file" name="excel_file" type="file"
+                                           required accept=".xls,.xlsx">
                                 </div>
-                                <br>
-
-                                <ul class="list-inline pull-right">
-                                    <li>
-                                        <button type="submit" class="btn btn-success btn-block"><i
-                                                class="fa fa-upload fa-w-16"></i>
-                                            {% trans 'Import and continue' %}
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div style="clear: both;"></div>
-                            </form>
-                        </div>
-
-
-                    </div>
-
-                </div>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="next action-button">{% trans 'Import and Continue' %}</button>
+                    </form>
+                </section>
+                <!-- End Multi step form -->
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 {% endblock %}
 {% block extra_body %}
-    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script src="{% static 'js/fileinput.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/adminlte.min.js' %}"></script>
+
 {% endblock %}
