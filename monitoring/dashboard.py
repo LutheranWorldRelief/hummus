@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Project, ProjectContact, Filter
+from .models import Project, ProjectContact, Filter, SubProject
 from .common import domain_required, get_localized_name as __
 
 
@@ -280,8 +280,17 @@ def grafico_educacion(request):
 
 @csrf_exempt
 @domain_required()
-def grafico_eventos(request):
-    return JsonResponse({'foo': 'bar'})
+def cantidad_subproyectos(request):
+    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
+                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
+                  'hasta': 'date_entry_project__lte'}
+    filter_kwargs = filter_by(parameters, request)
+    subproyectos = SubProject.\
+        objects.\
+        filter(**filter_kwargs)\
+        .count()
+    data = {'subproyectos': subproyectos}
+    return JsonResponse(data)
 
 
 @csrf_exempt

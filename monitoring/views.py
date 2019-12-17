@@ -18,7 +18,6 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView, DetailView, FormView
 from django.views.decorators.csrf import csrf_exempt
-from .forms import FilterDashboardForm
 
 from constance import config
 from openpyxl import load_workbook
@@ -529,12 +528,8 @@ class ProjectContactTableView(DomainRequiredMixin, ReportExportMixin, PagedFilte
     formhelper_class = ProjectContactFilterFormHelper
 
 
-class DashboardView(DomainRequiredMixin, FormView):
+class DashboardView(DomainRequiredMixin, TemplateView):
     template_name = 'modular_template/dashboard.html'
-    form_class = FilterDashboardForm
-
-    def form_invalid(self, form):
-        return super(DashboardView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
