@@ -1,5 +1,5 @@
 {% extends 'modular_template/base.html' %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block extra_header %}
 {% endblock %}
@@ -19,21 +19,27 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-12">
                                         <label for="start_date">{% trans 'From' %}</label>
-                                        <input type="date"
+                                        {% verbatim %}
+                                        <input v-model="formInputs.desde" type="date"
                                                class="form-control" value=""
                                                id="start_date" name="start_date">
+                                        {% endverbatim %}
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12">
                                         <label for="end_date">{% trans 'To' %}</label>
-                                        <input type="date"
+                                        {% verbatim %}
+                                        <input v-model="formInputs.hasta" type="date"
                                                class="form-control" value=""
                                                id="end_date" name="end_date">
+                                        {% endverbatim %}
                                     </div>
 
                                     <div class="col-lg-4 col-md-4 col-sm-12">
                                         <label for="project">{% trans 'Project' %}</label>
-                                        <select name="project"
+                                        {% verbatim %}
+                                        <select v-model="formInputs.proyecto" name="project"
                                                 class="form-control" id="project">
+                                            {% endverbatim %}
                                             {% for project in projects %}
                                                 <option value="{{ project.id }}">{{ project.name }}</option>
                                             {% endfor %}
@@ -68,7 +74,9 @@
                                     <i class="fa fa-folder-open"></i>
                                 </div>
                                 <div class="stat text-dark">
-                                    <div class="value"> 5407</div>
+                                    {% verbatim %}
+                                    <div class="value"> {{ quantity_projects }}</div>
+                                    {% endverbatim %}
                                     <div class="name"> {% trans 'Projects' %}</div>
                                 </div>
                             </div>
@@ -77,7 +85,9 @@
                                     <i class="fa fa-rocket"></i>
                                 </div>
                                 <div class="stat text-dark">
-                                    <div class="value"> 78464</div>
+                                    {% verbatim %}
+                                    <div class="value"> {{ quantity_subprojects }}</div>
+                                    {% endverbatim %}
                                     <div class="name"> {% trans 'Subprojects' %}</div>
                                 </div>
                             </div>
@@ -386,4 +396,29 @@
 {% endblock %}
 
 {% block extra_body %}
+    <script>
+        const UrlsAcciones = {
+            nombreGrafico: "{% trans "PARTICIPANTS BY ACTIVITY" %}",
+            UrlDatosProyecto: "{% url 'monitoring:graphic-proyecto' %}",
+            UrlDatosCantidadPaises: "{% url 'monitoring:cantidad-paises' %}",
+            UrlDatosCantidadProyectos: "{% url 'monitoring:cantidad-proyectos' %}",
+            UrlDatosCantidadParticipantes: "{% url 'monitoring:cantidad-participantes' %}",
+            UrlDatosPaises: "{% url 'monitoring:graphic-paises' %}",
+            UrlDatosRubros: "{% url 'monitoring:graphic-rubros' %}",
+            UrlDatosGraficoOrganizaciones: "{% url 'monitoring:grafico-organizaciones' %}",
+            UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
+            UrlDatosGraficoAnioFiscal: "{% url 'monitoring:grafico-anio-fiscal' %}",
+            UrlDatosGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
+            UrlDatosGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
+            UrlDatosGraficoEventos: "{% url 'monitoring:grafico-eventos' %}",
+            UrlDatosGraficoTipoParticipante: "{% url 'monitoring:grafico-tipo-participante' %}",
+            UrlDatosGraficoSexoParticipante: "{% url 'monitoring:grafico-sexo-participante' %}",
+            UrlDatosGraficoNacionalidad: "{% url 'monitoring:grafico-nacionalidad' %}",
+            UrlDatosGraficoPaisEventos: "{% url 'monitoring:grafico-pais-eventos' %}",
+            UrlLogo: "{% static 'img/logo.png' %}",
+        };
+    </script>
+    <script src="{% static 'js/vue.min.js' %}"></script>
+    <script src="{% static 'js/axios.min.js' %}"></script>
+    <script src="{% static 'js/dashboard-vue.js' %}"></script>
 {% endblock %}
