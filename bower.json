@@ -1,0 +1,23 @@
+{
+  "name": "hummus",
+  "homepage": "https://github.com/LutheranWorldRelief/hummus",
+  "description": "",
+  "main": "",
+  "authors": [
+    "LWR"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "fontawesome": "4.7.0"
+  }
+}
