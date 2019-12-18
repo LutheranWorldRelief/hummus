@@ -422,11 +422,11 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         years = {}
         for query_year in query_years:
             fyear =  query_year['date_entry_project__fyear']
-            if not fyear in years:
+            if fyear not in years:
                 years[fyear] = {}
             current_year = years[fyear]
             current_year[query_year['contact__sex_id']] = query_year['total']
-            if not 'T' in current_year:
+            if 'T' not in current_year:
                 current_year['T'] = 0
             current_year['T'] += query_year['total']
         context['year'] = years
@@ -441,11 +441,11 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         for query_year in query_years:
             fy_quarter = "{}Q{}".format(query_year['date_entry_project__fyear'],
                                        query_year['date_entry_project__fquarter'])
-            if not fy_quarter in years:
+            if fy_quarter not in years:
                 years[fy_quarter] = {}
             current_year = years[fy_quarter]
             current_year[query_year['contact__sex_id']] = query_year['total']
-            if not 'T' in current_year:
+            if 'T' not in current_year:
                 current_year['T'] = 0
             current_year['T'] += query_year['total']
         context['quarters'] = years
