@@ -421,7 +421,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
                                                'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
-            fyear =  query_year['date_entry_project__fyear']
+            fyear = query_year['date_entry_project__fyear']
             if fyear not in years:
                 years[fyear] = {}
             current_year = years[fyear]
