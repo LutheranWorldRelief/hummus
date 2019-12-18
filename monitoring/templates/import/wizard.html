@@ -1,44 +1,12 @@
-{% load static %}
-{% load i18n %}
-{% block content %}
-    <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="box">
-            <div class="box-header">
-                <h3>{% trans 'Import Beneficiaries from Excel' %}</h3>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="wizard">
-            <div class="wizard-inner">
-                <div class="connecting-line"></div>
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="{% if 'step1' in request.path %} active {% endif %}">
-                        <a href="javascript:void(0);" title="{% trans 'Step 1' %}">
-                            <span class="round-tab">
-                                <i class="glyphicon glyphicon-folder-open"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li role="presentation" class="{% if 'step2' in request.path %} active {% endif %}">
-                        <a href="javascript:void(0);" title="{% trans 'Step 2' %}">
-                            <span class="round-tab">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li role="presentation" class="{% if 'step3' in request.path %} active {% endif %}">
-                        <a href="javascript:void(0);" title="{% trans 'Step 3' %}">
-                            <span class="round-tab">
-                                <i class="glyphicon glyphicon-ok"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
+{% load static i18n %}
+<!-- title_import -->
+<div class="title_import">
+    <h2>{% trans 'Import Beneficiaries from Excel' %}</h2>
+    <p>{% trans 'Upload a file with a list of beneficiaries.' %}</p>
+</div>
+<!-- progressbar -->
+<ul id="progressbar">
+    <li class="{% if 'step1' in request.path or 'step2' in request.path or 'step3' in request.path %} active {% endif %}">{% trans 'Upload Documents' %}</li>
+    <li class="{% if 'step2' in request.path or 'step3' in request.path %} active {% endif %}">{% trans 'Verify Data & Errors' %}</li>
+    <li class="{% if 'step3' in request.path %} active {% endif %}">{% trans 'Finished and Check Duplicates' %}</li>
+</ul>

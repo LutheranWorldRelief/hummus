@@ -1,155 +1,139 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-{% load i18n %}
+{% extends 'modular_template/base.html' %}
+{% load static i18n %}
 {% block extra_header %}
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
 {% endblock %}
-{% block content %}
-    <div class="content-wrapper">
-        <section class="content">
-            <div class="container-fluid" style="margin-top: 5px">
-                <div class="row mt-2">
+{% block main_content %}
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <section class="multi_step_form">
+                    <form id="msform" action="{% url 'monitoring:import-step3' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="excel_file" value="{{ excel_file }}">
+                        <input type="hidden" name="start_row" value="{{ start_row }}">
+                        <input type="hidden" name="header_row" value="{{ header_row }}">
+                        <input type="hidden" name="language" value="{{ language }}">
+                        <input type="hidden" name="template" value="{{ template }}">
+                        <input type="hidden" name="date_format" value="{{ date_format }}">
+                        <input type="hidden" name="sheet" value="{{ sheet }}">
 
-                    {% include 'import/wizard.html' %}
-
-                    <div class="tab-content">
-                        <div class="tab-pane active container-fluid" role="tabpanel" id="step">
-                            <form id="w0" action="{% url 'monitoring:import-step3' %}" method="post"
-                                  enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="hidden" name="excel_file" value="{{ excel_file }}">
-                                <input type="hidden" name="start_row" value="{{ start_row }}">
-                                <input type="hidden" name="header_row" value="{{ header_row }}">
-                                <input type="hidden" name="language" value="{{ language }}">
-                                <input type="hidden" name="template" value="{{ template }}">
-                                <input type="hidden" name="date_format" value="{{ date_format }}">
-                                <input type="hidden" name="sheet" value="{{ sheet }}">
-                                <div class="row">
-                                    <div class="col-lg-4 col-lg-offset-1">
-                                        <h3 class="text-info pull-left">{% trans 'Step 2' %}: {% trans 'Adjust Data' %}</h3>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <ul class="list-inline pull-right">
-                                            <li>
-                                                <a class="btn btn-danger pull-left"
-                                                   href="{% url 'monitoring:import-step1' %}">
-                                                    <i class="fa fa-backward"></i>{% trans 'Cancel' %} </a>
-                                            </li>
-                                            {% if not grouped_errors or config.ALLOW_INVALID_IMPORT %}
-                                                <li>
-                                                    <button type="submit"
-                                                            class="btn btn-success btn-block pull-right">
-                                                        <i class="fa fa-upload fa-w-16"></i>
-                                                        {% trans 'Import and continue' %}
-                                                    </button>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
-                                    </div>
+                        {% include 'import/wizard.html' %}
+                        <fieldset class="container">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <h3>{% trans 'Step 2' %}: {% trans 'Adjust Data' %}</h3>
                                 </div>
-                                <br>
-                                <hr>
+                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                                    <a class="btn btn-danger w-100"
+                                       href="{% url 'monitoring:import-step1' %}">
+                                        <i class="fa fa-backward"></i>{% trans 'Cancel' %}
+                                    </a>
+                                </div>
 
-                                {% if grouped_errors %}
+                                {% if not grouped_errors or config.ALLOW_INVALID_IMPORT %}
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                                        <button type="submit"
+                                                class="btn btn-success w-100">
+                                            <i class="fa fa-upload fa-w-16"></i>
+                                            {% trans 'Import and continue' %}
+                                        </button>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                            <hr>
+                            {% if grouped_errors %}
                                 <div class="row">
-                                    <div class="col-lg-5 col-lg-offset-1">
-                                        <h5><strong>{% trans 'Required fields for a correct import' %}</strong></h5>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 text-left">
+                                        <h3>
+                                            {% trans 'Required fields for a correct import' %}
+                                        </h3>
                                         <ol>
                                             {% for column in columns_required %}
-                                                <li><strong>{{ column }}</strong></li>
+                                                <li>
+                                                    {{ column }}
+                                                </li>
                                             {% endfor %}
                                         </ol>
                                     </div>
                                 </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-lg-10 col-lg-offset-1">
-                                            <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
-                                            {# lists grouped error messages #}
-                                            <div class="row">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-10 col-lg-offset-1">
+                                        <h5><strong>{% trans 'Registros con errores' %}</strong></h5>
+                                        {# lists grouped error messages #}
+                                        <div class="row">
                                             <ul>
-                                            {% for message, details in grouped_errors %}
-                                                <li>{% if details.count > 1 %}<span class="badge badge-pill badge-danger">{{ details.count }}</span>:{% endif %}
-                                                {{ message }} Reference: {% for reference in details.reference %}<span class="badge">{{ reference }}</span>{% endfor %}</li>
-                                            {% endfor %}
+                                                {% for message, details in grouped_errors %}
+                                                    <li>{% if details.count > 1 %}
+                                                        <span class="badge badge-pill badge-danger">{{ details.count }}</span>
+                                                        :{% endif %}
+                                                        {{ message }} Reference:
+                                                        {% for reference in details.reference %}
+                                                            <span class="badge">{{ reference }}</span>{% endfor %}
+                                                    </li>
+                                                {% endfor %}
                                             </ul>
-                                            </div>
-
                                         </div>
-                                    </div>
-                                {% else %}
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
-                                             style="width: calc(100% - 50px); height: 600px">
 
-                                            <table class="table table-bordered" style="margin: 5px"
-                                                   id="tableParticipants">
-                                                <caption>{% trans 'list of participants' %}</caption>
-                                                <thead>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive" style="height: 600px">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                {% for col in columns %}
+                                                    <th>{{ col.value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for row in data %}
                                                 <tr>
-                                                    {% for col in columns %}
-                                                        <th>{{ col.value }}</th>
+                                                    {% for cell in row %}
+                                                        {% if cell.value != None %}
+                                                            <td>
+                                                                {% if cell.value|length > 45 %}
+                                                                    <span tabindex="0" data-toggle="tooltip"
+                                                                          class="cursor-"
+                                                                          title="{{ cell.value }}">{{ cell.value|truncatechars:25 }}</span>
+                                                                {% else %}
+                                                                    {{ cell.value }}
+                                                                {% endif %}
+                                                            </td>
+                                                        {% else %}
+                                                            <td></td>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </tr>
-                                                </thead>
-                                                <tbody id="resultados">
-                                                {% for row in data|slice:"1:{{ max_data }}" %}
-                                                    <tr>
-                                                        {% for cell in row %}
-
-                                                            {% if cell.value != None %}
-                                                                <td>
-                                                                    {% if cell.value|length > 45 %}
-                                                                        <span tabindex="0" data-toggle="tooltip"
-                                                                              class="cursor-"
-                                                                              title="{{ cell.value }}">{{ cell.value|truncatechars:25 }}</span>
-                                                                    {% else %}
-                                                                        {{ cell.value }}
-                                                                    {% endif %}
-                                                                </td>
-                                                            {% else %}
-                                                                <td></td>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                {% endif %}
-                                {% if not grouped_errors or config.ALLOW_INVALID_IMPORT %}
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-3 col-sm-3 pull-right"
-                                             style="margin: 10px 20px 10px 10px">
-                                            <button type="submit" class="btn btn-success btn-block">
-                                                <i class="fa fa-upload fa-w-16"></i>
-                                                {% trans 'Import and continue' %}
-                                            </button>
-                                        </div>
+                                </div>
+                            {% endif %}
+                            {% if not grouped_errors or config.ALLOW_INVALID_IMPORT %}
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 text-right mt-3">
+                                        <button type="submit" class="btn btn-success btn-block">
+                                            <i class="fa fa-upload fa-w-16"></i>
+                                            {% trans 'Import and continue' %}
+                                        </button>
                                     </div>
-                                {% endif %}
-                                <div style="clear: both;"></div>
-                            </form>
-                        </div>
-
-
-                    </div>
-                </div>
+                                </div>
+                            {% endif %}
+                        </fieldset>
+                    </form>
+                </section>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 {% endblock %}
+
 {% block extra_body %}
-    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/adminlte.min.js' %}"></script>
-    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 
 {% endblock %}

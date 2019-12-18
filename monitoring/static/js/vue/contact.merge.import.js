@@ -153,7 +153,6 @@ var app = new Vue({
                 }
                 return false;
             });
-            console.log([models, ids, indexes, self.modelsNames]);
             $.each(models, function (index, model) {
                 var i = self.modelsNames.indexOf(model);
                 console.log(self.modelsNames.splice(i, 1));
