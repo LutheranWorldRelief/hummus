@@ -409,8 +409,8 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.for_user(self.request.user)
 
         # get totals
-        totals = dict(queryset.order_by().values('contact__sex_id').\
-            annotate(total=Count('id')).values_list('contact__sex_id', 'total'))
+        totals = dict(queryset.order_by().values('contact__sex_id').
+                      annotate(total=Count('id')).values_list('contact__sex_id', 'total'))
         totals['T'] = totals['M'] + totals['F']
         context['totals'] = totals
 
@@ -418,7 +418,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         query_years = queryset.order_by().\
             values('date_entry_project__fyear', 'contact__sex_id').\
             annotate(total=Count('id')).values('date_entry_project__fyear',
-                                                    'contact__sex_id', 'total')
+                                               'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
             fyear =  query_year['date_entry_project__fyear']
