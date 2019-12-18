@@ -18,36 +18,22 @@ var app = new Vue({
     },
     methods: {
         loadDataForDashboard() {
-            let data_input = this.convertToFormdata();
 
-            axios
-                .post(UrlsAcciones.UrlDatosCantidadProyectos, data_input)
+            $.post(UrlsAcciones.UrlDatosCantidadProyectos, this.formInputs  )
                 .then(((response) => {
-                    let data = response.data;
-                    this.quantity_projects = data.proyectos;
+                    this.quantity_projects = response.proyectos;
                 }));
 
-            axios
-                .post(UrlsAcciones.UrlDatosCantidadSubproyectos, data_input)
+            $.post(UrlsAcciones.UrlDatosCantidadSubproyectos, this.formInputs   )
                 .then(((response) => {
-                    let data = response.data;
-                    this.quantity_subprojects = data.subproyectos;
+                    this.quantity_subprojects = response.subproyectos;
                 }));
 
-            axios
-                .post(UrlsAcciones.UrlDatosCantidadParticipantes, data_input)
+            $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.formInputs  )
                 .then(((response) => {
-                    let data = response.data;
-                    this.quantity_participants = data.participantes;
+                    this.quantity_participants = response.participantes;
                 }));
         },
-        convertToFormdata() {
-            let form_data = new FormData();
-            for (let key of Object.keys(this.formInputs)) {
-                form_data.append(key, this.formInputs[key]);
-            }
-            return form_data;
-        }
     }
 
 });
