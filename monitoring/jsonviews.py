@@ -407,24 +407,49 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
+
+        # get totals
         totals = dict(queryset.order_by().values('contact__sex_id').\
             annotate(total=Count('id')).values_list('contact__sex_id', 'total'))
         totals['T'] = totals['M'] + totals['F']
         context['totals'] = totals
+
+        # get totals by year
         query_years = queryset.order_by().\
             values('date_entry_project__fyear', 'contact__sex_id').\
             annotate(total=Count('id')).values('date_entry_project__fyear',
                                                     'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
-            if not query_year['date_entry_project__fyear'] in years:
-                years[query_year['date_entry_project__fyear']] = {}
-            current_year = years[query_year['date_entry_project__fyear']]
+            fyear =  query_year['date_entry_project__fyear']
+            if not fyear in years:
+                years[fyear] = {}
+            current_year = years[fyear]
             current_year[query_year['contact__sex_id']] = query_year['total']
             if not 'T' in current_year:
                 current_year['T'] = 0
             current_year['T'] += query_year['total']
         context['year'] = years
+
+        # get totals by quarter
+        query_years = queryset.order_by().\
+            values('date_entry_project__fyear', 'date_entry_project__fquarter', 'contact__sex_id').\
+            annotate(total=Count('id')).values('date_entry_project__fyear',
+                                               'date_entry_project__fquarter',
+                                               'contact__sex_id', 'total')
+        years = {}
+        for query_year in query_years:
+            fy_quarter = "{}Q{}".format(query_year['date_entry_project__fyear'],
+                                       query_year['date_entry_project__fquarter'])
+            if not fy_quarter in years:
+                years[fy_quarter] = {}
+            current_year = years[fy_quarter]
+            current_year[query_year['contact__sex_id']] = query_year['total']
+            if not 'T' in current_year:
+                current_year['T'] = 0
+            current_year['T'] += query_year['total']
+        context['quarters'] = years
+
         return context
 
 
