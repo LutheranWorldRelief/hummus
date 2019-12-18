@@ -366,33 +366,30 @@ class ContactImportDupes(JSONResponseMixin, TemplateView):
         return context
 
 
-class YearsAPI(JSONResponseMixin, ListView):
+class YearsAPI(JSONResponseMixin, TemplateView):
     """
     List of years used in projects
     """
 
     def render_to_response(self, context, **response_kwargs):
-        json_context = {}
-        json_context = context['object_list']
-        return self.render_to_json_response(json_context, safe=False, **response_kwargs)
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
 
-    def get_queryset(self):
-        queryset = Project.objects.order_by('start__year').\
-            values_list('start__year', flat=True).distinct()
+    def get_context_data(self, **kwargs):
+        queryset = Project.objects.order_by('start__fyear').\
+            values_list('start__fyear', flat=True).distinct()
         return list(queryset)
 
 
-class ProjectContactAPIListView(JSONResponseMixin, ListView):
+class ProjectContactCounter(JSONResponseMixin, TemplateView):
     """
     Count participants filter by several params
     """
 
     def render_to_response(self, context, **response_kwargs):
-        json_context = {}
-        json_context = context['object_list']
-        return self.render_to_json_response(json_context, safe=False, **response_kwargs)
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
+        context = {}
         queryset = ProjectContact.objects.all()
         if self.request.GET.get('year'):
             year = int(self.request.GET.get('year'))
@@ -410,11 +407,50 @@ class ProjectContactAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
-        queryset = queryset.order_by().values('contact__sex_id').annotate(total=Count('*')).\
-            values_list('contact__sex_id', 'total')
-        queryset = dict(queryset)
-        queryset['T'] = queryset['M'] + queryset['F']
-        return queryset
+
+        # get totals
+        totals = dict(queryset.order_by().values('contact__sex_id').
+                      annotate(total=Count('id')).values_list('contact__sex_id', 'total'))
+        totals['T'] = totals['M'] + totals['F']
+        context['totals'] = totals
+
+        # get totals by year
+        query_years = queryset.order_by().\
+            values('date_entry_project__fyear', 'contact__sex_id').\
+            annotate(total=Count('id')).values('date_entry_project__fyear',
+                                               'contact__sex_id', 'total')
+        years = {}
+        for query_year in query_years:
+            fyear = query_year['date_entry_project__fyear']
+            if fyear not in years:
+                years[fyear] = {}
+            current_year = years[fyear]
+            current_year[query_year['contact__sex_id']] = query_year['total']
+            if 'T' not in current_year:
+                current_year['T'] = 0
+            current_year['T'] += query_year['total']
+        context['year'] = years
+
+        # get totals by quarter
+        query_years = queryset.order_by().\
+            values('date_entry_project__fyear', 'date_entry_project__fquarter', 'contact__sex_id').\
+            annotate(total=Count('id')).values('date_entry_project__fyear',
+                                               'date_entry_project__fquarter',
+                                               'contact__sex_id', 'total')
+        years = {}
+        for query_year in query_years:
+            fy_quarter = "{}Q{}".format(query_year['date_entry_project__fyear'],
+                                        query_year['date_entry_project__fquarter'])
+            if fy_quarter not in years:
+                years[fy_quarter] = {}
+            current_year = years[fy_quarter]
+            current_year[query_year['contact__sex_id']] = query_year['total']
+            if 'T' not in current_year:
+                current_year['T'] = 0
+            current_year['T'] += query_year['total']
+        context['quarters'] = years
+
+        return context
 
 
 class SubProjectAPIListView(JSONResponseMixin, ListView):
