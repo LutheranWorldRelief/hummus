@@ -440,7 +440,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         years = {}
         for query_year in query_years:
             fy_quarter = "{}Q{}".format(query_year['date_entry_project__fyear'],
-                                       query_year['date_entry_project__fquarter'])
+                                        query_year['date_entry_project__fquarter'])
             if fy_quarter not in years:
                 years[fy_quarter] = {}
             current_year = years[fy_quarter]
