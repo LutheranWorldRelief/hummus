@@ -66,7 +66,7 @@ class ReportExportMixin:
         # resposne
         response = HttpResponse(content=save_virtual_workbook(book),
                                 content_type='application/vnd.openxmlformats-officedocument.'
-                                'spreadsheetml.sheet')
+                                             'spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=%s' % (basename(tfilename),)
         return response
 
@@ -118,7 +118,6 @@ class PagedFilteredTableView(SingleTableView):
 # ProjectContact
 
 class ProjectContactTable(Table):
-
     sex = Column(accessor="contact.sex.name")
     education = Column(accessor="contact.education.name")
 
@@ -158,9 +157,18 @@ def organizations(request):
 
 class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
-    project = ModelChoiceFilter(queryset=projects, widget=Select2Widget)
-    contact__country = ModelChoiceFilter(queryset=countries, widget=Select2Widget)
-    organization = ModelChoiceFilter(queryset=organizations, widget=Select2Widget)
+    project = ModelChoiceFilter(queryset=projects, widget=Select2Widget(
+        attrs={
+            'class': 'form-control select2'
+        }))
+    contact__country = ModelChoiceFilter(queryset=countries, widget=Select2Widget(
+        attrs={
+            'class': 'form-control select2'
+        }))
+    organization = ModelChoiceFilter(queryset=organizations, widget=Select2Widget(
+        attrs={
+            'class': 'form-control select2'
+        }))
     date_entry_project = DateFromToRangeFilter(widget=RangeWidget(attrs={'type': 'date'}))
 
     class Meta:
@@ -177,7 +185,6 @@ class ProjectContactFilterFormHelper(FormHelper):
         'organization',
         'contact__name',
         'date_entry_project',
-        Submit('submit', _('Apply Filter')),
     )
 
 

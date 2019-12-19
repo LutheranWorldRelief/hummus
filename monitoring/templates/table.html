@@ -1,66 +1,106 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-{% load i18n %}
-{% load django_tables2 crispy_forms_tags %}
+{% extends 'modular_template/base.html' %}
+{% load static i18n django_tables2 %}
 {% block extra_header %}
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
-    <link href="{% static 'css/fileinput.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static 'css/kv-widgets.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
-    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
-    <script src="{% static 'js/js_fix_option_menu.js' %}"></script>
-    <style>
-        table#tbPreview {
-            border: 1px solid #000 !important;
-        }
-
-        #tbPreview tr th, #tbPreview tr td {
-            border: 1px solid #000 !important;
-        }
-
-
-    </style>
     {{ filter.form.media }}
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.min.css' %}">
+    <style>
+        .select2-container .select2-selection--single {
+            height: 36px;
+        }
+
+        #input-contact input{
+            width: 100%;
+        }
+    </style>
 {% endblock %}
-{% block content %}
-    <div class="content-wrapper">
-        <section class="content">
-            <nav id="w0" class="navbar navbar-default">
-                <div class="container" style="padding:0; width: 97%; margin: 0 25px">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse">
-                            <span class="sr-only">{% trans 'Toggle navigation' %}</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span></button>
-                        <a class="navbar-brand" href="{% url 'monitoring:export' %}">{% trans 'Reports' %}</a></div>
-                    <div id="w0-collapse" class="collapse navbar-collapse"></div>
-                </div>
-            </nav>
+{% block main_content %}
 
-            <div class="container-fluid" style="background-color: white">
-                {% for format in export_formats %}
-                    <a href="{% export_url format %}" class="btn btn-primary" style="margin-top: 5px">
-                        <i class="fa fa-download"></i> {% trans 'download' %} <code>.{{ format }}</code>
-                    </a>
-                {% endfor %}
+    <div class="title-block mt-1 text-center">
+        <h1 class="title"> {% trans 'Beneficiary Information' %} </h1>
+        <p class="title-description"> {% trans 'Graphics' %} </p>
+    </div>
+    <section class="section">
+        <div class="row sameheight-container">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-block">
+                        <form method="GET">
 
-                {% crispy filter.form filter.form.helper %}
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                    <label for="id_date_entry_project_0">{% trans 'From' %}:</label>
+                                    <input type="date" name="date_entry_project_min" class="form-control"
+                                           id="id_date_entry_project_0">
 
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive"
-                         style="width: calc(100% - 50px);margin-top: 5px">
-                        {% render_table table %}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                    <label for="id_date_entry_project_1">{% trans 'To' %}:</label>
+                                    <input type="date" name="date_entry_project_max" class="form-control"
+                                           id="id_date_entry_project_1">
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <label for="">{{ filter.form.project.label }}:</label>
+                                    {{ filter.form.project }}
+                                    {{ filter.form.project.helper }}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <label for="">{{ filter.form.organization.label }}:</label>
+                                    {{ filter.form.organization }}
+                                    {{ filter.form.organization.helper }}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <label for="">{{ filter.form.contact__country.label }}:</label>
+                                    {{ filter.form.contact__country }}
+                                    {{ filter.form.contact__country.helper }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12" id="input-contact">
+                                    <label for="">{{ filter.form.contact__name.label }}:</label>
+                                    {{ filter.form.contact__name }}
+                                    {{ filter.form.contact__name.helper }}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 ">
+                                    <label for="">&nbsp;</label>
+                                    <input id="submit-id-submit" type="submit" class="btn btn-primary w-100"
+                                           name="submit"
+                                           value="{% trans 'Apply Filter' %}">
+                                </div>
+                                {% if export_formats %}
+                                    <div class="col-lg-3 col-md-3 col-sm-6">
+                                    <label for="">&nbsp;</label>
+                                        {% for format in export_formats %}
+                                            <a href="{% export_url format %}" class="btn btn-success w-100">
+                                                <i class="fa fa-download"></i> {% trans 'download' %}
+                                                <code>.{{ format }}</code>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 table-responsive mt-3">
+                                <h5>{% trans 'Contact List Preview' %}</h5>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 table-responsive mt-2" style="height: 600px">
+                                {% render_table table %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 {% endblock %}
 {% block extra_body %}
     {{ filter.form.js }}
+    <script src="{% static "select2/dist/js/select2.full.min.js" %}"></script>
+
+    <script>
+        $(function () {
+            $('#id_project').select2()
+        })
+    </script>
 {% endblock %}
