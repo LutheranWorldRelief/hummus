@@ -2,6 +2,7 @@
 {% load static i18n %}
 
 {% block extra_header %}
+    <link rel="stylesheet" href="{% static 'select2/dist/css/select2.min.css' %}">
 {% endblock %}
 
 {% block main_content %}
@@ -65,9 +66,10 @@
 {% endblock %}
 
 {% block extra_body %}
+    <script src="{% static "select2/dist/js/select2.full.min.js" %}"></script>
+
     <script>
         const UrlsAcciones = {
-            nombreGrafico: "{% trans "PARTICIPANTS BY ACTIVITY" %}",
             UrlDatosProyecto: "{% url 'monitoring:graphic-proyecto' %}",
             UrlDatosCantidadPaises: "{% url 'monitoring:cantidad-paises' %}",
             UrlDatosCantidadProyectos: "{% url 'monitoring:cantidad-proyectos' %}",
@@ -84,9 +86,12 @@
             UrlDatosGraficoSexoParticipante: "{% url 'monitoring:grafico-sexo-participante' %}",
             UrlDatosGraficoNacionalidad: "{% url 'monitoring:grafico-nacionalidad' %}",
             UrlDatosGraficoPaisEventos: "{% url 'monitoring:grafico-pais-eventos' %}",
-            UrlLogo: "{% static 'img/logo.png' %}",
         };
+        $(function () {
+            $('#project').select2();
+        })
     </script>
-    <script src="{% static 'js/vue.min.js' %}"></script>
+
+    <script src="{% static 'vue/dist/vue.min.js' %}"></script>
     <script src="{% static 'js/dashboard-vue.js' %}"></script>
 {% endblock %}
