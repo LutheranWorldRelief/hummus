@@ -3,6 +3,11 @@
 
 {% block extra_header %}
     <link rel="stylesheet" href="{% static 'select2/dist/css/select2.min.css' %}">
+     <style>
+        .select2-container .select2-selection--single {
+            height: 36px;
+        }
+    </style>
 {% endblock %}
 
 {% block main_content %}
