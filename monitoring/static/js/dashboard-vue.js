@@ -13,7 +13,7 @@ var app = new Vue({
         quantity_subprojects: 0,
         quantity_participants: 0,
     },
-    mounted() {
+    created() {
         this.loadDataForDashboard();
     },
     methods: {
