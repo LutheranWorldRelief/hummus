@@ -1,0 +1,218 @@
+{% load i18n %}
+{# section Geographic Information #}
+<div class="title-block mt-1 text-center">
+    <h1 class="title"> {% trans 'Geographic Information' %} </h1>
+</div>
+<div class="row sameheight-container">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
+        <div class="card sameheight-item" data-exclude="xs" id="Geographic-Information"
+             style="height: 322.6px;">
+            <div class="card-header card-header-sm bordered">
+                <ul role="tablist" class="nav nav-tabs pull-left">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#beneficiares" role="tab"
+                           data-toggle="tab">{% trans 'Beneficiares' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects" role="tab"
+                           data-toggle="tab">{% trans 'Projects' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#subprojects" role="tab"
+                           data-toggle="tab">{% trans 'Subprojects' %}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-block">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active fade show" id="beneficiares">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-sm table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">{% trans 'Country' %}</th>
+                                        <th class="text-center">{% trans '%' %}</th>
+                                        <th class="text-center">{% trans 'Goal' %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th class="text-center">data 1</th>
+                                        <th class="text-center">data 1</th>
+                                        <th class="text-center">data 1</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="dashboard-visits-chart" style="position: relative;">
+                                    <svg height="220" version="1.1" width="550.667"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         style="overflow: hidden; position: relative; left: -0.333313px; top: -0.600006px;">
+                                        <desc>Created with Raphaël 2.2.0</desc>
+                                        <defs></defs>
+                                        <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="27.766666412353516" y="180" text-anchor="end"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888"
+                                              font-weight="normal">
+                                            <tspan dy="4">40</tspan>
+                                        </text>
+                                        <path style="" fill="none" stroke="#aaaaaa"
+                                              d="M40.266666412353516,180H525.667"
+                                              stroke-width="0.5"></path>
+                                        <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="27.766666412353516" y="141.25" text-anchor="end"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888"
+                                              font-weight="normal">
+                                            <tspan dy="141.25"></tspan>
+                                        </text>
+                                        <path style="" fill="none" stroke="#aaaaaa"
+                                              d="M40.266666412353516,141.25H525.667"
+                                              stroke-width="0.5"></path>
+                                        <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="27.766666412353516" y="102.5" text-anchor="end"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888"
+                                              font-weight="normal">
+                                            <tspan dy="4">63</tspan>
+                                        </text>
+                                        <path style="" fill="none" stroke="#aaaaaa"
+                                              d="M40.266666412353516,102.5H525.667"
+                                              stroke-width="0.5"></path>
+                                        <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="27.766666412353516" y="63.75" text-anchor="end"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888"
+                                              font-weight="normal">
+                                            <tspan dy="63.75"></tspan>
+                                        </text>
+                                        <path style="" fill="none" stroke="#aaaaaa"
+                                              d="M40.266666412353516,63.75H525.667"
+                                              stroke-width="0.5"></path>
+                                        <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="27.766666412353516" y="25" text-anchor="end"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888"
+                                              font-weight="normal">
+                                            <tspan dy="4">86</tspan>
+                                        </text>
+                                        <path style="" fill="none" stroke="#aaaaaa"
+                                              d="M40.266666412353516,25H525.667"
+                                              stroke-width="0.5"></path>
+                                        <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="444.7669444020589" y="192.5" text-anchor="middle"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888" font-weight="normal"
+                                              transform="matrix(1,0,0,1,0,7.5)">
+                                            <tspan dy="4">2015-09-06</tspan>
+                                        </text>
+                                        <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="282.9668332061768" y="192.5" text-anchor="middle"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888" font-weight="normal"
+                                              transform="matrix(1,0,0,1,0,7.5)">
+                                            <tspan dy="4">2015-09-04</tspan>
+                                        </text>
+                                        <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;"
+                                              x="121.1667220102946" y="192.5" text-anchor="middle"
+                                              font-family="sans-serif"
+                                              font-size="12px" stroke="none" fill="#888888" font-weight="normal"
+                                              transform="matrix(1,0,0,1,0,7.5)">
+                                            <tspan dy="4">2015-09-02</tspan>
+                                        </text>
+                                        <path style="" fill="none" stroke="#9ed85f"
+                                              d="M40.266666412353516,78.91304347826087C60.49168031183879,74.70108695652175,100.94170811080933,53.64130434782609,121.1667220102946,62.06521739130436C141.39173590977987,70.48913043478262,181.84176370875042,146.30434782608697,202.0667776082357,146.30434782608697C222.29179150772097,146.30434782608697,262.7418193066915,62.06521739130436,282.9668332061768,62.06521739130436C303.1918471056621,62.06521739130436,343.6418749046326,146.30434782608697,363.8668888041179,146.30434782608697C384.0919027036031,146.30434782608697,424.5419305025737,77.22826086956522,444.7669444020589,62.06521739130436C464.9919583015442,46.902173913043484,505.4419861005148,34.26630434782609,525.667,25"
+                                              stroke-width="3"></path>
+                                        <circle cx="40.266666412353516" cy="78.91304347826087" r="4"
+                                                fill="#85ce36"
+                                                stroke="#ffffff" style="" stroke-width="1"></circle>
+                                        <circle cx="121.1667220102946" cy="62.06521739130436" r="4"
+                                                fill="#85ce36"
+                                                stroke="#ffffff" style="" stroke-width="1"></circle>
+                                        <circle cx="202.0667776082357" cy="146.30434782608697" r="4"
+                                                fill="#85ce36"
+                                                stroke="#ffffff" style="" stroke-width="1"></circle>
+                                        <circle cx="282.9668332061768" cy="62.06521739130436" r="4"
+                                                fill="#85ce36"
+                                                stroke="#ffffff" style="" stroke-width="1"></circle>
+                                        <circle cx="363.8668888041179" cy="146.30434782608697" r="4"
+                                                fill="#85ce36"
+                                                stroke="#ffffff" style="" stroke-width="1"></circle>
+                                        <circle cx="444.7669444020589" cy="62.06521739130436" r="4"
+                                                fill="#85ce36"
+                                                stroke="#ffffff" style="" stroke-width="1"></circle>
+                                        <circle cx="525.667" cy="25" r="4" fill="#85ce36" stroke="#ffffff"
+                                                style=""
+                                                stroke-width="1"></circle>
+                                    </svg>
+                                    <div class="morris-hover morris-default-style"
+                                         style="left: 0px; top: 9px; display: none;">
+                                        <div class="morris-hover-row-label">2015-09-01</div>
+                                        <div class="morris-hover-point" style="color: rgb(158, 216, 95)">
+                                            Visits:
+                                            70
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="projects">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-sm table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">{% trans 'Country' %}</th>
+                                        <th class="text-center">{% trans '%' %}</th>
+                                        <th class="text-center">{% trans 'Goal' %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th class="text-center">data 1</th>
+                                        <th class="text-center">data 1</th>
+                                        <th class="text-center">data 1</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="dashboard-downloads-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="subprojects">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-sm table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">{% trans 'Country' %}</th>
+                                        <th class="text-center">{% trans '%' %}</th>
+                                        <th class="text-center">{% trans 'Goal' %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th class="text-center">data 1</th>
+                                        <th class="text-center">data 1</th>
+                                        <th class="text-center">data 1</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
