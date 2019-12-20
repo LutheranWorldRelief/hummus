@@ -1,0 +1,85 @@
+{% load i18n %}
+{# Summary Projects,Participants,Goals and Subproject #}
+<div class="row sameheight-container">
+    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 stats-col">
+        <div class="card sameheight-item stats stats1">
+            <div class="card-block">
+                <div class="title-block text-center">
+                    <h4 class="title"> {% trans 'Summary' %} </h4>
+                </div>
+                <div class="row stats-container">
+                    {% verbatim %}
+                    <div v-if="formInputs.proyecto === ''" class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
+                        {% endverbatim %}
+                        <div class="stat-icon text-primary">
+                            <i class="fa fa-folder-open"></i>
+                        </div>
+                        <div class="stat text-dark">
+                            {% verbatim %}
+                            <div class="value"> {{ quantity_projects }}</div>
+                            {% endverbatim %}
+                            <div class="name"> {% trans 'Projects' %}</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
+                        <div class="stat-icon text-success">
+                            <i class="fa fa-rocket"></i>
+                        </div>
+                        <div class="stat text-dark">
+                            {% verbatim %}
+                            <div class="value"> {{ quantity_subprojects }}</div>
+                            {% endverbatim %}
+                            <div class="name"> {% trans 'Subprojects' %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 col-sm-8 col-md-8 col-xl-8 stats-col">
+        <div class="card sameheight-item stats stats1">
+            <div class="card-block">
+                <div class="title-block text-center">
+                    <h4 class="title"> {% trans 'Beneficiaries' %} </h4>
+                </div>
+                <div class="row stats-container text-dark">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 stat-col">
+                                <div class="stat-icon">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <div class="stat text-dark">
+                                    {% verbatim %}
+                                    <div class="value"> {{ quantity_participants }}</div>
+                                    {% endverbatim %}
+                                    <div class="name"> {% trans 'Total Participants' %}</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 stat-col">
+                                <div class="stat-icon">
+                                    <i class="fa fa-flag-checkered text-dark"></i>
+                                </div>
+                                <div class="stat text-dark">
+                                    <div class="value"> 5407</div>
+                                    <div class="name"> {% trans 'Participants Goal' %}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 align-self-center stat-col mb-4">
+                        <div class="stat-icon">
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <div class="stat text-dark">
+                            <div class="value"> 100 {% trans '% of goal completed' %}</div>
+                        </div>
+                        <div class="progress stat-progress">
+                            <div class="progress-bar" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
