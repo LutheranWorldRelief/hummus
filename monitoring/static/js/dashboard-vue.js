@@ -38,12 +38,13 @@ var app = new Vue({
                     this.quantity_participants = response.participantes;
                 }));
 
-                $.get(UrlsAcciones.UrlDatosGraficoAnioFiscal, this.formInputs)
+                $.post(UrlsAcciones.UrlDatosGraficoAnioFiscal, this.formInputs)
                 .then(((response) => {
 
-                    let data = response.data;
+                    let data = response.fiscal;
                     this.tatals = data['totals'];
                     delete data.totals;
+
 
                     setZeroIsUndefined = (data) => {
                         return data === undefined ? 0 : data
@@ -72,6 +73,7 @@ var app = new Vue({
                         this.hombresQ.push(setZeroIsUndefined(orderedQ[participants].M));
                         this.defauldSerieQ.push(0);
                     }
+                    console.log(this.anios);
                     this.graphicParticipats('').then(() => {
                         this.graphicParticipats('GraphicQuarter');
                     });
