@@ -19,6 +19,8 @@
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
     "fontawesome": "4.7.0",
-    "alertify": "^0.3.10"
+    "alertify": "^0.3.10",
+    "select2": "^4.0.12",
+    "vue": "^2.6.11"
   }
 }
