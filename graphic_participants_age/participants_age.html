@@ -54,6 +54,7 @@ _
     });
 
     function graphicData(data) {
+        let total = [];
         let ageRange = [];
         let participants = {
             mParticipants: [],
@@ -61,6 +62,8 @@ _
         };
 
         data.forEach((data) => {
+            total.push(0);
+
             ageRange.push(data.type);
             let m = data.f;
             let f = data.m;
@@ -77,11 +80,11 @@ _
                 participants.fParticipants.push(0);
             }
         });
-
-        graphic(ageRange, participants);
+        
+        graphic(total, ageRange, participants);
     }
 
-    function graphic(ageRange, participants) {
+    function graphic(total, ageRange, participants) {
         const myChart = echarts.init(document.getElementById('main'));
 
         myChart.title = 'PARTICIPANTS BY AGE';
@@ -108,7 +111,7 @@ _
             },
             {
                 name: 'total',
-                data: [0, 0, 0, 0, 0, 0, 0]
+                data: total
             }
 
         ];
@@ -212,3 +215,4 @@ _
 </script>
 </body>
 </html>
+
