@@ -1,121 +1,119 @@
-{% extends 'dashboard_base.html' %}
-{% load static %}
-{% load i18n %}
+{% extends 'modular_template/base.html' %}
+{% load static i18n %}
 {% block extra_header %}
-    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static 'js/lib/select2/select2.css' %}" rel="stylesheet">
-    <link href="{% static 'js/lib/select2/css/select2-addl.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static '/js/lib/alertify/alertify.core.css' %}" rel="stylesheet">
-    <link href="{% static '/js/lib/alertify/alertify.bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static '/js/lib/alertify1.11.1/css/alertify.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
+    <link href="{% static 'select2/dist/css/select2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'alertify/themes/alertify.bootstrap.css' %}" rel="stylesheet">
     <style>
-        .bg-blue, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
-            background-color: #00AAA7 !important;
-        }
-
-        .bg-green, .callout.callout-success, .alert-success, .label-success, .modal-success .modal-body {
-            background-color: #C1CD23 !important;
-        }
-
-        span.select2-container--open {
-            background-color: white !important;
-        }
-
-        .select2-container .select2-results > .select2-results__options {
-            overflow-y: unset;
+        .select2-container .select2-selection--single {
+            height: 36px;
         }
     </style>
 {% endblock %}
-{% block content %}
-    <div class="content-wrapper">
-        <section class="content">
-            <div id="app" v-cloak data-baseurl="/">
-                <div v-if="loading.all">
-                    <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="">
-                </div>
-                <div v-if="!loading.all" class="row" v-cloak>
-                    <div class="col-md-12 ">
-                        <div class="panel panel-default">
-                            <div class="panel-body table-responsive" style="font-size: 12px">
-                                <h2 v-if="modelsNames.length > 0" class="text-maroon">
-                                    {% verbatim %} {{ modelsNames.length }} {% endverbatim %}
-                                    {% trans 'Cases duplicated by name' %}
-                                <h2 v-else class="text-maroon">
-                                    No results. Try using filters.
-                                </h2>
-                                <div class="row">
-                                    <div class="col-lg-12">{% include "_filter_form.html" %}</div>
-                                </div>
+{% block main_content %}
+    <div class="title-block mt-1 text-center">
+        <h1 class="title"> {% trans 'Duplicates by Name' %} </h1>
+    </div>
+    <section class="section">
+        <div class="row sameheight-container">
+            <div id="app" v-cloak data-baseurl="/" class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div v-if="!loading.all" class="card-header bordered">
+                        <div class="header-block">
+                            {% verbatim %}
+                            <h3 v-if="modelsNames.length > 0" class="title">
+                                {{ modelsNames.length }}
+                                {% endverbatim %}
+                                {% trans 'Cases duplicated by Name' %}
+                            </h3>
+                            {% verbatim %}
+                            <h3 v-else class="title">
+                                {% endverbatim %}
+                                {% trans "No results. Try using filters." %}
+                            </h3>
+                        </div>
+                        <div class="header-block pull-right">
+                            {% include 'buttons_dupes.html' %}
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div v-if="loading.all" class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                <img style="margin:0 auto; display: block" src="{% static 'img/loading.gif' %}" alt="">
+                            </div>
 
-                                <br>
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <table class="table table-bordered table-striped table-condensed">
-                                            <thead>
-                                            <tr>
-                                                <th>{% trans 'Case N°' %}</th>
-                                                <th>{% trans 'Name' %}</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% verbatim %}
-                                            <template v-for="(model, index) in modelsNames">
-                                                <tr v-if="(index <= parseInt( modelsNames.length/2))">
-                                                    <td>{{index+1}}</td>
-                                                    <td>{{model.name}} <span class="badge">{{model.cuenta}}</span></td>
-                                                    <td>
-                                                        <button
-                                                                class="btn btn-xs btn-primary pull-right"
-                                                                @click="preparingFusionForm(model)"
-                                                                data-toggle="modal"
-                                                                data-target="#modal-merge">
-                                                            {% endverbatim %}
-                                                            {% trans 'Fuse' %}
-                                                            {% verbatim %}
-                                                        </button>
-                                                    </td>
+                            <div v-if="!loading.all" class="row" v-cloak style="font-size: 12px">
+                                {% include "_filter_form.html" %}
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <table class="table table-sm table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans 'Case N°' %}</th>
+                                                    <th>{% trans 'Name' %}</th>
+                                                    <th></th>
                                                 </tr>
-                                            </template>
-                                            {% endverbatim %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <table class="table table-bordered table-striped table-condensed">
-                                            <thead>
-                                            <tr>
-                                                <th>{% trans 'Case N°' %}</th>
-                                                <th>{% trans 'Name' %}</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% verbatim %}
-                                            <template v-for="(model, index) in modelsNames">
-                                                <tr v-if="(index > parseInt( modelsNames.length/2))">
-                                                    <td> {{index+1}}</td>
-                                                    <td>{{model.name}} <span class="badge">{{model.cuenta}}</span></td>
-                                                    <td>
-                                                        <button
-                                                                class="btn btn-xs btn-primary pull-right"
-                                                                @click="preparingFusionForm(model)"
-                                                                data-toggle="modal"
-                                                                data-target="#modal-merge">
-                                                            {% endverbatim %}
-                                                            {% trans 'Fuse' %}
-                                                            {% verbatim %}
-                                                        </button>
-                                                    </td>
+                                                </thead>
+                                                <tbody>
+                                                {% verbatim %}
+                                                <template v-for="(model, index) in modelsNames">
+                                                    <tr v-if="(index <= parseInt( modelsNames.length/2))">
+                                                        <td>{{index+1}}</td>
+                                                        <td>{{model.name}} <span
+                                                                class="badge">{{model.cuenta}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                    class="btn btn-xs btn-primary pull-right"
+                                                                    @click="preparingFusionForm(model)"
+                                                                    data-toggle="modal"
+                                                                    data-target="#modal-merge">
+                                                                {% endverbatim %}
+                                                                {% trans 'Fuse' %}
+                                                                {% verbatim %}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                                {% endverbatim %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <table class="table table-sm table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans 'Case N°' %}</th>
+                                                    <th>{% trans 'Name' %}</th>
+                                                    <th></th>
                                                 </tr>
-                                            </template>
-                                            {% endverbatim %}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                {% verbatim %}
+                                                <template v-for="(model, index) in modelsNames">
+                                                    <tr v-if="(index > parseInt( modelsNames.length/2))">
+                                                        <td> {{index+1}}</td>
+                                                        <td>{{model.name}} <span
+                                                                class="badge">{{model.cuenta}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                    class="btn btn-xs btn-primary pull-right"
+                                                                    @click="preparingFusionForm(model)"
+                                                                    data-toggle="modal"
+                                                                    data-target="#modal-merge">
+                                                                {% endverbatim %}
+                                                                {% trans 'Fuse' %}
+                                                                {% verbatim %}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                                {% endverbatim %}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -124,23 +122,16 @@
                 </div>
                 {% include "_contact_merge_modal.html" %}
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 {% endblock %}
 {% block extra_body %}
-    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/yii.min.js' %}"></script>
-    <script src="{% static 'js/lib/select2/js/select2.full.min.js' %}"></script>
-    <script src="{% static 'js/lib/select2/js/select2-krajee.js' %}"></script>
-    <script src="{% static '/js/lib/alertify/alertify.min.js' %}"></script>
-    <script src="{% static 'js/vue/vue2.5.16.min.js' %}"></script>
+    <script src="{% static 'alertify/alertify.min.js' %}"></script>
+    <script src="{% static 'select2/dist/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'vue/dist/vue.min.js' %}"></script>
     <script src="{% static 'js/vue/comp.select2.js' %}"></script>
-    <script src="{% static '/js/lib/alertify1.11.1/alertify.min.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.modules.js' %}"></script>
     <script src="{% static 'js/vue/contact.merge.js' %}"></script>
-    <script src="{% static 'js/adminlte.min.js' %}"></script>
-
     <script>
         jQuery(function ($) {
             jQuery('#modal-merge').modal({"show": false});
