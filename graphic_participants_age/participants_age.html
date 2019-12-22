@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <title>Document</title>
+</head>
+<body>
+<style type="text/css">
+    body, html {
+        background: #181E24;
+        padding-top: 10px;
+    }
+
+    .wrapper {
+        width: 60%;
+        display: block;
+        overflow: hidden;
+        margin: 0 auto;
+        padding: 60px 50px;
+        background: #fff;
+        border-radius: 4px;
+    }
+
+    canvas {
+        background: #fff;
+        height: 400px;
+    }
+
+    h1 {
+        font-family: Roboto;
+        color: #fff;
+        margin-top: 50px;
+        font-weight: 200;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+</style>
+<h1>Participants by Age</h1>
+<div class="wrapper">
+    <div id="main" style="height:400px;"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+_
+<script type='text/javascript'>
+
+    fetch('./participants_age.json', {mode: 'no-cors'}).then((response) => {
+        response.json().then((data) => {
+            graphicData(data.edad);
+        });
+    });
+
+    function graphicData(data) {
+        let ageRange = [];
+        let participants = {
+            mParticipants: [],
+            fParticipants: []
+        };
+
+        data.forEach((data) => {
+            ageRange.push(data.type);
+            let m = data.f;
+            let f = data.m;
+
+            if (m !== undefined) {
+                participants.mParticipants.push(m);
+            } else {
+                participants.mParticipants.push(0);
+            }
+
+            if (f !== undefined) {
+                participants.fParticipants.push(f);
+            } else {
+                participants.fParticipants.push(0);
+            }
+        });
+
+        graphic(ageRange, participants);
+    }
+
+    function graphic(ageRange, participants) {
+        const myChart = echarts.init(document.getElementById('main'));
+
+        myChart.title = 'PARTICIPANTS BY AGE';
+
+        const colors = {
+            men: '#b2bb1e',
+            women: '#00aaa7'
+        };
+
+        const series = [
+            {
+                name: 'Men',
+                itemStyle: {
+                    color: colors.women
+                },
+                data: participants.fParticipants
+            },
+            {
+                name: 'Women',
+                itemStyle: {
+                    color: colors.men
+                },
+                data: participants.mParticipants
+            },
+            {
+                name: 'total',
+                data: [0, 0, 0, 0, 0, 0, 0]
+            }
+
+        ];
+
+        var genFormatter = (series, gender = null) => {
+            return (param) => {
+                let sum = 0;
+                series.forEach(item => {
+                    if (gender === null) {
+                        sum += item.data[param.dataIndex];
+                    } else if (item.name === 'Men' && gender === 'Men') {
+                        sum += item.data[param.dataIndex];
+                    } else if (item.name === 'Women' && gender === 'Women') {
+                        sum += item.data[param.dataIndex];
+                    } else if (gender === ''){
+                        sum = 0;
+                    }
+                });
+                return sum
+            }
+        };
+
+        function isLastSeries(index) {
+            return index === series.length - 1
+        }
+
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow' //'line' | 'shadow'
+                }, formatter: function (params) {
+                    let axisValue = '<p>' + params[0].axisValue + '</p>';
+                    params.forEach(item => {
+                        if (item.seriesName !== 'total') {
+                            axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                        }
+                    });
+                    return axisValue;
+                },
+            },
+            legend: {
+                data: ['Men', 'Women']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            yAxis: {
+                type: 'value'
+            },
+            xAxis: {
+                type: 'category',
+                data: ageRange
+            },
+            series: series.map((item, index) => Object.assign(item, {
+                type: 'bar',
+                stack: true,
+                label: {
+                    show: true,
+                    formatter: isLastSeries(index) ? genFormatter(series) : null,
+                    color: 'black',
+                    position: isLastSeries(index) ? 'top' : 'inside'
+                },
+            }))
+
+        };
+
+        myChart.setOption(option);
+
+        myChart.on('legendselectchanged', function (params) {
+
+            let gender = null;
+            let selected = params.selected;
+            if (selected.Men && selected.Women) {
+                gender = null;
+            } else if (!selected.Men && selected.Women) {
+                gender = 'Women';
+            } else if (selected.Men && !selected.Women) {
+                gender = 'Men';
+            } else {
+                gender = '';
+            }
+
+            option.series = series.map((item, index) => Object.assign(item, {
+                type: 'bar',
+                stack: true,
+                label: {
+                    show: true,
+                    formatter: isLastSeries(index) ? genFormatter(series, gender) : null,
+                    color: 'black',
+                    position: isLastSeries(index) ? 'top' : 'inside'
+                },
+            }));
+
+            myChart.setOption(option);
+        })
+    }
+</script>
+</body>
+</html>
