@@ -1,7 +1,7 @@
 var graphicMixins = {
     data() {
         return {
-            typeGraphic: null,
+            typeGraphic: null
         }
     },
     methods: {
@@ -367,12 +367,12 @@ var graphicMixins = {
         },
         graficoMetasLinea() {
 
-            let myChart = echarts.init(document.getElementById('MetaParticipantes2'));
+            let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
             option = {
                 backgroundColor: '#f7f7ff',
                 title: {
-                    text: gettext('Assigned goal - amound goal'),
+                    text: gettext('Assigned goal - amound goal by sex'),
                     textStyle: {
                         fontWeight: 'bold',
                         color: '#b2bb1e',
@@ -530,37 +530,39 @@ var graphicMixins = {
                 ]
             }
             myChart.setOption(option);
+            this.styleGraphic.position='fixed';
         },
-        getGraphicZoom(){
-          return   [{
-                    "show": true,
-                    "height": 20,
-                    "xAxisIndex": [
-                        0
-                    ],
-                    bottom: 30,
-                    "start": 30,
-                    "end": 100,
-                    handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-                    handleSize: '110%',
-                    handleStyle: {
-                        color: 'rgba(144,151,156,.8)',
-                    },
-                    textStyle: {
-                        color: "#fff"
-                    },
-                    borderColor: "#90979c"
-                }, {
-                    "type": "inside",
-                    "show": true,
-                    "height": 15,
-                    "start": 50,
-                    "end": 35
-                }]
+        getGraphicZoom() {
+            return [{
+                "show": true,
+                "height": 20,
+                "xAxisIndex": [
+                    0
+                ],
+                bottom: 30,
+                "start": 30,
+                "end": 100,
+                handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                handleSize: '110%',
+                handleStyle: {
+                    color: 'rgba(144,151,156,.8)',
+                },
+                textStyle: {
+                    color: "#fff"
+                },
+                borderColor: "#90979c"
+            }, {
+                "type": "inside",
+                "show": true,
+                "height": 15,
+                "start": 50,
+                "end": 35
+            }]
         },
         genFormatter(series) {
             return (param) => {
                 //return this.typeGraphic === 'GraphicQuarter' ? this.totalByBarQ[param.dataIndex] : this.totalByBar[param.dataIndex]
+
                 let sum = 0;
                 series.forEach(item => {
                     sum += item.data[param.dataIndex];
@@ -571,6 +573,14 @@ var graphicMixins = {
         formatAnioQuater(anioQuater) {
             let quater = anioQuater.split('Q');
             return quater[0] == 'None' ? '0000-Qn' : quater[0] + '-Q' + quater[1];
+        },
+        showGraphicMetaSexo(option) {
+
+            if (option == 1) {
+                this.styleGraphic.position='relative'
+            } else {
+                 this.styleGraphic.position='fixed'
+            }
         }
     }
 }

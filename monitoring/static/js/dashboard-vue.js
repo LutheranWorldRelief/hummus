@@ -8,7 +8,7 @@ var app = new Vue({
             rubros_todos: true,
             desde: '',
             hasta: '',
-            paises: [],
+            paises: []
         },
         quantity_projects: 0,
         quantity_subprojects: 0,
@@ -16,7 +16,11 @@ var app = new Vue({
         /** Var gráfico participantes por año fiscal*/
         anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [],metaPoranio:[],
         /** Var gráfico participantes quarter */
-        aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: []
+        aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
+        show:true, styleGraphic:{
+            position:'',
+            height:'500px'
+        }
     },
     created() {
         this.loadDataForDashboard();
