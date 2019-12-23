@@ -9,7 +9,7 @@
                 </div>
                 <div class="row stats-container">
                     {% verbatim %}
-                    <div v-if="formInputs.proyecto === ''" class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
+                    <div v-if="!hide_project" class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
                         {% endverbatim %}
                         <div class="stat-icon text-primary">
                             <i class="fa fa-folder-open"></i>
