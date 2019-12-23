@@ -33,6 +33,24 @@
                                     </vue-multiselect>
                                     {% endverbatim %}
                                 </div>
+                                {% verbatim %}
+                                <div v-if="hide_project" class="col-lg-12 col-md-12 col-sm-12">
+                                    {% endverbatim %}
+                                    <label for="">{% trans "Subproject" %}:</label>
+                                    {% verbatim %}
+                                    <vue-multiselect v-model="formInputs.subproject" {% endverbatim %}
+                                                     deselect-label="{% trans "Press to remove value selected" %}"
+                                                     {% verbatim %} class="mt-1"
+                                                     track-by="value" label="name" {% endverbatim %}
+                                                     placeholder="{% trans 'Select a Project' %}"
+                                                     {% verbatim %} :options="list_subprojects" :searchable="true"
+                                                     return="value">
+                                        <template slot="singleLabel" slot-scope="{ option }">
+                                            <strong>{{ option.name }}</strong>
+                                        </template>
+                                    </vue-multiselect>
+                                    {% endverbatim %}
+                                </div>
                                 <div class="col-lg-8 col-md-18 col-sm-12">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -40,16 +58,44 @@
                                             {% verbatim %}
                                             <vue-multiselect v-model="formInputs.country" {% endverbatim %}
                                                              deselect-label="{% trans "Press to remove value selected" %}"
-                                                             {% verbatim %} class="mt-1"
+                                                             {% verbatim %}
                                                              track-by="value" label="name" {% endverbatim %}
                                                              placeholder="{% trans 'Select a Country' %}"
                                                              {% verbatim %} :options="list_countries" :searchable="true"
-                                                             :allow-empty="false" return="value">
+                                                             return="value">
                                                 <template slot="singleLabel" slot-scope="{ option }">
                                                     <strong>{{ option.name }}</strong>
                                                 </template>
                                             </vue-multiselect>
                                             {% endverbatim %}
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <label for="">{% trans "LWR Regions" %}:</label>
+                                            {% verbatim %}
+                                            <vue-multiselect v-model="formInputs.lwrregion" {% endverbatim %}
+                                                             deselect-label="{% trans "Press to remove value selected" %}"
+                                                             {% verbatim %}
+                                                             track-by="value" label="name" {% endverbatim %}
+                                                             placeholder=""
+                                                             {% verbatim %} :options="list_lwrregions"
+                                                             :searchable="true"
+                                                             return="value">
+                                                <template slot="singleLabel" slot-scope="{ option }">
+                                                    <strong>{{ option.name }}</strong>
+                                                </template>
+                                            </vue-multiselect>
+                                            {% endverbatim %}
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <label for="quarter">{% trans "Quarter" %}:</label>
+                                            {% verbatim %}
+                                            <select v-model="quarter" class="form-control" name="quarter" id="quarter">
+                                                {% endverbatim %}
+                                                {% for number in '1,2,3,4'|make_list %}
+                                                    <option value="{{ number }}">{% trans Quarter %} {{ number }}</option>
+                                                {% endfor %}
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -115,6 +161,7 @@
             UrlSubProjects: "{% url 'monitoring:api-subproject' %}",
             UrlSubProjectsProject: "{% url 'monitoring:api-subprojects-project' project_id='1' %}",
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
+            UrlLWRregions: "{% url 'monitoring:api-lwrregions' %}",
             UrlDatosProyecto: "{% url 'monitoring:graphic-proyecto' %}",
             UrlDatosCantidadPaises: "{% url 'monitoring:cantidad-paises' %}",
             UrlDatosCantidadProyectos: "{% url 'monitoring:cantidad-proyectos' %}",

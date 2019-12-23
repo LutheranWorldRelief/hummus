@@ -5,12 +5,15 @@ var app = new Vue({
     data: {
         formInputs: {
             project: {},
+            subproject: {},
             country: {},
             lwrregion: '',
             year: '',
+            quarter: '',
         },
         requestParameters: {
             project_id: '',
+            subproject_id: '',
             paises_todos: true,
             rubros_todos: true,
             from_date: '',
@@ -18,10 +21,13 @@ var app = new Vue({
             country_id: [],
             lwrregion_id: '',
             year: '',
+            quarter: '',
         },
         hide_project: false,
         list_projects: [],
         list_countries: [],
+        list_lwrregions: [],
+        list_subprojects: [],
         quantity_projects: 0,
         quantity_subprojects: 0,
         quantity_participants: 0,
@@ -53,6 +59,28 @@ var app = new Vue({
                 }
             });
 
+        $.get(UrlsAcciones.UrlLWRregions)
+            .then(data => {
+                for (const key in data) {
+                    this.list_lwrregions.push({
+                        name: data[key],
+                        value: key
+                    });
+                }
+                for (const key in data) {
+                    this.list_lwrregions.push({
+                        name: data[key],
+                        value: key
+                    });
+                }
+                for (const key in data) {
+                    this.list_lwrregions.push({
+                        name: data[key],
+                        value: key
+                    });
+                }
+            });
+
         this.loadDataForDashboard();
     },
     methods: {
@@ -61,6 +89,8 @@ var app = new Vue({
             if (this.formInputs.project['value']) {
                 this.hide_project = true;
                 this.requestParameters.project_id = this.formInputs.project['value'];
+            } else {
+                this.hide_project = false;
             }
 
             this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
@@ -76,11 +106,18 @@ var app = new Vue({
 
             if (this.requestParameters.project_id !== '') {
                 //new_url content; example = http://localhost/api/subproject/project/1/
-                let new_url = `api/subprojects/project/${this.requestParameters.project_id}/`;
+                let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
 
                 $.get(new_url)
                     .then(response => {
-                        this.quantity_subprojects = response.object_list.length;
+                        let data = response.object_list;
+                        this.quantity_subprojects = data.length;
+                        for (const subproject of data) {
+                            this.list_subprojects.push({
+                                name: subproject['name'],
+                                value: subproject['id']
+                            })
+                        }
                     });
 
 
