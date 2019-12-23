@@ -5,9 +5,6 @@ Vue.component('combo-select2', {
         return {
         };
     },
-    methods:{
-
-    },
     mounted: function () {
         // noinspection ES6ConvertVarToLetConst
         var self = this;
