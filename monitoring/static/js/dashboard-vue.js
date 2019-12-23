@@ -185,6 +185,7 @@ var app = new Vue({
                 }));
 
             this.graficoParticipantesEdad();
+            this.graficoParticipantesEduacion();
         },
         percentage(dividend, divider) {
             if (dividend <= 0)
