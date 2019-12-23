@@ -84,7 +84,8 @@
             UrlDatosRubros: "{% url 'monitoring:graphic-rubros' %}",
             UrlDatosGraficoOrganizaciones: "{% url 'monitoring:grafico-organizaciones' %}",
             UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
-            UrlDatosGraficoAnioFiscal: "{% url 'monitoring:grafico-anio-fiscal' %}",
+            {% comment %}UrlDatosGraficoAnioFiscal: "{% url 'monitoring:grafico-anio-fiscal' %}",{% endcomment %}
+            UrlDatosGraficosParticipantes: "/api/participants/",
             UrlDatosGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlDatosGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
             UrlDatosGraficoTipoParticipante: "{% url 'monitoring:grafico-tipo-participante' %}",
@@ -99,5 +100,7 @@
 
     <script src="{% static 'vue/dist/vue.min.js' %}"></script>
     <script src="{% static 'echarts/dist/echarts.min.js' %}"></script>
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script src="{% static 'js/mixins/graphic.js' %}"></script>
     <script src="{% static 'js/dashboard-vue.js' %}"></script>
 {% endblock %}

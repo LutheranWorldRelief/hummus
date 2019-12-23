@@ -4,33 +4,88 @@
     <h1 class="title"> {% trans 'Beneficiary Information' %} </h1>
     <p class="title-description"> {% trans 'Graphics' %} </p>
 </div>
-<div class="row sameheight-container">
+<div class="row sameheight-container-">
+    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
+        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+            <div class="card-body">
+                <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
             <div class="card-body">
-                <div id="TrimestralGraph"></div>
+                <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>
     <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
-            <div class="card-body">
-                <div id="FiscalYearGraph"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
             <div class="card-body">
                 <div id="SexAgeGraph"></div>
             </div>
         </div>
     </div>
     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
             <div class="card-body">
                 <div id="EducationGraph"></div>
             </div>
         </div>
     </div>
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
+        {% comment %}<div class="card sameheight-item items" data-exclude="xs,sm,lg">
+            <div class="card-body">
+                <div id="MetaParticipantes" style="height: 500px; width: 100%;"></div>
+            </div>
+        </div>{% endcomment %}
+        <div class="card" data-exclude="xs" id="participants-Information">
+            <div class="card-header card-header-sm bordered">
+                <ul role="tablist" class="nav nav-tabs pull-left">
+                    <li class="nav-item" @click="showGraphicMetaSexo(0)">
+                        <a class="nav-link active" href="#metaGeneral" role="tab"
+                           data-toggle="tab">{% trans 'Meta general' %}</a>
+                    </li>
+                    <li class="nav-item"  @click="showGraphicMetaSexo(1)">
+                        <a class="nav-link" href="#metaSexo" role="tab"
+                           data-toggle="tab">{% trans 'Meta por sexo' %}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-block">
+                <div class="tab-content">
+                    <div role="tabpanel" class="container-fluid active tab-pane fade show" id="metaGeneral">
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="MetaParticipantes" style="height:500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="container-fluid fade" id="metaSexo">
+                        <div class="row">
+                            <div class="col-12">
+                                {% verbatim %}
+                                <div id="MetaParticipantesPorSexo" :style="styleGraphic"></div>
+                                {% endverbatim %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% comment %} <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
+        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+            <div class="card-body">
+                <div id="MetaParticipantes2" style="height: 500px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>{% endcomment %}
+
+    {% comment %} GROUP ==============================={% endcomment %}
+
+
 </div>
