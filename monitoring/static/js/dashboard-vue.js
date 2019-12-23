@@ -38,12 +38,12 @@ var app = new Vue({
             width: '0px'
         },
         /** Var gráfico participantes por año fiscal*/
-        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [],metaPoranio:[],
+        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], metaPoranio: [],
         /** Var gráfico participantes quarter */
         aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
-        show:true, styleGraphic:{
-            position:'',
-            height:'500px'
+        show: true, styleGraphic: {
+            position: '',
+            height: '500px'
         }
     },
     created() {
@@ -142,7 +142,7 @@ var app = new Vue({
                     });
             }
 
-                $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.formInputs)
+            $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.formInputs)
                 .then(((response) => {
                     let data = response;
                     this.tatals = data['totals'];
@@ -181,8 +181,9 @@ var app = new Vue({
                         this.graficoMetas();
                         this.graficoMetasLinea();
                     });
-
                 }));
+
+            this.graficoParticipantesEdad();
         },
         percentage(dividend, divider) {
             if (dividend <= 0)
