@@ -2,6 +2,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
 
 var app = new Vue({
     el: '#app',
+    mixins: [graphicMixins],
     data: {
         formInputs: {
             project: {},
@@ -35,6 +36,14 @@ var app = new Vue({
         goal_percentage: 0,
         width_progress_bar: {
             width: '0px'
+        },
+        /** Var gráfico participantes por año fiscal*/
+        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [],metaPoranio:[],
+        /** Var gráfico participantes quarter */
+        aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
+        show:true, styleGraphic:{
+            position:'',
+            height:'500px'
         }
     },
     created() {
@@ -86,6 +95,7 @@ var app = new Vue({
     methods: {
         loadDataForDashboard() {
 
+
             if (this.formInputs.project['value']) {
                 this.hide_project = true;
                 this.requestParameters.project_id = this.formInputs.project['value'];
@@ -131,6 +141,48 @@ var app = new Vue({
                         this.quantity_subprojects = response.object_list.length;
                     });
             }
+
+                $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.formInputs)
+                .then(((response) => {
+                    let data = response;
+                    this.tatals = data['totals'];
+                    delete data.totals;
+
+                    setZeroIsUndefined = (data) => {
+                        return data === undefined ? 0 : data
+                    };
+                    /** Recorrer participantes por anio fisca */
+                    for (const participants in data['year']) {
+                        this.anios.push(participants);
+                        this.totalByBar.push(setZeroIsUndefined(data['year'][participants].T))
+                        this.mujeres.push(setZeroIsUndefined(data['year'][participants].F));
+                        this.hombres.push(setZeroIsUndefined(data['year'][participants].M));
+                        this.defauldSerie.push(0);
+                    }
+
+                    /** Recorrer participantes por trimestre (Quarter) */
+                    const orderedQ = {};
+
+                    Object.keys(data['quarters']).sort().forEach(function (key) {
+                        orderedQ[key] = data['quarters'][key];
+                    });
+
+                    for (const participants in orderedQ) {
+                        this.aniosQ.push(this.formatAnioQuater(participants));
+
+                        this.totalByBarQ.push(setZeroIsUndefined(orderedQ[participants].T))
+                        this.mujeresQ.push(setZeroIsUndefined(orderedQ[participants].F));
+                        this.hombresQ.push(setZeroIsUndefined(orderedQ[participants].M));
+                        this.defauldSerieQ.push(0);
+                    }
+
+                    this.graphicParticipats('').then(() => {
+                        this.graphicParticipats('GraphicQuarter');
+                        this.graficoMetas();
+                        this.graficoMetasLinea();
+                    });
+
+                }));
         },
         percentage(dividend, divider) {
             if (dividend <= 0)
