@@ -61,7 +61,9 @@
                                     <i class="fa fa-flag-checkered text-dark"></i>
                                 </div>
                                 <div class="stat text-dark">
-                                    <div class="value"> 5407</div>
+                                    {% verbatim %}
+                                    <div class="value"> {{ goal_participants }}</div>
+                                    {% endverbatim %}
                                     <div class="name"> {% trans 'Participants Goal' %}</div>
                                 </div>
                             </div>
@@ -72,10 +74,14 @@
                             <i class="fa fa-star-o"></i>
                         </div>
                         <div class="stat text-dark">
-                            <div class="value"> 100 {% trans '% of goal completed' %}</div>
+                            <div class="value"> {% verbatim %} {{ goal_percentage }} {% endverbatim
+                                %} {% trans '% of goal completed' %}
+                            </div>
                         </div>
                         <div class="progress stat-progress">
-                            <div class="progress-bar" style="width: 100%;"></div>
+                            {% verbatim %}
+                            <div class="progress-bar" v-bind:style="width_progress_bar"></div>
+                            {% endverbatim %}
                         </div>
                     </div>
                 </div>

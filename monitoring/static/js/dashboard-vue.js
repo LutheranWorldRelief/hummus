@@ -25,6 +25,11 @@ var app = new Vue({
         quantity_projects: 0,
         quantity_subprojects: 0,
         quantity_participants: 0,
+        goal_participants: 0,
+        goal_percentage: 0,
+        width_progress_bar: {
+            width: '0px'
+        }
     },
     created() {
         $.get(UrlsAcciones.UrlProjects)
@@ -64,10 +69,12 @@ var app = new Vue({
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
                 .then(((response) => {
                     this.quantity_participants = response.participantes;
+                    this.goal_participants = 1000 + response.participantes;
+                    this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
+                    this.width_progress_bar.width = this.goal_percentage + '%';
                 }));
 
             if (this.requestParameters.project_id !== '') {
-                console.log(this.requestParameters.project_id);
                 //new_url content; example = http://localhost/api/subproject/project/1/
                 let new_url = `api/subprojects/project/${this.requestParameters.project_id}/`;
 
@@ -75,6 +82,12 @@ var app = new Vue({
                     .then(response => {
                         this.quantity_subprojects = response.object_list.length;
                     });
+
+
+                $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
+                    .then(response => {
+
+                    })
             } else {
                 $.get(UrlsAcciones.UrlSubProjects)
                     .then(response => {
@@ -82,6 +95,18 @@ var app = new Vue({
                     });
             }
         },
+        percentage(dividend, divider) {
+            if (dividend <= 0)
+                return 0;
+
+            if (divider <= 0)
+                return 0;
+
+            let percentage = (dividend / divider) * 100;
+
+            return Math.round(percentage)
+
+        }
     }
 
 });
