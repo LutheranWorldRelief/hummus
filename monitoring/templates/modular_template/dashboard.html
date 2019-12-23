@@ -84,7 +84,8 @@
             UrlDatosRubros: "{% url 'monitoring:graphic-rubros' %}",
             UrlDatosGraficoOrganizaciones: "{% url 'monitoring:grafico-organizaciones' %}",
             UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
-            UrlDatosGraficoAnioFiscal: "{% url 'monitoring:grafico-anio-fiscal' %}",
+            {% comment %}UrlDatosGraficoAnioFiscal: "{% url 'monitoring:grafico-anio-fiscal' %}",{% endcomment %}
+            UrlDatosGraficosParticipantes: "/api/participants/",
             UrlDatosGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlDatosGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
             UrlDatosGraficoTipoParticipante: "{% url 'monitoring:grafico-tipo-participante' %}",

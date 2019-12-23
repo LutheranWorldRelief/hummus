@@ -1,5 +1,6 @@
 var app = new Vue({
     el: '#app',
+    mixins: [graphicMixins],
     data: {
         formInputs: {
             proyecto: '',
@@ -13,7 +14,7 @@ var app = new Vue({
         quantity_subprojects: 0,
         quantity_participants: 0,
         /** Var gráfico participantes por año fiscal*/
-        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [],
+        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [],metaPoranio:[],
         /** Var gráfico participantes quarter */
         aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: []
     },
@@ -38,13 +39,11 @@ var app = new Vue({
                     this.quantity_participants = response.participantes;
                 }));
 
-                $.post(UrlsAcciones.UrlDatosGraficoAnioFiscal, this.formInputs)
+                $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.formInputs)
                 .then(((response) => {
-
-                    let data = response.fiscal;
+                    let data = response;
                     this.tatals = data['totals'];
                     delete data.totals;
-
 
                     setZeroIsUndefined = (data) => {
                         return data === undefined ? 0 : data
@@ -66,16 +65,18 @@ var app = new Vue({
                     });
 
                     for (const participants in orderedQ) {
-                        this.aniosQ.push(participants);
+                        this.aniosQ.push(this.formatAnioQuater(participants));
 
                         this.totalByBarQ.push(setZeroIsUndefined(orderedQ[participants].T))
                         this.mujeresQ.push(setZeroIsUndefined(orderedQ[participants].F));
                         this.hombresQ.push(setZeroIsUndefined(orderedQ[participants].M));
                         this.defauldSerieQ.push(0);
                     }
-                    console.log(this.anios);
+
                     this.graphicParticipats('').then(() => {
                         this.graphicParticipats('GraphicQuarter');
+                        this.graficoMetas();
+                        this.graficoMetasLinea();
                     });
 
                 }));
