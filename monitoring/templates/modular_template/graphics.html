@@ -22,7 +22,7 @@
     <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
         <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
             <div class="card-body">
-                <div id="SexAgeGraph"></div>
+                <div id="AgeGraph" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>
@@ -34,11 +34,6 @@
         </div>
     </div>
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
-        {% comment %}<div class="card sameheight-item items" data-exclude="xs,sm,lg">
-            <div class="card-body">
-                <div id="MetaParticipantes" style="height: 500px; width: 100%;"></div>
-            </div>
-        </div>{% endcomment %}
         <div class="card" data-exclude="xs" id="participants-Information">
             <div class="card-header card-header-sm bordered">
                 <ul role="tablist" class="nav nav-tabs pull-left">
@@ -46,7 +41,7 @@
                         <a class="nav-link active" href="#metaGeneral" role="tab"
                            data-toggle="tab">{% trans 'Meta general' %}</a>
                     </li>
-                    <li class="nav-item"  @click="showGraphicMetaSexo(1)">
+                    <li class="nav-item" @click="showGraphicMetaSexo(1)">
                         <a class="nav-link" href="#metaSexo" role="tab"
                            data-toggle="tab">{% trans 'Meta por sexo' %}</a>
                     </li>
@@ -75,17 +70,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-    {% comment %} <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
-            <div class="card-body">
-                <div id="MetaParticipantes2" style="height: 500px; width: 100%;"></div>
-            </div>
-        </div>
-    </div>{% endcomment %}
-
-    {% comment %} GROUP ==============================={% endcomment %}
-
-
 </div>

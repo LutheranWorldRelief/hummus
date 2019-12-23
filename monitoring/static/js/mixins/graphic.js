@@ -530,7 +530,169 @@ var graphicMixins = {
                 ]
             }
             myChart.setOption(option);
-            this.styleGraphic.position='fixed';
+            this.styleGraphic.position = 'fixed';
+        },
+        graficoParticipantesEdad() {
+            $.post(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
+                .then(response => {
+                    let data = response.edad;
+                    let total = [], ageRange = [];
+                    let participants = {
+                        mParticipants: [],
+                        fParticipants: []
+                    };
+
+                    data.forEach((data) => {
+                        total.push(0);
+
+                        ageRange.push(data.type);
+                        let m = data.f;
+                        let f = data.m;
+
+                        if (m !== undefined) {
+                            participants.mParticipants.push(m);
+                        } else {
+                            participants.mParticipants.push(0);
+                        }
+
+                        if (f !== undefined) {
+                            participants.fParticipants.push(f);
+                        } else {
+                            participants.fParticipants.push(0);
+                        }
+                    });
+
+                    this.graphicAge(total, ageRange, participants);
+                });
+
+        },
+        graphicAge(total, ageRange, participants) {
+            const myChart = echarts.init(document.getElementById('AgeGraph'));
+
+            myChart.title = 'PARTICIPANTS BY AGE';
+
+            const colors = {
+                men: '#b2bb1e',
+                women: '#00aaa7'
+            };
+
+            const series = [
+                {
+                    name: 'Men',
+                    itemStyle: {
+                        color: colors.women
+                    },
+                    data: participants.fParticipants
+                },
+                {
+                    name: 'Women',
+                    itemStyle: {
+                        color: colors.men
+                    },
+                    data: participants.mParticipants
+                },
+                {
+                    name: 'total',
+                    data: total
+                }
+
+            ];
+
+            var genFormatter = (series, gender = null) => {
+                return (param) => {
+                    let sum = 0;
+                    series.forEach(item => {
+                        if (gender === null) {
+                            sum += item.data[param.dataIndex];
+                        } else if (item.name === 'Men' && gender === 'Men') {
+                            sum += item.data[param.dataIndex];
+                        } else if (item.name === 'Women' && gender === 'Women') {
+                            sum += item.data[param.dataIndex];
+                        } else if (gender === '') {
+                            sum = 0;
+                        }
+                    });
+                    return sum
+                }
+            };
+
+            function isLastSeries(index) {
+                return index === series.length - 1
+            }
+
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow' //'line' | 'shadow'
+                    }, formatter: function (params) {
+                        let axisValue = '<p>' + params[0].axisValue + '</p>';
+                        params.forEach(item => {
+                            if (item.seriesName !== 'total') {
+                                axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                            }
+                        });
+                        return axisValue;
+                    },
+                },
+                legend: {
+                    data: ['Men', 'Women']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ageRange
+                },
+                series: series.map((item, index) => Object.assign(item, {
+                    type: 'bar',
+                    stack: true,
+                    label: {
+                        show: true,
+                        formatter: isLastSeries(index) ? genFormatter(series) : null,
+                        color: 'black',
+                        position: isLastSeries(index) ? 'top' : 'inside'
+                    },
+                }))
+
+            };
+
+            myChart.setOption(option);
+
+            myChart.on('legendselectchanged', function (params) {
+
+                let gender = null;
+                let selected = params.selected;
+                if (selected.Men && selected.Women) {
+                    gender = null;
+                } else if (!selected.Men && selected.Women) {
+                    gender = 'Women';
+                } else if (selected.Men && !selected.Women) {
+                    gender = 'Men';
+                } else {
+                    gender = '';
+                }
+
+                option.series = series.map((item, index) => Object.assign(item, {
+                    type: 'bar',
+                    stack: true,
+                    label: {
+                        show: true,
+                        formatter: isLastSeries(index) ? genFormatter(series, gender) : null,
+                        color: 'black',
+                        position: isLastSeries(index) ? 'top' : 'inside'
+                    },
+                }));
+
+                myChart.setOption(option);
+            })
         },
         getGraphicZoom() {
             return [{
@@ -577,9 +739,9 @@ var graphicMixins = {
         showGraphicMetaSexo(option) {
 
             if (option == 1) {
-                this.styleGraphic.position='relative'
+                this.styleGraphic.position = 'relative'
             } else {
-                 this.styleGraphic.position='fixed'
+                this.styleGraphic.position = 'fixed'
             }
         }
     }
