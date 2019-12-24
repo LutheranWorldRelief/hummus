@@ -453,6 +453,25 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         return context
 
 
+class ProjectAPIListView(JSONResponseMixin, ListView):
+    """
+    List of Subproojects using JSON (limit by Project if needed)
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        json_context = {}
+        json_context['object_list'] = context['object_list']
+        return self.render_to_json_response(json_context, safe=False, **response_kwargs)
+
+    def get_queryset(self):
+        queryset = Project.objects.all()
+        if 'project_id' in self.kwargs:
+            queryset = queryset.filter(id=self.kwargs['project_id'])
+        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+        return list(queryset.values())
+
+
 class SubProjectAPIListView(JSONResponseMixin, ListView):
     """
     List of Subproojects using JSON (limit by Project if needed)
@@ -465,6 +484,8 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
 
     def get_queryset(self):
         queryset = SubProject.objects.all()
+        if 'subproject_id' in self.kwargs:
+            queryset = queryset.filter(id=self.kwargs['subproject_id'])
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(project_id=self.kwargs['project_id'])
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):

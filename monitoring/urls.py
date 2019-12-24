@@ -65,12 +65,12 @@ urlpatterns = [
     path('export/participants', views.ProjectContactTableView.as_view(), name='export'),
     path('export/template-clean/', views.DownloadTemplate.as_view(), name='template-clean'),
 
-    # dupes
+    # API dupes
     path('dupes/doc/', views.ValidateDupesDoc.as_view(), name='dupes-doc'),
     path('dupes/name/', views.ValidateDupesName.as_view(), name='dupes-name'),
     path('dupes/name-fuzzy/', views.ValidateDupesNameFuzzy.as_view(), name='dupes-name-fuzzy'),
 
-    # APIs misc
+    # API dupes - merge
     path('api/fusion/', jsonviews.ContactFusion.as_view(), ),
     path('api/contact/<int:id>/', jsonviews.ContactImportDupes.as_view(), ),
     path('api/name-values/', jsonviews.ContactNameValues.as_view(), ),
@@ -83,18 +83,26 @@ urlpatterns = [
     path('api/doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
     path('api/name/<str:name>/', jsonviews.ContactNameDupesDetails.as_view(), ),
     path('api/ids/<int:id1>/<int:id2>/', jsonviews.ContactIdsDupesDetails.as_view(), ),
+
+    # Participants counter API
+    path('api/participants/', jsonviews.ProjectContactCounter.as_view()),
+
+    # Projects API
+    path('api/years/', jsonviews.YearsAPI.as_view()),
+    path('api/projects/', jsonviews.ProjectAPIListView.as_view()),
+    path('api/projects/<int:project_id>/', jsonviews.ProjectAPIListView.as_view()),
+
+    # subprojects API
+    path('api/subprojects/', jsonviews.SubProjectAPIListView.as_view()),
+    path('api/subprojects/<int:subproject_id>/', jsonviews.SubProjectAPIListView.as_view()),
+    path('api/subprojects/project/<int:project_id>/', jsonviews.SubProjectAPIListView.as_view()),
+
+    # APIs dumping lists of data
     path('api/organizations/', jsonviews.JsonIdName.as_view(
         queryset=models.Organization.objects.all())),
-    path('api/countries/',
-         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all())),
-    path('api/projects/',
-         jsonviews.JsonIdName.as_view(queryset=models.Project.objects.all())),
-    path('api/years/', jsonviews.YearsAPI.as_view()),
-    path('api/participants/', jsonviews.ProjectContactCounter.as_view()),
-    path('api/subprojects/', jsonviews.SubProjectAPIListView.as_view()),
-    path('api/subprojects/project/<int:project_id>/', jsonviews.SubProjectAPIListView.as_view()),
     path('api/types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
     path('api/education/',
-         jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), )
-
+         jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), ),
+    path('api/countries/',
+         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all()), ),
 ]
