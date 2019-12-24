@@ -45,7 +45,7 @@ var graphicMixins = {
                 }
 
                 option = {
-                    color: ['#006699', '#e5323e'],
+                    color: [array_colors_lwr[0], array_colors_lwr[1]],
                     backgroundColor: '#f7f7ff',
                     tooltip: {
                         trigger: 'axis',
@@ -61,7 +61,7 @@ var graphicMixins = {
                         },
                     },
                     legend: {
-                        data: ['Men', 'Woman'],
+                        data: [gettext('Men'), gettext('Woman')],
                         x: '50%',
                         top: '6%',
                         align: 'right',
@@ -235,8 +235,7 @@ var graphicMixins = {
                     textStyle: {
                         color: '#4f5f6f',
                     },
-
-                    data: ['Actual', 'Meta'],
+                    data: [gettext('Actual'), gettext('Meta')],
                 },
                 xAxis: [{
                     type: 'category',
@@ -405,7 +404,7 @@ var graphicMixins = {
                     textStyle: {
                         color: '#90979c',
                     },
-                    "data": ['Men', 'Woman', 'Meta']
+                    "data": [gettext('Men'), gettext('Woman'), gettext('Meta')]
                 },
                 "calculable": true,
                 "xAxis": [{
@@ -460,12 +459,11 @@ var graphicMixins = {
                 "series": [{
                     "name": "Men",
                     "type": "bar",
-                    "stack": "总量",
                     "barMaxWidth": 35,
                     "barGap": "20%",
                     "itemStyle": {
                         "normal": {
-                            "color": "rgba(0,102,153,1)",
+                            "color": array_colors_lwr[1],
                             "label": {
                                 "show": true,
                                 "position": "inside",
@@ -483,10 +481,9 @@ var graphicMixins = {
                     {
                         "name": "Woman",
                         "type": "bar",
-                        "stack": "总量",
                         "itemStyle": {
                             "normal": {
-                                "color": "rgba(229,50,62,1)",
+                                "color": array_colors_lwr[0],
                                 "barBorderRadius": 0,
                                 "label": {
                                     "show": true,
@@ -502,7 +499,7 @@ var graphicMixins = {
                         },
                         "data": this.mujeres
                     }, {
-                        "name": "Meta",
+                        "name": gettext('Meta'),
                         "type": "line",
                         "stack": true,
                         symbolSize: 10,
@@ -510,7 +507,7 @@ var graphicMixins = {
                         symbol: 'circle',
                         "itemStyle": {
                             "normal": {
-                                "color": "rgba(0,191,183,1)",
+                                "color": array_colors_lwr[2],
                                 "barBorderRadius": 0,
                                 "label": {
                                     "show": true,
@@ -569,25 +566,23 @@ var graphicMixins = {
         graphicAge(total, ageRange, participants) {
             const myChart = echarts.init(document.getElementById('AgeGraph'));
 
-            myChart.title = 'PARTICIPANTS BY AGE';
-
             const colors = {
-                men: '#b2bb1e',
-                women: '#00aaa7'
+                men: array_colors_lwr[1],
+                women: array_colors_lwr[0]
             };
 
             const series = [
                 {
                     name: 'Men',
                     itemStyle: {
-                        color: colors.women
+                        color: colors.men
                     },
                     data: participants.fParticipants
                 },
                 {
                     name: 'Women',
                     itemStyle: {
-                        color: colors.men
+                        color: colors.women
                     },
                     data: participants.mParticipants
                 },
@@ -621,6 +616,15 @@ var graphicMixins = {
             }
 
             var option = {
+                title: {
+                    text: gettext('PARTICIPANTS BY AGE'),
+                    x: 'center',
+                    top: "10",
+                    textStyle: {
+                        color: '#b2bb1e',
+                        fontSize: 16
+                    }
+                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -636,7 +640,8 @@ var graphicMixins = {
                     },
                 },
                 legend: {
-                    data: ['Men', 'Women']
+                    data: [gettext('Men'), gettext('Women')],
+                    top: '35',
                 },
                 grid: {
                     left: '3%',
@@ -732,25 +737,23 @@ var graphicMixins = {
         graphicEducacion(total, ageRange, participants) {
             const myChart = echarts.init(document.getElementById('EducationGraph'));
 
-            myChart.title = gettext('PARTICIPANTS BY AGE');
-
             const colors = {
-                men: '#b2bb1e',
-                women: '#00aaa7'
+                men: array_colors_lwr[1],
+                women: array_colors_lwr[0]
             };
 
             const series = [
                 {
                     name: 'Men',
                     itemStyle: {
-                        color: colors.women
+                        color: colors.men
                     },
                     data: participants.fParticipants
                 },
                 {
                     name: 'Women',
                     itemStyle: {
-                        color: colors.men
+                        color: colors.women
                     },
                     data: participants.mParticipants
                 },
@@ -784,6 +787,15 @@ var graphicMixins = {
             }
 
             var option = {
+                title: {
+                    text: gettext('PARTICIPANTS BY AGE'),
+                    x: 'center',
+                    top: "10",
+                    textStyle: {
+                        color: '#b2bb1e',
+                        fontSize: 16
+                    }
+                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -799,7 +811,8 @@ var graphicMixins = {
                     },
                 },
                 legend: {
-                    data: ['Men', 'Women']
+                    data: ['Men', 'Women'],
+                    top: "30",
                 },
                 grid: {
                     left: '3%',
@@ -894,7 +907,7 @@ var graphicMixins = {
                             x: 'center',
                             top: "10",
                             textStyle: {
-                                color: data_chart.color_name_chart,
+                                color: '#b2bb1e',
                                 fontSize: data_project.font_size
                             }
                         },
@@ -1043,4 +1056,4 @@ var graphicMixins = {
             }
         }
     }
-}
+};
