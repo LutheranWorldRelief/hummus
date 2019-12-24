@@ -528,7 +528,7 @@ var graphicMixins = {
                         "data": this.metaPoranio
                     },
                 ]
-            }
+            };
             myChart.setOption(option);
             this.styleGraphic.position = 'fixed';
         },
@@ -856,6 +856,141 @@ var graphicMixins = {
 
                 myChart.setOption(option);
             })
+        },
+        graphicGoalProject() {
+            $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
+                .then(response => {
+                    const chart_goal_project = echarts.init(document.getElementById('ProjectGoalsGraph'));
+                    let data_project = response.proyectos_metas;
+                    let data_chart = {
+                        name_chart: gettext('Total participants achieved and goals, by sex'),
+                        color_name_chart: array_colors_lwr[1],
+                        name_project: data_project['categorias'][0],
+                        legends: [gettext('Participants'), gettext('Goals')],
+                        legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
+                        goals_data: [
+                            data_project['series'][0]['data'][0],// goal men
+                            data_project['series'][2]['data'][0],// goal women
+                        ],
+                        goals_color: [
+                            data_project['series'][0]['color'],
+                            data_project['series'][2]['color'],
+                        ],
+                        scope_data: [
+                            data_project['data'][1].m,// scope men
+                            data_project['data'][1].f,// scope women
+                        ],
+                        data_colors: [
+                            data_project['series'][1]['color'],
+                            data_project['series'][3]['color'],
+                        ],
+                        font_size: 16,
+                    };
+
+
+                    let option = {
+                        title: {
+                            text: data_chart.name_chart,
+                            x: 'center',
+                            top: "10",
+                            textStyle: {
+                                color: data_chart.color_name_chart,
+                                fontSize: data_project.font_size
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: data_chart.legends,
+                            top: '40',
+                            icon: 'roundRect',
+                            center: 'right',
+                            color: data_chart.legends_colors,
+                        },
+                        xAxis: [{
+                            show: true,
+                            position: 'bottom',
+                            name: gettext('Persons'),
+                            nameLocation: 'middle',
+                            nameGap: 30,
+                        }],
+                        yAxis: [{
+                            show: true,
+                            position: 'botton',
+                            name: data_chart.name_project,
+                            nameLocation: 'middle',
+                            axisTick: 'none',
+                            axisLabel: {
+                                textStyle: {
+                                    color: '#000',
+                                    fontSize: data_project.font_size,
+                                },
+                            },
+                            data: ['', '']
+                        }, {
+                            show: false,
+                            axisTick: 'none',
+                            axisLine: 'none',
+                            axisLabel: {
+                                textStyle: {
+                                    color: '#000',
+                                    fontSize: data_project.font_size,
+                                },
+                                margin: 30
+                            },
+                            data: [gettext('Men'), gettext('Women')]
+                        }, {
+                            data: []
+                        }],
+                        series: [{
+                            name: data_chart.legends[0],
+                            type: 'bar',
+                            data: data_chart.scope_data,
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'right',
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: data_project.font_size,
+                                    }
+                                }
+                            },
+                            barWidth: 30,
+                            itemStyle: {
+                                normal: {
+                                    color: function (params) {
+                                        var num = data_chart.data_colors.length;
+                                        return data_chart.data_colors[params.dataIndex % num]
+                                    },
+                                }
+                            },
+                            z: 2
+                        }, {
+                            name: data_chart.legends[1],
+                            type: 'bar',
+                            yAxisIndex: 1,
+                            barGap: '-100%',
+                            data: data_chart.goals_data,
+                            barWidth: 60,
+                            itemStyle: {
+                                normal: {
+                                    color: function (params) {
+                                        var num = data_chart.goals_color.length;
+                                        return data_chart.goals_color[params.dataIndex % num]
+                                    },
+                                }
+                            },
+                            z: 1
+                        }]
+                    };
+
+                    chart_goal_project.setOption(option);
+                });
         },
         getGraphicZoom() {
             return [{
