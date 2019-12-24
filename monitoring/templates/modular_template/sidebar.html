@@ -3,9 +3,11 @@
     <div class="sidebar-container">
         <div class="sidebar-header">
             <div class="brand">
-                <div class="logo" style="background-image: url({% static 'img/logo_user.png' %});">
-                </div>
-                LWR
+                <a href="{% url 'monitoring:dashboard' %}" class="text-white" style="text-decoration: none !important;">
+                    <div class="logo" style="background-image: url({% static 'img/logo_user.png' %});">
+                    </div>
+                    LWR
+                </a>
             </div>
         </div>
         <nav class="menu">
