@@ -45,7 +45,7 @@ var graphicMixins = {
                 }
 
                 option = {
-                    color: [array_colors_lwr[0], array_colors_lwr[1]],
+                    color: [array_colors_lwr[1], array_colors_lwr[0]],
                     backgroundColor: '#f7f7ff',
                     tooltip: {
                         trigger: 'axis',
@@ -335,13 +335,13 @@ var graphicMixins = {
                             type: 'bar',
                             stack: '1',
                             xAxisIndex: 0,
-                            data: this.totalByBar,//data1,
+                            data: this.totalByBar,
                             label: label,
                             barGap: '-100%',
-                            barWidth: '35   %', //22
+                            barWidth: '35%',
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(51,255,204,.9)',
+                                    color: array_colors_lwr[1],
                                 }
                             },
                             z: 2
@@ -350,11 +350,11 @@ var graphicMixins = {
                             name: 'Meta',
                             type: 'bar',
                             xAxisIndex: 2,
-                            data: this.metaPoranio,//[data1[0], data1[1], data1[2], 353,1000,900, 1100,1200,400,700,1300,3200,200],
-                            barWidth: '67%', //35
+                            data: this.metaPoranio,
+                            barWidth: '67%',
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(61,134,163,0.8)',//'#006699',
+                                    color: array_colors_lwr[0],
                                     barBorderRadius: 1,
                                 }
                             },
@@ -788,7 +788,7 @@ var graphicMixins = {
 
             var option = {
                 title: {
-                    text: gettext('PARTICIPANTS BY AGE'),
+                    text: gettext('PARTICIPANTS BY EDUCATION'),
                     x: 'center',
                     top: "10",
                     textStyle: {
