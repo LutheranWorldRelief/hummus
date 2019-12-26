@@ -76,18 +76,6 @@ var app = new Vue({
                         value: key
                     });
                 }
-                for (const key in data) {
-                    this.list_lwrregions.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-                for (const key in data) {
-                    this.list_lwrregions.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
             });
 
         this.loadDataForDashboard();
