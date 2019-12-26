@@ -81,6 +81,22 @@
         };
 
         const option = {
+            toolbox: {
+                show: true,
+                feature: {
+                    restore: {
+                        title: 'Restore'
+                    },
+                    saveAsImage: {
+                        title: 'Download as image'
+                    },
+                    dataView: {
+                        title: 'Show data',
+                        readOnly: true,
+                        lang: ['Data participants reached, by sex', 'Close', 'Apply']
+                    },
+                }
+            },
             title: {
                 text: 'PARTICIPANTS REACHED, BY SEX',
                 subtext: `Total amount ${total}`,
