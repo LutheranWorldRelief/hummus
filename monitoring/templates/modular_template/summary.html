@@ -1,90 +1,97 @@
 {% load i18n %}
 {# Summary Projects,Participants,Goals and Subproject #}
 <div class="row sameheight-container">
-    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 stats-col">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xl-6 stats-col">
         <div class="card sameheight-item stats stats1">
-            <div class="card-block">
-                <div class="title-block text-center">
-                    <h4 class="title"> {% trans 'Summary' %} </h4>
+            <div class="card-header card-header-sm bordered">
+                <div class="header-block">
+                    <h3 class="title">{% trans 'Projects Summary' %}</h3>
                 </div>
+            </div>
+            <div class="card-block">
                 <div class="row stats-container">
                     {% verbatim %}
-                    <div v-if="!hide_project" class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
+                    <div v-if="!hide_project" class="col-lg-4 col-sm-4 col-md-4 col-xl-4 stat-col">
                         {% endverbatim %}
-                        <div class="stat-icon text-primary">
+                        <div class="stat-icon">
                             <i class="fa fa-folder-open"></i>
                         </div>
-                        <div class="stat text-dark">
+                        <div class="stat">
                             {% verbatim %}
                             <div class="value"> {{ quantity_projects }}</div>
                             {% endverbatim %}
                             <div class="name"> {% trans 'Projects' %}</div>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-sm-12 col-md-12 col-xl-12 stat-col">
-                        <div class="stat-icon text-success">
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 stat-col">
+                        <div class="stat-icon">
                             <i class="fa fa-rocket"></i>
                         </div>
-                        <div class="stat text-dark">
+                        <div class="stat">
                             {% verbatim %}
                             <div class="value"> {{ quantity_subprojects }}</div>
                             {% endverbatim %}
                             <div class="name"> {% trans 'Subprojects' %}</div>
                         </div>
                     </div>
+                    <div class="col-lg-4 col-sm-4 col-md-4 col-xl-4 stat-col">
+                        <div class="stat-icon">
+                            <i class="fa fa-globe"></i>
+                        </div>
+                        <div class="stat">
+                            {% verbatim %}
+                            <div class="value"> {{ quantity_countries }}</div>
+                            {% endverbatim %}
+                            <div class="name"> {% trans 'Countries' %}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-8 col-sm-8 col-md-8 col-xl-8 stats-col">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-xl-6 stats-col">
         <div class="card sameheight-item stats stats1">
-            <div class="card-block">
-                <div class="title-block text-center">
-                    <h4 class="title"> {% trans 'Beneficiaries' %} </h4>
+            <div class="card-header card-header-sm bordered">
+                <div class="header-block">
+                    <h3 class="title">{% trans 'Beneficiaries Summary' %}</h3>
                 </div>
-                <div class="row stats-container text-dark">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 stat-col">
-                                <div class="stat-icon">
-                                    <i class="fa fa-users"></i>
-                                </div>
-                                <div class="stat text-dark">
-                                    {% verbatim %}
-                                    <div class="value"> {{ quantity_participants }}</div>
-                                    {% endverbatim %}
-                                    <div class="name"> {% trans 'Total Participants' %}</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 stat-col">
-                                <div class="stat-icon">
-                                    <i class="fa fa-flag-checkered text-dark"></i>
-                                </div>
-                                <div class="stat text-dark">
-                                    {% verbatim %}
-                                    <div class="value"> {{ goal_participants }}</div>
-                                    {% endverbatim %}
-                                    <div class="name"> {% trans 'Participants Goal' %}</div>
-                                </div>
-                            </div>
+            </div>
+            <div class="card-block">
+                <div class="row stats-container justify-content-md-center">
+                    <div class="col-lg-5 col-md-5 col-sm-12 stat-col mb-md-1">
+                        <div class="stat-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <div class="stat">
+                            {% verbatim %}
+                            <div class="value"> {{ quantity_participants }}</div>
+                            {% endverbatim %}
+                            <div class="name"> {% trans 'Total Participants' %}</div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 align-self-center stat-col mb-4">
+                    <div class="col-lg-5 col-md-5 col-sm-12 stat-col mb-md-1">
                         <div class="stat-icon">
-                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-flag-checkered"></i>
                         </div>
-                        <div class="stat text-dark">
-                            <div class="value">
-                                {% verbatim %}
-                                {{ goal_percentage }}
-                                {% endverbatim %}
-                                {% trans '% of goal completed' %}
-                            </div>
+                        <div class="stat">
+                            {% verbatim %}
+                            <div class="value"> {{ goal_participants }}</div>
+                            {% endverbatim %}
+                            <div class="name"> {% trans 'Participants Goal' %}</div>
                         </div>
-                        <div class="progress stat-progress">
+                    </div>
+                </div>
+                <div class="row stats-container">
+                    <div class="col-lg-12 col-md-12 col-sm-12 stat-col">
+                        <div class="progress stat-progress" style="margin: 6px -3px -6px 0;">
                             {% verbatim %}
                             <div class="progress-bar" v-bind:style="width_progress_bar"></div>
                             {% endverbatim %}
+                        </div>
+                        <div class="stat">
+                            <div class="name">
+                                {% verbatim %}{{ goal_percentage }}{% endverbatim %}{% trans '% of goal completed' %}
+                            </div>
                         </div>
                     </div>
                 </div>
