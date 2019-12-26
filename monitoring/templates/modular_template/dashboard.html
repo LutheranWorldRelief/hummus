@@ -91,7 +91,7 @@
                                             {% verbatim %}
                                             <select v-model="quarter" class="form-control" name="quarter" id="quarter">
                                                 {% endverbatim %}
-                                                {% for number in '1,2,3,4'|make_list %}
+                                                {% for number in '1234'|make_list %}
                                                     <option value="{{ number }}">{% trans Quarter %} {{ number }}</option>
                                                 {% endfor %}
 

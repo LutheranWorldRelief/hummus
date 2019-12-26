@@ -109,13 +109,14 @@ var app = new Vue({
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
                 .then(((response) => {
                     this.quantity_participants = response.participantes;
+                    // TODO set in goal_participants the global goal
                     this.goal_participants = 1000 + response.participantes;
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
                     this.width_progress_bar.width = this.goal_percentage + '%';
                 }));
 
             if (this.requestParameters.project_id !== '') {
-                //new_url content; example = http://localhost/api/subproject/project/1/
+                // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
 
                 $.get(new_url)
@@ -129,12 +130,8 @@ var app = new Vue({
                             })
                         }
                     });
-
-
-                $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
-                    .then(response => {
-
-                    })
+                //function to graph a Chart with Goal and Scope of Women and Men
+                this.graphicGoalProject();
             } else {
                 $.get(UrlsAcciones.UrlSubProjects)
                     .then(response => {
@@ -170,7 +167,7 @@ var app = new Vue({
                     for (const participants in orderedQ) {
                         this.aniosQ.push(this.formatAnioQuater(participants));
 
-                        this.totalByBarQ.push(setZeroIsUndefined(orderedQ[participants].T))
+                        this.totalByBarQ.push(setZeroIsUndefined(orderedQ[participants].T));
                         this.mujeresQ.push(setZeroIsUndefined(orderedQ[participants].F));
                         this.hombresQ.push(setZeroIsUndefined(orderedQ[participants].M));
                         this.defauldSerieQ.push(0);
@@ -183,8 +180,9 @@ var app = new Vue({
                     });
 
                 }));
-
+            // funcion to graph the quantity of participants by age
             this.graficoParticipantesEdad();
+            // funcion to graph the quantity of participants by education
             this.graficoParticipantesEduacion();
         },
         percentage(dividend, divider) {
