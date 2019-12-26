@@ -44,7 +44,7 @@
     <div id="main" style="height:400px;"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
-_
+
 <script type='text/javascript'>
 
     fetch('./participants_gender_total.json', {mode: 'no-cors'}).then((response) => {
@@ -114,6 +114,12 @@ _
                             color: colors.women
                         }
                     }],
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.data.name + ' ' + params.data.value;
+                        }
+                    },
                     itemStyle: {
                         emphasis: {
                             shadowBlur: 10,
