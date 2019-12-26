@@ -5,24 +5,26 @@ var app = new Vue({
     mixins: [graphicMixins],
     data: {
         formInputs: {
-            project: {},
-            subproject: {},
-            country: {},
-            lwrregion: '',
-            year: '',
-            quarter: '',
-        },
-        requestParameters: {
             project_id: '',
-            subproject_id: '',
-            paises_todos: true,
-            rubros_todos: true,
-            from_date: '',
-            to_date: '',
+            subproject_id: {},
             country_id: [],
             lwrregion_id: '',
             year: '',
             quarter: '',
+            from_date: '',
+            to_date: '',
+        },
+        requestParameters: {
+           /* project_id: '',
+            subproject_id: '',*/
+            paises_todos: true,
+            rubros_todos: true,
+            /*from_date: '',
+            to_date: '',
+            country_id: [],
+            lwrregion_id: '',
+            year: '',
+            quarter: '', */
         },
         hide_project: false,
         list_projects: [],
@@ -52,18 +54,21 @@ var app = new Vue({
         this.loadDataForDashboard();
     },
     methods: {
+        loadDataWithFilters() {
+            this.getValueOfFilter().then(()=>this.loadDataForDashboard());
+        },
         loadDataForDashboard() {
 
-            if (this.formInputs.project['value']) {
+            /*if (this.formInputs.project['value']) {
                 this.hide_project = true;
                 this.requestParameters.project_id = this.formInputs.project['value'];
             } else {
                 this.hide_project = false;
-            }
+            } */
 
-            this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
-            this.requestParameters.country_id = this.formInputs.country;
-
+            /* this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
+             this.requestParameters.country_id = this.formInputs.country; */
+            console.log(this.requestParameters);
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
                 .then(((response) => {
                     this.quantity_participants = response.participantes;
@@ -142,7 +147,8 @@ var app = new Vue({
             this.graficoParticipantesEdad();
             // funcion to graph the quantity of participants by education
             this.graficoParticipantesEduacion();
-        },
+        }
+        ,
         percentage(dividend, divider) {
             if (dividend <= 0)
                 return 0;
@@ -154,7 +160,8 @@ var app = new Vue({
 
             return Math.round(percentage)
 
-        },
+        }
+        ,
         loadCatalogs() {
             $.get(UrlsAcciones.UrlProjects)
                 .then(response => {
@@ -188,7 +195,40 @@ var app = new Vue({
                         });
                     }
                 });
+        },
+         getValueOfFilter() {
+            return new Promise((resolved, reject) => {
+
+                for (var key in this.formInputs) {
+
+                    if (!this.empty(this.formInputs[key]['value']))
+                        this.requestParameters[key] = this.formInputs[key]['value'];
+                    else if (typeof this.formInputs[key] != 'object' && !this.empty(this.formInputs[key]))
+                        this.requestParameters[key] = this.formInputs[key];
+                }
+
+                this.getSelectedCountries();
+                resolved(true);
+            })
+        },
+        getSelectedCountries() {
+
+            let countries = [];
+            for (const data of this.formInputs.country_id)
+                countries.push(data['value'])
+
+            if (countries.length > 0)
+                this.requestParameters.country_id = countries;
+
+        },
+        empty(data) {
+
+            if (data == '' || data == null || data == undefined)
+                return true;
+
+            return false;
         }
+
     }
 
 });

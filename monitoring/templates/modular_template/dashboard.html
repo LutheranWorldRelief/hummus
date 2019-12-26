@@ -20,7 +20,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <label for="">{% trans "Project" %}:</label>
                                     {% verbatim %}
-                                    <vue-multiselect v-model="formInputs.project" {% endverbatim %}
+                                    <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
                                                      deselect-label="{% trans "Press to remove value selected" %}"
                                                      {% verbatim %} class="mt-1"
                                                      track-by="value" label="name" {% endverbatim %}
@@ -38,7 +38,7 @@
                                     {% endverbatim %}
                                     <label for="">{% trans "Subproject" %}:</label>
                                     {% verbatim %}
-                                    <vue-multiselect v-model="formInputs.subproject" {% endverbatim %}
+                                    <vue-multiselect v-model="formInputs.subproject_id" {% endverbatim %}
                                                      deselect-label="{% trans "Press to remove value selected" %}"
                                                      {% verbatim %} class="mt-1"
                                                      track-by="value" label="name" {% endverbatim %}
@@ -56,9 +56,9 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="">{% trans "Country" %}:</label>
                                             {% verbatim %}
-                                            <vue-multiselect v-model="formInputs.country" {% endverbatim %}
+                                            <vue-multiselect v-model="formInputs.country_id" {% endverbatim %}
                                                              deselect-label="{% trans "Press to remove value selected" %}"
-                                                             {% verbatim %}
+                                                             {% verbatim %} :multiple="true"
                                                              track-by="value" label="name" {% endverbatim %}
                                                              placeholder="{% trans 'Select a Country' %}"
                                                              {% verbatim %} :options="list_countries" :searchable="true"
@@ -72,7 +72,7 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="">{% trans "LWR Regions" %}:</label>
                                             {% verbatim %}
-                                            <vue-multiselect v-model="formInputs.lwrregion" {% endverbatim %}
+                                            <vue-multiselect v-model="formInputs.lwrregion_id" {% endverbatim %}
                                                              deselect-label="{% trans "Press to remove value selected" %}"
                                                              {% verbatim %}
                                                              track-by="value" label="name" {% endverbatim %}
@@ -89,7 +89,7 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="quarter">{% trans "Quarter" %}:</label>
                                             {% verbatim %}
-                                            <select v-model="quarter" class="form-control" name="quarter" id="quarter">
+                                            <select v-model="formInputs.quarter" class="form-control" name="quarter" id="quarter">
                                                 {% endverbatim %}
                                                 {% for number in '1234'|make_list %}
                                                     <option value="{{ number }}">{% trans Quarter %} {{ number }}</option>
@@ -104,7 +104,7 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="start_date">{% trans 'Year' %}:</label>
                                             {% verbatim %}
-                                            <select v-model="requestParameters.year"
+                                            <select v-model="formInputs.year"
                                                     class="form-control"
                                                     id="year" name="year">
                                                 {% endverbatim %}
@@ -116,7 +116,7 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="start_date">{% trans 'From' %}:</label>
                                             {% verbatim %}
-                                            <input v-model="requestParameters.from_date" type="date"
+                                            <input v-model="formInputs.from_date" type="date"
                                                    class="form-control" value=""
                                                    id="start_date" name="start_date">
                                             {% endverbatim %}
@@ -124,7 +124,7 @@
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="end_date">{% trans 'To' %}:</label>
                                             {% verbatim %}
-                                            <input v-model="requestParameters.to_date" type="date"
+                                            <input v-model="formInputs.to_date" type="date"
                                                    class="form-control" value=""
                                                    id="end_date" name="end_date">
                                             {% endverbatim %}
@@ -135,7 +135,8 @@
                         </div>
                         <div class="card-footer text-right">
                             {% verbatim %}
-                            <button type="button" class="btn btn-primary" v-on:click="loadDataForDashboard">
+                            <button type="button" class="btn btn-primary"
+                                    @click="loadDataWithFilters">
                                 {% endverbatim %}
                                 <i class="fa fa-area-chart"></i>
                                 {% trans 'Graph' %}
