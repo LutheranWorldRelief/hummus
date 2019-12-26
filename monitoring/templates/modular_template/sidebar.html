@@ -105,7 +105,6 @@
                         {% if perms.monitoring.view_project %}
                             <li>
                                 <a href="{% url 'admin:monitoring_project_changelist' %}">
-                                    <i class="fa fa-folder-open-o"></i>
                                     {% trans 'Projects' %}
                                 </a>
                             </li>
@@ -114,7 +113,6 @@
                         {% if perms.monitoring.view_organization or perms.monitoring.view_organizationtype %}
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-building"></i>
                                     {% trans 'Organizations' %}
                                     <i class="fa arrow"></i>
                                 </a>
@@ -123,7 +121,6 @@
 
                                         <li>
                                             <a href="{% url 'admin:monitoring_organization_changelist' %}">
-                                                <i class="fa fa-list"></i>
                                                 {% trans 'List' %}
                                             </a>
                                         </li>
@@ -131,7 +128,6 @@
                                     {% if perms.monitoring.view_organizationtype %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
-                                                <i class="fa fa-list"></i>
                                                 {% trans 'Types' %}
                                             </a>
                                         </li>
@@ -143,7 +139,6 @@
                         {% if perms.monitoring.view_sex or perms.monitoring.view_country or perms.monitoring.view_contacttype or perms.monitoring.view_education or perms.monitoring.view_lwrregion %}
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-book"></i>
                                     {% trans 'Catalogs' %}
                                     <i class="fa arrow"></i>
                                 </a>
@@ -151,7 +146,6 @@
                                     {% if perms.monitoring.view_country %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_country_changelist' %}">
-                                                <i class="fa fa-globe"></i>
                                                 {% trans 'Countries' %}
                                             </a>
                                         </li>
@@ -159,7 +153,6 @@
                                     {% if perms.monitoring.view_contacttype %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
-                                                <i class="fa fa-list"></i>
                                                 <span>{% trans 'Contact Types' %}</span>
                                             </a>
                                         </li>
@@ -167,7 +160,6 @@
                                     {% if perms.monitoring.view_education %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_education_changelist' %}">
-                                                <i class="fa fa-graduation-cap"></i>
                                                 <span>{% trans 'Educations' %}</span>
                                             </a>
                                         </li>
@@ -175,7 +167,6 @@
                                     {% if perms.monitoring.view_sex %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_sex_changelist' %}">
-                                                <i class="fa fa-venus-mars"></i>
                                                 <span>{% trans 'Sex' %}</span>
                                             </a>
                                         </li>
@@ -183,7 +174,6 @@
                                     {% if perms.monitoring.view_lwrregion %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_lwrregion_changelist' %}">
-                                                <i class="fa fa-venus-mars"></i>
                                                 <span>{% trans 'Regions' %}</span>
                                             </a>
                                         </li>
@@ -195,7 +185,6 @@
                         {% if perms.monitoring.view_filter %}
                             <li>
                                 <a href="{% url 'admin:monitoring_filter_changelist' %}">
-                                    <i class="fa fa-filter"></i>
                                     {% trans 'Segmentation' %}
                                 </a>
                             </li>
@@ -213,19 +202,16 @@
                         <ul class="sidebar-nav">
                             <li>
                                 <a href="{% url 'admin:auth_user_changelist' %}">
-                                    <i class="fa fa-circle-o"></i>
                                     {% trans 'Users' %}
                                 </a>
                             </li>
                             <li>
                                 <a href="{% url 'admin:auth_group_changelist' %}">
-                                    <i class="fa fa-circle-o"></i>
                                     {% trans 'Roles' %}
                                 </a>
                             </li>
                             <li>
                                 <a href="{% url 'admin:monitoring_profile_changelist' %}">
-                                    <i class="fa fa-circle-o"></i>
                                     {% trans 'Profiles' %}
                                 </a>
                             </li>
