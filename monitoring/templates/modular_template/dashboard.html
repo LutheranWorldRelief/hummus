@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_header %}
-    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    <link rel="stylesheet" href="{% static 'vue-multiselect/dist/vue-multiselect.min.css' %}">
 {% endblock %}
 
 {% block main_content %}
@@ -181,7 +181,7 @@
         };
     </script>
     <script src="{% static 'vue/dist/vue.min.js' %}"></script>
-    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <script src="{% static 'vue-multiselect/dist/vue-multiselect.min.js' %}"></script>
     <script src="{% static 'echarts/dist/echarts.min.js' %}"></script>
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'js/mixins/graphic.js' %}"></script>

@@ -22,6 +22,7 @@
     "alertify": "^0.3.10",
     "select2": "^4.0.12",
     "vue": "^2.6.11",
-    "echarts": "^4.5.0"
+    "echarts": "^4.5.0",
+    "vue-multiselect": "^2.1.6"
   }
 }
