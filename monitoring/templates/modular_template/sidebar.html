@@ -12,16 +12,21 @@
         </div>
         <nav class="menu">
             <ul class="sidebar-menu metismenu" id="sidebar-menu">
-
+                {# 1 dashboard #}
+                <li {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
+                    <a href="{% url 'monitoring:dashboard' %}">
+                        <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
+                </li>
+                {# 2 Import #}
                 {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
-                    <li>
+                    <li {% if 'step' in request.resolver_match.url_name %}class="active"{% endif %}>
                         <a href="{% url 'monitoring:import-step1' %}">
                             <i class="fa fa-upload"></i> {% trans 'Import Beneficiaries' %} </a>
                     </li>
                 {% endif %}
-
+                {# 3 Participants #}
                 {% if perms.monitoring.view_contact or perms.monitoring.add_contact %}
-                    <li>
+                    <li {% if 'dupe' in request.resolver_match.url_name %}class="active open"{% endif %}>
                         <a href="javascript:;">
                             <i class="fa fa-users"></i>
                             {% trans 'Participants' %}
@@ -37,23 +42,23 @@
                             {% endif %}
 
                             {% if perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
-                                <li>
+                                <li {% if 'dupe' in request.resolver_match.url_name %}class="open"{% endif %}>
                                     <a href="javascript:;">
                                         {% trans 'Duplicates' %}
                                         <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav">
-                                        <li>
+                                        <li {% if request.resolver_match.url_name == 'dupes-name' %}class="active open"{% endif %}>
                                             <a href="{% url 'monitoring:dupes-name' %}">
                                                 {% trans 'Name' %}
                                             </a>
                                         </li>
-                                        <li>
+                                        <li {% if request.resolver_match.url_name == 'dupes-name-fuzzy' %}class="active open"{% endif %}>
                                             <a href="{% url 'monitoring:dupes-name-fuzzy' %}">
                                                 {% trans 'Fuzzy Names' %}
                                             </a>
                                         </li>
-                                        <li>
+                                        <li {% if request.resolver_match.url_name == 'dupes-doc' %}class="active open"{% endif %}>
                                             <a href="{% url 'monitoring:dupes-doc' %}">
                                                 {% trans 'Document' %}
                                             </a>
@@ -64,16 +69,16 @@
                         </ul>
                     </li>
                 {% endif %}
-
+                {# 4 Export #}
                 {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
-                    <li>
+                    <li {% if request.resolver_match.url_name == 'export' %}class="active open"{% endif %}>
                         <a href="javascript:;">
                             <i class="fa fa-print"></i>
                             {% trans 'Reports' %}
                             <i class="fa arrow"></i>
                         </a>
                         <ul class="sidebar-nav">
-                            <li>
+                            <li {% if request.resolver_match.url_name == 'export' %}class="active"{% endif %}>
                                 <a href="{% url 'monitoring:export' %}">
                                     {% trans 'Project Participants' %}
                                 </a>
@@ -89,12 +94,7 @@
                         </ul>
                     </li>
                 {% endif %}
-
-                <li class="active">
-                    <a href="{% url 'monitoring:dashboard' %}">
-                        <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
-                </li>
-
+                {# 5 Configurations #}
                 <li>
                     <a href="javascript:;">
                         <i class="fa fa-cogs"></i>
@@ -191,7 +191,7 @@
                         {% endif %}
                     </ul>
                 </li>
-
+                {# 6 Security #}
                 {% if request.user.is_superuser %}
                     <li>
                         <a href="javascript:;">
