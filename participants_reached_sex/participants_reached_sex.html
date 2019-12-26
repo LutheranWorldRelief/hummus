@@ -117,7 +117,8 @@
                     label: {
                         show: true,
                         formatter: function(params) {
-                            return params.data.name + ' ' + params.data.value;
+                            console.log(params);
+                            return params.name + ': ' + params.percent + ' %, ' + params.value;
                         }
                     },
                     itemStyle: {
