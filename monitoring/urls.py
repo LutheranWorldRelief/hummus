@@ -89,13 +89,14 @@ urlpatterns = [
 
     # Projects API
     path('api/years/', jsonviews.YearsAPI.as_view()),
-    path('api/projects/', jsonviews.ProjectAPIListView.as_view()),
+    path('api/projects/', jsonviews.ProjectAPIListView.as_view(), name="api-projects"),
     path('api/projects/<int:project_id>/', jsonviews.ProjectAPIListView.as_view()),
 
     # subprojects API
-    path('api/subprojects/', jsonviews.SubProjectAPIListView.as_view()),
+    path('api/subprojects/', jsonviews.SubProjectAPIListView.as_view(), name="api-subproject"),
     path('api/subprojects/<int:subproject_id>/', jsonviews.SubProjectAPIListView.as_view()),
-    path('api/subprojects/project/<int:project_id>/', jsonviews.SubProjectAPIListView.as_view()),
+    path('api/subprojects/project/<int:project_id>/', jsonviews.SubProjectAPIListView.as_view(),
+         name="api-subprojects-project"),
 
     # APIs dumping lists of data
     path('api/organizations/', jsonviews.JsonIdName.as_view(
@@ -103,6 +104,9 @@ urlpatterns = [
     path('api/types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
     path('api/education/',
          jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), ),
+    path('api/lwrregions/', jsonviews.JsonIdName.as_view(queryset=models.LWRRegion.objects.all()),
+         name="api-lwrregions"),
     path('api/countries/',
-         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all()), ),
+         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all()),
+         name="api-countries"),
 ]
