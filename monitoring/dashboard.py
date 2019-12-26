@@ -43,7 +43,7 @@ def cantidad_paises(request):
 @domain_required()
 def cantidad_participantes(request):
     parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
-                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
+                  'project_id': 'project_id', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
     participantes = ProjectContact.objects.filter(
@@ -181,7 +181,7 @@ def grafico_organizaciones(request):
 @csrf_exempt
 @domain_required()
 def proyectos_metas(request):
-    proyecto_id = request.POST.get('proyecto')
+    proyecto_id = request.POST.get('project_id')
     if not proyecto_id:
         return JsonResponse({'proyectos_metas': []})
     proyecto = Project.objects.filter(id=proyecto_id).values('id', 'name', 'targetmen',
@@ -235,7 +235,7 @@ def grafico_anio_fiscal(request):
 @csrf_exempt
 @domain_required()
 def grafico_edad(request):
-    parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte',
+    parameters = {'project_id': 'project_id', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
     groups = Filter.objects.filter(slug='age', start__gte=0)
@@ -260,7 +260,7 @@ def grafico_edad(request):
 @csrf_exempt
 @domain_required()
 def grafico_educacion(request):
-    parameters = {'proyecto': 'project__id', 'desde': 'date_entry_project__gte',
+    parameters = {'project_id': 'project__id', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
 
