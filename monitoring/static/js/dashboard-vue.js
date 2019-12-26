@@ -47,42 +47,12 @@ var app = new Vue({
         }
     },
     created() {
-        $.get(UrlsAcciones.UrlProjects)
-            .then(data => {
-                this.quantity_projects = Object.keys(data).length;
-                for (const key in data) {
-                    this.list_projects.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-            });
-
-        $.get(UrlsAcciones.UrlCountries)
-            .then(data => {
-                for (const key in data) {
-                    this.list_countries.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-            });
-
-        $.get(UrlsAcciones.UrlLWRregions)
-            .then(data => {
-                for (const key in data) {
-                    this.list_lwrregions.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-            });
+        this.loadCatalogs();
 
         this.loadDataForDashboard();
     },
     methods: {
         loadDataForDashboard() {
-
 
             if (this.formInputs.project['value']) {
                 this.hide_project = true;
@@ -184,6 +154,40 @@ var app = new Vue({
 
             return Math.round(percentage)
 
+        },
+        loadCatalogs() {
+            $.get(UrlsAcciones.UrlProjects)
+                .then(response => {
+                    this.quantity_projects = response['object_list'].length;
+                    let data = response['object_list'];
+
+                    for (const key in data) {
+                        this.list_projects.push({
+                            name: data[key]['name'],
+                            value: data[key]['id']
+                        });
+                    }
+                });
+
+            $.get(UrlsAcciones.UrlCountries)
+                .then(data => {
+                    for (const key in data) {
+                        this.list_countries.push({
+                            name: data[key],
+                            value: key
+                        });
+                    }
+                });
+
+            $.get(UrlsAcciones.UrlLWRregions)
+                .then(data => {
+                    for (const key in data) {
+                        this.list_lwrregions.push({
+                            name: data[key],
+                            value: key
+                        });
+                    }
+                });
         }
     }
 
