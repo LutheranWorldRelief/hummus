@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <title>Document</title>
+</head>
+<body>
+<style type="text/css">
+    body, html {
+        background: #181E24;
+        padding-top: 10px;
+    }
+
+    .wrapper {
+        width: 60%;
+        display: block;
+        overflow: hidden;
+        margin: 0 auto;
+        padding: 60px 50px;
+        background: #fff;
+        border-radius: 4px;
+    }
+
+    canvas {
+        background: #fff;
+        height: 400px;
+    }
+
+    h1 {
+        font-family: Roboto;
+        color: #fff;
+        margin-top: 50px;
+        font-weight: 200;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+</style>
+<h1>Participants reached, by sex</h1>
+<div class="wrapper">
+    <div id="main" style="height:400px;"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+
+<script type='text/javascript'>
+
+    fetch('./participants_gender_total.json', {mode: 'no-cors'}).then((response) => {
+        response.json().then((data) => {
+
+            graphicData(data.totals);
+        });
+    });
+
+    function graphicData(data) {
+        let total = data.T;
+
+        let totalMen = {
+            name: 'Men',
+            value: data.M
+        };
+
+        let totalWomen = {
+            name: 'Women',
+            value: data.F
+        };
+
+        graphic(total, totalMen, totalWomen);
+    }
+
+    function graphic(total, totalMen, totalWomen) {
+        const myChart = echarts.init(document.getElementById('main'));
+
+        myChart.title = 'PARTICIPANTS REACHED, BY SEX';
+
+        const colors = {
+            men: '#b2bb1e',
+            women: '#00aaa7'
+        };
+
+        const option = {
+            toolbox: {
+                show: true,
+                feature: {
+                    restore: {
+                        title: 'Restore'
+                    },
+                    saveAsImage: {
+                        title: 'Download as image'
+                    },
+                    dataView: {
+                        title: 'Show data',
+                        readOnly: true,
+                        lang: ['Data participants reached, by sex', 'Close', 'Apply']
+                    },
+                }
+            },
+            title: {
+                text: 'PARTICIPANTS REACHED, BY SEX',
+                subtext: `Total amount ${total}`,
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['Men', 'Women']
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: [{
+                        name: totalMen.name,
+                        value: totalMen.value,
+                        itemStyle: {
+                            color: colors.men
+                        }
+                    }, {
+                        name: totalWomen.name,
+                        value: totalWomen.value,
+                        itemStyle: {
+                            color: colors.women
+                        }
+                    }],
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.name + ': ' + params.percent + ' %, ' + params.value;
+                        }
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        myChart.setOption(option);
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    }
+</script>
+</body>
+</html>
