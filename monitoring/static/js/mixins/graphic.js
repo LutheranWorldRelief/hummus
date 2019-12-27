@@ -1054,6 +1054,23 @@ var graphicMixins = {
             } else {
                 this.styleGraphic.position = 'fixed'
             }
+        },
+        clearData() {
+            /** Var gráfico participantes por año fiscal*/
+            this.anios = []
+            this.hombres = []
+            this.mujeres = []
+            this.tatal = {}
+            this.totalByBar = []
+            this.efauldSerie = []
+            this.metaPoranio = []
+                /** Var gráfico participantes quarter */
+            this.aniosQ = []
+            this.hombresQ = []
+            this.mujeresQ = []
+            this.tatalsQ = {}
+            this.totalByBarQ = []
+            this.defauldSerieQ = []
         }
     }
 };

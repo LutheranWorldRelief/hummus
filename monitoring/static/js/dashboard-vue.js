@@ -68,7 +68,7 @@ var app = new Vue({
 
             /* this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
              this.requestParameters.country_id = this.formInputs.country; */
-            console.log(this.requestParameters);
+
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
                 .then(((response) => {
                     this.quantity_participants = response.participantes;
@@ -78,7 +78,7 @@ var app = new Vue({
                     this.width_progress_bar.width = this.goal_percentage + '%';
                 }));
 
-            if (this.requestParameters.project_id !== '') {
+            if (!this.empty(this.requestParameters.project_id)) {
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
 
@@ -102,9 +102,11 @@ var app = new Vue({
                     });
             }
 
-            $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.formInputs)
+            $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
                 .then(((response) => {
+                    this.clearData();
                     let data = response;
+                    console.log(data);
                     this.tatals = data['totals'];
                     delete data.totals;
 
