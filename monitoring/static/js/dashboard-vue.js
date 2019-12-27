@@ -6,22 +6,18 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project: {},
-            subproject: {},
-            country: {},
-            lwrregion: '',
-        },
-        requestParameters: {
             project_id: '',
-            subproject_id: '',
-            paises_todos: true,
-            rubros_todos: true,
-            from_date: '',
-            to_date: '',
+            subproject_id: {},
             country_id: [],
             lwrregion_id: '',
             year: '',
             quarter: [],
+            from_date: '',
+            to_date: '',
+        },
+        requestParameters: {
+            paises_todos: true,
+            rubros_todos: true,
         },
         show_project: false,
         list_projects: [],
@@ -50,53 +46,21 @@ var app = new Vue({
     created() {
         // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
         this.list_years = years;
-
-        $.get(UrlsAcciones.UrlProjects)
-            .then(data => {
-                this.quantity_projects = Object.keys(data).length;
-                for (const key in data) {
-                    this.list_projects.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-            });
-
-        $.get(UrlsAcciones.UrlCountries)
-            .then(data => {
-                for (const key in data) {
-                    this.list_countries.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-            });
-
-        $.get(UrlsAcciones.UrlLWRregions)
-            .then(data => {
-                for (const key in data) {
-                    this.list_lwrregions.push({
-                        name: data[key],
-                        value: key
-                    });
-                }
-            });
+      
+        this.loadCatalogs();
 
         this.loadDataForDashboard();
     },
     methods: {
+        loadDataWithFilters() {
+            this.getValueOfFilter().then(()=>this.loadDataForDashboard());
+        },
         loadDataForDashboard() {
 
+           this.hide_project = (this.empty(this.requestParameters.project_id)) ? false:true;
 
-            if (this.formInputs.project['value']) {
-                this.show_project = true;
-                this.requestParameters.project_id = this.formInputs.project['value'];
-            } else {
-                this.show_project = false;
-            }
-
-            this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
-            this.requestParameters.country_id = this.formInputs.country;
+            /* this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
+             this.requestParameters.country_id = this.formInputs.country; */
 
             $.post(UrlsAcciones.UrlCantidadPaises, this.requestParameters)
                 .then(response => {
@@ -112,7 +76,7 @@ var app = new Vue({
                     this.width_progress_bar.width = this.goal_percentage + '%';
                 }));
 
-            if (this.requestParameters.project_id !== '') {
+            if (!this.empty(this.requestParameters.project_id)) {
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
 
@@ -136,9 +100,11 @@ var app = new Vue({
                     });
             }
 
-            $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.formInputs)
+            $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
                 .then(((response) => {
+                    this.clearData();
                     let data = response;
+
                     this.tatals = data['totals'];
                     delete data.totals;
 
@@ -181,7 +147,8 @@ var app = new Vue({
             this.graficoParticipantesEdad();
             // funcion to graph the quantity of participants by education
             this.graficoParticipantesEduacion();
-        },
+        }
+        ,
         percentage(dividend, divider) {
             if (dividend <= 0)
                 return 0;
@@ -194,6 +161,73 @@ var app = new Vue({
             return Math.round(percentage)
 
         }
+        ,
+        loadCatalogs() {
+            $.get(UrlsAcciones.UrlProjects)
+                .then(response => {
+                    this.quantity_projects = response['object_list'].length;
+                    let data = response['object_list'];
+
+                    for (const key in data) {
+                        this.list_projects.push({
+                            name: data[key]['name'],
+                            value: data[key]['id']
+                        });
+                    }
+                });
+
+            $.get(UrlsAcciones.UrlCountries)
+                .then(data => {
+                    for (const key in data) {
+                        this.list_countries.push({
+                            name: data[key],
+                            value: key
+                        });
+                    }
+                });
+
+            $.get(UrlsAcciones.UrlLWRregions)
+                .then(data => {
+                    for (const key in data) {
+                        this.list_lwrregions.push({
+                            name: data[key],
+                            value: key
+                        });
+                    }
+                });
+        },
+         getValueOfFilter() {
+            return new Promise((resolved, reject) => {
+
+                for (var key in this.formInputs) {
+
+                    if (!this.empty(this.formInputs[key]['value']))
+                        this.requestParameters[key] = this.formInputs[key]['value'];
+                    else if (typeof this.formInputs[key] != 'object' && !this.empty(this.formInputs[key]))
+                        this.requestParameters[key] = this.formInputs[key];
+                }
+
+                this.getSelectedCountries();
+                resolved(true);
+            })
+        },
+        getSelectedCountries() {
+
+            let countries = [];
+            for (const data of this.formInputs.country_id)
+                countries.push(data['value'])
+
+            if (countries.length > 0)
+                this.requestParameters.country_id = countries;
+        },
+        empty(data) {
+
+            if (data == '' || data == null || data == undefined)
+                return true;
+
+            return false;
+        }
+
     }
 
 });

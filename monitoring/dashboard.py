@@ -43,8 +43,8 @@ def cantidad_paises(request):
 @domain_required()
 def cantidad_participantes(request):
     parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
-                  'project_id': 'project_id', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
     participantes = ProjectContact.objects.filter(
         **filter_kwargs).values('contact_id').distinct().count()
@@ -235,8 +235,8 @@ def grafico_anio_fiscal(request):
 @csrf_exempt
 @domain_required()
 def grafico_edad(request):
-    parameters = {'project_id': 'project_id', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+    parameters = {'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
     groups = Filter.objects.filter(slug='age', start__gte=0)
     named_groups = []
@@ -260,8 +260,8 @@ def grafico_edad(request):
 @csrf_exempt
 @domain_required()
 def grafico_educacion(request):
-    parameters = {'project_id': 'project__id', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+    parameters = {'project_id': 'project__id', 'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
 
     result = ProjectContact.objects.filter(**filter_kwargs).order_by(
