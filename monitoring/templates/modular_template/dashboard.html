@@ -77,7 +77,8 @@
                                     <div>
                                         {% for num_quarter in '1234'|make_list %}
                                             <label>
-                                                <input {% verbatim %} v-model="formInputs.quarter" {% endverbatim %} class="checkbox"
+                                                <input {% verbatim %} v-model="formInputs.quarter" {% endverbatim %}
+                                                       class="checkbox"
                                                        type="checkbox" value="{{ num_quarter }}">
                                                 <span>{{ num_quarter }}</span>
                                             </label>
@@ -101,6 +102,7 @@
                                     </vue-multiselect>
                                     {% endverbatim %}
                                 </div>
+                                {# subproject #}
                                 {% verbatim %}
                                 <div v-if="show_project" class="col-lg-12 col-md-12 col-sm-12">
                                     {% endverbatim %}
@@ -120,22 +122,7 @@
                                 </div>
                                 <div class="col-lg-8 col-md-18 col-sm-12">
                                     <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <label for="">{% trans "Country" %}:</label>
-                                            {% verbatim %}
-                                            <vue-multiselect v-model="formInputs.country_id" {% endverbatim %}
-                                                             deselect-label="{% trans "Press to remove value selected" %}"
-                                                             {% verbatim %} :multiple="true"
-                                                             track-by="value" label="name" {% endverbatim %}
-                                                             placeholder="{% trans 'Write the name of the country' %}"
-                                                             {% verbatim %} :options="list_countries" :searchable="true"
-                                                             return="value">
-                                                <template slot="singleLabel" slot-scope="{ option }">
-                                                    {{ option.name }}
-                                                </template>
-                                            </vue-multiselect>
-                                            {% endverbatim %}
-                                        </div>
+
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <label for="">{% trans "LWR Regions" %}:</label>
                                             {% verbatim %}
@@ -167,6 +154,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="card saneheight-item items">
+                        <div class="card-header card-header-sm bordered">
+                            <div class="header-block">
+                                <h3 class="title">{% trans 'Countries' %}</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% verbatim %}
+                                <div v-for="country in list_countries" class="col-lg-4">
+                                    <button type="button" class="btn w-100 icon"
+                                            :class="{ 'btn-outline-success': !country.active, 'btn-success': country.active }"
+                                            v-on:click="changeActiveCountry(country)">
+                                        <span>{{ country.name }}</span>
+                                    </button>
+
+                                </div>
+                                {% endverbatim %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         {% include 'modular_template/summary.html' %}
@@ -183,7 +193,7 @@
     <script>
         const UrlsAcciones = {
             UrlProjects: "{% url 'monitoring:api-projects' %}",
-            UrlCountries: "{% url 'monitoring:api-countries' %}",
+            UrlCountries: "{% url 'monitoring:graphic-paises' %}",
             UrlSubProjects: "{% url 'monitoring:api-subproject' %}",
             UrlSubProjectsProject: "{% url 'monitoring:api-subprojects-project' project_id='1' %}",
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
@@ -193,8 +203,6 @@
             UrlDatosCantidadProyectos: "{% url 'monitoring:cantidad-proyectos' %}",
             UrlDatosCantidadSubproyectos: "{% url 'monitoring:cantidad-subproyectos' %}",
             UrlDatosCantidadParticipantes: "{% url 'monitoring:cantidad-participantes' %}",
-            UrlDatosPaises: "{% url 'monitoring:graphic-paises' %}",
-            UrlDatosRubros: "{% url 'monitoring:graphic-rubros' %}",
             UrlDatosGraficoOrganizaciones: "{% url 'monitoring:grafico-organizaciones' %}",
             UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
             UrlDatosGraficosParticipantes: "/api/participants/",

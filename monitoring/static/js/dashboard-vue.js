@@ -46,19 +46,20 @@ var app = new Vue({
     created() {
         // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
         this.list_years = years;
-      
+
         this.loadCatalogs();
 
         this.loadDataForDashboard();
     },
     methods: {
         loadDataWithFilters() {
-            this.getValueOfFilter().then(()=>this.loadDataForDashboard());
+            this.getValueOfFilter().then(() => this.loadDataForDashboard());
         },
         loadDataForDashboard() {
 
-           this.hide_project = (this.empty(this.requestParameters.project_id)) ? false:true;
+            this.hide_project = (this.empty(this.requestParameters.project_id)) ? false : true;
 
+            console.log(this.formInputs.country_id);
             /* this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
              this.requestParameters.country_id = this.formInputs.country; */
 
@@ -160,8 +161,7 @@ var app = new Vue({
 
             return Math.round(percentage)
 
-        }
-        ,
+        },
         loadCatalogs() {
             $.get(UrlsAcciones.UrlProjects)
                 .then(response => {
@@ -176,12 +176,14 @@ var app = new Vue({
                     }
                 });
 
-            $.get(UrlsAcciones.UrlCountries)
+            $.post(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
-                    for (const key in data) {
+                    let countries = data['paises'];
+                    for (const key in countries) {
                         this.list_countries.push({
-                            name: data[key],
-                            value: key
+                            name: countries[key]['country'],
+                            value: countries[key]['id'],
+                            active: countries[key]['active'],
                         });
                     }
                 });
@@ -196,7 +198,7 @@ var app = new Vue({
                     }
                 });
         },
-         getValueOfFilter() {
+        getValueOfFilter() {
             return new Promise((resolved, reject) => {
 
                 for (var key in this.formInputs) {
@@ -215,7 +217,7 @@ var app = new Vue({
 
             let countries = [];
             for (const data of this.formInputs.country_id)
-                countries.push(data['value'])
+                countries.push(data['value']);
 
             if (countries.length > 0)
                 this.requestParameters.country_id = countries;
@@ -226,6 +228,13 @@ var app = new Vue({
                 return true;
 
             return false;
+        },
+        changeActiveCountry(country) {
+            for (const row of this.list_countries) {
+                if (row.name.toLowerCase() === country.name.toLowerCase()) {
+                    row.active = !row.active;
+                }
+            }
         }
 
     }
