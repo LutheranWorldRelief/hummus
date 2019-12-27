@@ -12,16 +12,21 @@
         </div>
         <nav class="menu">
             <ul class="sidebar-menu metismenu" id="sidebar-menu">
-
+                {# 1 dashboard #}
+                <li {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
+                    <a href="{% url 'monitoring:dashboard' %}">
+                        <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
+                </li>
+                {# 2 Import #}
                 {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
-                    <li>
+                    <li {% if 'step' in request.resolver_match.url_name %}class="active"{% endif %}>
                         <a href="{% url 'monitoring:import-step1' %}">
                             <i class="fa fa-upload"></i> {% trans 'Import Beneficiaries' %} </a>
                     </li>
                 {% endif %}
-
+                {# 3 Participants #}
                 {% if perms.monitoring.view_contact or perms.monitoring.add_contact %}
-                    <li>
+                    <li {% if 'dupe' in request.resolver_match.url_name %}class="active open"{% endif %}>
                         <a href="javascript:;">
                             <i class="fa fa-users"></i>
                             {% trans 'Participants' %}
@@ -37,23 +42,23 @@
                             {% endif %}
 
                             {% if perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
-                                <li>
+                                <li {% if 'dupe' in request.resolver_match.url_name %}class="open"{% endif %}>
                                     <a href="javascript:;">
                                         {% trans 'Duplicates' %}
                                         <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav">
-                                        <li>
+                                        <li {% if request.resolver_match.url_name == 'dupes-name' %}class="active open"{% endif %}>
                                             <a href="{% url 'monitoring:dupes-name' %}">
                                                 {% trans 'Name' %}
                                             </a>
                                         </li>
-                                        <li>
+                                        <li {% if request.resolver_match.url_name == 'dupes-name-fuzzy' %}class="active open"{% endif %}>
                                             <a href="{% url 'monitoring:dupes-name-fuzzy' %}">
                                                 {% trans 'Fuzzy Names' %}
                                             </a>
                                         </li>
-                                        <li>
+                                        <li {% if request.resolver_match.url_name == 'dupes-doc' %}class="active open"{% endif %}>
                                             <a href="{% url 'monitoring:dupes-doc' %}">
                                                 {% trans 'Document' %}
                                             </a>
@@ -64,16 +69,16 @@
                         </ul>
                     </li>
                 {% endif %}
-
+                {# 4 Export #}
                 {% if perms.monitoring.view_projectcontact and perms.monitoring.view_project and perms.monitoring.view_contact and perms.monitoring.view_organization and perms.monitoring.view_country %}
-                    <li>
+                    <li {% if request.resolver_match.url_name == 'export' %}class="active open"{% endif %}>
                         <a href="javascript:;">
                             <i class="fa fa-print"></i>
                             {% trans 'Reports' %}
                             <i class="fa arrow"></i>
                         </a>
                         <ul class="sidebar-nav">
-                            <li>
+                            <li {% if request.resolver_match.url_name == 'export' %}class="active"{% endif %}>
                                 <a href="{% url 'monitoring:export' %}">
                                     {% trans 'Project Participants' %}
                                 </a>
@@ -89,12 +94,7 @@
                         </ul>
                     </li>
                 {% endif %}
-
-                <li class="active">
-                    <a href="{% url 'monitoring:dashboard' %}">
-                        <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
-                </li>
-
+                {# 5 Configurations #}
                 <li>
                     <a href="javascript:;">
                         <i class="fa fa-cogs"></i>
@@ -105,7 +105,6 @@
                         {% if perms.monitoring.view_project %}
                             <li>
                                 <a href="{% url 'admin:monitoring_project_changelist' %}">
-                                    <i class="fa fa-folder-open-o"></i>
                                     {% trans 'Projects' %}
                                 </a>
                             </li>
@@ -114,7 +113,6 @@
                         {% if perms.monitoring.view_organization or perms.monitoring.view_organizationtype %}
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-building"></i>
                                     {% trans 'Organizations' %}
                                     <i class="fa arrow"></i>
                                 </a>
@@ -123,7 +121,6 @@
 
                                         <li>
                                             <a href="{% url 'admin:monitoring_organization_changelist' %}">
-                                                <i class="fa fa-list"></i>
                                                 {% trans 'List' %}
                                             </a>
                                         </li>
@@ -131,7 +128,6 @@
                                     {% if perms.monitoring.view_organizationtype %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
-                                                <i class="fa fa-list"></i>
                                                 {% trans 'Types' %}
                                             </a>
                                         </li>
@@ -143,7 +139,6 @@
                         {% if perms.monitoring.view_sex or perms.monitoring.view_country or perms.monitoring.view_contacttype or perms.monitoring.view_education or perms.monitoring.view_lwrregion %}
                             <li>
                                 <a href="javascript:;">
-                                    <i class="fa fa-book"></i>
                                     {% trans 'Catalogs' %}
                                     <i class="fa arrow"></i>
                                 </a>
@@ -151,7 +146,6 @@
                                     {% if perms.monitoring.view_country %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_country_changelist' %}">
-                                                <i class="fa fa-globe"></i>
                                                 {% trans 'Countries' %}
                                             </a>
                                         </li>
@@ -159,7 +153,6 @@
                                     {% if perms.monitoring.view_contacttype %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_organizationtype_changelist' %}">
-                                                <i class="fa fa-list"></i>
                                                 <span>{% trans 'Contact Types' %}</span>
                                             </a>
                                         </li>
@@ -167,7 +160,6 @@
                                     {% if perms.monitoring.view_education %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_education_changelist' %}">
-                                                <i class="fa fa-graduation-cap"></i>
                                                 <span>{% trans 'Educations' %}</span>
                                             </a>
                                         </li>
@@ -175,7 +167,6 @@
                                     {% if perms.monitoring.view_sex %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_sex_changelist' %}">
-                                                <i class="fa fa-venus-mars"></i>
                                                 <span>{% trans 'Sex' %}</span>
                                             </a>
                                         </li>
@@ -183,7 +174,6 @@
                                     {% if perms.monitoring.view_lwrregion %}
                                         <li>
                                             <a href="{% url 'admin:monitoring_lwrregion_changelist' %}">
-                                                <i class="fa fa-venus-mars"></i>
                                                 <span>{% trans 'Regions' %}</span>
                                             </a>
                                         </li>
@@ -195,14 +185,13 @@
                         {% if perms.monitoring.view_filter %}
                             <li>
                                 <a href="{% url 'admin:monitoring_filter_changelist' %}">
-                                    <i class="fa fa-filter"></i>
                                     {% trans 'Segmentation' %}
                                 </a>
                             </li>
                         {% endif %}
                     </ul>
                 </li>
-
+                {# 6 Security #}
                 {% if request.user.is_superuser %}
                     <li>
                         <a href="javascript:;">
@@ -213,19 +202,16 @@
                         <ul class="sidebar-nav">
                             <li>
                                 <a href="{% url 'admin:auth_user_changelist' %}">
-                                    <i class="fa fa-circle-o"></i>
                                     {% trans 'Users' %}
                                 </a>
                             </li>
                             <li>
                                 <a href="{% url 'admin:auth_group_changelist' %}">
-                                    <i class="fa fa-circle-o"></i>
                                     {% trans 'Roles' %}
                                 </a>
                             </li>
                             <li>
                                 <a href="{% url 'admin:monitoring_profile_changelist' %}">
-                                    <i class="fa fa-circle-o"></i>
                                     {% trans 'Profiles' %}
                                 </a>
                             </li>

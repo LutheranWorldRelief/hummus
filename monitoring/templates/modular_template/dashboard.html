@@ -24,7 +24,7 @@
                                                      deselect-label="{% trans "Press to remove value selected" %}"
                                                      {% verbatim %} class="mt-1"
                                                      track-by="value" label="name" {% endverbatim %}
-                                                     placeholder="{% trans 'Select a Project' %}"
+                                                     placeholder="{% trans 'Write the project name' %}"
                                                      {% verbatim %} :options="list_projects" :searchable="true"
                                                      return="value">
                                         <template slot="singleLabel" slot-scope="{ option }">
@@ -42,7 +42,7 @@
                                                      deselect-label="{% trans "Press to remove value selected" %}"
                                                      {% verbatim %} class="mt-1"
                                                      track-by="value" label="name" {% endverbatim %}
-                                                     placeholder="{% trans 'Select a Project' %}"
+                                                     placeholder="{% trans 'Write the subproject name' %}"
                                                      {% verbatim %} :options="list_subprojects" :searchable="true"
                                                      return="value">
                                         <template slot="singleLabel" slot-scope="{ option }">
@@ -60,11 +60,11 @@
                                                              deselect-label="{% trans "Press to remove value selected" %}"
                                                              {% verbatim %} :multiple="true"
                                                              track-by="value" label="name" {% endverbatim %}
-                                                             placeholder="{% trans 'Select a Country' %}"
+                                                             placeholder="{% trans 'Write the name of the country' %}"
                                                              {% verbatim %} :options="list_countries" :searchable="true"
                                                              return="value">
                                                 <template slot="singleLabel" slot-scope="{ option }">
-                                                    <strong>{{ option.name }}</strong>
+                                                    {{ option.name }}
                                                 </template>
                                             </vue-multiselect>
                                             {% endverbatim %}
@@ -81,7 +81,7 @@
                                                              :searchable="true"
                                                              return="value">
                                                 <template slot="singleLabel" slot-scope="{ option }">
-                                                    <strong>{{ option.name }}</strong>
+                                                    {{ option.name }}
                                                 </template>
                                             </vue-multiselect>
                                             {% endverbatim %}
@@ -94,7 +94,6 @@
                                                 {% for number in '1234'|make_list %}
                                                     <option value="{{ number }}">{% trans Quarter %} {{ number }}</option>
                                                 {% endfor %}
-
                                             </select>
                                         </div>
                                     </div>
@@ -102,7 +101,7 @@
                                 <div class="col-lg-4 col-md-4 col-sm-12">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <label for="start_date">{% trans 'Year' %}:</label>
+                                            <label for="start_date">{% trans 'Fiscal Year' %}:</label>
                                             {% verbatim %}
                                             <select v-model="formInputs.year"
                                                     class="form-control"
@@ -138,7 +137,6 @@
                             <button type="button" class="btn btn-primary"
                                     @click="loadDataWithFilters">
                                 {% endverbatim %}
-                                <i class="fa fa-area-chart"></i>
                                 {% trans 'Graph' %}
                             </button>
                         </div>
@@ -166,7 +164,7 @@
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
             UrlLWRregions: "{% url 'monitoring:api-lwrregions' %}",
             UrlDatosProyecto: "{% url 'monitoring:graphic-proyecto' %}",
-            UrlDatosCantidadPaises: "{% url 'monitoring:cantidad-paises' %}",
+            UrlCantidadPaises: "{% url 'monitoring:cantidad-paises' %}",
             UrlDatosCantidadProyectos: "{% url 'monitoring:cantidad-proyectos' %}",
             UrlDatosCantidadSubproyectos: "{% url 'monitoring:cantidad-subproyectos' %}",
             UrlDatosCantidadParticipantes: "{% url 'monitoring:cantidad-participantes' %}",

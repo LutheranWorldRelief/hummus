@@ -1,7 +1,8 @@
 var graphicMixins = {
     data() {
         return {
-            typeGraphic: null
+            typeGraphic: null,
+            background_color: '#fff'
         }
     },
     methods: {
@@ -46,7 +47,7 @@ var graphicMixins = {
 
                 let option = {
                     color: [array_colors_lwr[1], array_colors_lwr[0]],
-                    backgroundColor: '#f7f7ff',
+                    backgroundColor: this.background_color,
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {
@@ -62,9 +63,7 @@ var graphicMixins = {
                     },
                     legend: {
                         data: [gettext('Men'), gettext('Women')],
-                        x: '50%',
-                        top: '6%',
-                        align: 'right',
+                        center: 'right'
                     },
                     grid: {
                         left: '3%',
@@ -81,13 +80,7 @@ var graphicMixins = {
                             axisLabel: {
                                 rotate: 90,
                                 verticalAlign: 'middle',
-                                //distance: 30,
-                                //formatter: '{value} °C'
                             },
-                            /*name: 'Participants by fiscal year',
-                            fontSize: 18,
-                            nameLocation: 'middle',
-                            nameGap: 35,*/
                         }
                     ],
                     yAxis: {
@@ -133,16 +126,7 @@ var graphicMixins = {
                             verticalAlign: 'middle',
                             distance: 30,
                         },
-                    })),
-                    title: {
-                        text: type === 'GraphicQuarter' ? gettext('Participants by quarter') : gettext('Participants by fiscal year'),
-                        x: 'center',
-                        textStyle: {
-                            fontWeight: 'bold',
-                            color: '#b2bb1e',
-                            paddingLeft: '3%'
-                        }
-                    }
+                    }))
                 };
                 myChart.setOption(option);
 
@@ -222,17 +206,7 @@ var graphicMixins = {
             };
 
             var option = {
-                backgroundColor: '#f7f7ff',
-                title: {
-                    text: gettext('Assigned goal - amound goal'),
-                    textStyle: {
-                        fontWeight: 'bold',
-                        color: '#b2bb1e',
-                        paddingLeft: '3%'
-                    },
-                    x: 'center',
-                    y: '1',
-                },
+                backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
                     right: '3%',
@@ -401,17 +375,7 @@ var graphicMixins = {
             let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
             option = {
-                backgroundColor: '#f7f7ff',
-                title: {
-                    text: gettext('Assigned goal - amound goal by sex'),
-                    textStyle: {
-                        fontWeight: 'bold',
-                        color: '#b2bb1e',
-                        paddingLeft: '3%'
-                    },
-                    x: 'center',
-                    y: '1',
-                },
+                backgroundColor: this.background_color,
                 "tooltip": {
                     "trigger": "axis",
                     "axisPointer": {
@@ -648,15 +612,6 @@ var graphicMixins = {
             }
 
             var option = {
-                title: {
-                    text: gettext('PARTICIPANTS BY AGE'),
-                    x: 'center',
-                    top: "10",
-                    textStyle: {
-                        color: '#b2bb1e',
-                        fontSize: 16
-                    }
-                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -673,7 +628,7 @@ var graphicMixins = {
                 },
                 legend: {
                     data: [gettext('Men'), gettext('Women')],
-                    top: '35',
+                    center: 'right',
                 },
                 grid: {
                     left: '3%',
@@ -801,15 +756,6 @@ var graphicMixins = {
             }
 
             var option = {
-                title: {
-                    text: gettext('PARTICIPANTS BY EDUCATION'),
-                    x: 'center',
-                    top: "10",
-                    textStyle: {
-                        color: '#b2bb1e',
-                        fontSize: 16
-                    }
-                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -826,7 +772,7 @@ var graphicMixins = {
                 },
                 legend: {
                     data: ['Men', 'Women'],
-                    top: "30",
+                    center: 'right',
                 },
                 grid: {
                     left: '3%',
