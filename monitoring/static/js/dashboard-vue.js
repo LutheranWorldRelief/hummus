@@ -4,13 +4,12 @@ var app = new Vue({
     el: '#app',
     mixins: [graphicMixins],
     data: {
+        check_filter: false,
         formInputs: {
             project: {},
             subproject: {},
             country: {},
             lwrregion: '',
-            year: '',
-            quarter: '',
         },
         requestParameters: {
             project_id: '',
@@ -22,13 +21,14 @@ var app = new Vue({
             country_id: [],
             lwrregion_id: '',
             year: '',
-            quarter: '',
+            quarter: [],
         },
-        hide_project: false,
+        show_project: false,
         list_projects: [],
         list_countries: [],
         list_lwrregions: [],
         list_subprojects: [],
+        list_years: [],
         quantity_projects: 0,
         quantity_subprojects: 0,
         quantity_participants: 0,
@@ -47,7 +47,18 @@ var app = new Vue({
             height: '500px'
         }
     },
+    watch: {
+        check_filter: function (val) {
+            if (val) {
+                // let div = document.getElementById('fiscal_year_input');
+                // console.log(div.classList.contains('d-none'));
+            }
+        }
+    },
     created() {
+        // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
+        this.list_years = years;
+
         $.get(UrlsAcciones.UrlProjects)
             .then(data => {
                 this.quantity_projects = Object.keys(data).length;
@@ -86,10 +97,10 @@ var app = new Vue({
 
 
             if (this.formInputs.project['value']) {
-                this.hide_project = true;
+                this.show_project = true;
                 this.requestParameters.project_id = this.formInputs.project['value'];
             } else {
-                this.hide_project = false;
+                this.show_project = false;
             }
 
             this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
@@ -97,7 +108,7 @@ var app = new Vue({
 
             $.post(UrlsAcciones.UrlCantidadPaises, this.requestParameters)
                 .then(response => {
-                    this.quantity_countries=response.cantidad_paises;
+                    this.quantity_countries = response.cantidad_paises;
                 });
 
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)

@@ -536,7 +536,7 @@ class DashboardView(DomainRequiredMixin, TemplateView):
         years = Project.objects.order_by('start__fyear').\
             values_list('start__fyear', flat=True).distinct()
         context['months'] = MONTHS
-        context['years'] = years
+        context['years'] = list(years)
         return context
 
 
