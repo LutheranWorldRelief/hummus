@@ -23,7 +23,7 @@ var graphicMixins = {
                         data: type === 'GraphicQuarter' ? this.hombresQ : this.hombres
                     },
                     {
-                        name: 'Woman',
+                        name: 'Women',
                         type: 'bar',
                         stack: true,
                         label: {
@@ -44,7 +44,7 @@ var graphicMixins = {
                     return index === series.length - 1
                 }
 
-                option = {
+                let option = {
                     color: [array_colors_lwr[1], array_colors_lwr[0]],
                     backgroundColor: '#f7f7ff',
                     tooltip: {
@@ -61,7 +61,7 @@ var graphicMixins = {
                         },
                     },
                     legend: {
-                        data: [gettext('Men'), gettext('Woman')],
+                        data: [gettext('Men'), gettext('Women')],
                         x: '50%',
                         top: '6%',
                         align: 'right',
@@ -146,9 +146,41 @@ var graphicMixins = {
                 };
                 myChart.setOption(option);
 
+                myChart.on('legendselectchanged', (params) => {
+                    let gender = null;
+                    let selected = params.selected;
+                    if (selected.Men && selected.Women) {
+                        gender = null;
+                    } else if (!selected.Men && selected.Women) {
+                        gender = gettext('Women');
+                    } else if (selected.Men && !selected.Women) {
+                        gender = gettext('Men');
+                    } else {
+                        gender = '';
+                    }
+
+                    option.series.map((item, index) => Object.assign(item, {
+                        type: 'bar',
+                        stack: true,
+                        label: {
+                            show: true,
+                            formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
+                            fontSize: isLastSeries(index) ? 13 : 11,
+                            color: isLastSeries(index) ? '#4f5f6f' : '#fff',
+                            position: isLastSeries(index) ? 'top' : 'inside',
+                            /* position: 'top',*/
+                            rotate: 90,
+                            verticalAlign: 'middle',
+                            distance: 30,
+                        },
+                    }));
+
+                    myChart.setOption(option);
+                })
+
                 resolved(true);
             });
-        },//========================================================================================================
+        },
         graficoMetas() {
 
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
@@ -764,24 +796,6 @@ var graphicMixins = {
 
             ];
 
-            var genFormatter = (series, gender = null) => {
-                return (param) => {
-                    let sum = 0;
-                    series.forEach(item => {
-                        if (gender === null) {
-                            sum += item.data[param.dataIndex];
-                        } else if (item.name === 'Men' && gender === 'Men') {
-                            sum += item.data[param.dataIndex];
-                        } else if (item.name === 'Women' && gender === 'Women') {
-                            sum += item.data[param.dataIndex];
-                        } else if (gender === '') {
-                            sum = 0;
-                        }
-                    });
-                    return sum
-                }
-            };
-
             function isLastSeries(index) {
                 return index === series.length - 1
             }
@@ -825,16 +839,23 @@ var graphicMixins = {
                 },
                 xAxis: {
                     type: 'category',
-                    data: ageRange
+                    data: ageRange,
+                    axisLabel: {
+                        rotate: 90,
+                        verticalAlign: 'middle',
+                    },
                 },
                 series: series.map((item, index) => Object.assign(item, {
                     type: 'bar',
                     stack: true,
                     label: {
                         show: true,
-                        formatter: isLastSeries(index) ? genFormatter(series) : null,
+                        formatter: isLastSeries(index) ? this.genFormatter(series) : null,
                         color: 'black',
-                        position: isLastSeries(index) ? 'top' : 'inside'
+                        position: isLastSeries(index) ? 'top' : 'inside',
+                        rotate: 90,
+                        verticalAlign: 'middle',
+                        distance: 30,
                     },
                 }))
 
@@ -842,16 +863,16 @@ var graphicMixins = {
 
             myChart.setOption(option);
 
-            myChart.on('legendselectchanged', function (params) {
+            myChart.on('legendselectchanged', (params) => {
 
                 let gender = null;
                 let selected = params.selected;
                 if (selected.Men && selected.Women) {
                     gender = null;
                 } else if (!selected.Men && selected.Women) {
-                    gender = 'Women';
+                    gender = gettext('Women');
                 } else if (selected.Men && !selected.Women) {
-                    gender = 'Men';
+                    gender = gettext('Men');
                 } else {
                     gender = '';
                 }
@@ -861,10 +882,11 @@ var graphicMixins = {
                     stack: true,
                     label: {
                         show: true,
-                        formatter: isLastSeries(index) ? genFormatter(series, gender) : null,
+                        formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
                         color: 'black',
                         position: isLastSeries(index) ? 'top' : 'inside'
                     },
+
                 }));
 
                 myChart.setOption(option);
@@ -1032,16 +1054,32 @@ var graphicMixins = {
                 "end": 35
             }]
         },
-        genFormatter(series) {
-            return (param) => {
-                //return this.typeGraphic === 'GraphicQuarter' ? this.totalByBarQ[param.dataIndex] : this.totalByBar[param.dataIndex]
+        genFormatter(series, gender = null) {
 
+            /*  let sum = 0;
+              series.forEach(item => {
+                  sum += item.data[param.dataIndex];
+              });
+              return sum;
+          }*/
+
+            return (param) => {
                 let sum = 0;
                 series.forEach(item => {
-                    sum += item.data[param.dataIndex];
+                    if (gender === null) {
+                        sum += item.data[param.dataIndex];
+                    } else if (item.name === gettext('Men') && gender === gettext('Men')) {
+                        sum += item.data[param.dataIndex];
+                    } else if (item.name === gettext('Women') && gender === gettext('Women')) {
+                        sum += item.data[param.dataIndex];
+                    } else if (gender === '') {
+                        sum = 0;
+                    }
                 });
-                return sum;
+                //console.log(gender, 'Genero');
+                return sum
             }
+
         },
         formatAnioQuater(anioQuater) {
             let quater = anioQuater.split('Q');
@@ -1049,11 +1087,9 @@ var graphicMixins = {
         },
         showGraphicMetaSexo(option) {
 
-            if (option == 1) {
-                this.styleGraphic.position = 'relative'
-            } else {
-                this.styleGraphic.position = 'fixed'
-            }
+            if (option == 1)
+                this.styleGraphic.position = 'relative';
+
         },
         clearData() {
             /** Var gráfico participantes por año fiscal*/
@@ -1064,7 +1100,7 @@ var graphicMixins = {
             this.totalByBar = []
             this.efauldSerie = []
             this.metaPoranio = []
-                /** Var gráfico participantes quarter */
+            /** Var gráfico participantes quarter */
             this.aniosQ = []
             this.hombresQ = []
             this.mujeresQ = []
@@ -1072,5 +1108,6 @@ var graphicMixins = {
             this.totalByBarQ = []
             this.defauldSerieQ = []
         }
-    }
+    },
+
 };

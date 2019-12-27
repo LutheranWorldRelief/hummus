@@ -66,6 +66,8 @@ var app = new Vue({
                 this.hide_project = false;
             } */
 
+           this.hide_project = (this.empty(this.requestParameters.project_id))?false:true;
+
             /* this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
              this.requestParameters.country_id = this.formInputs.country; */
 
@@ -106,7 +108,7 @@ var app = new Vue({
                 .then(((response) => {
                     this.clearData();
                     let data = response;
-                    console.log(data);
+
                     this.tatals = data['totals'];
                     delete data.totals;
 
@@ -221,7 +223,6 @@ var app = new Vue({
 
             if (countries.length > 0)
                 this.requestParameters.country_id = countries;
-
         },
         empty(data) {
 

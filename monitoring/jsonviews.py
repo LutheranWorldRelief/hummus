@@ -391,8 +391,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = ProjectContact.objects.all()
-        print('Desde jsonView')
-        print(self.request.GET.get('year'))
+
         if self.request.GET.get('year'):
             year = int(self.request.GET.get('year'))
             queryset = queryset.filter(date_entry_project__fyear=year)
@@ -401,8 +400,9 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
         #if self.request.GET.get('lwrregion_id'):
             #queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
-        if self.request.GET.get('country_id'):
-            queryset = queryset.filter(country_id=self.request.GET.get('country_id'))
+
+        #if self.request.GET.get('country_id[]'):
+            #queryset = queryset.filter(country_id=self.request.GET.get('country_id[]'))
         if self.request.GET.get('subproject_id'):
             queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
