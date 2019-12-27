@@ -47,14 +47,6 @@ var app = new Vue({
             height: '500px'
         }
     },
-    watch: {
-        check_filter: function (val) {
-            if (val) {
-                // let div = document.getElementById('fiscal_year_input');
-                // console.log(div.classList.contains('d-none'));
-            }
-        }
-    },
     created() {
         // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
         this.list_years = years;
