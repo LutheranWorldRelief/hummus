@@ -32,6 +32,7 @@ var app = new Vue({
         quantity_projects: 0,
         quantity_subprojects: 0,
         quantity_participants: 0,
+        quantity_countries: 0,
         goal_participants: 0,
         goal_percentage: 0,
         width_progress_bar: {
@@ -93,6 +94,11 @@ var app = new Vue({
 
             this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
             this.requestParameters.country_id = this.formInputs.country;
+
+            $.post(UrlsAcciones.UrlCantidadPaises, this.requestParameters)
+                .then(response => {
+                    this.quantity_countries=response.cantidad_paises;
+                });
 
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
                 .then(((response) => {
