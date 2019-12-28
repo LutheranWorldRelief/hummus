@@ -168,6 +168,7 @@
                                     <button type="button" class="btn w-100 icon"
                                             :class="{ 'btn-outline-success': !country.active, 'btn-success': country.active }"
                                             v-on:click="changeActiveCountry(country)">
+                                        <i class="fa" :class="{'fa-check':country.active}"></i>
                                         <span>{{ country.name }}</span>
                                     </button>
 

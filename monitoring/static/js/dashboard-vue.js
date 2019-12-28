@@ -57,16 +57,7 @@ var app = new Vue({
         },
         loadDataForDashboard() {
 
-            this.hide_project = (this.empty(this.requestParameters.project_id)) ? false : true;
-
-            console.log(this.formInputs.country_id);
-            /* this.requestParameters.lwrregion_id = this.formInputs.lwrregion;
-             this.requestParameters.country_id = this.formInputs.country; */
-
-            $.post(UrlsAcciones.UrlCantidadPaises, this.requestParameters)
-                .then(response => {
-                    this.quantity_countries = response.cantidad_paises;
-                });
+            this.show_project = !this.empty(this.requestParameters.project_id);
 
             $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
                 .then(((response) => {
@@ -77,7 +68,7 @@ var app = new Vue({
                     this.width_progress_bar.width = this.goal_percentage + '%';
                 }));
 
-            if (!this.empty(this.requestParameters.project_id)) {
+            if (this.show_project) {
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
 
@@ -179,6 +170,7 @@ var app = new Vue({
             $.post(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
                     let countries = data['paises'];
+                    this.quantity_countries = countries.length;
                     for (const key in countries) {
                         this.list_countries.push({
                             name: countries[key]['country'],
@@ -216,8 +208,10 @@ var app = new Vue({
         getSelectedCountries() {
 
             let countries = [];
-            for (const data of this.formInputs.country_id)
-                countries.push(data['value']);
+            for (const country of this.list_countries) {
+                if (country.active)
+                    countries.push(country.value);
+            }
 
             if (countries.length > 0)
                 this.requestParameters.country_id = countries;
