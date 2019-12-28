@@ -6,7 +6,7 @@ var graphicMixins = {
         }
     },
     methods: {
-        graphicParticipats(type) {
+        graphicParticipants(type) {
             return new Promise((resolved, reject) => {
                 let myChart = echarts.init(document.getElementById(type === 'GraphicQuarter' ? 'TrimestralGraph' : 'FiscalYearGraph'));
 
@@ -837,6 +837,100 @@ var graphicMixins = {
 
                 myChart.setOption(option);
             })
+        },
+        graficoParticipantesSexo() {
+
+                    let data = this.tatals;
+                    let total = data.T;
+
+                    let totalMen = {
+                        name: 'Men',
+                        value: data.M
+                    };
+
+                    let totalWomen = {
+                        name: 'Women',
+                        value: data.F
+                    };
+                    this.graphicSexo(total, totalMen, totalWomen);
+
+        },
+        graphicSexo(total, totalMen, totalWomen) {
+            const myChart = echarts.init(document.getElementById('SexGraph'));
+
+            const colors = {
+                men: array_colors_lwr[1],
+                women: array_colors_lwr[0]
+            };
+
+            const option = {
+                toolbox: {
+                    show: true,
+                    feature: {
+                        restore: {
+                            title: 'Restore'
+                        },
+                        saveAsImage: {
+                            title: 'Download as image'
+                        },
+                        dataView: {
+                            title: 'Show data',
+                            readOnly: true,
+                            lang: ['Data participants reached, by sex', 'Close', 'Apply']
+                        },
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['Men', 'Women']
+                },
+                series: [
+                    {
+                        name: '',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [{
+                            name: totalMen.name,
+                            value: totalMen.value,
+                            itemStyle: {
+                                color: colors.men
+                            }
+                        }, {
+                            name: totalWomen.name,
+                            value: totalWomen.value,
+                            itemStyle: {
+                                color: colors.women
+                            }
+                        }],
+                        label: {
+                            show: true,
+                            formatter: function (params) {
+                                return params.name + ': ' + params.percent + ' %, ' + params.value;
+                            }
+                        },
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+
+            myChart.setOption(option);
+
+            window.onresize = function () {
+                myChart.resize();
+            };
         },
         graphicGoalProject() {
             $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
