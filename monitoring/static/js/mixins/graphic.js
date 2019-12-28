@@ -2,11 +2,19 @@ var graphicMixins = {
     data() {
         return {
             typeGraphic: null,
-            background_color: '#fff'
+            background_color: '#fff',
+            colors: {
+                men: array_colors_lwr[1],
+                women: array_colors_lwr[0]
+            },
+            names_legends: [
+                gettext('Men'),
+                gettext('Women')
+            ]
         }
     },
     methods: {
-        graphicParticipats(type) {
+        graphicParticipants(type) {
             return new Promise((resolved, reject) => {
                 let myChart = echarts.init(document.getElementById(type === 'GraphicQuarter' ? 'TrimestralGraph' : 'FiscalYearGraph'));
 
@@ -46,7 +54,7 @@ var graphicMixins = {
                 }
 
                 let option = {
-                    color: [array_colors_lwr[1], array_colors_lwr[0]],
+                    color: [this.colors.men, this.colors.women],
                     backgroundColor: this.background_color,
                     tooltip: {
                         trigger: 'axis',
@@ -62,7 +70,7 @@ var graphicMixins = {
                         },
                     },
                     legend: {
-                        data: [gettext('Men'), gettext('Women')],
+                        data: this.names_legends,
                         center: 'right'
                     },
                     grid: {
@@ -97,7 +105,6 @@ var graphicMixins = {
                         "end": 100,
                         handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
                         handleSize: '110%',
-                        //backgroundColor:'rgba(51,255,204,.8)',
                         handleStyle: {
                             color: 'rgba(144,151,156,.8)',
                         },
@@ -121,7 +128,6 @@ var graphicMixins = {
                             fontSize: isLastSeries(index) ? 13 : 11,
                             color: isLastSeries(index) ? '#4f5f6f' : '#fff',
                             position: isLastSeries(index) ? 'top' : 'inside',
-                            /* position: 'top',*/
                             rotate: 90,
                             verticalAlign: 'middle',
                             distance: 30,
@@ -131,16 +137,14 @@ var graphicMixins = {
                 myChart.setOption(option);
 
                 myChart.on('legendselectchanged', (params) => {
-                    let gender = null;
+                    let gender = '';
                     let selected = params.selected;
                     if (selected.Men && selected.Women) {
                         gender = null;
                     } else if (!selected.Men && selected.Women) {
-                        gender = gettext('Women');
+                        gender = this.names_legends[1];
                     } else if (selected.Men && !selected.Women) {
-                        gender = gettext('Men');
-                    } else {
-                        gender = '';
+                        gender = this.names_legends[0];
                     }
 
                     option.series.map((item, index) => Object.assign(item, {
@@ -160,7 +164,7 @@ var graphicMixins = {
                     }));
 
                     myChart.setOption(option);
-                })
+                });
 
                 resolved(true);
             });
@@ -562,23 +566,18 @@ var graphicMixins = {
         graphicAge(total, ageRange, participants) {
             const myChart = echarts.init(document.getElementById('AgeGraph'));
 
-            const colors = {
-                men: array_colors_lwr[1],
-                women: array_colors_lwr[0]
-            };
-
             const series = [
                 {
                     name: 'Men',
                     itemStyle: {
-                        color: colors.men
+                        color: this.colors.men
                     },
                     data: participants.fParticipants
                 },
                 {
                     name: 'Women',
                     itemStyle: {
-                        color: colors.women
+                        color: this.colors.women
                     },
                     data: participants.mParticipants
                 },
@@ -595,9 +594,9 @@ var graphicMixins = {
                     series.forEach(item => {
                         if (gender === null) {
                             sum += item.data[param.dataIndex];
-                        } else if (item.name === 'Men' && gender === 'Men') {
+                        } else if (item.name === this.names_legends[0] && gender === this.names_legends[0]) {
                             sum += item.data[param.dataIndex];
-                        } else if (item.name === 'Women' && gender === 'Women') {
+                        } else if (item.name === this.names_legends[1] && gender === this.names_legends[1]) {
                             sum += item.data[param.dataIndex];
                         } else if (gender === '') {
                             sum = 0;
@@ -627,7 +626,7 @@ var graphicMixins = {
                     },
                 },
                 legend: {
-                    data: [gettext('Men'), gettext('Women')],
+                    data: this.names_legends,
                     center: 'right',
                 },
                 grid: {
@@ -665,9 +664,9 @@ var graphicMixins = {
                 if (selected.Men && selected.Women) {
                     gender = null;
                 } else if (!selected.Men && selected.Women) {
-                    gender = 'Women';
+                    gender = this.names_legends[0];
                 } else if (selected.Men && !selected.Women) {
-                    gender = 'Men';
+                    gender = this.names_legends[1];
                 } else {
                     gender = '';
                 }
@@ -724,23 +723,18 @@ var graphicMixins = {
         graphicEducacion(total, ageRange, participants) {
             const myChart = echarts.init(document.getElementById('EducationGraph'));
 
-            const colors = {
-                men: array_colors_lwr[1],
-                women: array_colors_lwr[0]
-            };
-
             const series = [
                 {
                     name: 'Men',
                     itemStyle: {
-                        color: colors.men
+                        color: this.colors.men
                     },
                     data: participants.fParticipants
                 },
                 {
                     name: 'Women',
                     itemStyle: {
-                        color: colors.women
+                        color: this.colors.women
                     },
                     data: participants.mParticipants
                 },
@@ -771,7 +765,7 @@ var graphicMixins = {
                     },
                 },
                 legend: {
-                    data: ['Men', 'Women'],
+                    data: this.names_legends,
                     center: 'right',
                 },
                 grid: {
@@ -816,9 +810,9 @@ var graphicMixins = {
                 if (selected.Men && selected.Women) {
                     gender = null;
                 } else if (!selected.Men && selected.Women) {
-                    gender = gettext('Women');
+                    gender = this.names_legends[1];
                 } else if (selected.Men && !selected.Women) {
-                    gender = gettext('Men');
+                    gender = this.names_legends[0];
                 } else {
                     gender = '';
                 }
@@ -838,14 +832,101 @@ var graphicMixins = {
                 myChart.setOption(option);
             })
         },
+        graficoParticipantesSexo() {
+
+            let data = this.tatals;
+            let total = data.T;
+
+            let totalMen = {
+                name: 'Men',
+                value: data.M
+            };
+
+            let totalWomen = {
+                name: 'Women',
+                value: data.F
+            };
+            this.graphicSexo(total, totalMen, totalWomen);
+
+        },
+        graphicSexo(total, totalMen, totalWomen) {
+            const myChart = echarts.init(document.getElementById('SexGraph'));
+
+            const option = {
+                toolbox: {
+                    show: true,
+                    feature: {
+                        restore: {
+                            title: 'Restore'
+                        },
+                        saveAsImage: {
+                            title: 'Download as image'
+                        },
+                        dataView: {
+                            title: 'Show data',
+                            readOnly: true,
+                            lang: ['Data participants reached, by sex', 'Close', 'Apply']
+                        },
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: this.names_legends
+                },
+                series: [
+                    {
+                        name: '',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [{
+                            name: totalMen.name,
+                            value: totalMen.value,
+                            itemStyle: {
+                                color: this.colors.men
+                            }
+                        }, {
+                            name: totalWomen.name,
+                            value: totalWomen.value,
+                            itemStyle: {
+                                color: this.colors.women
+                            }
+                        }],
+                        label: {
+                            show: true,
+                            formatter: function (params) {
+                                return params.name + ': ' + params.percent + ' %, ' + params.value;
+                            }
+                        },
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+
+            myChart.setOption(option);
+
+            window.onresize = function () {
+                myChart.resize();
+            };
+        },
         graphicGoalProject() {
             $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
                 .then(response => {
                     const chart_goal_project = echarts.init(document.getElementById('ProjectGoalsGraph'));
                     let data_project = response.proyectos_metas;
                     let data_chart = {
-                        name_chart: gettext('Total participants achieved and goals, by sex'),
-                        color_name_chart: array_colors_lwr[1],
                         name_project: data_project['categorias'][0],
                         legends: [gettext('Participants'), gettext('Goals')],
                         legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
@@ -870,15 +951,6 @@ var graphicMixins = {
 
 
                     let option = {
-                        title: {
-                            text: data_chart.name_chart,
-                            x: 'center',
-                            top: "10",
-                            textStyle: {
-                                color: '#b2bb1e',
-                                fontSize: data_project.font_size
-                            }
-                        },
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
@@ -923,7 +995,7 @@ var graphicMixins = {
                                 },
                                 margin: 30
                             },
-                            data: [gettext('Men'), gettext('Women')]
+                            data: this.names_legends
                         }, {
                             data: []
                         }],
@@ -1002,27 +1074,20 @@ var graphicMixins = {
         },
         genFormatter(series, gender = null) {
 
-            /*  let sum = 0;
-              series.forEach(item => {
-                  sum += item.data[param.dataIndex];
-              });
-              return sum;
-          }*/
-
             return (param) => {
                 let sum = 0;
                 series.forEach(item => {
                     if (gender === null) {
                         sum += item.data[param.dataIndex];
-                    } else if (item.name === gettext('Men') && gender === gettext('Men')) {
+                    } else if (item.name === this.names_legends[0] && gender === this.names_legends[0]) {
                         sum += item.data[param.dataIndex];
-                    } else if (item.name === gettext('Women') && gender === gettext('Women')) {
+                    } else if (item.name === this.names_legends[1] && gender === this.names_legends[1]) {
                         sum += item.data[param.dataIndex];
                     } else if (gender === '') {
                         sum = 0;
                     }
                 });
-                //console.log(gender, 'Genero');
+
                 return sum
             }
 
@@ -1039,20 +1104,20 @@ var graphicMixins = {
         },
         clearData() {
             /** Var gráfico participantes por año fiscal*/
-            this.anios = []
-            this.hombres = []
-            this.mujeres = []
-            this.tatal = {}
-            this.totalByBar = []
-            this.efauldSerie = []
-            this.metaPoranio = []
+            this.anios = [];
+            this.hombres = [];
+            this.mujeres = [];
+            this.tatal = {};
+            this.totalByBar = [];
+            this.efauldSerie = [];
+            this.metaPoranio = [];
             /** Var gráfico participantes quarter */
-            this.aniosQ = []
-            this.hombresQ = []
-            this.mujeresQ = []
-            this.tatalsQ = {}
-            this.totalByBarQ = []
-            this.defauldSerieQ = []
+            this.aniosQ = [];
+            this.hombresQ = [];
+            this.mujeresQ = [];
+            this.tatalsQ = {};
+            this.totalByBarQ = [];
+            this.defauldSerieQ = [];
         }
     },
 

@@ -100,13 +100,16 @@ var app = new Vue({
                     this.tatals = data['totals'];
                     delete data.totals;
 
+                    // funcion to graph the participants by sex
+                    this.graficoParticipantesSexo();
+
                     setZeroIsUndefined = (data) => {
                         return data === undefined ? 0 : data
                     };
                     /** Recorrer participantes por anio fisca */
                     for (const participants in data['year']) {
                         this.anios.push(participants);
-                        this.totalByBar.push(setZeroIsUndefined(data['year'][participants].T))
+                        this.totalByBar.push(setZeroIsUndefined(data['year'][participants].T));
                         this.mujeres.push(setZeroIsUndefined(data['year'][participants].F));
                         this.hombres.push(setZeroIsUndefined(data['year'][participants].M));
                         this.defauldSerie.push(0);
@@ -128,17 +131,18 @@ var app = new Vue({
                         this.defauldSerieQ.push(0);
                     }
 
-                    this.graphicParticipats('').then(() => {
-                        this.graphicParticipats('GraphicQuarter');
+                    this.graphicParticipants('').then(() => {
+                        this.graphicParticipants('GraphicQuarter');
                         this.graficoMetas();
                         this.graficoMetasLinea();
                     });
 
                 }));
-            // funcion to graph the quantity of participants by age
+            // funcion to graph the participants by age
             this.graficoParticipantesEdad();
-            // funcion to graph the quantity of participants by education
+            // funcion to graph the participants by education
             this.graficoParticipantesEduacion();
+
         }
         ,
         percentage(dividend, divider) {
