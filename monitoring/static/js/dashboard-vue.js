@@ -185,7 +185,8 @@ var app = new Vue({
                     for (const key in data) {
                         this.list_lwrregions.push({
                             name: data[key],
-                            value: key
+                            value: key,
+                            active: false
                         });
                     }
                 });
@@ -193,19 +194,21 @@ var app = new Vue({
         getValueOfFilter() {
             return new Promise((resolved, reject) => {
 
-                for (var key in this.formInputs) {
-
-                    if (!this.empty(this.formInputs[key]['value']))
+                for (let key in this.formInputs) {
+                    if (!this.empty(this.formInputs[key]['value'])) {
                         this.requestParameters[key] = this.formInputs[key]['value'];
-                    else if (typeof this.formInputs[key] != 'object' && !this.empty(this.formInputs[key]))
+                    } else if (typeof this.formInputs[key] != 'object' && !this.empty(this.formInputs[key])) {
                         this.requestParameters[key] = this.formInputs[key];
+                    } else if (key === 'quarter' && this.formInputs[key].length > 0 && this.check_filter) {
+                        this.requestParameters[key] = this.formInputs[key];
+                    }
                 }
 
-                this.getSelectedCountries();
+                this.getSelectedCountriesRegions();
                 resolved(true);
             })
         },
-        getSelectedCountries() {
+        getSelectedCountriesRegions() {
 
             let countries = [];
             for (const country of this.list_countries) {
@@ -215,6 +218,15 @@ var app = new Vue({
 
             if (countries.length > 0)
                 this.requestParameters.country_id = countries;
+
+            let lwr_regions = [];
+            for (const region of this.list_lwrregions) {
+                if (region.active)
+                    lwr_regions.push(region.value)
+            }
+
+            if (lwr_regions.length > 0)
+                this.requestParameters.lwrregion_id = lwr_regions
         },
         empty(data) {
 
@@ -223,10 +235,18 @@ var app = new Vue({
 
             return false;
         },
-        changeActiveCountry(country) {
-            for (const row of this.list_countries) {
-                if (row.name.toLowerCase() === country.name.toLowerCase()) {
-                    row.active = !row.active;
+        changeActiveStatus(register, type_register = 'country') {
+            if (type_register === 'country') {
+                for (const row of this.list_countries) {
+                    if (row.name.toLowerCase() === register.name.toLowerCase()) {
+                        row.active = !row.active;
+                    }
+                }
+            } else {
+                for (const row of this.list_lwrregions) {
+                    if (row.name.toLowerCase() === register.name.toLowerCase()) {
+                        row.active = !row.active;
+                    }
                 }
             }
         }
