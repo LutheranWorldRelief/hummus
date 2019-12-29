@@ -52,7 +52,7 @@ class LWRRegionQuerySet(models.QuerySet):
     def for_user(self, user):
         if hasattr(user, 'profile'):
             if user.profile.lwrregions.exists():
-                return user.profile.lwrregions
+                return user.profile.lwrregions.all()
         else:
             raise PermissionDenied(_("Current user has no profile."))
         return self
