@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, ListView
 
 from Levenshtein import distance
 
-from .models import Contact, ProjectContact, SubProject, Project,Country
+from .models import Contact, ProjectContact, SubProject, Project, Country
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
@@ -456,6 +456,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
         return context
 
+
 class Countries(JSONResponseMixin, TemplateView):
     """
     Countries
@@ -478,19 +479,20 @@ class Countries(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        countries=queryset.order_by().values('id', 'name')
+        countries = queryset.order_by().values('id', 'name')
         paises = []
         for row in countries:
             paises.append({
                 'id': row['id'],
                 'name': row['name'],
                 'active': row['id'] in self.request.POST.getlist("paises[]") or
-                          paises_todos})
+                paises_todos})
 
-        context['paises']= paises
+        context['paises'] = paises
         context['todos'] = {'todos': paises_todos}
 
         return context
+
 
 class ProjectAPIListView(JSONResponseMixin, ListView):
     """
