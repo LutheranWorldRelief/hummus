@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, ListView
 
 from Levenshtein import distance
 
-from .models import Contact, ProjectContact, SubProject, Project, Country
+from .models import Contact, ProjectContact, SubProject, Project
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
@@ -467,7 +467,7 @@ class Countries(JSONResponseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {}
-        queryset = Country.objects.all()
+        queryset = ProjectContact.objects.all()
 
         paises_todos = (self.request.GET.get('paises_todos') == 'true')
         ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
@@ -479,13 +479,19 @@ class Countries(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        countries = queryset.order_by().values('id', 'name')
+        countries = queryset.filter(project__countries__isnull=False)\
+            .order_by('project__countries__id')\
+            .distinct('project__countries__id')\
+            .values(
+            country_id=F('project__countries__id'),
+            country_name=F(_('project__countries__name'))
+        )
         paises = []
         for row in countries:
             paises.append({
-                'id': row['id'],
-                'name': row['name'],
-                'active': row['id'] in self.request.POST.getlist("paises[]") or
+                'id': row['country_id'],
+                'name': row['country_name'],
+                'active': row['country_id'] in self.request.POST.getlist("paises[]") or
                 paises_todos})
 
         context['paises'] = paises
