@@ -8,30 +8,30 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
         <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
-                <ul role="tablist" class="nav nav-tabs pull-left">
+                <ul role="tablist" class="nav nav-tabs pull-left" id="tab_quarter-click">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#quartertab" role="tab"
-                           data-toggle="tab">{% trans 'Participants by quarter' %}</a>
-                    </li>
-                    <li class="nav-item" @click="showGraphicMetaSexo(1)">
-                        <a class="nav-link" href="#fiscalyeartab" role="tab"
+                        <a class="nav-link active" href="#fiscalyeartab" role="tab"
                            data-toggle="tab">{% trans 'Participants by fiscal year' %}</a>
+                    </li>
+                    <li class="nav-item" >
+                        <a class="nav-link" href="#quartertab" role="tab"
+                           data-toggle="tab">{% trans 'Participants by quarter' %}</a>
                     </li>
                 </ul>
             </div>
             <div class="card-block">
                 <div class="tab-content">
-                    <div role="tabpanel" class="container-fluid active tab-pane fade show" id="quartertab">
+                    <div role="tabpanel" class="container-fluid tab-pane active fade show" id="fiscalyeartab">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
+                                 <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="container-fluid fade active tab-pane" id="fiscalyeartab">
+                    <div role="tabpanel" class="container-fluid fade tab-pane" id="quartertab">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
+                                <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
                             </div>
                         </div>
                     </div>
@@ -91,13 +91,11 @@
                         <div class="row">
                             <div class="col-12">
                                 {% verbatim %}
-                                <div id="MetaParticipantesPorSexo" :style="styleGoalsGraphic"></div>
+                                <div id="MetaParticipantesPorSexo" style="height:500px; width: 100%;"></div>
                                 {% endverbatim %}
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

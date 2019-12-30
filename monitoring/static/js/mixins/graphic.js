@@ -166,6 +166,7 @@ var graphicMixins = {
 
                     myChart.setOption(option);
                 });
+                this.responsiveChart('#tab_quarter-click li', myChart);
 
                 resolved(true);
             });
@@ -373,6 +374,7 @@ var graphicMixins = {
                         },
                     ]
             };
+            this.responsiveChart('', myChart);
             myChart.setOption(option);
         },
         graficoMetasLinea() {
@@ -915,12 +917,8 @@ var graphicMixins = {
                 ]
             };
 
-
             myChart.setOption(option);
-
-            window.onresize = function () {
-                myChart.resize();
-            };
+            this.responsiveChart('', myChart);
         },
         graphicGoalProject() {
             $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
@@ -1044,6 +1042,7 @@ var graphicMixins = {
                     };
 
                     chart_goal_project.setOption(option);
+                    this.responsiveChart('', chart_goal_project);
                 });
         },
         getGraphicZoom() {
@@ -1119,6 +1118,17 @@ var graphicMixins = {
             this.tatalsQ = {};
             this.totalByBarQ = [];
             this.defauldSerieQ = [];
+        },
+        responsiveChart(idtab, instance_echarts) {
+            if (idtab.indexOf('.') > -1 || idtab.indexOf('#') > -1) {
+                $(idtab).on('shown.bs.tab', function () {
+                    instance_echarts.resize();
+                });
+            }
+
+            window.onresize = function () {
+                instance_echarts.resize();
+            };
         }
     },
 
