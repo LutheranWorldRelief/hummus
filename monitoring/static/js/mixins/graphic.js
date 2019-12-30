@@ -10,7 +10,8 @@ var graphicMixins = {
             names_legends: [
                 gettext('Men'),
                 gettext('Women')
-            ]
+            ],
+            icon_graph: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
         }
     },
     methods: {
@@ -103,7 +104,7 @@ var graphicMixins = {
                         bottom: 0,
                         "start": 50,
                         "end": 100,
-                        handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                        handleIcon: this.icon_graph,
                         handleSize: '110%',
                         handleStyle: {
                             color: 'rgba(144,151,156,.8)',
@@ -527,7 +528,7 @@ var graphicMixins = {
                 ]
             };
             myChart.setOption(option);
-            this.styleGraphic.position = 'fixed';
+            this.styleGoalsGraphic.position = 'fixed';
         },
         graficoParticipantesEdad() {
             $.post(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
@@ -1055,7 +1056,7 @@ var graphicMixins = {
                 bottom: 30,
                 "start": 30,
                 "end": 100,
-                handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+                handleIcon: this.icon_graph,
                 handleSize: '110%',
                 handleStyle: {
                     color: 'rgba(144,151,156,.8)',
@@ -1099,7 +1100,7 @@ var graphicMixins = {
         showGraphicMetaSexo(option) {
 
             if (option == 1)
-                this.styleGraphic.position = 'relative';
+                this.styleGoalsGraphic.position = 'relative';
 
         },
         clearData() {

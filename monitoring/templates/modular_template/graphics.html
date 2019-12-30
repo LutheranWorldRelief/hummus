@@ -5,30 +5,41 @@
     <p class="title-description"> {% trans 'Graphics' %} </p>
 </div>
 <div class="row sameheight-container-">
-    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
+        <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
-                <div class="header-block">
-                    <h3 class="title">{% trans 'Participants by quarter' %}</h3>
-                </div>
+                <ul role="tablist" class="nav nav-tabs pull-left">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#quartertab" role="tab"
+                           data-toggle="tab">{% trans 'Participants by quarter' %}</a>
+                    </li>
+                    <li class="nav-item" @click="showGraphicMetaSexo(1)">
+                        <a class="nav-link" href="#fiscalyeartab" role="tab"
+                           data-toggle="tab">{% trans 'Participants by fiscal year' %}</a>
+                    </li>
+                </ul>
             </div>
-            <div class="card-body">
-                <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
+            <div class="card-block">
+                <div class="tab-content">
+                    <div role="tabpanel" class="container-fluid active tab-pane fade show" id="quartertab">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="container-fluid fade active tab-pane" id="fiscalyeartab">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col">
-        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
-            <div class="card-header card-header-sm bordered">
-                <div class="header-block">
-                    <h3 class="title">{% trans 'Participants by fiscal year' %}</h3>
-                </div>
-            </div>
-            <div class="card-body">
-                <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
-            </div>
-        </div>
-    </div>
+
     <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col">
         <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
             <div class="card-header card-header-sm bordered">
@@ -53,8 +64,8 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
-        <div class="card" data-exclude="xs" id="participants-Information">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col" style="height: 625px;">
+        <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
                 <ul role="tablist" class="nav nav-tabs pull-left">
                     <li class="nav-item">
@@ -80,7 +91,7 @@
                         <div class="row">
                             <div class="col-12">
                                 {% verbatim %}
-                                <div id="MetaParticipantesPorSexo" :style="styleGraphic"></div>
+                                <div id="MetaParticipantesPorSexo" :style="styleGoalsGraphic"></div>
                                 {% endverbatim %}
                             </div>
                         </div>

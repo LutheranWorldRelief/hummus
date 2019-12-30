@@ -38,9 +38,15 @@ var app = new Vue({
         anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], metaPoranio: [],
         /** Var gráfico participantes quarter */
         aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
-        show: true, styleGraphic: {
+        show: true,
+        styleGoalsGraphic: {
             position: '',
             height: '500px'
+        },
+        styles_quar_fiscal_graphic: {
+            position: '',
+            height: '500px',
+            width: '100%'
         }
     },
     created() {
