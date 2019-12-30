@@ -37,7 +37,6 @@ urlpatterns = [
          name='cantidad-subproyectos'),
     path('graphic/cantidad-participantes/',
          dashboard.cantidad_participantes, name='cantidad-participantes'),
-    path('graphic/paises/', dashboard.get_paises, name='graphic-paises'),
     path('graphic/rubros/', dashboard.get_rubros, name='graphic-rubros'),
     path('graphic/grafico-organizaciones/', dashboard.grafico_organizaciones,
          name='grafico-organizaciones'),
@@ -86,6 +85,7 @@ urlpatterns = [
 
     # Participants counter API
     path('api/participants/', jsonviews.ProjectContactCounter.as_view()),
+    path('graphic/paises/', jsonviews.Countries.as_view(), name='graphic-paises'),
 
     # Projects API
     path('api/years/', jsonviews.YearsAPI.as_view()),

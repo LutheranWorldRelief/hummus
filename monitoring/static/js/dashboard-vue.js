@@ -177,14 +177,14 @@ var app = new Vue({
                     }
                 });
 
-            $.post(UrlsAcciones.UrlCountries, this.requestParameters)
+            $.get(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
                     for (const key in countries) {
                         this.list_countries.push({
-                            name: countries[key]['country'],
-                            value: countries[key]['id'],
+                            name: countries[key].name,
+                            value: countries[key].id,
                             active: countries[key]['active'],
                         });
                     }

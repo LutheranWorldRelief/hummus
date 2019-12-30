@@ -457,6 +457,50 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         return context
 
 
+class Countries(JSONResponseMixin, TemplateView):
+    """
+    Countries
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        queryset = ProjectContact.objects.all()
+
+        paises_todos = (self.request.GET.get('paises_todos') == 'true')
+        ''  # TODO: verify if variable will be occupied but delete
+        ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
+
+        if self.request.GET.get('lwrregion_id'):
+            queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
+        if self.request.GET.get('country_id[]'):
+            queryset = queryset.filter(id=self.request.GET.get('country_id[]'))
+        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+
+        countries = queryset.filter(project__countries__isnull=False)\
+            .order_by('project__countries__id')\
+            .distinct('project__countries__id')\
+            .values(
+            country_id=F('project__countries__id'),
+            country_name=F(_('project__countries__name'))
+        )
+        paises = []
+        for row in countries:
+            paises.append({
+                'id': row['country_id'],
+                'name': row['country_name'],
+                'active': row['country_id'] in self.request.POST.getlist("paises[]") or
+                paises_todos})
+
+        context['paises'] = paises
+        context['todos'] = {'todos': paises_todos}
+
+        return context
+
+
 class ProjectAPIListView(JSONResponseMixin, ListView):
     """
     List of Subproojects using JSON (limit by Project if needed)
