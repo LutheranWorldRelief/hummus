@@ -42,6 +42,11 @@ var app = new Vue({
         styleGoalsGraphic: {
             position: '',
             height: '500px'
+        },
+        styles_quar_fiscal_graphic: {
+            position: '',
+            height: '500px',
+            width: '100%'
         }
     },
     created() {
