@@ -470,8 +470,8 @@ class Countries(JSONResponseMixin, TemplateView):
         queryset = ProjectContact.objects.all()
 
         paises_todos = (self.request.GET.get('paises_todos') == 'true')
-        '' # TODO: verify if variable will be occupied but delete
-        '' #ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
+        ''  # TODO: verify if variable will be occupied but delete
+        ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
 
         if self.request.GET.get('lwrregion_id'):
             queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
