@@ -36,32 +36,16 @@
                                     <input v-model="check_filter" class="checkbox" type="checkbox"
                                            value="{{ check_filter }}">
                                     {% endverbatim %}
-                                    <span>{% trans 'Filter by Fiscal Year and Quarter' %}</span>
+                                    <span>{% trans 'Filter by Specifics Dates' %}</span>
                                 </label>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                {# Note Filter by dates #}
-                                <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
-                                    <label for="start_date">{% trans 'From' %}:</label>
-                                    {% verbatim %}
-                                    <input v-model="formInputs.from_date" type="date"
-                                           class="form-control" value=""
-                                           id="start_date" name="start_date">
-                                    {% endverbatim %}
-                                </div>
-                                <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
-                                    <label for="end_date">{% trans 'To' %}:</label>
-                                    {% verbatim %}
-                                    <input v-model="formInputs.to_date" type="date"
-                                           class="form-control" value=""
-                                           id="end_date" name="end_date">
-                                    {% endverbatim %}
-                                </div>
+
                                 {# Note: Filter by fiscal year and quartes #}
                                 {% verbatim %}
-                                <div class="col-lg-3 col-md-3 col-sm-3" :class="{'d-none': !check_filter }">
+                                <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
                                     {% endverbatim %}
                                     <label for="fiscal_year">{% trans 'Fiscal Year' %}:</label>
                                     {% verbatim %}
@@ -76,19 +60,40 @@
                                     {% endverbatim %}
                                 </div>
                                 {% verbatim %}
-                                <div class="col-lg-3 col-md-3 col-sm-3" :class="{'d-none': !check_filter }">
+                                <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
                                     {% endverbatim %}
                                     <label class="control-label" for="fiscal_year">{% trans 'Quarter' %}:</label>
                                     <div>
                                         {% for num_quarter in '1234'|make_list %}
                                             <label>
+                                            {{ formInputs.year }}
                                                 <input {% verbatim %} v-model="formInputs.quarter" {% endverbatim %}
-                                                       class="checkbox"
+                                                       class="checkbox" :disabled="this.formInputs.year == null"
                                                        type="checkbox" value="{{ num_quarter }}">
                                                 <span>{{ num_quarter }}</span>
                                             </label>
                                         {% endfor %}
                                     </div>
+                                </div>
+
+                                {# Note Filter by dates #}
+                                <div class="col-lg-3 col-md-3 col-sm-3"
+                                     :class="{'d-none': !check_filter }">
+                                    <label for="start_date">{% trans 'From' %}:</label>
+                                    {% verbatim %}
+                                    <input v-model="formInputs.from_date" type="date"
+                                           class="form-control" value=""
+                                           id="start_date" name="start_date">
+                                    {% endverbatim %}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3"
+                                     :class="{'d-none': !check_filter }">
+                                    <label for="end_date">{% trans 'To' %}:</label>
+                                    {% verbatim %}
+                                    <input v-model="formInputs.to_date" type="date"
+                                           class="form-control" value=""
+                                           id="end_date" name="end_date">
+                                    {% endverbatim %}
                                 </div>
 
                                 <div class="col-lg-6 col-md-6 col-sm-6">

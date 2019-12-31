@@ -10,7 +10,7 @@ var app = new Vue({
             subproject_id: {},
             country_id: [],
             lwrregion_id: '',
-            year: '',
+            year: null,
             quarter: [],
             from_date: '',
             to_date: '',
@@ -47,6 +47,21 @@ var app = new Vue({
             position: '',
             height: '500px',
             width: '100%'
+        }
+    },
+    watch: {
+        check_filter: function () {
+            this.requestParameters = {
+                paises_todos: true,
+                rubros_todos: true,
+            };
+            this.formInputs.to_date = '';
+            this.formInputs.from_date = '';
+        },
+        'formInputs.year': function (value) {
+            if (this.empty(value)) {
+                this.formInputs.quarter = []
+            }
         }
     },
     created() {
@@ -149,8 +164,7 @@ var app = new Vue({
             // funcion to graph the participants by education
             this.graficoParticipantesEduacion();
 
-        }
-        ,
+        },
         percentage(dividend, divider) {
             if (dividend <= 0)
                 return 0;
@@ -205,11 +219,13 @@ var app = new Vue({
             return new Promise((resolved, reject) => {
 
                 for (let key in this.formInputs) {
-                    if (!this.empty(this.formInputs[key]['value'])) {
+                    if (!this.empty(this.formInputs[key]['value']) && typeof this.formInputs[key] === 'object') {
+                        console.log(1);
                         this.requestParameters[key] = this.formInputs[key]['value'];
-                    } else if (typeof this.formInputs[key] != 'object' && !this.empty(this.formInputs[key])) {
+                    } else if (!this.empty(this.formInputs[key]) && typeof this.formInputs[key] !== 'object') {
                         this.requestParameters[key] = this.formInputs[key];
-                    } else if (key === 'quarter' && this.formInputs[key].length > 0 && this.check_filter) {
+                    } else if (key === 'quarter' && this.formInputs[key].length > 0) {
+                        console.log(3);
                         this.requestParameters[key] = this.formInputs[key];
                     }
                 }
@@ -240,10 +256,8 @@ var app = new Vue({
         },
         empty(data) {
 
-            if (data == '' || data == null || data == undefined)
-                return true;
+            return data === '' || data == null || data === undefined;
 
-            return false;
         },
         changeActiveStatus(register, type_register = 'country') {
             if (type_register === 'country') {
