@@ -39,15 +39,6 @@ var app = new Vue({
         /** Var gráfico participantes quarter */
         aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
         show: true,
-        styleGoalsGraphic: {
-            position: '',
-            height: '500px'
-        },
-        styles_quar_fiscal_graphic: {
-            position: '',
-            height: '500px',
-            width: '100%'
-        }
     },
     watch: {
         check_filter: function () {
@@ -260,17 +251,17 @@ var app = new Vue({
 
         },
         changeActiveStatus(register, type_register = 'country') {
+            let list_items = [];
+
             if (type_register === 'country') {
-                for (const row of this.list_countries) {
-                    if (row.name.toLowerCase() === register.name.toLowerCase()) {
-                        row.active = !row.active;
-                    }
-                }
+                list_items = this.list_countries;
             } else {
-                for (const row of this.list_lwrregions) {
-                    if (row.name.toLowerCase() === register.name.toLowerCase()) {
-                        row.active = !row.active;
-                    }
+                list_items = this.list_lwrregions;
+            }
+
+            for (const row of list_items) {
+                if (row.name.toLowerCase() === register.name.toLowerCase()) {
+                    row.active = !row.active;
                 }
             }
         }

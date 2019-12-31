@@ -54,7 +54,9 @@ var graphicMixins = {
                     return index === series.length - 1
                 }
 
+                let text_label = type === 'GraphicQuarter' ? gettext('Participants by quarter') : gettext('Participants by fiscal year');
                 let option = {
+                    toolbox: this.setToolBox(text_label),
                     color: [this.colors.men, this.colors.women],
                     backgroundColor: this.background_color,
                     tooltip: {
@@ -62,10 +64,10 @@ var graphicMixins = {
                         axisPointer: {
                             type: 'shadow' //'line' | 'shadow'
                         }, formatter: function (params) {
-                            let axisValue = '<p>' + params[0].axisValue + '</p>';
+                            let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
                                 if (item.seriesName != 'null')
-                                    axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
                             });
                             return axisValue;
                         },
@@ -174,18 +176,15 @@ var graphicMixins = {
 
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
-            /**
-             * TODO
-             * Inicio Asignanar meta
-             * */
+            // TODO Inicio Asignanar meta
             var meta = [];
             this.totalByBar.forEach(function (numero, index) {
                 if (Math.floor(Math.random() * 10) % 2 === 0)
-                    meta.push(numero + (index * 100))
+                    meta.push(numero + (index * 100));
                 else if (numero < 200)
-                    meta.push(numero + (300))
+                    meta.push(numero + (300));
                 else
-                    meta.push(numero - (1000))
+                    meta.push(numero - (1000));
             });
             this.metaPoranio = meta;
             /**
@@ -211,6 +210,7 @@ var graphicMixins = {
             };
 
             var option = {
+                toolbox: this.setToolBox('Assigned Goal - Amound Goal'),
                 backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
@@ -228,11 +228,10 @@ var graphicMixins = {
                             color: 'rgba(112,112,112,0)',
                         },
                     },
-                    // formatter: '{b}<br />{a0}: {c0}%<br />{a1}: {c1}%<br />{a2}: {c2}%',
                     formatter: function (params) {
-                        let axisValue = '<p>' + params[0].axisValue + '</p>';
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
-                            axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                            axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
                         });
                         return axisValue;
                     },
@@ -378,6 +377,7 @@ var graphicMixins = {
             let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
             option = {
+                toolbox: this.setToolBox('Assigned Goal - Amound Goal by Sex'),
                 backgroundColor: this.background_color,
                 "tooltip": {
                     "trigger": "axis",
@@ -525,8 +525,8 @@ var graphicMixins = {
                     },
                 ]
             };
+            this.responsiveChart('', myChart);
             myChart.setOption(option);
-            this.styleGoalsGraphic.position = 'fixed';
         },
         graficoParticipantesEdad() {
             $.post(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
@@ -618,7 +618,7 @@ var graphicMixins = {
                         let axisValue = '<p>' + params[0].axisValue + '</p>';
                         params.forEach(item => {
                             if (item.seriesName !== 'total') {
-                                axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                                axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
                             }
                         });
                         return axisValue;
@@ -650,11 +650,12 @@ var graphicMixins = {
                         color: 'black',
                         position: isLastSeries(index) ? 'top' : 'inside'
                     },
-                }))
-
+                })),
+                toolbox: this.setToolBox('Participants by Age')
             };
 
             myChart.setOption(option);
+            this.responsiveChart('', myChart);
 
             myChart.on('legendselectchanged', function (params) {
 
@@ -682,6 +683,7 @@ var graphicMixins = {
                 }));
 
                 myChart.setOption(option);
+                this.responsiveChart('', myChart);
             })
         },
         graficoParticipantesEduacion() {
@@ -796,7 +798,8 @@ var graphicMixins = {
                         verticalAlign: 'middle',
                         distance: 30,
                     },
-                }))
+                })),
+                toolbox: this.setToolBox('Participants by Education'),
 
             };
 
@@ -852,22 +855,7 @@ var graphicMixins = {
             const myChart = echarts.init(document.getElementById('SexGraph'));
 
             const option = {
-                toolbox: {
-                    show: true,
-                    feature: {
-                        restore: {
-                            title: 'Restore'
-                        },
-                        saveAsImage: {
-                            title: 'Download as image'
-                        },
-                        dataView: {
-                            title: 'Show data',
-                            readOnly: true,
-                            lang: ['Data participants reached, by sex', 'Close', 'Apply']
-                        },
-                    }
-                },
+                toolbox: this.setToolBox('Data participants reached, by sex'),
                 tooltip: {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -913,8 +901,8 @@ var graphicMixins = {
                 ]
             };
 
-            myChart.setOption(option);
             this.responsiveChart('', myChart);
+            myChart.setOption(option);
         },
         graphicGoalProject() {
             $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
@@ -946,6 +934,7 @@ var graphicMixins = {
 
 
                     let option = {
+                        toolbox:this.setToolBox('Total participants achieved and goals, by sex'),
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
@@ -1092,12 +1081,6 @@ var graphicMixins = {
             let quater = anioQuater.split('Q');
             return quater[0] == 'None' ? '0000-Qn' : quater[0] + '-Q' + quater[1];
         },
-        showGraphicMetaSexo(option) {
-
-            if (option == 1)
-                this.styleGoalsGraphic.position = 'relative';
-
-        },
         clearData() {
             /** Var gráfico participantes por año fiscal*/
             this.anios = [];
@@ -1125,6 +1108,24 @@ var graphicMixins = {
             window.onresize = function () {
                 instance_echarts.resize();
             };
+        },
+        setToolBox(title_1) {
+            return {
+                show: true,
+                feature: {
+                    restore: {
+                        title: gettext('Restore')
+                    },
+                    saveAsImage: {
+                        title: gettext('Download as image')
+                    },
+                    dataView: {
+                        title: gettext('Show data'),
+                        readOnly: true,
+                        lang: [gettext(title_1), gettext('Close'), gettext('Apply')]
+                    },
+                }
+            }
         }
     },
 

@@ -78,24 +78,13 @@
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
         <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
-                <ul role="tablist" class="nav nav-tabs pull-left">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#metaSexo" role="tab"
-                           data-toggle="tab">{% trans 'Assigned Goal - Amound Goal by Sex' %}</a>
-                    </li>
-                </ul>
+                <div class="header-block">
+                    <h3 class="title">{% trans 'Assigned Goal - Amound Goal by Sex' %}</h3>
+                </div>
             </div>
             <div class="card-block">
                 <div class="tab-content">
-                    <div role="tabpanel" class="container-fluid active tab-pane fade show" id="metaSexo">
-                        <div class="row">
-                            <div class="col-12">
-                                {% verbatim %}
-                                <div id="MetaParticipantesPorSexo" style="height:500px; width: 100%;"></div>
-                                {% endverbatim %}
-                            </div>
-                        </div>
-                    </div>
+                    <div id="MetaParticipantesPorSexo" style="height:500px; width: 100%;"></div>
                 </div>
             </div>
         </div>
