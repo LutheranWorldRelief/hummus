@@ -283,7 +283,6 @@ var graphicMixins = {
                             }
                         },
                         axisLabel: {//Barra horizontal arriba
-                            //inside: false,
                             rotate: 270,
                             verticalAlign: 'middle',
                             textStyle: {
@@ -293,8 +292,6 @@ var graphicMixins = {
                             }, margin: 20,
                         },
                         data: this.metaPoranio
-                        /*nameLocation: 'middle',
-                        nameGap: 35,*/
                     },
                     {
                         type: 'category',
@@ -374,7 +371,7 @@ var graphicMixins = {
                         },
                     ]
             };
-            this.responsiveChart('', myChart);
+            this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
         },
         graficoMetasLinea() {
