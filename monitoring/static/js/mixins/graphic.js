@@ -54,7 +54,9 @@ var graphicMixins = {
                     return index === series.length - 1
                 }
 
+                let text_label = type === 'GraphicQuarter' ? gettext('Participants by quarter') : gettext('Participants by fiscal year');
                 let option = {
+                    toolbox: this.setToolBox(text_label),
                     color: [this.colors.men, this.colors.women],
                     backgroundColor: this.background_color,
                     tooltip: {
@@ -62,10 +64,10 @@ var graphicMixins = {
                         axisPointer: {
                             type: 'shadow' //'line' | 'shadow'
                         }, formatter: function (params) {
-                            let axisValue = '<p>' + params[0].axisValue + '</p>';
+                            let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
                                 if (item.seriesName != 'null')
-                                    axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
                             });
                             return axisValue;
                         },
@@ -127,7 +129,7 @@ var graphicMixins = {
                             show: true,
                             formatter: isLastSeries(index) ? this.genFormatter(series) : null,
                             fontSize: isLastSeries(index) ? 13 : 11,
-                            color: isLastSeries(index) ? '#4f5f6f' : '#fff',
+                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
                             position: isLastSeries(index) ? 'top' : 'inside',
                             rotate: 90,
                             verticalAlign: 'middle',
@@ -155,9 +157,8 @@ var graphicMixins = {
                             show: true,
                             formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
                             fontSize: isLastSeries(index) ? 13 : 11,
-                            color: isLastSeries(index) ? '#4f5f6f' : '#fff',
+                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
                             position: isLastSeries(index) ? 'top' : 'inside',
-                            /* position: 'top',*/
                             rotate: 90,
                             verticalAlign: 'middle',
                             distance: 30,
@@ -166,6 +167,7 @@ var graphicMixins = {
 
                     myChart.setOption(option);
                 });
+                this.responsiveChart('#tab_quarter-click li', myChart);
 
                 resolved(true);
             });
@@ -174,18 +176,15 @@ var graphicMixins = {
 
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
-            /**
-             * TODO
-             * Inicio Asignanar meta
-             * */
+            // TODO Inicio Asignanar meta
             var meta = [];
             this.totalByBar.forEach(function (numero, index) {
                 if (Math.floor(Math.random() * 10) % 2 === 0)
-                    meta.push(numero + (index * 100))
+                    meta.push(numero + (index * 100));
                 else if (numero < 200)
-                    meta.push(numero + (300))
+                    meta.push(numero + (300));
                 else
-                    meta.push(numero - (1000))
+                    meta.push(numero - (1000));
             });
             this.metaPoranio = meta;
             /**
@@ -211,6 +210,7 @@ var graphicMixins = {
             };
 
             var option = {
+                toolbox: this.setToolBox('Assigned Goal - Amound Goal'),
                 backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
@@ -228,11 +228,10 @@ var graphicMixins = {
                             color: 'rgba(112,112,112,0)',
                         },
                     },
-                    // formatter: '{b}<br />{a0}: {c0}%<br />{a1}: {c1}%<br />{a2}: {c2}%',
                     formatter: function (params) {
-                        let axisValue = '<p>' + params[0].axisValue + '</p>';
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
-                            axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                            axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
                         });
                         return axisValue;
                     },
@@ -282,7 +281,6 @@ var graphicMixins = {
                             }
                         },
                         axisLabel: {//Barra horizontal arriba
-                            //inside: false,
                             rotate: 270,
                             verticalAlign: 'middle',
                             textStyle: {
@@ -292,8 +290,6 @@ var graphicMixins = {
                             }, margin: 20,
                         },
                         data: this.metaPoranio
-                        /*nameLocation: 'middle',
-                        nameGap: 35,*/
                     },
                     {
                         type: 'category',
@@ -373,6 +369,7 @@ var graphicMixins = {
                         },
                     ]
             };
+            this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
         },
         graficoMetasLinea() {
@@ -380,6 +377,7 @@ var graphicMixins = {
             let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
             option = {
+                toolbox: this.setToolBox('Assigned Goal - Amound Goal by Sex'),
                 backgroundColor: this.background_color,
                 "tooltip": {
                     "trigger": "axis",
@@ -468,7 +466,7 @@ var graphicMixins = {
                             "label": {
                                 "show": true,
                                 "position": "inside",
-                                color: '#fff',
+                                color: 'rgba(0,0,0,0.6)',
                                 fontWeight: '550',
                                 fontSize: '11', //insideTop
                                 formatter: function (p) {
@@ -478,57 +476,56 @@ var graphicMixins = {
                         }
                     },
                     "data": this.hombres
-                },
-                    {
-                        "name": "Woman",
-                        "type": "bar",
-                        "itemStyle": {
-                            "normal": {
-                                "color": array_colors_lwr[0],
-                                "barBorderRadius": 0,
-                                "label": {
-                                    "show": true,
-                                    "position": "inside",
-                                    color: '#fff',
-                                    fontWeight: '550',
-                                    fontSize: '11',
-                                    formatter: function (p) {
-                                        return p.value > 0 ? (p.value) : '';
-                                    }
+                }, {
+                    "name": "Woman",
+                    "type": "bar",
+                    "itemStyle": {
+                        "normal": {
+                            "color": array_colors_lwr[0],
+                            "barBorderRadius": 0,
+                            "label": {
+                                "show": true,
+                                "position": "inside",
+                                color: 'rgba(0,0,0,0.6)',
+                                fontWeight: '550',
+                                fontSize: '11',
+                                formatter: function (p) {
+                                    return p.value > 0 ? (p.value) : '';
                                 }
                             }
-                        },
-                        "data": this.mujeres
-                    }, {
-                        "name": gettext('Meta'),
-                        "type": "line",
-                        "stack": true,
-                        symbolSize: 10,
-                        position: 'fixed',
-                        symbol: 'circle',
-                        "itemStyle": {
-                            "normal": {
-                                "color": array_colors_lwr[2],
-                                "barBorderRadius": 0,
-                                "label": {
-                                    "show": true,
-                                    "position": "top",
-                                    fontWeight: '570',
-                                    fontSize: '12',
-                                    distance: 35,
-                                    rotate: 90,
-                                    formatter: function (p) {
-                                        return p.value > 0 ? (p.value) : '';
-                                    }
-                                }
-                            }
-                        },
-                        "data": this.metaPoranio
+                        }
                     },
+                    "data": this.mujeres
+                }, {
+                    "name": gettext('Meta'),
+                    "type": "line",
+                    "stack": true,
+                    symbolSize: 10,
+                    position: 'fixed',
+                    symbol: 'circle',
+                    "itemStyle": {
+                        "normal": {
+                            "color": 'rgba(49,147,218,0.5)',
+                            "barBorderRadius": 0,
+                            "label": {
+                                "show": true,
+                                "position": "top",
+                                fontWeight: '570',
+                                fontSize: '12',
+                                distance: 35,
+                                rotate: 90,
+                                formatter: function (p) {
+                                    return p.value > 0 ? (p.value) : '';
+                                }
+                            }
+                        }
+                    },
+                    "data": this.metaPoranio
+                },
                 ]
             };
+            this.responsiveChart('', myChart);
             myChart.setOption(option);
-            this.styleGoalsGraphic.position = 'fixed';
         },
         graficoParticipantesEdad() {
             $.post(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
@@ -620,7 +617,7 @@ var graphicMixins = {
                         let axisValue = '<p>' + params[0].axisValue + '</p>';
                         params.forEach(item => {
                             if (item.seriesName !== 'total') {
-                                axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                                axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
                             }
                         });
                         return axisValue;
@@ -652,11 +649,12 @@ var graphicMixins = {
                         color: 'black',
                         position: isLastSeries(index) ? 'top' : 'inside'
                     },
-                }))
-
+                })),
+                toolbox: this.setToolBox('Participants by Age')
             };
 
             myChart.setOption(option);
+            this.responsiveChart('', myChart);
 
             myChart.on('legendselectchanged', function (params) {
 
@@ -684,6 +682,7 @@ var graphicMixins = {
                 }));
 
                 myChart.setOption(option);
+                this.responsiveChart('', myChart);
             })
         },
         graficoParticipantesEduacion() {
@@ -756,10 +755,10 @@ var graphicMixins = {
                     axisPointer: {
                         type: 'shadow' //'line' | 'shadow'
                     }, formatter: function (params) {
-                        let axisValue = '<p>' + params[0].axisValue + '</p>';
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
                             if (item.seriesName !== 'total') {
-                                axisValue += '<p>' + item.marker + ' ' + item.seriesName + ': ' + item.data + '</p>';
+                                axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
                             }
                         });
                         return axisValue;
@@ -775,14 +774,13 @@ var graphicMixins = {
                     bottom: '3%',
                     containLabel: true
                 },
-                yAxis: {
+                xAxis: {
                     type: 'value'
                 },
-                xAxis: {
+                yAxis: {
                     type: 'category',
                     data: ageRange,
                     axisLabel: {
-                        rotate: 90,
                         verticalAlign: 'middle',
                     },
                 },
@@ -793,13 +791,12 @@ var graphicMixins = {
                         show: true,
                         formatter: isLastSeries(index) ? this.genFormatter(series) : null,
                         color: 'black',
-                        position: isLastSeries(index) ? 'top' : 'inside',
-                        rotate: 90,
+                        position: isLastSeries(index) ? 'right' : 'inside',
                         verticalAlign: 'middle',
-                        distance: 30,
+                        distance: 35,
                     },
-                }))
-
+                })),
+                toolbox: this.setToolBox('Participants by Education'),
             };
 
             myChart.setOption(option);
@@ -825,7 +822,7 @@ var graphicMixins = {
                         show: true,
                         formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
                         color: 'black',
-                        position: isLastSeries(index) ? 'top' : 'inside'
+                        position: isLastSeries(index) ? 'right' : 'inside'
                     },
 
                 }));
@@ -854,22 +851,7 @@ var graphicMixins = {
             const myChart = echarts.init(document.getElementById('SexGraph'));
 
             const option = {
-                toolbox: {
-                    show: true,
-                    feature: {
-                        restore: {
-                            title: 'Restore'
-                        },
-                        saveAsImage: {
-                            title: 'Download as image'
-                        },
-                        dataView: {
-                            title: 'Show data',
-                            readOnly: true,
-                            lang: ['Data participants reached, by sex', 'Close', 'Apply']
-                        },
-                    }
-                },
+                toolbox: this.setToolBox('Data participants reached, by sex'),
                 tooltip: {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -915,12 +897,8 @@ var graphicMixins = {
                 ]
             };
 
-
+            this.responsiveChart('', myChart);
             myChart.setOption(option);
-
-            window.onresize = function () {
-                myChart.resize();
-            };
         },
         graphicGoalProject() {
             $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
@@ -952,6 +930,7 @@ var graphicMixins = {
 
 
                     let option = {
+                        toolbox: this.setToolBox('Total participants achieved and goals, by sex'),
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
@@ -1044,6 +1023,7 @@ var graphicMixins = {
                     };
 
                     chart_goal_project.setOption(option);
+                    this.responsiveChart('', chart_goal_project);
                 });
         },
         getGraphicZoom() {
@@ -1097,12 +1077,6 @@ var graphicMixins = {
             let quater = anioQuater.split('Q');
             return quater[0] == 'None' ? '0000-Qn' : quater[0] + '-Q' + quater[1];
         },
-        showGraphicMetaSexo(option) {
-
-            if (option == 1)
-                this.styleGoalsGraphic.position = 'relative';
-
-        },
         clearData() {
             /** Var gráfico participantes por año fiscal*/
             this.anios = [];
@@ -1119,6 +1093,35 @@ var graphicMixins = {
             this.tatalsQ = {};
             this.totalByBarQ = [];
             this.defauldSerieQ = [];
+        },
+        responsiveChart(idtab, instance_echarts) {
+            if (idtab.indexOf('.') > -1 || idtab.indexOf('#') > -1) {
+                $(idtab).on('shown.bs.tab', function () {
+                    instance_echarts.resize();
+                });
+            }
+
+            window.onresize = function () {
+                instance_echarts.resize();
+            };
+        },
+        setToolBox(title_1) {
+            return {
+                show: true,
+                feature: {
+                    restore: {
+                        title: gettext('Restore')
+                    },
+                    saveAsImage: {
+                        title: gettext('Download as image')
+                    },
+                    dataView: {
+                        title: gettext('Show data'),
+                        readOnly: true,
+                        lang: [gettext(title_1), gettext('Close'), gettext('Apply')]
+                    },
+                }
+            }
         }
     },
 
