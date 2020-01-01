@@ -261,7 +261,8 @@ def grafico_edad(request):
 @domain_required()
 def grafico_educacion(request):
     parameters = {'project_id': 'project__id', 'from_date': 'date_entry_project__gte',
-                  'to_date': 'date_entry_project__lte'}
+                  'to_date': 'date_entry_project__lte',
+                  'lwrregion_id[]': 'project__lwrregion__id__in'}
     filter_kwargs = filter_by(parameters, request)
 
     result = ProjectContact.objects.filter(**filter_kwargs).order_by(
@@ -422,16 +423,19 @@ def grafico_pais_eventos(request):
 def filter_by(parameters, request):
     paises = request.POST.getlist('paises[]')
     rubros = request.POST.getlist('rubros[]')
+    regions = request.POST.getlist('lwrregion_id[]')
     paises_todos = request.POST['paises_todos'] == '1'
     rubros_todos = request.POST['rubros_todos'] == '1'
     filter_kwargs = {}
-
+    print(len(regions))
     for key, value in request.POST.items():
         if key in parameters:
             if key == 'paises[]' and not paises_todos:
                 filter_kwargs[parameters[key]] = paises
             elif key == 'rubros[]' and not rubros_todos:
                 filter_kwargs[parameters[key]] = rubros
+            elif key == 'lwrregion_id[]' and len(regions) > 0:
+                filter_kwargs[parameters[key]] = regions
             elif key != 'paises[]' and key != 'rubros[]' and value != '':
                 filter_kwargs[parameters[key]] = value
 

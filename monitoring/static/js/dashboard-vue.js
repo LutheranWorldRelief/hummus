@@ -6,10 +6,10 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: '',
-            subproject_id: {},
+            project_id: null,
+            subproject_id: null,
             country_id: [],
-            lwrregion_id: '',
+            lwrregion_id: null,
             year: null,
             quarter: [],
             from_date: '',
@@ -169,55 +169,59 @@ var app = new Vue({
 
         },
         loadCatalogs() {
-            $.get(UrlsAcciones.UrlProjects)
-                .then(response => {
-                    this.quantity_projects = response['object_list'].length;
-                    let data = response['object_list'];
-
-                    for (const key in data) {
-                        this.list_projects.push({
-                            name: data[key]['name'],
-                            value: data[key]['id']
-                        });
-                    }
-                });
-
+            if (!this.empty(this.formInputs.project_id)) {
+                $.get(UrlsAcciones.UrlProjects)
+                    .then(response => {
+                        this.quantity_projects = response['object_list'].length;
+                        let data = response['object_list'];
+                        for (const key in data) {
+                            this.list_projects.push({
+                                name: data[key]['name'],
+                                value: data[key]['id']
+                            });
+                        }
+                    });
+            }
             $.get(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
+                    this.list_countries = [];
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
                     for (const key in countries) {
                         this.list_countries.push({
                             name: countries[key].name,
                             value: countries[key].id,
-                            active: countries[key]['active'],
+                            active: countries[key].active,
                         });
                     }
                 });
 
-            $.get(UrlsAcciones.UrlLWRregions)
+            $.get(UrlsAcciones.UrlLWRregions, this.requestParameters)
                 .then(data => {
-                    for (const key in data) {
+                    this.list_lwrregions = [];
+                    let regions = data['regions'];
+                    for (const key in regions) {
                         this.list_lwrregions.push({
-                            name: data[key],
-                            value: key,
-                            active: false
+                            name: regions[key].name,
+                            value: regions[key].id,
+                            active: regions[key].active
                         });
                     }
                 });
         },
         getValueOfFilter() {
             return new Promise((resolved, reject) => {
+                for (const key in this.formInputs) {
+                    let input = this.formInputs[key];
 
-                for (let key in this.formInputs) {
-                    if (!this.empty(this.formInputs[key]['value']) && typeof this.formInputs[key] === 'object') {
-                        console.log(1);
-                        this.requestParameters[key] = this.formInputs[key]['value'];
-                    } else if (!this.empty(this.formInputs[key]) && typeof this.formInputs[key] !== 'object') {
-                        this.requestParameters[key] = this.formInputs[key];
-                    } else if (key === 'quarter' && this.formInputs[key].length > 0) {
-                        console.log(3);
-                        this.requestParameters[key] = this.formInputs[key];
+                    if (!this.empty(input) && input.constructor === Object) {
+                        this.requestParameters[key] = input['value'];
+                    } else if (!this.empty(input) && input.constructor === Array) {
+                        if (input.length > 0) {
+                            this.requestParameters[key] = input;
+                        }
+                    } else if (!this.empty(input)) {
+                        this.requestParameters[key] = input;
                     }
                 }
 
@@ -250,7 +254,7 @@ var app = new Vue({
             return data === '' || data == null || data === undefined;
 
         },
-        changeActiveStatus(register, type_register = 'country') {
+        changeActiveStatusAndFilter(register, type_register = 'country') {
             let list_items = [];
 
             if (type_register === 'country') {
@@ -264,6 +268,10 @@ var app = new Vue({
                     row.active = !row.active;
                 }
             }
+
+            this.loadDataWithFilters();
+            console.log(this.requestParameters.lwrregion_id);
+            this.loadCatalogs();
         }
 
     }

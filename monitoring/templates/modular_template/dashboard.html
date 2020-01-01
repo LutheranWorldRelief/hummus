@@ -156,7 +156,7 @@
                                 <div v-for="region in list_lwrregions" class="col-lg-6 col-md-6">
                                     <button type="button" class="btn w-100 icon"
                                             :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"
-                                            v-on:click="changeActiveStatus(region,'region')">
+                                            v-on:click="changeActiveStatusAndFilter(region,'region')">
                                         <i class="fa" :class="{'fa-check': region.active}"></i>
                                         <span>{{ region.name }}</span>
                                     </button>
@@ -181,7 +181,7 @@
                                 <div v-for="country in list_countries" class="col-lg-4">
                                     <button type="button" class="btn w-100 icon"
                                             :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
-                                            v-on:click="changeActiveStatus(country)">
+                                            v-on:click="changeActiveStatusAndFilter(country)">
                                         <i class="fa" :class="{'fa-check':country.active}"></i>
                                         <span>{{ country.name }}</span>
                                     </button>
