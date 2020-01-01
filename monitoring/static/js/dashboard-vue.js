@@ -169,19 +169,18 @@ var app = new Vue({
 
         },
         loadCatalogs() {
-            if (!this.empty(this.formInputs.project_id)) {
-                $.get(UrlsAcciones.UrlProjects)
-                    .then(response => {
-                        this.quantity_projects = response['object_list'].length;
-                        let data = response['object_list'];
-                        for (const key in data) {
-                            this.list_projects.push({
-                                name: data[key]['name'],
-                                value: data[key]['id']
-                            });
-                        }
-                    });
-            }
+            $.get(UrlsAcciones.UrlProjects)
+                .then(response => {
+                    this.list_projects = [];
+                    this.quantity_projects = response['object_list'].length;
+                    let data = response['object_list'];
+                    for (const key in data) {
+                        this.list_projects.push({
+                            name: data[key]['name'],
+                            value: data[key]['id']
+                        });
+                    }
+                });
             $.get(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
                     this.list_countries = [];
