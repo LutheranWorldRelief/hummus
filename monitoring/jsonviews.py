@@ -549,7 +549,7 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(id=self.kwargs['project_id'])
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
-        return list(queryset.values())
+        return list(queryset.values('id', 'name'))
 
 
 class SubProjectAPIListView(JSONResponseMixin, ListView):
