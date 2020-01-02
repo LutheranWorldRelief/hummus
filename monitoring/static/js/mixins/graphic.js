@@ -54,7 +54,7 @@ var graphicMixins = {
                     return index === series.length - 1
                 }
 
-                let text_label = type === 'GraphicQuarter' ? gettext('Participants by quarter') : gettext('Participants by fiscal year');
+                let text_label = type === 'GraphicQuarter' ? 'Participants by quarter' : 'Participants by fiscal year';
                 let option = {
                     toolbox: this.setToolBox(text_label),
                     color: [this.colors.men, this.colors.women],
@@ -96,8 +96,26 @@ var graphicMixins = {
                     ],
                     yAxis: {
                         type: 'value'
-                    }, //Barra para realizar Zoom
-                    "dataZoom": [{
+                    }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
+                    series: series.map((item, index) => Object.assign(item, {
+                        type: 'bar',
+                        stack: true,
+                        label: {
+                            show: true,
+                            formatter: isLastSeries(index) ? this.genFormatter(series) : null,
+                            fontSize: isLastSeries(index) ? 13 : 11,
+                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
+                            position: isLastSeries(index) ? 'top' : 'inside',
+                            rotate: 90,
+                            verticalAlign: 'middle',
+                            distance: 30,
+                        },
+                    }))
+                };
+
+                if (type === 'GraphicQuarter') {
+                    //Barra para realizar Zoom
+                    option.dataZoom = [{
                         "show": true,
                         "height": 20,
                         "xAxisIndex": [
@@ -121,22 +139,9 @@ var graphicMixins = {
                         "height": 15,
                         "start": 1,
                         "end": 35
-                    }], //Sumar valores de la serie (cantidad hombres y mujeres por año)
-                    series: series.map((item, index) => Object.assign(item, {
-                        type: 'bar',
-                        stack: true,
-                        label: {
-                            show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series) : null,
-                            fontSize: isLastSeries(index) ? 13 : 11,
-                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
-                            position: isLastSeries(index) ? 'top' : 'inside',
-                            rotate: 90,
-                            verticalAlign: 'middle',
-                            distance: 30,
-                        },
-                    }))
-                };
+                    }]
+                }
+
                 myChart.setOption(option);
 
                 myChart.on('legendselectchanged', (params) => {
