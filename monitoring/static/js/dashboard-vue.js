@@ -75,15 +75,6 @@ var app = new Vue({
 
             this.show_project = !this.empty(this.requestParameters.project_id);
 
-            $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
-                .then(((response) => {
-                    this.quantity_participants = response.participantes;
-                    // TODO set in goal_participants the global goal
-                    this.goal_participants = 1000 + response.participantes;
-                    this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
-                    this.width_progress_bar.width = this.goal_percentage + '%';
-                }));
-
             if (this.show_project) {
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
@@ -130,6 +121,13 @@ var app = new Vue({
                         this.hombres.push(setZeroIsUndefined(data['year'][participants].M));
                         this.defauldSerie.push(0);
                     }
+
+                    //NOTE: calculating the number of participants
+                    this.quantity_participants = setZeroIsUndefined(this.tatals.T);
+                    // TODO set in goal_participants the global goal
+                    this.goal_participants = 1000 + this.quantity_participants;
+                    this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
+                    this.width_progress_bar.width = this.goal_percentage + '%';
 
                     /** Recorrer participantes por trimestre (Quarter) */
                     const orderedQ = {};

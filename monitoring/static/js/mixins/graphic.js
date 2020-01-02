@@ -456,7 +456,7 @@ var graphicMixins = {
                 }],
                 "dataZoom": this.getGraphicZoom(),
                 "series": [{
-                    "name": "Men",
+                    "name": gettext("Men"),
                     "type": "bar",
                     "barMaxWidth": 35,
                     "barGap": "20%",
@@ -477,7 +477,7 @@ var graphicMixins = {
                     },
                     "data": this.hombres
                 }, {
-                    "name": "Woman",
+                    "name": gettext("Woman"),
                     "type": "bar",
                     "itemStyle": {
                         "normal": {
