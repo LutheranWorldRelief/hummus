@@ -427,7 +427,7 @@ def filter_by(parameters, request):
     paises_todos = request.POST['paises_todos'] == '1'
     rubros_todos = request.POST['rubros_todos'] == '1'
     filter_kwargs = {}
-    print(len(regions))
+
     for key, value in request.POST.items():
         if key in parameters:
             if key == 'paises[]' and not paises_todos:
