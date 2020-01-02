@@ -195,6 +195,7 @@ var app = new Vue({
                             name: countries[key].name,
                             value: countries[key].id,
                             active: countries[key].active,
+                            region: countries[key].region,
                         });
                     }
                 });
@@ -248,13 +249,10 @@ var app = new Vue({
             if (countries.length > 0)
                 this.requestParameters.country_id = countries;
 
-
             let lwr_regions = [];
             for (const region of this.list_lwrregions) {
-                if (region.active) {
-                    console.log(region);
+                if (region.active)
                     lwr_regions.push(region.value)
-                }
             }
 
             if (lwr_regions.length > 0)
@@ -267,19 +265,30 @@ var app = new Vue({
         },
         changeActiveStatusAndFilter(register, type_register = 'country') {
             let list_items = this.list_countries;
+            let actives_regions = [];
 
             if (type_register !== 'country') {
                 list_items = this.list_lwrregions;
             }
 
-            for (const row of list_items) {
-                if (row.name.toLowerCase() === register.name.toLowerCase()) {
-                    row.active = !row.active;
+            list_items.find(function (item) {
+                if (item.name === register.name) {
+                    item.active = !item.active
                 }
+                if (item.active) {
+                    actives_regions.push(item.value);
+                }
+            });
+
+            if (type_register !== 'country') {
+                this.list_countries.find(function (row) {
+                    if (row.active && !actives_regions.includes(row.region)) {
+                        row.active = !row.active;
+                    }
+                })
             }
 
             this.loadDataWithFilters();
-
         }
 
     }
