@@ -51,27 +51,40 @@
         </div>
     </div>
 
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
-        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
+        <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
-                <div class="header-block">
-                    <h3 class="title">{% trans 'Participants by Age' %}</h3>
+                <ul role="tablist" class="nav nav-tabs pull-left" id="tab_types-click">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#GraphBy_Age_Sex" role="tab"
+                           data-toggle="tab">{% trans 'Participants by Age And Sex' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#GraphByEducation" role="tab"
+                           data-toggle="tab">{% trans 'Participants by Education' %}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-block">
+                <div class="tab-content">
+                    <div role="tabpanel" class="container-fluid tab-pane active fade show" id="GraphBy_Age_Sex">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div id="AgeGraph" style="height: 500px; width: 100%;"></div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div id="SexGraph" style="height: 500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="container-fluid fade tab-pane" id="GraphByEducation">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="EducationGraph" style="height: 500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div id="AgeGraph" style="height: 500px; width: 100%;"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
-        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
-            <div class="card-header card-header-sm bordered">
-                <div class="header-block">
-                    <h3 class="title">{% trans 'Participants by Education' %}</h3>
-                </div>
-            </div>
-            <div class="card-body">
-                <div id="EducationGraph" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>
@@ -86,18 +99,6 @@
                 <div class="tab-content">
                     <div id="MetaParticipantesPorSexo" style="height:500px; width: 100%;"></div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
-        <div class="card sameheight-item- items" data-exclude="xs,sm,lg">
-            <div class="card-header card-header-sm bordered">
-                <div class="header-block">
-                    <h3 class="title">{% trans 'Participants Reached by Sex' %}</h3>
-                </div>
-            </div>
-            <div class="card-body">
-                <div id="SexGraph" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>

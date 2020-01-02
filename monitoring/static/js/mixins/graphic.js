@@ -83,17 +83,15 @@ var graphicMixins = {
                         containLabel: true
                     },
                     "calculable": true,
-                    xAxis: [
-                        {
-                            type: 'category',
-                            position: 'bottom',
-                            data: type === 'GraphicQuarter' ? this.aniosQ : this.anios,
-                            axisLabel: {
-                                rotate: 90,
-                                verticalAlign: 'middle',
-                            },
-                        }
-                    ],
+                    xAxis: [{
+                        type: 'category',
+                        position: 'bottom',
+                        data: type === 'GraphicQuarter' ? this.aniosQ : this.anios,
+                        axisLabel: {
+                            rotate: 90,
+                            verticalAlign: 'middle',
+                        },
+                    }],
                     yAxis: {
                         type: 'value'
                     }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
@@ -106,7 +104,6 @@ var graphicMixins = {
                             fontSize: isLastSeries(index) ? 13 : 11,
                             color: isLastSeries(index) ? '#4f5f6f' : '#000',
                             position: isLastSeries(index) ? 'top' : 'inside',
-                            rotate: 90,
                             verticalAlign: 'middle',
                             distance: 30,
                         },
@@ -181,7 +178,7 @@ var graphicMixins = {
 
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
-            // TODO Inicio Asignanar meta
+            // TODO Inicio Asignar meta
             var meta = [];
             this.totalByBar.forEach(function (numero, index) {
                 if (Math.floor(Math.random() * 10) % 2 === 0)
@@ -201,7 +198,6 @@ var graphicMixins = {
                     show: true,
                     position: 'top',
                     distance: 15,
-                    rotate: 90,
                     verticalAlign: 'middle',
                     formatter: function (param) {
                         return param.value;
@@ -245,7 +241,6 @@ var graphicMixins = {
                     extraCssText: 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);',
                 },
                 legend: {
-                    //top: 30,
                     bottom: 'bottom',
                     textStyle: {
                         color: '#4f5f6f',
@@ -273,48 +268,46 @@ var graphicMixins = {
                         },
                     },
                     data: this.anios //xAxisData
-                },
-                    {
-                        type: 'category',
-                        axisTick: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'rgba(50,52,108,.1)',
-                            }
-                        },
-                        axisLabel: {//Barra horizontal arriba
-                            rotate: 270,
-                            verticalAlign: 'middle',
-                            textStyle: {
-                                color: 'rgba(0,0,0,.6)',
-                                fontSize: '11',
-                                fontWeight: '560',
-                            }, margin: 20,
-                        },
-                        data: this.metaPoranio
+                }, {
+                    type: 'category',
+                    axisTick: {
+                        show: false
                     },
-                    {
-                        type: 'category',
-                        axisLine: {
-                            show: false
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: 'rgba(50,52,108,.1)',
+                        }
+                    },
+                    axisLabel: {//Barra horizontal arriba
+                        verticalAlign: 'middle',
+                        textStyle: {
+                            color: 'rgba(0,0,0,.6)',
+                            fontSize: '11',
+                            fontWeight: '560',
                         },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            show: false
-                        },
-                        splitArea: {
-                            show: false
-                        },
-                        splitLine: {
-                            show: false
-                        },//Anios en el tooltip
-                        data: this.anios
-                    }],
+                        margin: 20,
+                    },
+                    data: this.metaPoranio
+                }, {
+                    type: 'category',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },//Anios en el tooltip
+                    data: this.anios
+                }],
                 yAxis: {
                     type: 'value',
                     axisTick: {
@@ -340,39 +333,37 @@ var graphicMixins = {
                         },
                     },
                 },
-                series:
-                    [
-                        {
-                            name: 'Actual',
-                            type: 'bar',
-                            stack: '1',
-                            xAxisIndex: 0,
-                            data: this.totalByBar,
-                            label: label,
-                            barGap: '-100%',
-                            barWidth: '35%',
-                            itemStyle: {
-                                normal: {
-                                    color: array_colors_lwr[1],
-                                }
-                            },
-                            z: 2
+                series: [{
+                    name: 'Actual',
+                    type: 'bar',
+                    stack: '1',
+                    xAxisIndex: 0,
+                    data: this.totalByBar,
+                    label: label,
+                    barGap: '-100%',
+                    barWidth: '35%',
+                    itemStyle: {
+                        normal: {
+                            color: array_colors_lwr[1],
+                        }
+                    },
+                    z: 2
+                },
+                    {
+                        name: 'Meta',
+                        type: 'bar',
+                        xAxisIndex: 2,
+                        data: this.metaPoranio,
+                        barWidth: '67%',
+                        itemStyle: {
+                            normal: {
+                                color: array_colors_lwr[0],
+                                barBorderRadius: 1,
+                            }
                         },
-                        {
-                            name: 'Meta',
-                            type: 'bar',
-                            xAxisIndex: 2,
-                            data: this.metaPoranio,
-                            barWidth: '67%',
-                            itemStyle: {
-                                normal: {
-                                    color: array_colors_lwr[0],
-                                    barBorderRadius: 1,
-                                }
-                            },
-                            z: 1
-                        },
-                    ]
+                        z: 1
+                    },
+                ]
             };
             this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
@@ -518,7 +509,6 @@ var graphicMixins = {
                                 fontWeight: '570',
                                 fontSize: '12',
                                 distance: 35,
-                                rotate: 90,
                                 formatter: function (p) {
                                     return p.value > 0 ? (p.value) : '';
                                 }
@@ -576,19 +566,16 @@ var graphicMixins = {
                         color: this.colors.men
                     },
                     data: participants.fParticipants
-                },
-                {
+                }, {
                     name: 'Women',
                     itemStyle: {
                         color: this.colors.women
                     },
                     data: participants.mParticipants
-                },
-                {
+                }, {
                     name: 'total',
                     data: total
                 }
-
             ];
 
             var genFormatter = (series, gender = null) => {
@@ -659,7 +646,7 @@ var graphicMixins = {
             };
 
             myChart.setOption(option);
-            this.responsiveChart('', myChart);
+            this.responsiveChart('#tab_types-click', myChart);
 
             myChart.on('legendselectchanged', function (params) {
 
@@ -747,7 +734,6 @@ var graphicMixins = {
                     name: 'total',
                     data: total
                 }
-
             ];
 
             function isLastSeries(index) {
@@ -803,7 +789,7 @@ var graphicMixins = {
                 })),
                 toolbox: this.setToolBox('Participants by Education'),
             };
-
+            this.responsiveChart('#tab_types-click', myChart);
             myChart.setOption(option);
 
             myChart.on('legendselectchanged', (params) => {
@@ -831,7 +817,7 @@ var graphicMixins = {
                     },
 
                 }));
-
+                this.responsiveChart('#tab_types-click', myChart);
                 myChart.setOption(option);
             })
         },
@@ -870,8 +856,8 @@ var graphicMixins = {
                     {
                         name: '',
                         type: 'pie',
-                        radius: '55%',
-                        center: ['50%', '60%'],
+                        radius: '35%',
+                        center: ['50%', '50%'],
                         data: [{
                             name: totalMen.name,
                             value: totalMen.value,
@@ -902,7 +888,7 @@ var graphicMixins = {
                 ]
             };
 
-            this.responsiveChart('', myChart);
+            this.responsiveChart('#tab_types-click', myChart);
             myChart.setOption(option);
         },
         graphicGoalProject() {
