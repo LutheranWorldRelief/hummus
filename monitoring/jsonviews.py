@@ -398,15 +398,19 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         if self.request.GET.get('quarter'):
             quarter = int(self.request.GET.get('quarter'))
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
-        ''  # if self.request.GET.get('lwrregion_id'):
-        ''  # queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
+        if self.request.GET.get('lwrregion_id[]'):
+            queryset = queryset.filter(project__lwrregion__id__in=
+                                       self.request.GET.getlist('lwrregion_id[]'))
 
-        ''  # if self.request.GET.get('country_id[]'):
-        ''  # queryset = queryset.filter(country_id=self.request.GET.get('country_id[]'))
+        if self.request.GET.get('country_id[]'):
+            queryset = queryset.filter(project__countries__in=
+                                       self.request.GET.getlist('country_id[]'))
         if self.request.GET.get('subproject_id'):
-            queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
+            queryset = queryset.filter(project_id=
+                                       self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
-            queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
+            queryset = queryset.filter(project_id=
+                                       self.request.GET.get('project_id'))
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
@@ -437,10 +441,13 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
         # get totals by quarter
         query_years = queryset.order_by(). \
-            values('date_entry_project__fyear', 'date_entry_project__fquarter', 'contact__sex_id'). \
-            annotate(total=Count('id')).values('date_entry_project__fyear',
-                                               'date_entry_project__fquarter',
-                                               'contact__sex_id', 'total')
+            values('date_entry_project__fyear',
+                   'date_entry_project__fquarter',
+                   'contact__sex_id'). \
+            annotate(total=Count('id')). \
+            values('date_entry_project__fyear',
+                   'date_entry_project__fquarter',
+                   'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
             fy_quarter = "{}Q{}".format(query_year['date_entry_project__fyear'],
@@ -482,16 +489,17 @@ class Countries(JSONResponseMixin, TemplateView):
         countries = queryset.filter(project__countries__isnull=False) \
             .order_by('project__countries__id') \
             .distinct('project__countries__id') \
-            .values(
-            country_id=F('project__countries__id'),
-            country_name=F(_('project__countries__name'))
-        )
+            .values(country_id=F('project__countries__id'),
+                    country_name=F(_('project__countries__name')),
+                    region=F('project__lwrregion__id')
+                    )
 
         paises = []
         for row in countries:
             paises.append({
                 'id': row['country_id'],
                 'name': row['country_name'],
+                'region': row['region'],
                 'active': row['country_id'] in countries_id
             })
 

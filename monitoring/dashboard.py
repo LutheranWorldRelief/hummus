@@ -42,7 +42,7 @@ def cantidad_paises(request):
 @csrf_exempt
 @domain_required()
 def cantidad_participantes(request):
-    parameters = {'paises[]': 'project__countries__in', 'rubros[]': 'project__product__in',
+    parameters = {'country_id[]': 'project__countries__in', 'rubros[]': 'project__product__in',
                   'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
@@ -236,7 +236,9 @@ def grafico_anio_fiscal(request):
 @domain_required()
 def grafico_edad(request):
     parameters = {'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
-                  'to_date': 'date_entry_project__lte'}
+                  'to_date': 'date_entry_project__lte',
+                  'country_id[]': 'project__countries__in',
+                  'lwrregion_id[]': 'project__lwrregion__id__in'}
     filter_kwargs = filter_by(parameters, request)
     groups = Filter.objects.filter(slug='age', start__gte=0)
     named_groups = []
@@ -262,6 +264,7 @@ def grafico_edad(request):
 def grafico_educacion(request):
     parameters = {'project_id': 'project__id', 'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
+                  'country_id[]': 'project__countries__in',
                   'lwrregion_id[]': 'project__lwrregion__id__in'}
     filter_kwargs = filter_by(parameters, request)
 
@@ -421,19 +424,16 @@ def grafico_pais_eventos(request):
 
 
 def filter_by(parameters, request):
-    paises = request.POST.getlist('paises[]')
-    rubros = request.POST.getlist('rubros[]')
+    paises = request.POST.getlist('country_id[]')
     regions = request.POST.getlist('lwrregion_id[]')
-    paises_todos = request.POST['paises_todos'] == '1'
-    rubros_todos = request.POST['rubros_todos'] == '1'
+    # paises_todos = request.POST['paises_todos'] == '1'
+    # rubros_todos = request.POST['rubros_todos'] == '1'
     filter_kwargs = {}
 
     for key, value in request.POST.items():
         if key in parameters:
-            if key == 'paises[]' and not paises_todos:
+            if key == 'country_id[]':
                 filter_kwargs[parameters[key]] = paises
-            elif key == 'rubros[]' and not rubros_todos:
-                filter_kwargs[parameters[key]] = rubros
             elif key == 'lwrregion_id[]' and len(regions) > 0:
                 filter_kwargs[parameters[key]] = regions
             elif key != 'paises[]' and key != 'rubros[]' and value != '':
