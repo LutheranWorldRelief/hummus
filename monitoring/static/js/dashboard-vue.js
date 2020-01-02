@@ -65,7 +65,11 @@ var app = new Vue({
     },
     methods: {
         loadDataWithFilters() {
-            this.getValueOfFilter().then(() => this.loadDataForDashboard());
+            this.getValueOfFilter()
+                .then(() => {
+                    this.loadCatalogs();
+                    this.loadDataForDashboard();
+                });
         },
         loadDataForDashboard() {
 
@@ -210,6 +214,11 @@ var app = new Vue({
         },
         getValueOfFilter() {
             return new Promise((resolved, reject) => {
+                this.requestParameters = {
+                    paises_todos: true,
+                    rubros_todos: true,
+                };
+
                 for (const key in this.formInputs) {
                     let input = this.formInputs[key];
 
@@ -239,10 +248,13 @@ var app = new Vue({
             if (countries.length > 0)
                 this.requestParameters.country_id = countries;
 
+
             let lwr_regions = [];
             for (const region of this.list_lwrregions) {
-                if (region.active)
+                if (region.active) {
+                    console.log(region);
                     lwr_regions.push(region.value)
+                }
             }
 
             if (lwr_regions.length > 0)
@@ -254,11 +266,9 @@ var app = new Vue({
 
         },
         changeActiveStatusAndFilter(register, type_register = 'country') {
-            let list_items = [];
+            let list_items = this.list_countries;
 
-            if (type_register === 'country') {
-                list_items = this.list_countries;
-            } else {
+            if (type_register !== 'country') {
                 list_items = this.list_lwrregions;
             }
 
@@ -269,8 +279,7 @@ var app = new Vue({
             }
 
             this.loadDataWithFilters();
-            console.log(this.requestParameters.lwrregion_id);
-            this.loadCatalogs();
+
         }
 
     }
