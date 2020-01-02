@@ -469,15 +469,13 @@ class Countries(JSONResponseMixin, TemplateView):
         context = {}
         queryset = ProjectContact.objects.all()
 
-        countries = self.request.GET.getlist('country_id[]')
+        countries_id = self.request.GET.getlist('country_id[]')
         regions = self.request.GET.getlist('lwrregion_id[]')
         ''  # TODO: verify if variable will be occupied but delete
         ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
 
         if len(regions) > 0 or regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
-        if countries:
-            queryset = queryset.filter(project__countries__id__in=countries)
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
@@ -488,12 +486,13 @@ class Countries(JSONResponseMixin, TemplateView):
             country_id=F('project__countries__id'),
             country_name=F(_('project__countries__name'))
         )
+
         paises = []
         for row in countries:
             paises.append({
                 'id': row['country_id'],
                 'name': row['country_name'],
-                'active': row['country_id'] in countries
+                'active': row['country_id'] in countries_id
             })
 
         context['paises'] = paises
