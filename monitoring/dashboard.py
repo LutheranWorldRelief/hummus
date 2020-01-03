@@ -246,7 +246,7 @@ def grafico_edad(request):
                   'country_id[]': 'project__countries__id__in',
                   'year': 'date_entry_project__fyear',
                   'quarter': 'date_entry_project__fquarter',
-                  'lwrregion_id[]': 'project__lwrregion__id__in',}
+                  'lwrregion_id[]': 'project__lwrregion__id__in', }
     filter_kwargs = filter_by(parameters, request)
     groups = Filter.objects.filter(slug='age', start__gte=0)
     named_groups = []

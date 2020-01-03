@@ -399,18 +399,16 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             quarter = int(self.request.GET.get('quarter'))
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
         if self.request.GET.get('lwrregion_id[]'):
-            queryset = queryset.filter(project__lwrregion__id__in=
-                                       self.request.GET.getlist('lwrregion_id[]'))
+            queryset = queryset.filter(
+                project__lwrregion__id__in=self.request.GET.getlist('lwrregion_id[]'))
 
         if self.request.GET.get('country_id[]'):
-            queryset = queryset.filter(project__countries__in=
-                                       self.request.GET.getlist('country_id[]'))
+            queryset = queryset.filter(
+                project__countries__in=self.request.GET.getlist('country_id[]'))
         if self.request.GET.get('subproject_id'):
-            queryset = queryset.filter(project_id=
-                                       self.request.GET.get('subproject_id'))
+            queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
-            queryset = queryset.filter(project_id=
-                                       self.request.GET.get('project_id'))
+            queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
