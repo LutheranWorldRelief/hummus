@@ -19,7 +19,8 @@ var app = new Vue({
             paises_todos: true,
             rubros_todos: true,
         },
-        show_project: false,
+        show_projectgraph: false,
+        show_subproject: false,
         list_projects: [],
         list_countries: [],
         list_lwrregions: [],
@@ -53,11 +54,42 @@ var app = new Vue({
             if (this.empty(value)) {
                 this.formInputs.quarter = []
             }
+        },
+        'formInputs.project_id': function (object) {
+            this.show_subproject = (!this.empty(object));
+            if (this.show_subproject){
+                let project_id = object.value;
+                // NOTE: new_url content example = http://localhost/api/subproject/project/1/
+                let new_url = `/api/subprojects/project/${project_id}/`;
+
+                $.get(new_url)
+                    .then(response => {
+                        let data = response.object_list;
+                        for (const subproject of data) {
+                            this.list_subprojects.push({
+                                name: subproject['name'],
+                                value: subproject['id']
+                            })
+                        }
+                    });
+            }
         }
     },
     created() {
         // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
         this.list_years = years;
+
+        $.get(UrlsAcciones.UrlProjects)
+            .then(response => {
+                this.list_projects = [];
+                let data = response['object_list'];
+                for (const key in data) {
+                    this.list_projects.push({
+                        name: data[key]['name'],
+                        value: data[key]['id']
+                    });
+                }
+            });
 
         this.loadCatalogs();
 
@@ -73,31 +105,17 @@ var app = new Vue({
         },
         loadDataForDashboard() {
 
-            this.show_project = !this.empty(this.requestParameters.project_id);
+            this.show_projectgraph = !this.empty(this.requestParameters.project_id);
 
-            if (this.show_project) {
-                // NOTE: new_url content example = http://localhost/api/subproject/project/1/
-                let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
+            if (this.show_projectgraph) {
 
-                $.get(new_url)
-                    .then(response => {
-                        let data = response.object_list;
-                        this.quantity_subprojects = data.length;
-                        for (const subproject of data) {
-                            this.list_subprojects.push({
-                                name: subproject['name'],
-                                value: subproject['id']
-                            })
-                        }
-                    });
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
-            } else {
-                $.get(UrlsAcciones.UrlSubProjects)
-                    .then(response => {
-                        this.quantity_subprojects = response.object_list.length;
-                    });
             }
+            $.post(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
+                .then(response => {
+                    this.quantity_subprojects = response.quantity_subprojects;
+                });
 
             $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
                 .then(((response) => {
@@ -171,18 +189,12 @@ var app = new Vue({
 
         },
         loadCatalogs() {
-            $.get(UrlsAcciones.UrlProjects)
-                .then(response => {
-                    this.list_projects = [];
-                    this.quantity_projects = response['object_list'].length;
-                    let data = response['object_list'];
-                    for (const key in data) {
-                        this.list_projects.push({
-                            name: data[key]['name'],
-                            value: data[key]['id']
-                        });
-                    }
+
+            $.post(UrlsAcciones.UrlQuantityProjects, this.requestParameters)
+                .then(data => {
+                    this.quantity_projects = data.quantity_projects;
                 });
+
             $.get(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
                     this.list_countries = [];
@@ -287,7 +299,7 @@ var app = new Vue({
             }
 
             this.loadDataWithFilters();
-        }
+        },
 
     }
 

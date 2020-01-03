@@ -17,7 +17,7 @@
             color: #fff;
         }
 
-        ul.multiselect__content{
+        ul.multiselect__content {
             border: 1px solid #c8d0da;
         }
     </style>
@@ -121,7 +121,7 @@
                                 </div>
                                 {# subproject #}
                                 {% verbatim %}
-                                <div v-if="show_project" class="col-lg-12 col-md-12 col-sm-12">
+                                <div v-if="show_subproject" class="col-lg-12 col-md-12 col-sm-12">
                                     {% endverbatim %}
                                     <label for="">{% trans "Subproject" %}:</label>
                                     {% verbatim %}
@@ -203,7 +203,7 @@
         </section>
         {% include 'modular_template/summary.html' %}
         {% verbatim %}
-        <div v-if="show_project"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
+        <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
         {% include 'modular_template/geographics.html' %}
 
@@ -215,9 +215,10 @@
     <script>
         const UrlsAcciones = {
             UrlProjects: "{% url 'monitoring:api-projects' %}",
+            UrlQuantityProjects: "{% url 'monitoring:cantidad-proyectos' %}",
             UrlCountries: "{% url 'monitoring:graphic-paises' %}",
             UrlSubProjects: "{% url 'monitoring:api-subproject' %}",
-            UrlSubProjectsProject: "{% url 'monitoring:api-subprojects-project' project_id='1' %}",
+            UrlQuantitySubProjects: "{% url 'monitoring:cantidad-subproyectos' %}",
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
             UrlLWRregions: "{% url 'monitoring:api-lwrregions' %}",
             UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
