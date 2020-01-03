@@ -478,11 +478,14 @@ class Countries(JSONResponseMixin, TemplateView):
 
         countries_id = self.request.GET.getlist('country_id[]')
         regions = self.request.GET.getlist('lwrregion_id[]')
+        project = self.request.GET.get('project_id')
         ''  # TODO: verify if variable will be occupied but delete
         ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
 
         if len(regions) > 0 or regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
+        if project:
+            queryset = queryset.filter(project_id=project)
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
