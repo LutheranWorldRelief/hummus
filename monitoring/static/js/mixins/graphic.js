@@ -334,7 +334,7 @@ var graphicMixins = {
                     },
                 },
                 series: [{
-                    name: 'Actual',
+                    name: gettext('Actual'),
                     type: 'bar',
                     stack: '1',
                     xAxisIndex: 0,
@@ -348,22 +348,20 @@ var graphicMixins = {
                         }
                     },
                     z: 2
-                },
-                    {
-                        name: 'Meta',
-                        type: 'bar',
-                        xAxisIndex: 2,
-                        data: this.metaPoranio,
-                        barWidth: '67%',
-                        itemStyle: {
-                            normal: {
-                                color: array_colors_lwr[0],
-                                barBorderRadius: 1,
-                            }
-                        },
-                        z: 1
+                }, {
+                    name: gettext('Meta'),
+                    type: 'bar',
+                    xAxisIndex: 2,
+                    data: this.metaPoranio,
+                    barWidth: '67%',
+                    itemStyle: {
+                        normal: {
+                            color: 'rgba(4,170,171,0.6)',
+                            barBorderRadius: 1,
+                        }
                     },
-                ]
+                    z: 1
+                }]
             };
             this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
