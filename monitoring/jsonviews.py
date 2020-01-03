@@ -521,7 +521,10 @@ class LWRRegions(JSONResponseMixin, TemplateView):
         queryset = LWRRegion.objects.all()
 
         regions = self.request.GET.getlist('lwrregion_id[]')
+        project = self.request.GET.get('project_id')
 
+        if project:
+            queryset = queryset.filter(project__id=project)
         if self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
