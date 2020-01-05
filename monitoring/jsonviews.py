@@ -2,8 +2,8 @@
 Django views returning json
 """
 
-from django.db.models import Count, Q, F
-from django.db.models.functions import Upper, Trim
+from django.db.models import Count, Q, F, FloatField
+from django.db.models.functions import Upper, Trim, Cast
 from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
@@ -511,7 +511,7 @@ class Countries(JSONResponseMixin, TemplateView):
 
 class LWRRegions(JSONResponseMixin, TemplateView):
     """
-    Countries
+    Regions
     """
 
     def render_to_response(self, context, **response_kwargs):
@@ -540,6 +540,71 @@ class LWRRegions(JSONResponseMixin, TemplateView):
             })
 
         context['regions'] = lwr_regions
+
+        return context
+
+
+class GeographyAPI(JSONResponseMixin, TemplateView):
+    """
+    Geografi
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        queryset = ProjectContact.objects.all()
+
+        regions = self.request.GET.getlist('lwrregion_id[]')
+        project = self.request.GET.get('project_id')
+
+        if len(regions) > 0 or regions:
+            queryset = queryset.filter(project__lwrregion__id__in=regions)
+        if project:
+            queryset = queryset.filter(project_id=project)
+        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+
+        countries = queryset.filter(project__countries__isnull=False) \
+            .order_by('project__countries__id') \
+            .distinct('project__countries__id') \
+            .values(country_id=F('project__countries__id'),
+                    alta_3=F(_('project__countries__alfa3')),
+                    country_name=F(_('project__countries__name')),
+                    x=Cast(F('project__countries__x'), FloatField()),
+                    y=Cast(F('project__countries__y'), FloatField()),
+                    )
+
+        participants = []
+        queryset2 = ProjectContact.objects.all()
+        totals = dict(queryset2.order_by() \
+                .values('contact__sex_id') \
+                .annotate(total=Count('id')) \
+                .values_list('contact__sex_id', 'total'))
+        context['total_participants'] = totals['M'] + totals['F']
+        for row in countries:
+            data = queryset2.filter(contact__country__id=row['country_id']) \
+                .order_by() \
+                .values('contact__sex_id') \
+                .annotate(total=Count('id')) \
+                .values_list('contact__sex_id', 'total')
+
+            totals = dict(data)
+
+            totals['T'] = totals['M'] + totals['F']
+            participants.append({
+                'id': row['country_id'],
+                'alfa3': row['alta_3'],
+                'name': row['country_name'],
+                'location': [row['x'], row['y']],
+                'total': totals['T'],
+                'women': totals['F'],
+                'men': totals['M'],
+                'percentage': (totals['T'] * 100) / context['total_participants']
+            })
+
+        context['participants'] = participants
 
         return context
 
