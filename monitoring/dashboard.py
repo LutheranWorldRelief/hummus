@@ -59,8 +59,9 @@ def cantidad_proyectos(request):
                   'year': 'date_entry_project__fyear',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
-                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'project_id': 'project_id',
+                  'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
     proyectos = ProjectContact.objects.filter(
         **filter_kwargs). \
@@ -301,8 +302,8 @@ def cantidad_subproyectos(request):
                   'lwrregion_id[]': 'project__lwrregion__id__in',
                   'rubros[]': 'project__product__in',
                   'project_id': 'project_id',
-                  'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'from_date': 'start__gte',
+                  'to_date': 'start__lte'}
     filter_kwargs = filter_by(parameters, request)
     subproyectos = SubProject.\
         objects.\
@@ -336,8 +337,8 @@ def grafico_tipo_participante(request):
 @domain_required()
 def grafico_sexo_participante(request):
     parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
-                  'proyecto': 'project', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'proyecto': 'project', 'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)  # filter_by(parameters, request)
 
     result = ProjectContact.objects.filter(**filter_kwargs).aggregate(
