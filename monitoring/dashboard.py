@@ -297,6 +297,7 @@ def grafico_educacion(request):
 @csrf_exempt
 @domain_required()
 def cantidad_subproyectos(request):
+    queryset = SubProject.objects
     parameters = {'country_id[]': 'country_id__in',
                   'year[]': 'project__projectcontact__date_entry_project__year__in',
                   'quarter': 'project__projectcontact__date_entry_project__fquarter',
@@ -306,8 +307,10 @@ def cantidad_subproyectos(request):
                   'from_date': 'start__gte',
                   'to_date': 'start__lte'}
     filter_kwargs = filter_by(parameters, request)
-    subproyectos = SubProject.\
-        objects.\
+    if request.user and hasattr(queryset.model.objects, 'for_user'):
+        queryset = queryset.for_user(request.user)
+
+    subproyectos = queryset.\
         filter(**filter_kwargs).\
         order_by('id').\
         distinct('id').\
