@@ -10,7 +10,7 @@ var app = new Vue({
             subproject_id: null,
             country_id: [],
             lwrregion_id: null,
-            year: null,
+            year: [],
             quarter: null,
             from_date: '',
             to_date: '',
@@ -50,7 +50,7 @@ var app = new Vue({
             this.formInputs.to_date = '';
             this.formInputs.from_date = '';
             this.formInputs.quarter = null;
-            this.formInputs.year = null;
+            this.formInputs.year = [];
         },
         'formInputs.year': function (value) {
             if (this.empty(value)) {

@@ -110,6 +110,7 @@
                                                      :searchable="true"
                                                      :max-height="200"
                                                      :show-labels="false"
+                                                     :multiple="true"
                                                      {% endverbatim %}
                                                      placeholder="{% trans 'Year' %}" {% verbatim %}>
                                         <template slot="singleLabel" slot-scope="{ option }">
@@ -126,7 +127,7 @@
                                         {% for num_quarter in '1234'|make_list %}
                                             <label>
                                                 <input {% verbatim %} v-model="formInputs.quarter" {% endverbatim %}
-                                                       class="radio" :disabled="this.formInputs.year == null"
+                                                       class="radio" :disabled="this.formInputs.year.length <= 0"
                                                        type="radio" value="{{ num_quarter }}">
                                                 <span>{{ num_quarter }}</span>
                                             </label>
@@ -223,11 +224,9 @@
             UrlQuantitySubProjects: "{% url 'monitoring:cantidad-subproyectos' %}",
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
             UrlLWRregions: "{% url 'monitoring:api-lwrregions' %}",
-            UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
             UrlDatosGraficosParticipantes: "{% url 'monitoring:api-participants' %}",
             UrlGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
-            UrlGraficoSexo: "{% url 'monitoring:grafico-sexo-participante' %}",
         };
         let years = {{ years|safe }};
     </script>
