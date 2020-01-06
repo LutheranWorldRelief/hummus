@@ -11,7 +11,7 @@ var app = new Vue({
             country_id: [],
             lwrregion_id: null,
             year: null,
-            quarter: [],
+            quarter: null,
             from_date: '',
             to_date: '',
         },
@@ -49,10 +49,12 @@ var app = new Vue({
             };
             this.formInputs.to_date = '';
             this.formInputs.from_date = '';
+            this.formInputs.quarter = null;
+            this.formInputs.year = null;
         },
         'formInputs.year': function (value) {
             if (this.empty(value)) {
-                this.formInputs.quarter = []
+                this.formInputs.quarter = null
             }
         },
         'formInputs.project_id': function (object) {

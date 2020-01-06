@@ -125,10 +125,9 @@
                                     <div class="text-center">
                                         {% for num_quarter in '1234'|make_list %}
                                             <label>
-                                                {{ formInputs.year }}
                                                 <input {% verbatim %} v-model="formInputs.quarter" {% endverbatim %}
-                                                       class="checkbox" :disabled="this.formInputs.year == null"
-                                                       type="checkbox" value="{{ num_quarter }}">
+                                                       class="radio" :disabled="this.formInputs.year == null"
+                                                       type="radio" value="{{ num_quarter }}">
                                                 <span>{{ num_quarter }}</span>
                                             </label>
                                         {% endfor %}
@@ -155,7 +154,7 @@
                                     {% endverbatim %}
                                 </div>
 
-                                <div class="col-lg-7 col-md-7 col-sm-7">
+                                <div class="col">
                                     <label for="">{% trans "Project" %}:</label>
                                     {% verbatim %}
                                     <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
