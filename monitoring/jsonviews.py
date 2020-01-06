@@ -601,7 +601,9 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                 'total': totals['T'],
                 'women': totals['F'],
                 'men': totals['M'],
-                'percentage': (totals['T'] * 100) / context['total_participants']
+                'percentage': round(
+                    (totals['T'] * 100) /
+                    context['total_participants'],0)
             })
 
         context['participants'] = participants
