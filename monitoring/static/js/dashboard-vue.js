@@ -53,13 +53,14 @@ var app = new Vue({
             this.formInputs.year = [];
         },
         'formInputs.year': function (value) {
-            if (this.empty(value)) {
+            if (value.length <= 0) {
                 this.formInputs.quarter = null
             }
+            this.loadDataWithFilters();
         },
         'formInputs.project_id': function (object) {
             this.show_subproject = (!this.empty(object));
-            if (this.show_subproject){
+            if (this.show_subproject) {
                 let project_id = object.value;
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${project_id}/`;
@@ -75,6 +76,25 @@ var app = new Vue({
                         }
                     });
             }
+            this.loadDataWithFilters();
+        },
+        'formInputs.subproject_id': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.country_id': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.lwrregion_id': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.quarter': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.from_date': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.to_date': function () {
+            this.loadDataWithFilters();
         }
     },
     created() {
@@ -110,7 +130,6 @@ var app = new Vue({
             this.show_projectgraph = !this.empty(this.requestParameters.project_id);
 
             if (this.show_projectgraph) {
-
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
             }

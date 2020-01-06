@@ -392,7 +392,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context = {}
         queryset = ProjectContact.objects.all()
 
-        if self.request.GET.get('year'):
+        if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
             # FIXME: escoger cual es filtro correcto para los anios
             # queryset = queryset.filter(date_entry_project__fyear__=years)
