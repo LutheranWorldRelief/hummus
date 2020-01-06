@@ -578,10 +578,10 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
 
         participants = []
         queryset2 = ProjectContact.objects.all()
-        totals = dict(queryset2.order_by() \
-                .values('contact__sex_id') \
-                .annotate(total=Count('id')) \
-                .values_list('contact__sex_id', 'total'))
+        totals = dict(queryset2.order_by()
+                      .values('contact__sex_id')
+                      .annotate(total=Count('id'))
+                      .values_list('contact__sex_id', 'total'))
         context['total_participants'] = totals['M'] + totals['F']
         for row in countries:
             data = queryset2.filter(contact__country__id=row['country_id']) \
