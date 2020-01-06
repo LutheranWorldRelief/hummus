@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, ListView
 
 from Levenshtein import distance
 
-from .models import Contact, ProjectContact, SubProject, Project
+from .models import Contact, ProjectContact, SubProject, Project, LWRRegion
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
@@ -170,7 +170,7 @@ class ContactDocDupes(JSONResponseMixin, TemplateView):
             contacts = contacts.for_user(self.request.user)
 
         # manually (python) counts dupes, because count messed up the distinct() filter
-        contacts = contacts.filter(**filter_kwargs).filter(document__isnull=False).\
+        contacts = contacts.filter(**filter_kwargs).filter(document__isnull=False). \
             exclude(document='')
         docs = {}
         for row in contacts:
@@ -325,8 +325,8 @@ class ContactFusion(JSONResponseMixin, TemplateView):
             for project_contact in their_projects:
                 # updates to use chosen-one, if he is not already participating
                 if not ProjectContact.objects.filter(project_id=project_contact.project_id,
-                    contact_id=contact.id).exists():
-                    project_contact.contact_id=contact.id
+                                                     contact_id=contact.id).exists():
+                    project_contact.contact_id = contact.id
                     project_contact.save()
                     result['Proyectos-Contactos'][row.id] += 1
             result['Eliminado'][row.id] = row.delete()
@@ -375,7 +375,7 @@ class YearsAPI(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_context_data(self, **kwargs):
-        queryset = Project.objects.order_by('start__fyear').\
+        queryset = Project.objects.order_by('start__fyear'). \
             values_list('start__fyear', flat=True).distinct()
         return list(queryset)
 
@@ -398,11 +398,13 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         if self.request.GET.get('quarter'):
             quarter = int(self.request.GET.get('quarter'))
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
-        ''  # if self.request.GET.get('lwrregion_id'):
-        ''  # queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
+        if self.request.GET.get('lwrregion_id[]'):
+            queryset = queryset.filter(
+                project__lwrregion__id__in=self.request.GET.getlist('lwrregion_id[]'))
 
-        ''  # if self.request.GET.get('country_id[]'):
-        ''  # queryset = queryset.filter(country_id=self.request.GET.get('country_id[]'))
+        if self.request.GET.get('country_id[]'):
+            queryset = queryset.filter(
+                project__countries__in=self.request.GET.getlist('country_id[]'))
         if self.request.GET.get('subproject_id'):
             queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
@@ -419,8 +421,8 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context['totals'] = totals
 
         # get totals by year
-        query_years = queryset.order_by().\
-            values('date_entry_project__fyear', 'contact__sex_id').\
+        query_years = queryset.order_by(). \
+            values('date_entry_project__fyear', 'contact__sex_id'). \
             annotate(total=Count('id')).values('date_entry_project__fyear',
                                                'contact__sex_id', 'total')
         years = {}
@@ -436,11 +438,14 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context['year'] = years
 
         # get totals by quarter
-        query_years = queryset.order_by().\
-            values('date_entry_project__fyear', 'date_entry_project__fquarter', 'contact__sex_id').\
-            annotate(total=Count('id')).values('date_entry_project__fyear',
-                                               'date_entry_project__fquarter',
-                                               'contact__sex_id', 'total')
+        query_years = queryset.order_by(). \
+            values('date_entry_project__fyear',
+                   'date_entry_project__fquarter',
+                   'contact__sex_id'). \
+            annotate(total=Count('id')). \
+            values('date_entry_project__fyear',
+                   'date_entry_project__fquarter',
+                   'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
             fy_quarter = "{}Q{}".format(query_year['date_entry_project__fyear'],
@@ -469,34 +474,72 @@ class Countries(JSONResponseMixin, TemplateView):
         context = {}
         queryset = ProjectContact.objects.all()
 
-        paises_todos = (self.request.GET.get('paises_todos') == 'true')
+        countries_id = self.request.GET.getlist('country_id[]')
+        regions = self.request.GET.getlist('lwrregion_id[]')
+        project = self.request.GET.get('project_id')
         ''  # TODO: verify if variable will be occupied but delete
         ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
 
-        if self.request.GET.get('lwrregion_id'):
-            queryset = queryset.filter(lwrregion_id=self.request.GET.get('lwrregion_id'))
-        if self.request.GET.get('country_id[]'):
-            queryset = queryset.filter(id=self.request.GET.get('country_id[]'))
+        if len(regions) > 0 or regions:
+            queryset = queryset.filter(project__lwrregion__id__in=regions)
+        if project:
+            queryset = queryset.filter(project_id=project)
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        countries = queryset.filter(project__countries__isnull=False)\
-            .order_by('project__countries__id')\
-            .distinct('project__countries__id')\
-            .values(
-            country_id=F('project__countries__id'),
-            country_name=F(_('project__countries__name'))
-        )
+        countries = queryset.filter(project__countries__isnull=False) \
+            .order_by('project__countries__id') \
+            .distinct('project__countries__id') \
+            .values(country_id=F('project__countries__id'),
+                    country_name=F(_('project__countries__name')),
+                    region=F('project__lwrregion__id')
+                    )
+
         paises = []
         for row in countries:
             paises.append({
                 'id': row['country_id'],
                 'name': row['country_name'],
-                'active': row['country_id'] in self.request.POST.getlist("paises[]") or
-                paises_todos})
+                'region': row['region'],
+                'active': row['country_id'] in countries_id
+            })
 
         context['paises'] = paises
-        context['todos'] = {'todos': paises_todos}
+
+        return context
+
+
+class LWRRegions(JSONResponseMixin, TemplateView):
+    """
+    Countries
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        queryset = LWRRegion.objects.all()
+
+        regions = self.request.GET.getlist('lwrregion_id[]')
+        project = self.request.GET.get('project_id')
+
+        if project:
+            queryset = queryset.filter(project__id=project)
+        if self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+
+        lwrregions = queryset.order_by('name').values('id', 'name')
+
+        lwr_regions = []
+        for row in lwrregions:
+            lwr_regions.append({
+                'id': row['id'],
+                'name': row['name'],
+                'active': row['id'] in regions
+            })
+
+        context['regions'] = lwr_regions
 
         return context
 
@@ -517,7 +560,7 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(id=self.kwargs['project_id'])
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
-        return list(queryset.values())
+        return list(queryset.values('id', 'name'))
 
 
 class SubProjectAPIListView(JSONResponseMixin, ListView):

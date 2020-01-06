@@ -6,10 +6,10 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: '',
-            subproject_id: {},
+            project_id: null,
+            subproject_id: null,
             country_id: [],
-            lwrregion_id: '',
+            lwrregion_id: null,
             year: null,
             quarter: [],
             from_date: '',
@@ -19,7 +19,8 @@ var app = new Vue({
             paises_todos: true,
             rubros_todos: true,
         },
-        show_project: false,
+        show_projectgraph: false,
+        show_subproject: false,
         list_projects: [],
         list_countries: [],
         list_lwrregions: [],
@@ -53,41 +54,17 @@ var app = new Vue({
             if (this.empty(value)) {
                 this.formInputs.quarter = []
             }
-        }
-    },
-    created() {
-        // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
-        this.list_years = years;
-
-        this.loadCatalogs();
-
-        this.loadDataForDashboard();
-    },
-    methods: {
-        loadDataWithFilters() {
-            this.getValueOfFilter().then(() => this.loadDataForDashboard());
         },
-        loadDataForDashboard() {
-
-            this.show_project = !this.empty(this.requestParameters.project_id);
-
-            $.post(UrlsAcciones.UrlDatosCantidadParticipantes, this.requestParameters)
-                .then(((response) => {
-                    this.quantity_participants = response.participantes;
-                    // TODO set in goal_participants the global goal
-                    this.goal_participants = 1000 + response.participantes;
-                    this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
-                    this.width_progress_bar.width = this.goal_percentage + '%';
-                }));
-
-            if (this.show_project) {
+        'formInputs.project_id': function (object) {
+            this.show_subproject = (!this.empty(object));
+            if (this.show_subproject){
+                let project_id = object.value;
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
-                let new_url = `/api/subprojects/project/${this.requestParameters.project_id}/`;
+                let new_url = `/api/subprojects/project/${project_id}/`;
 
                 $.get(new_url)
                     .then(response => {
                         let data = response.object_list;
-                        this.quantity_subprojects = data.length;
                         for (const subproject of data) {
                             this.list_subprojects.push({
                                 name: subproject['name'],
@@ -95,14 +72,50 @@ var app = new Vue({
                             })
                         }
                     });
+            }
+        }
+    },
+    created() {
+        // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
+        this.list_years = years;
+
+        $.get(UrlsAcciones.UrlProjects)
+            .then(response => {
+                this.list_projects = [];
+                let data = response['object_list'];
+                for (const key in data) {
+                    this.list_projects.push({
+                        name: data[key]['name'],
+                        value: data[key]['id']
+                    });
+                }
+            });
+
+        this.loadCatalogs();
+
+        this.loadDataForDashboard();
+    },
+    methods: {
+        loadDataWithFilters() {
+            this.getValueOfFilter()
+                .then(() => {
+                    this.loadCatalogs();
+                    this.loadDataForDashboard();
+                });
+        },
+        loadDataForDashboard() {
+
+            this.show_projectgraph = !this.empty(this.requestParameters.project_id);
+
+            if (this.show_projectgraph) {
+
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
-            } else {
-                $.get(UrlsAcciones.UrlSubProjects)
-                    .then(response => {
-                        this.quantity_subprojects = response.object_list.length;
-                    });
             }
+            $.post(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
+                .then(response => {
+                    this.quantity_subprojects = response.quantity_subprojects;
+                });
 
             $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
                 .then(((response) => {
@@ -126,6 +139,13 @@ var app = new Vue({
                         this.hombres.push(setZeroIsUndefined(data['year'][participants].M));
                         this.defauldSerie.push(0);
                     }
+
+                    //NOTE: calculating the number of participants
+                    this.quantity_participants = setZeroIsUndefined(this.tatals.T);
+                    // TODO set in goal_participants the global goal
+                    this.goal_participants = 1000 + this.quantity_participants;
+                    this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
+                    this.width_progress_bar.width = this.goal_percentage + '%';
 
                     /** Recorrer participantes por trimestre (Quarter) */
                     const orderedQ = {};
@@ -169,55 +189,58 @@ var app = new Vue({
 
         },
         loadCatalogs() {
-            $.get(UrlsAcciones.UrlProjects)
-                .then(response => {
-                    this.quantity_projects = response['object_list'].length;
-                    let data = response['object_list'];
 
-                    for (const key in data) {
-                        this.list_projects.push({
-                            name: data[key]['name'],
-                            value: data[key]['id']
-                        });
-                    }
+            $.post(UrlsAcciones.UrlQuantityProjects, this.requestParameters)
+                .then(data => {
+                    this.quantity_projects = data.quantity_projects;
                 });
 
             $.get(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
+                    this.list_countries = [];
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
                     for (const key in countries) {
                         this.list_countries.push({
                             name: countries[key].name,
                             value: countries[key].id,
-                            active: countries[key]['active'],
+                            active: countries[key].active,
+                            region: countries[key].region,
                         });
                     }
                 });
 
-            $.get(UrlsAcciones.UrlLWRregions)
+            $.get(UrlsAcciones.UrlLWRregions, this.requestParameters)
                 .then(data => {
-                    for (const key in data) {
+                    this.list_lwrregions = [];
+                    let regions = data['regions'];
+                    for (const key in regions) {
                         this.list_lwrregions.push({
-                            name: data[key],
-                            value: key,
-                            active: false
+                            name: regions[key].name,
+                            value: regions[key].id,
+                            active: regions[key].active
                         });
                     }
                 });
         },
         getValueOfFilter() {
             return new Promise((resolved, reject) => {
+                this.requestParameters = {
+                    paises_todos: true,
+                    rubros_todos: true,
+                };
 
-                for (let key in this.formInputs) {
-                    if (!this.empty(this.formInputs[key]['value']) && typeof this.formInputs[key] === 'object') {
-                        console.log(1);
-                        this.requestParameters[key] = this.formInputs[key]['value'];
-                    } else if (!this.empty(this.formInputs[key]) && typeof this.formInputs[key] !== 'object') {
-                        this.requestParameters[key] = this.formInputs[key];
-                    } else if (key === 'quarter' && this.formInputs[key].length > 0) {
-                        console.log(3);
-                        this.requestParameters[key] = this.formInputs[key];
+                for (const key in this.formInputs) {
+                    let input = this.formInputs[key];
+
+                    if (!this.empty(input) && input.constructor === Object) {
+                        this.requestParameters[key] = input['value'];
+                    } else if (!this.empty(input) && input.constructor === Array) {
+                        if (input.length > 0) {
+                            this.requestParameters[key] = input;
+                        }
+                    } else if (!this.empty(input)) {
+                        this.requestParameters[key] = input;
                     }
                 }
 
@@ -250,21 +273,33 @@ var app = new Vue({
             return data === '' || data == null || data === undefined;
 
         },
-        changeActiveStatus(register, type_register = 'country') {
-            let list_items = [];
+        changeActiveStatusAndFilter(register, type_register = 'country') {
+            let list_items = this.list_countries;
+            let actives_regions = [];
 
-            if (type_register === 'country') {
-                list_items = this.list_countries;
-            } else {
+            if (type_register !== 'country') {
                 list_items = this.list_lwrregions;
             }
 
-            for (const row of list_items) {
-                if (row.name.toLowerCase() === register.name.toLowerCase()) {
-                    row.active = !row.active;
+            list_items.find(function (item) {
+                if (item.name === register.name) {
+                    item.active = !item.active
                 }
+                if (item.active) {
+                    actives_regions.push(item.value);
+                }
+            });
+
+            if (type_register !== 'country') {
+                this.list_countries.find(function (row) {
+                    if (row.active && !actives_regions.includes(row.region)) {
+                        row.active = !row.active;
+                    }
+                })
             }
-        }
+
+            this.loadDataWithFilters();
+        },
 
     }
 

@@ -84,7 +84,8 @@ urlpatterns = [
     path('api/ids/<int:id1>/<int:id2>/', jsonviews.ContactIdsDupesDetails.as_view(), ),
 
     # Participants counter API
-    path('api/participants/', jsonviews.ProjectContactCounter.as_view()),
+    path('api/participants/', jsonviews.ProjectContactCounter.as_view(),
+         name='api-participants'),
     path('graphic/paises/', jsonviews.Countries.as_view(), name='graphic-paises'),
 
     # Projects API
@@ -104,6 +105,5 @@ urlpatterns = [
     path('api/types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
     path('api/education/',
          jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), ),
-    path('api/lwrregions/', jsonviews.JsonIdName.as_view(queryset=models.LWRRegion.objects.all()),
-         name="api-lwrregions"),
+    path('api/lwrregions/', jsonviews.LWRRegions.as_view(), name="api-lwrregions"),
 ]

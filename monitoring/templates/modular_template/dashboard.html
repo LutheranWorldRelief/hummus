@@ -16,6 +16,10 @@
             background-color: #0daea1;
             color: #fff;
         }
+
+        ul.multiselect__content {
+            border: 1px solid #c8d0da;
+        }
     </style>
 {% endblock %}
 
@@ -45,13 +49,16 @@
 
                                 {# Note: Filter by fiscal year and quartes #}
                                 {% verbatim %}
-                                <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
+                                <div v-if="!check_filter" class="col-lg-2 col-md-2 col-sm-2">
                                     {% endverbatim %}
                                     <label for="fiscal_year">{% trans 'Fiscal Year' %}:</label>
                                     {% verbatim %}
-                                    <vue-multiselect v-model="formInputs.year" {% endverbatim %}
-                                                     {% verbatim %} :options="list_years" :searchable="true"
-                                                     :show-labels="false" {% endverbatim %}
+                                    <vue-multiselect v-model="formInputs.year"
+                                                     :options="list_years"
+                                                     :searchable="true"
+                                                     :max-height="200"
+                                                     :show-labels="false"
+                                                     {% endverbatim %}
                                                      placeholder="{% trans 'Year' %}" {% verbatim %}>
                                         <template slot="singleLabel" slot-scope="{ option }">
                                             {{ option }}
@@ -63,7 +70,7 @@
                                 <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
                                     {% endverbatim %}
                                     <label class="control-label" for="fiscal_year">{% trans 'Quarter' %}:</label>
-                                    <div>
+                                    <div class="text-center">
                                         {% for num_quarter in '1234'|make_list %}
                                             <label>
                                                 {{ formInputs.year }}
@@ -96,7 +103,7 @@
                                     {% endverbatim %}
                                 </div>
 
-                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-lg-7 col-md-7 col-sm-7">
                                     <label for="">{% trans "Project" %}:</label>
                                     {% verbatim %}
                                     <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
@@ -114,7 +121,7 @@
                                 </div>
                                 {# subproject #}
                                 {% verbatim %}
-                                <div v-if="show_project" class="col-lg-12 col-md-12 col-sm-12">
+                                <div v-if="show_subproject" class="col-lg-12 col-md-12 col-sm-12">
                                     {% endverbatim %}
                                     <label for="">{% trans "Subproject" %}:</label>
                                     {% verbatim %}
@@ -156,7 +163,7 @@
                                 <div v-for="region in list_lwrregions" class="col-lg-6 col-md-6">
                                     <button type="button" class="btn w-100 icon"
                                             :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"
-                                            v-on:click="changeActiveStatus(region,'region')">
+                                            v-on:click="changeActiveStatusAndFilter(region,'region')">
                                         <i class="fa" :class="{'fa-check': region.active}"></i>
                                         <span>{{ region.name }}</span>
                                     </button>
@@ -181,7 +188,7 @@
                                 <div v-for="country in list_countries" class="col-lg-4">
                                     <button type="button" class="btn w-100 icon"
                                             :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
-                                            v-on:click="changeActiveStatus(country)">
+                                            v-on:click="changeActiveStatusAndFilter(country)">
                                         <i class="fa" :class="{'fa-check':country.active}"></i>
                                         <span>{{ country.name }}</span>
                                     </button>
@@ -196,7 +203,7 @@
         </section>
         {% include 'modular_template/summary.html' %}
         {% verbatim %}
-        <div v-if="show_project"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
+        <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
         {% include 'modular_template/geographics.html' %}
 
@@ -208,14 +215,14 @@
     <script>
         const UrlsAcciones = {
             UrlProjects: "{% url 'monitoring:api-projects' %}",
+            UrlQuantityProjects: "{% url 'monitoring:cantidad-proyectos' %}",
             UrlCountries: "{% url 'monitoring:graphic-paises' %}",
             UrlSubProjects: "{% url 'monitoring:api-subproject' %}",
-            UrlSubProjectsProject: "{% url 'monitoring:api-subprojects-project' project_id='1' %}",
+            UrlQuantitySubProjects: "{% url 'monitoring:cantidad-subproyectos' %}",
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
             UrlLWRregions: "{% url 'monitoring:api-lwrregions' %}",
-            UrlDatosCantidadParticipantes: "{% url 'monitoring:cantidad-participantes' %}",
             UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
-            UrlDatosGraficosParticipantes: "/api/participants/",
+            UrlDatosGraficosParticipantes: "{% url 'monitoring:api-participants' %}",
             UrlGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
             UrlGraficoSexo: "{% url 'monitoring:grafico-sexo-participante' %}",

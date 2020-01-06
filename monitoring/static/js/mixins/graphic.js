@@ -54,7 +54,7 @@ var graphicMixins = {
                     return index === series.length - 1
                 }
 
-                let text_label = type === 'GraphicQuarter' ? gettext('Participants by quarter') : gettext('Participants by fiscal year');
+                let text_label = type === 'GraphicQuarter' ? 'Participants by quarter' : 'Participants by fiscal year';
                 let option = {
                     toolbox: this.setToolBox(text_label),
                     color: [this.colors.men, this.colors.women],
@@ -83,21 +83,36 @@ var graphicMixins = {
                         containLabel: true
                     },
                     "calculable": true,
-                    xAxis: [
-                        {
-                            type: 'category',
-                            position: 'bottom',
-                            data: type === 'GraphicQuarter' ? this.aniosQ : this.anios,
-                            axisLabel: {
-                                rotate: 90,
-                                verticalAlign: 'middle',
-                            },
-                        }
-                    ],
+                    xAxis: [{
+                        type: 'category',
+                        position: 'bottom',
+                        data: type === 'GraphicQuarter' ? this.aniosQ : this.anios,
+                        axisLabel: {
+                            rotate: 90,
+                            verticalAlign: 'middle',
+                        },
+                    }],
                     yAxis: {
                         type: 'value'
-                    }, //Barra para realizar Zoom
-                    "dataZoom": [{
+                    }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
+                    series: series.map((item, index) => Object.assign(item, {
+                        type: 'bar',
+                        stack: true,
+                        label: {
+                            show: true,
+                            formatter: isLastSeries(index) ? this.genFormatter(series) : null,
+                            fontSize: isLastSeries(index) ? 13 : 11,
+                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
+                            position: isLastSeries(index) ? 'top' : 'inside',
+                            verticalAlign: 'middle',
+                            distance: 30,
+                        },
+                    }))
+                };
+
+                if (type === 'GraphicQuarter') {
+                    //Barra para realizar Zoom
+                    option.dataZoom = [{
                         "show": true,
                         "height": 20,
                         "xAxisIndex": [
@@ -121,22 +136,9 @@ var graphicMixins = {
                         "height": 15,
                         "start": 1,
                         "end": 35
-                    }], //Sumar valores de la serie (cantidad hombres y mujeres por año)
-                    series: series.map((item, index) => Object.assign(item, {
-                        type: 'bar',
-                        stack: true,
-                        label: {
-                            show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series) : null,
-                            fontSize: isLastSeries(index) ? 13 : 11,
-                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
-                            position: isLastSeries(index) ? 'top' : 'inside',
-                            rotate: 90,
-                            verticalAlign: 'middle',
-                            distance: 30,
-                        },
-                    }))
-                };
+                    }]
+                }
+
                 myChart.setOption(option);
 
                 myChart.on('legendselectchanged', (params) => {
@@ -176,7 +178,7 @@ var graphicMixins = {
 
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
-            // TODO Inicio Asignanar meta
+            // TODO Inicio Asignar meta
             var meta = [];
             this.totalByBar.forEach(function (numero, index) {
                 if (Math.floor(Math.random() * 10) % 2 === 0)
@@ -196,7 +198,6 @@ var graphicMixins = {
                     show: true,
                     position: 'top',
                     distance: 15,
-                    rotate: 90,
                     verticalAlign: 'middle',
                     formatter: function (param) {
                         return param.value;
@@ -240,7 +241,6 @@ var graphicMixins = {
                     extraCssText: 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);',
                 },
                 legend: {
-                    //top: 30,
                     bottom: 'bottom',
                     textStyle: {
                         color: '#4f5f6f',
@@ -268,48 +268,46 @@ var graphicMixins = {
                         },
                     },
                     data: this.anios //xAxisData
-                },
-                    {
-                        type: 'category',
-                        axisTick: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'rgba(50,52,108,.1)',
-                            }
-                        },
-                        axisLabel: {//Barra horizontal arriba
-                            rotate: 270,
-                            verticalAlign: 'middle',
-                            textStyle: {
-                                color: 'rgba(0,0,0,.6)',
-                                fontSize: '11',
-                                fontWeight: '560',
-                            }, margin: 20,
-                        },
-                        data: this.metaPoranio
+                }, {
+                    type: 'category',
+                    axisTick: {
+                        show: false
                     },
-                    {
-                        type: 'category',
-                        axisLine: {
-                            show: false
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: 'rgba(50,52,108,.1)',
+                        }
+                    },
+                    axisLabel: {//Barra horizontal arriba
+                        verticalAlign: 'middle',
+                        textStyle: {
+                            color: 'rgba(0,0,0,.6)',
+                            fontSize: '11',
+                            fontWeight: '560',
                         },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            show: false
-                        },
-                        splitArea: {
-                            show: false
-                        },
-                        splitLine: {
-                            show: false
-                        },//Anios en el tooltip
-                        data: this.anios
-                    }],
+                        margin: 20,
+                    },
+                    data: this.metaPoranio
+                }, {
+                    type: 'category',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },//Anios en el tooltip
+                    data: this.anios
+                }],
                 yAxis: {
                     type: 'value',
                     axisTick: {
@@ -335,39 +333,35 @@ var graphicMixins = {
                         },
                     },
                 },
-                series:
-                    [
-                        {
-                            name: 'Actual',
-                            type: 'bar',
-                            stack: '1',
-                            xAxisIndex: 0,
-                            data: this.totalByBar,
-                            label: label,
-                            barGap: '-100%',
-                            barWidth: '35%',
-                            itemStyle: {
-                                normal: {
-                                    color: array_colors_lwr[1],
-                                }
-                            },
-                            z: 2
-                        },
-                        {
-                            name: 'Meta',
-                            type: 'bar',
-                            xAxisIndex: 2,
-                            data: this.metaPoranio,
-                            barWidth: '67%',
-                            itemStyle: {
-                                normal: {
-                                    color: array_colors_lwr[0],
-                                    barBorderRadius: 1,
-                                }
-                            },
-                            z: 1
-                        },
-                    ]
+                series: [{
+                    name: gettext('Actual'),
+                    type: 'bar',
+                    stack: '1',
+                    xAxisIndex: 0,
+                    data: this.totalByBar,
+                    label: label,
+                    barGap: '-100%',
+                    barWidth: '35%',
+                    itemStyle: {
+                        normal: {
+                            color: array_colors_lwr[1],
+                        }
+                    },
+                    z: 2
+                }, {
+                    name: gettext('Meta'),
+                    type: 'bar',
+                    xAxisIndex: 2,
+                    data: this.metaPoranio,
+                    barWidth: '67%',
+                    itemStyle: {
+                        normal: {
+                            color: 'rgba(4,170,171,0.6)',
+                            barBorderRadius: 1,
+                        }
+                    },
+                    z: 1
+                }]
             };
             this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
@@ -456,7 +450,7 @@ var graphicMixins = {
                 }],
                 "dataZoom": this.getGraphicZoom(),
                 "series": [{
-                    "name": "Men",
+                    "name": gettext("Men"),
                     "type": "bar",
                     "barMaxWidth": 35,
                     "barGap": "20%",
@@ -477,7 +471,7 @@ var graphicMixins = {
                     },
                     "data": this.hombres
                 }, {
-                    "name": "Woman",
+                    "name": gettext("Woman"),
                     "type": "bar",
                     "itemStyle": {
                         "normal": {
@@ -513,7 +507,6 @@ var graphicMixins = {
                                 fontWeight: '570',
                                 fontSize: '12',
                                 distance: 35,
-                                rotate: 90,
                                 formatter: function (p) {
                                     return p.value > 0 ? (p.value) : '';
                                 }
@@ -571,19 +564,16 @@ var graphicMixins = {
                         color: this.colors.men
                     },
                     data: participants.fParticipants
-                },
-                {
+                }, {
                     name: 'Women',
                     itemStyle: {
                         color: this.colors.women
                     },
                     data: participants.mParticipants
-                },
-                {
+                }, {
                     name: 'total',
                     data: total
                 }
-
             ];
 
             var genFormatter = (series, gender = null) => {
@@ -654,7 +644,7 @@ var graphicMixins = {
             };
 
             myChart.setOption(option);
-            this.responsiveChart('', myChart);
+            this.responsiveChart('#tab_types-click', myChart);
 
             myChart.on('legendselectchanged', function (params) {
 
@@ -742,7 +732,6 @@ var graphicMixins = {
                     name: 'total',
                     data: total
                 }
-
             ];
 
             function isLastSeries(index) {
@@ -798,7 +787,7 @@ var graphicMixins = {
                 })),
                 toolbox: this.setToolBox('Participants by Education'),
             };
-
+            this.responsiveChart('#tab_types-click', myChart);
             myChart.setOption(option);
 
             myChart.on('legendselectchanged', (params) => {
@@ -826,7 +815,7 @@ var graphicMixins = {
                     },
 
                 }));
-
+                this.responsiveChart('#tab_types-click', myChart);
                 myChart.setOption(option);
             })
         },
@@ -865,8 +854,8 @@ var graphicMixins = {
                     {
                         name: '',
                         type: 'pie',
-                        radius: '55%',
-                        center: ['50%', '60%'],
+                        radius: '35%',
+                        center: ['50%', '50%'],
                         data: [{
                             name: totalMen.name,
                             value: totalMen.value,
@@ -897,7 +886,7 @@ var graphicMixins = {
                 ]
             };
 
-            this.responsiveChart('', myChart);
+            this.responsiveChart('#tab_types-click', myChart);
             myChart.setOption(option);
         },
         graphicGoalProject() {
