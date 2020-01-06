@@ -27,7 +27,59 @@
     <div id="app">
         {# filter html #}
         <section class="section">
+
             <div class="row">
+                {# Regions options #}
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="card saneheight-item items">
+                        <div class="card-header card-header-sm bordered">
+                            <div class="header-block">
+                                <h3 class="title">{% trans 'Search by LWR Regions' %}</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% verbatim %}
+                                <div v-for="region in list_lwrregions" class="col-lg-6 col-md-6">
+                                    <button type="button" class="btn w-100 icon"
+                                            :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"
+                                            v-on:click="changeActiveStatusAndFilter(region,'region')">
+                                        <i class="fa" :class="{'fa-check': region.active}"></i>
+                                        <span>{{ region.name }}</span>
+                                    </button>
+
+                                </div>
+                                {% endverbatim %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# Country options #}
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="card saneheight-item items">
+                        <div class="card-header card-header-sm bordered">
+                            <div class="header-block">
+                                <h3 class="title">{% trans 'Search by Countries' %}</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% verbatim %}
+                                <div v-for="country in list_countries" class="col-lg-4">
+                                    <button type="button" class="btn w-100 icon"
+                                            :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
+                                            v-on:click="changeActiveStatusAndFilter(country)">
+                                        <i class="fa" :class="{'fa-check':country.active}"></i>
+                                        <span>{{ country.name }}</span>
+                                    </button>
+
+                                </div>
+                                {% endverbatim %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
                     <div class="card sameheight-item items" data-exclude="xs,sm,lg">
                         <div class="card-header card-header-sm bordered">
@@ -149,56 +201,7 @@
                         </div>
                     </div>
                 </div>
-                {# Regions options #}
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="card saneheight-item items">
-                        <div class="card-header card-header-sm bordered">
-                            <div class="header-block">
-                                <h3 class="title">{% trans 'Search by LWR Regions' %}</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% verbatim %}
-                                <div v-for="region in list_lwrregions" class="col-lg-6 col-md-6">
-                                    <button type="button" class="btn w-100 icon"
-                                            :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"
-                                            v-on:click="changeActiveStatusAndFilter(region,'region')">
-                                        <i class="fa" :class="{'fa-check': region.active}"></i>
-                                        <span>{{ region.name }}</span>
-                                    </button>
 
-                                </div>
-                                {% endverbatim %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {# Country options #}
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="card saneheight-item items">
-                        <div class="card-header card-header-sm bordered">
-                            <div class="header-block">
-                                <h3 class="title">{% trans 'Search by Countries' %}</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% verbatim %}
-                                <div v-for="country in list_countries" class="col-lg-4">
-                                    <button type="button" class="btn w-100 icon"
-                                            :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
-                                            v-on:click="changeActiveStatusAndFilter(country)">
-                                        <i class="fa" :class="{'fa-check':country.active}"></i>
-                                        <span>{{ country.name }}</span>
-                                    </button>
-
-                                </div>
-                                {% endverbatim %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
         {% include 'modular_template/summary.html' %}
