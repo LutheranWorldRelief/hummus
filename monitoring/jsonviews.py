@@ -555,18 +555,30 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = ProjectContact.objects.all()
+        queryset2 = queryset
+        filter_kwargs = {}
 
         regions = self.request.GET.getlist('lwrregion_id[]')
+        countries = self.request.GET.getlist('country_id[]')
         project = self.request.GET.get('project_id')
 
         if len(regions) > 0 or regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
+            filter_kwargs['project__lwrregion__id__in'] = regions
+
+        if len(countries) > 0 or countries:
+            queryset = queryset.filter(project__countries__id__in=countries)
+            filter_kwargs['project__countries__id__in'] = countries
+        else:
+            queryset = queryset.filter(project__countries__isnull=False)
+
         if project:
             queryset = queryset.filter(project_id=project)
+            filter_kwargs['project_id'] = project
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        countries = queryset.filter(project__countries__isnull=False) \
+        countries = queryset \
             .order_by('project__countries__id') \
             .distinct('project__countries__id') \
             .values(country_id=F('project__countries__id'),
@@ -576,9 +588,11 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                     y=Cast(F('project__countries__y'), FloatField()),
                     )
 
+        print(countries.query)
+
         participants = []
-        queryset2 = ProjectContact.objects.all()
-        totals = dict(queryset2.order_by()
+
+        totals = dict(queryset2.filter(**filter_kwargs).order_by()
                       .values('contact__sex_id')
                       .annotate(total=Count('id'))
                       .values_list('contact__sex_id', 'total'))
@@ -603,7 +617,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                 'men': totals['M'],
                 'percentage': round(
                     (totals['T'] * 100) /
-                    context['total_participants'],0)
+                    context['total_participants'], 0)
             })
 
         context['participants'] = participants
