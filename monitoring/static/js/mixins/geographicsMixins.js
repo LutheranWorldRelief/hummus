@@ -1,7 +1,6 @@
 var geographicsMixins = {
     data() {
         return {
-            showing_map: false,
             geojson: {
                 type: "FeatureCollection",
                 features: []
@@ -20,20 +19,17 @@ var geographicsMixins = {
         }
     },
     methods: {
-        loadCountriesMaps() {
+        loadCountriesMaps(){
+            if (this.map)
+                this.map.remove();
 
-            if (!this.map) {
                 this.map = new L.Map('map');
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
                 }).addTo(this.map);
 
-            }
-
             let info = L.control();
 
-
-            if (info) {
                 info.onAdd = function (map) {
                     this._div = L.DomUtil.create('div', 'info'); //div con clase 'info'
                     this.update();
@@ -55,7 +51,6 @@ var geographicsMixins = {
                 };
 
                 info.addTo(this.map);
-            }
 
             $.get(UrlsAcciones.UrlCountriesGeography, this.requestParameters)
                 .then(response => {
@@ -75,7 +70,10 @@ var geographicsMixins = {
                             let countries = response;
                             let geojSonLayerGroup = null;
 
+                            this.geojson.features=[];
+
                             data.participants.forEach(participant => {
+
                                 let country = countries.features.find(country => country.id === participant.alfa3);
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
