@@ -501,7 +501,6 @@ class Countries(JSONResponseMixin, TemplateView):
         if to_date:
             queryset = queryset.filter(date_entry_project__lte=to_date)
 
-
         if project:
             queryset = queryset.filter(project_id=project)
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
