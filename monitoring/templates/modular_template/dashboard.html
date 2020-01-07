@@ -27,59 +27,7 @@
     <div>
         {# filter html #}
         <section class="section">
-
             <div class="row">
-                {# Regions options #}
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="card saneheight-item items">
-                        <div class="card-header card-header-sm bordered">
-                            <div class="header-block">
-                                <h3 class="title">{% trans 'Regions' %}</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% verbatim %}
-                                <div v-for="region in list_lwrregions" class="col-lg-6 col-md-6">
-                                    <button type="button" class="btn w-100 icon"
-                                            :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"
-                                            v-on:click="changeActiveStatusAndFilter(region,'region')">
-                                        <i class="fa" :class="{'fa-check': region.active}"></i>
-                                        <span>{{ region.name }}</span>
-                                    </button>
-
-                                </div>
-                                {% endverbatim %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {# Country options #}
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="card saneheight-item items">
-                        <div class="card-header card-header-sm bordered">
-                            <div class="header-block">
-                                <h3 class="title">{% trans 'Countries' %}</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% verbatim %}
-                                <div v-for="country in list_countries" class="col-lg-4">
-                                    <button type="button" class="btn w-100 icon"
-                                            :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
-                                            v-on:click="changeActiveStatusAndFilter(country)">
-                                        <i class="fa" :class="{'fa-check':country.active}"></i>
-                                        <span>{{ country.name }}</span>
-                                    </button>
-
-                                </div>
-                                {% endverbatim %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
                     <div class="card sameheight-item items" data-exclude="xs,sm,lg">
                         <div class="card-header card-header-sm bordered">
@@ -87,23 +35,39 @@
                                 <h3 class="title">{% trans 'Filters' %}</h3>
                             </div>
                             <div class="pull-right">
-                                <label>
-                                    {% verbatim %}
-                                    <input v-model="check_filter" class="checkbox" type="checkbox"
-                                           value="{{ check_filter }}">
-                                    {% endverbatim %}
-                                    <span>{% trans 'Filter by Specifics Dates' %}</span>
-                                </label>
+
                             </div>
                         </div>
                         <div class="card-body">
+                            {# Country options #}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="font-weight-bold">{% trans 'Countries' %}:</h6>
+                                </div>
+                                {% verbatim %}
+                                <div v-if="list_countries.length > 0" v-for="country in list_countries"
+                                     class="col-lg-2">
+                                    <button type="button" class="btn w-100 icon"
+                                            :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
+                                            v-on:click="changeActiveStatusAndFilter(country)">
+                                        <i class="fa" :class="{'fa-check':country.active}"></i>
+                                        <span>{{ country.name }}</span>
+                                    </button>
+                                </div>
+
+                                <div v-else class="col-12">
+                                    {% endverbatim %}
+                                    <h5>{% trans 'No Countries data' %}</h5>
+                                </div>
+
+                            </div>
                             <div class="row">
 
                                 {# Note: Filter by fiscal year and quartes #}
                                 {% verbatim %}
                                 <div v-if="!check_filter" class="col-lg-2 col-md-2 col-sm-2">
                                     {% endverbatim %}
-                                    <label for="fiscal_year">{% trans 'Fiscal Year' %}:</label>
+                                    <label class="font-weight-bold" for="fiscal_year">{% trans 'Fiscal Year' %}:</label>
                                     {% verbatim %}
                                     <vue-multiselect v-model="formInputs.year"
                                                      :options="list_years"
@@ -122,7 +86,7 @@
                                 {% verbatim %}
                                 <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
                                     {% endverbatim %}
-                                    <label class="control-label" for="fiscal_year">{% trans 'Quarter' %}:</label>
+                                    <label class="font-weight-bold control-label" for="fiscal_year">{% trans 'Quarter' %}:</label>
                                     <div class="text-center">
                                         {% for num_quarter in '1234'|make_list %}
                                             <label>
@@ -138,7 +102,7 @@
                                 {# Note Filter by dates #}
                                 <div class="col-lg-3 col-md-3 col-sm-3"
                                      :class="{'d-none': !check_filter }">
-                                    <label for="start_date">{% trans 'From' %}:</label>
+                                    <label class="font-weight-bold" for="start_date">{% trans 'From' %}:</label>
                                     {% verbatim %}
                                     <input v-model="formInputs.from_date" type="date"
                                            class="form-control" value=""
@@ -147,7 +111,7 @@
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3"
                                      :class="{'d-none': !check_filter }">
-                                    <label for="end_date">{% trans 'To' %}:</label>
+                                    <label class="font-weight-bold" for="end_date">{% trans 'To' %}:</label>
                                     {% verbatim %}
                                     <input v-model="formInputs.to_date" type="date"
                                            class="form-control" value=""
@@ -156,7 +120,7 @@
                                 </div>
 
                                 <div class="col">
-                                    <label for="">{% trans "Project" %}:</label>
+                                    <label class="font-weight-bold" for="">{% trans "Project" %}:</label>
                                     {% verbatim %}
                                     <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
                                                      deselect-label="{% trans "Press to remove value selected" %}"
@@ -173,9 +137,9 @@
                                 </div>
                                 {# subproject #}
                                 {% verbatim %}
-                                <div v-if="show_subproject" class="col-lg-12 col-md-12 col-sm-12">
+                                <div v-if="show_subproject" class="col">
                                     {% endverbatim %}
-                                    <label for="">{% trans "Subproject" %}:</label>
+                                    <label class="font-weight-bold" for="">{% trans "Subproject" %}:</label>
                                     {% verbatim %}
                                     <vue-multiselect v-model="formInputs.subproject_id" {% endverbatim %}
                                                      deselect-label="{% trans "Press to remove value selected" %}"
@@ -188,6 +152,15 @@
                                         </template>
                                     </vue-multiselect>
                                     {% endverbatim %}
+                                </div>
+                                <div class="col-12">
+                                    <label>
+                                        {% verbatim %}
+                                        <input v-model="check_filter" class="checkbox" type="checkbox"
+                                               value="{{ check_filter }}">
+                                        {% endverbatim %}
+                                        <span>{% trans 'Filter by Specifics Dates' %}</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
