@@ -5,44 +5,51 @@
     <p class="title-description"> {% trans 'Graphics' %} </p>
 </div>
 <div class="row sameheight-container-">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
-        <div class="card" data-exclude="xs">
-            <div class="card-header card-header-sm bordered">
-                <ul role="tablist" class="nav nav-tabs pull-left" id="tab_quarter-click">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#fiscalyeartab" role="tab"
-                           data-toggle="tab">{% trans 'Beneficiaries by Fiscal Year' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#quartertab" role="tab"
-                           data-toggle="tab">{% trans 'Beneficiaries by Quarter' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#metaGeneral" role="tab"
-                           data-toggle="tab">{% trans 'Actual - Target' %}</a>
-                    </li>
-                </ul>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col">
+                {% include 'modular_template/summary.html' %}
             </div>
-            <div class="card-block">
-                <div class="tab-content">
-                    <div role="tabpanel" class="container-fluid tab-pane active fade show" id="fiscalyeartab">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
-                            </div>
-                        </div>
+            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col">
+                <div class="card" data-exclude="xs">
+                    <div class="card-header card-header-sm bordered">
+                        <ul role="tablist" class="nav nav-tabs pull-left" id="tab_quarter-click">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#fiscalyeartab" role="tab"
+                                   data-toggle="tab">{% trans 'Beneficiaries by Fiscal Year' %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#quartertab" role="tab"
+                                   data-toggle="tab">{% trans 'Beneficiaries by Quarter' %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#metaGeneral" role="tab"
+                                   data-toggle="tab">{% trans 'Actual - Target' %}</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div role="tabpanel" class="container-fluid fade tab-pane" id="quartertab">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
+                    <div class="card-block">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="container-fluid tab-pane active fade show" id="fiscalyeartab">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div id="FiscalYearGraph" style="height: 500px; width: 100%;"></div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="container-fluid tab-pane fade show" id="metaGeneral">
-                        <div class="row">
-                            <div class="col-12">
-                                <div id="MetaParticipantes" style="height:500px; width: 100%;"></div>
+                            <div role="tabpanel" class="container-fluid fade tab-pane" id="quartertab">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div id="TrimestralGraph" style="height: 500px; width: 100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="container-fluid tab-pane fade show" id="metaGeneral">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="MetaParticipantes" style="height:500px; width: 100%;"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,6 +57,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
         <div class="card" data-exclude="xs">
