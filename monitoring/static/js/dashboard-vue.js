@@ -2,7 +2,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
 
 var app = new Vue({
     el: '#app',
-    mixins: [graphicMixins],
+    mixins: [graphicMixins, geographicsMixins],
     data: {
         check_filter: false,
         formInputs: {
@@ -139,11 +139,15 @@ var app = new Vue({
             });
         })
     },
+    mounted(){
+      this.loadCountriesMaps();
+    },
     methods: {
         loadDataWithFilters() {
             this.getValueOfFilter()
                 .then(() => {
                     this.loadCatalogs();
+                    this.loadCountriesMaps();
                     this.loadDataForDashboard();
                 });
         },
