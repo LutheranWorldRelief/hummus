@@ -417,7 +417,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
         # get unique totals by gender
         totals = dict(queryset_unique.values_list('contact__sex_id').
-            annotate(total=Count('contact', distinct=True)))
+                      annotate(total=Count('contact', distinct=True)))
 
         if totals:
             totals['T'] = totals['M'] + totals['F']
