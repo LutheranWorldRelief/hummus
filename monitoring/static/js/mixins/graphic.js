@@ -211,7 +211,7 @@ var graphicMixins = {
             };
 
             var option = {
-                toolbox: this.setToolBox('Assigned Goal - Amound Goal'),
+                toolbox: this.setToolBox('Actual - Target - Actual'),
                 backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
@@ -245,7 +245,7 @@ var graphicMixins = {
                     textStyle: {
                         color: '#4f5f6f',
                     },
-                    data: [gettext('Actual'), gettext('Meta')],
+                    data: [gettext('Actual'), gettext('Target')],
                 },
                 xAxis: [{
                     type: 'category',
@@ -349,7 +349,7 @@ var graphicMixins = {
                     },
                     z: 2
                 }, {
-                    name: gettext('Meta'),
+                    name: gettext('Target'),
                     type: 'bar',
                     xAxisIndex: 2,
                     data: this.metaPoranio,
@@ -371,7 +371,7 @@ var graphicMixins = {
             let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
             option = {
-                toolbox: this.setToolBox('Assigned Goal - Amound Goal by Sex'),
+                toolbox: this.setToolBox('Actual - Target by Sex'),
                 backgroundColor: this.background_color,
                 "tooltip": {
                     "trigger": "axis",
@@ -397,7 +397,7 @@ var graphicMixins = {
                     textStyle: {
                         color: '#90979c',
                     },
-                    "data": [gettext('Men'), gettext('Woman'), gettext('Meta')]
+                    "data": [gettext('Men'), gettext('Woman'), gettext('Target')]
                 },
                 "calculable": true,
                 "xAxis": [{
@@ -491,7 +491,7 @@ var graphicMixins = {
                     },
                     "data": this.mujeres
                 }, {
-                    "name": gettext('Meta'),
+                    "name": gettext('Target'),
                     "type": "line",
                     "stack": true,
                     symbolSize: 10,
@@ -605,6 +605,7 @@ var graphicMixins = {
                         type: 'shadow' //'line' | 'shadow'
                     }, formatter: function (params) {
                         let axisValue = '<p>' + params[0].axisValue + '</p>';
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
                             if (item.seriesName !== 'total') {
                                 axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
