@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-7">
                                     <div class="row">
                                         {# Note: Filter by fiscal year and quartes #}
                                         {% verbatim %}
@@ -71,7 +71,7 @@
                                                 {% endverbatim %}
                                                 <label class="font-weight-bold control-label"
                                                        for="fiscal_year">{% trans 'Quarter' %}:</label>
-                                                <div class="text-center">
+                                                <div style="font-size: 12px">
                                                     {% for num_quarter in '1234'|make_list %}
                                                         <label>
                                                             <input {% verbatim %} v-model="formInputs.quarter"
@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
                                 {# Country options #}
-                                <div class="col-4">
+                                <div class="col-5">
                                     <div class="row">
                                         {% verbatim %}
                                         <div v-if="list_countries.length > 0" v-for="country in list_countries"
