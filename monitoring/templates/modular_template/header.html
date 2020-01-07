@@ -8,6 +8,7 @@
 
     <div class="header-block header-block-buttons">
         {# Regions options #}
+        {% trans 'Filter By' %}:
         {% verbatim %}
         <button v-for="region in list_lwrregions" type="button" class="btn btn-sm icon m-1"
                 :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"

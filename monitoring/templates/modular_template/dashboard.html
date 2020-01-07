@@ -41,9 +41,6 @@
                         <div class="card-body">
                             {# Country options #}
                             <div class="row">
-                                <div class="col-12">
-                                    <h6 class="font-weight-bold">{% trans 'Countries' %}:</h6>
-                                </div>
                                 {% verbatim %}
                                 <div v-if="list_countries.length > 0" v-for="country in list_countries"
                                      class="col-lg-2">
@@ -54,12 +51,6 @@
                                         <span>{{ country.name }}</span>
                                     </button>
                                 </div>
-
-                                <div v-else class="col-12">
-                                    {% endverbatim %}
-                                    <h5>{% trans 'No Countries data' %}</h5>
-                                </div>
-
                             </div>
                             <div class="row">
 
