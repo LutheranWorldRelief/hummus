@@ -23,6 +23,43 @@
             border: 1px solid #c8d0da;
         }
 
+        /* color for btn and icons*/
+        .btn-color-1 {
+            background-color: #a768f3;
+        }
+
+        .btn-color-2 {
+            background-color: #36A2F2;
+        }
+
+        .btn-color-3 {
+            background-color: #e83e8c;
+        }
+
+        .btn-color-4 {
+            background-color: #28a745;
+        }
+
+        .text-color-1 {
+            color: #a768f3;
+        }
+
+        .text-color-2 {
+            color: #36A2F2;
+        }
+
+        .text-color-3 {
+            color: #e83e8c;
+        }
+
+        .text-color-4 {
+            color: #28a745;
+        }
+
+        .text-color-5 {
+            color: #0DAEA1;
+        }
+
         /*leaflet map styles*/
         #map {
             width: 100%;
@@ -47,7 +84,7 @@
 {% endblock %}
 
 {% block main_content %}
-    <div id="app">
+    <div>
         {# filter html #}
         <section class="section">
             <div class="row">
@@ -58,173 +95,137 @@
                                 <h3 class="title">{% trans 'Filters' %}</h3>
                             </div>
                             <div class="pull-right">
-                                <label>
-                                    {% verbatim %}
-                                    <input v-model="check_filter" class="checkbox" type="checkbox"
-                                           value="{{ check_filter }}">
-                                    {% endverbatim %}
-                                    <span>{% trans 'Filter by Specifics Dates' %}</span>
-                                </label>
+                                <div class="col-12">
+                                    <label style="font-size: 80%;font-weight: 400;">
+                                        {% verbatim %}
+                                        <input v-model="check_filter" class="checkbox" type="checkbox"
+                                               value="{{ check_filter }}">
+                                        {% endverbatim %}
+                                        <span>{% trans 'Filter by Specifics Dates' %}</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-7">
+                                    <div class="row">
+                                        {# Note: Filter by fiscal year and quartes #}
+                                        {% verbatim %}
+                                        <div v-if="!check_filter" class="col-lg-4 col-md-4 col-sm-4">
+                                            {% endverbatim %}
+                                            {% verbatim %}
+                                            <vue-multiselect v-model="formInputs.year"
+                                                             :options="list_years"
+                                                             :searchable="true"
+                                                             :max-height="200"
+                                                             :show-labels="false"
+                                                             :multiple="true"
+                                                             {% endverbatim %}
+                                                             placeholder="{% trans 'Fiscal Year' %}" {% verbatim %}>
+                                                <template slot="singleLabel" slot-scope="{ option }">
+                                                    {{ option }}
+                                                </template>
+                                            </vue-multiselect>
+                                            <div v-if="this.formInputs.year.length > 0">
+                                                {% endverbatim %}
+                                                <label class="font-weight-bold control-label"
+                                                       for="fiscal_year">{% trans 'Quarter' %}:</label>
+                                                <div style="font-size: 12px">
+                                                    {% for num_quarter in '1234'|make_list %}
+                                                        <label>
+                                                            <input {% verbatim %} v-model="formInputs.quarter"
+                                                                   {% endverbatim %}
+                                                                   class="radio"
+                                                                   :disabled="this.formInputs.year.length <= 0"
+                                                                   type="radio" value="{{ num_quarter }}">
+                                                            <span>{{ num_quarter }}</span>
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                {# Note: Filter by fiscal year and quartes #}
-                                {% verbatim %}
-                                <div v-if="!check_filter" class="col-lg-2 col-md-2 col-sm-2">
-                                    {% endverbatim %}
-                                    <label for="fiscal_year">{% trans 'Fiscal Year' %}:</label>
-                                    {% verbatim %}
-                                    <vue-multiselect v-model="formInputs.year"
-                                                     :options="list_years"
-                                                     :searchable="true"
-                                                     :max-height="200"
-                                                     :show-labels="false"
-                                                     {% endverbatim %}
-                                                     placeholder="{% trans 'Year' %}" {% verbatim %}>
-                                        <template slot="singleLabel" slot-scope="{ option }">
-                                            {{ option }}
-                                        </template>
-                                    </vue-multiselect>
-                                    {% endverbatim %}
-                                </div>
-                                {% verbatim %}
-                                <div v-if="!check_filter" class="col-lg-3 col-md-3 col-sm-3">
-                                    {% endverbatim %}
-                                    <label class="control-label" for="fiscal_year">{% trans 'Quarter' %}:</label>
-                                    <div class="text-center">
-                                        {% for num_quarter in '1234'|make_list %}
-                                            <label>
-                                                {{ formInputs.year }}
-                                                <input {% verbatim %} v-model="formInputs.quarter" {% endverbatim %}
-                                                       class="checkbox" :disabled="this.formInputs.year == null"
-                                                       type="checkbox" value="{{ num_quarter }}">
-                                                <span>{{ num_quarter }}</span>
-                                            </label>
-                                        {% endfor %}
+                                        {# Note Filter by dates #}
+                                        <div class="col-lg-3 col-md-3 col-sm-3"
+                                             :class="{'d-none': !check_filter }">
+                                            <label class="font-weight-bold" for="start_date">{% trans 'From' %}:</label>
+                                            {% verbatim %}
+                                            <input v-model="formInputs.from_date" type="date"
+                                                   class="form-control" value=""
+                                                   id="start_date" name="start_date">
+                                            {% endverbatim %}
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3"
+                                             :class="{'d-none': !check_filter }">
+                                            <label class="font-weight-bold" for="end_date">{% trans 'To' %}:</label>
+                                            {% verbatim %}
+                                            <input v-model="formInputs.to_date" type="date"
+                                                   class="form-control" value=""
+                                                   id="end_date" name="end_date">
+                                            {% endverbatim %}
+                                        </div>
+
+                                        <div class="col">
+                                            <label v-if="check_filter" for="">&nbsp;</label>
+                                            {% verbatim %}
+                                            <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
+                                                             deselect-label="{% trans "Press to remove value selected" %}"
+                                                             {% verbatim %}
+                                                             track-by="value" label="name" {% endverbatim %}
+                                                             placeholder="{% trans 'Write the project name' %}"
+                                                             {% verbatim %} :options="list_projects" :searchable="true"
+                                                             return="value">
+                                                <template slot="singleLabel" slot-scope="{ option }">
+                                                    {{ option.name }}
+                                                </template>
+                                            </vue-multiselect>
+                                            {% endverbatim %}
+                                        </div>
+                                        {# subproject #}
+                                        {% verbatim %}
+                                        <div v-if="show_subproject" class="col-12">
+                                            {% endverbatim %}
+                                            <label class="font-weight-bold" for="">{% trans "Subproject" %}:</label>
+                                            {% verbatim %}
+                                            <vue-multiselect v-model="formInputs.subproject_id" {% endverbatim %}
+                                                             deselect-label="{% trans "Press to remove value selected" %}"
+                                                             track-by="value" label="name"
+                                                             placeholder="{% trans 'Write the subproject name' %}"
+                                                             {% verbatim %} :options="list_subprojects"
+                                                             :searchable="true"
+                                                             return="value">
+                                                <template slot="singleLabel" slot-scope="{ option }">
+                                                    {{ option.name }}
+                                                </template>
+                                            </vue-multiselect>
+                                            {% endverbatim %}
+                                        </div>
                                     </div>
                                 </div>
-
-                                {# Note Filter by dates #}
-                                <div class="col-lg-3 col-md-3 col-sm-3"
-                                     :class="{'d-none': !check_filter }">
-                                    <label for="start_date">{% trans 'From' %}:</label>
-                                    {% verbatim %}
-                                    <input v-model="formInputs.from_date" type="date"
-                                           class="form-control" value=""
-                                           id="start_date" name="start_date">
-                                    {% endverbatim %}
+                                {# Country options #}
+                                <div class="col-5">
+                                    <div class="row">
+                                        {% verbatim %}
+                                        <div v-if="list_countries.length > 0" v-for="country in list_countries"
+                                             class="col-lg-4">
+                                            <button type="button" class="btn btn-sm w-100 icon"
+                                                    :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
+                                                    v-on:click="changeActiveStatusAndFilter(country)">
+                                                <i class="fa" :class="{'fa-check':country.active}"></i>
+                                                <span>{{ country.name }}</span>
+                                            </button>
+                                        </div>
+                                        {% endverbatim %}
+                                    </div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3"
-                                     :class="{'d-none': !check_filter }">
-                                    <label for="end_date">{% trans 'To' %}:</label>
-                                    {% verbatim %}
-                                    <input v-model="formInputs.to_date" type="date"
-                                           class="form-control" value=""
-                                           id="end_date" name="end_date">
-                                    {% endverbatim %}
-                                </div>
-
-                                <div class="col-lg-7 col-md-7 col-sm-7">
-                                    <label for="">{% trans "Project" %}:</label>
-                                    {% verbatim %}
-                                    <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
-                                                     deselect-label="{% trans "Press to remove value selected" %}"
-                                                     {% verbatim %}
-                                                     track-by="value" label="name" {% endverbatim %}
-                                                     placeholder="{% trans 'Write the project name' %}"
-                                                     {% verbatim %} :options="list_projects" :searchable="true"
-                                                     return="value">
-                                        <template slot="singleLabel" slot-scope="{ option }">
-                                            {{ option.name }}
-                                        </template>
-                                    </vue-multiselect>
-                                    {% endverbatim %}
-                                </div>
-                                {# subproject #}
-                                {% verbatim %}
-                                <div v-if="show_subproject" class="col-lg-12 col-md-12 col-sm-12">
-                                    {% endverbatim %}
-                                    <label for="">{% trans "Subproject" %}:</label>
-                                    {% verbatim %}
-                                    <vue-multiselect v-model="formInputs.subproject_id" {% endverbatim %}
-                                                     deselect-label="{% trans "Press to remove value selected" %}"
-                                                     track-by="value" label="name"
-                                                     placeholder="{% trans 'Write the subproject name' %}"
-                                                     {% verbatim %} :options="list_subprojects" :searchable="true"
-                                                     return="value">
-                                        <template slot="singleLabel" slot-scope="{ option }">
-                                            {{ option.name }}
-                                        </template>
-                                    </vue-multiselect>
-                                    {% endverbatim %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-right">
-                            {% verbatim %}
-                            <button type="button" class="btn btn-primary"
-                                    @click="loadDataWithFilters">
-                                {% endverbatim %}
-                                {% trans 'Graph' %}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {# Regions options #}
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="card saneheight-item items">
-                        <div class="card-header card-header-sm bordered">
-                            <div class="header-block">
-                                <h3 class="title">{% trans 'Search by LWR Regions' %}</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% verbatim %}
-                                <div v-for="region in list_lwrregions" class="col-lg-6 col-md-6">
-                                    <button type="button" class="btn w-100 icon"
-                                            :class="{ 'btn-inactive': !region.active, 'btn-success': region.active }"
-                                            v-on:click="changeActiveStatusAndFilter(region,'region')">
-                                        <i class="fa" :class="{'fa-check': region.active}"></i>
-                                        <span>{{ region.name }}</span>
-                                    </button>
-
-                                </div>
-                                {% endverbatim %}
                             </div>
                         </div>
                     </div>
                 </div>
-                {# Country options #}
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="card saneheight-item items">
-                        <div class="card-header card-header-sm bordered">
-                            <div class="header-block">
-                                <h3 class="title">{% trans 'Search by Countries' %}</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% verbatim %}
-                                <div v-for="country in list_countries" class="col-lg-4">
-                                    <button type="button" class="btn w-100 icon"
-                                            :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
-                                            v-on:click="changeActiveStatusAndFilter(country)">
-                                        <i class="fa" :class="{'fa-check':country.active}"></i>
-                                        <span>{{ country.name }}</span>
-                                    </button>
 
-                                </div>
-                                {% endverbatim %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
-        {% include 'modular_template/summary.html' %}
         {% verbatim %}
         <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
@@ -245,7 +246,6 @@
             UrlProjectGoal: "{% url 'monitoring:proyectos-metas' %}",
             UrlLWRregions: "{% url 'monitoring:api-lwrregions' %}",
             UrlCountriesGeography: "{% url 'monitoring:api-geography' %}",
-            UrlDatosProyectosMetas: "{% url 'monitoring:proyectos-metas' %}",
             UrlDatosGraficosParticipantes: "{% url 'monitoring:api-participants' %}",
             UrlGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",

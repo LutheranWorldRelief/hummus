@@ -10,8 +10,8 @@ var app = new Vue({
             subproject_id: null,
             country_id: [],
             lwrregion_id: null,
-            year: null,
-            quarter: [],
+            year: [],
+            quarter: null,
             from_date: '',
             to_date: '',
         },
@@ -49,11 +49,14 @@ var app = new Vue({
             };
             this.formInputs.to_date = '';
             this.formInputs.from_date = '';
+            this.formInputs.quarter = null;
+            this.formInputs.year = [];
         },
         'formInputs.year': function (value) {
-            if (this.empty(value)) {
-                this.formInputs.quarter = []
+            if (value.length <= 0) {
+                this.formInputs.quarter = null
             }
+            this.loadDataWithFilters();
         },
         'formInputs.project_id': function (object) {
             this.show_subproject = (!this.empty(object));
@@ -73,6 +76,25 @@ var app = new Vue({
                         }
                     });
             }
+            this.loadDataWithFilters();
+        },
+        'formInputs.subproject_id': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.country_id': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.lwrregion_id': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.quarter': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.from_date': function () {
+            this.loadDataWithFilters();
+        },
+        'formInputs.to_date': function () {
+            this.loadDataWithFilters();
         }
     },
     created() {
@@ -94,6 +116,28 @@ var app = new Vue({
         this.loadCatalogs();
 
         this.loadDataForDashboard();
+
+        let width = document.documentElement.clientWidth;
+        if (width >= 1700) {
+            this.radioSexPie = '70%';
+        } else if (width >= 1200 && width <= 1700) {
+            this.radioSexPie = '60%'
+        }else{
+            this.radioSexPie = '50%'
+        }
+
+    },
+    mounted() {
+        this.$nextTick(function () {
+            window.addEventListener('resize', function (event) {
+                let width = document.documentElement.clientWidth;
+                if (width >= 1700) {
+                    this.radioSexPie = '70%';
+                } else if (width >= 1200 && width <= 1700) {
+                    this.radioSexPie = '60%'
+                }
+            });
+        })
     },
     mounted(){
       this.loadCountriesMaps();
@@ -112,7 +156,6 @@ var app = new Vue({
             this.show_projectgraph = !this.empty(this.requestParameters.project_id);
 
             if (this.show_projectgraph) {
-
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
             }

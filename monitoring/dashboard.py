@@ -56,12 +56,14 @@ def cantidad_participantes(request):
 @domain_required()
 def cantidad_proyectos(request):
     parameters = {'country_id[]': 'project__countries__id__in',
-                  'year': 'date_entry_project__fyear',
+                  'year[]': 'date_entry_project__year__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
-                  'proyecto': 'project_id', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'project_id': 'project_id',
+                  'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
+
     proyectos = ProjectContact.objects.filter(
         **filter_kwargs). \
         order_by('project__id'). \
@@ -244,7 +246,7 @@ def grafico_edad(request):
     parameters = {'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
                   'country_id[]': 'project__countries__id__in',
-                  'year': 'date_entry_project__fyear',
+                  'year[]': 'date_entry_project__year__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in', }
     filter_kwargs = filter_by(parameters, request)
@@ -273,7 +275,7 @@ def grafico_educacion(request):
     parameters = {'project_id': 'project__id', 'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
                   'country_id[]': 'project__countries__id__in',
-                  'year': 'date_entry_project__fyear',
+                  'year[]': 'date_entry_project__year__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in'}
     filter_kwargs = filter_by(parameters, request)
@@ -295,17 +297,20 @@ def grafico_educacion(request):
 @csrf_exempt
 @domain_required()
 def cantidad_subproyectos(request):
+    queryset = SubProject.objects
     parameters = {'country_id[]': 'country_id__in',
-                  'year': 'project__projectcontact__date_entry_project__fyear',
+                  'year[]': 'project__projectcontact__date_entry_project__year__in',
                   'quarter': 'project__projectcontact__date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
                   'rubros[]': 'project__product__in',
                   'project_id': 'project_id',
-                  'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'from_date': 'start__gte',
+                  'to_date': 'start__lte'}
     filter_kwargs = filter_by(parameters, request)
-    subproyectos = SubProject.\
-        objects.\
+    if request.user and hasattr(queryset.model.objects, 'for_user'):
+        queryset = queryset.for_user(request.user)
+
+    subproyectos = queryset.\
         filter(**filter_kwargs).\
         order_by('id').\
         distinct('id').\
@@ -336,8 +341,8 @@ def grafico_tipo_participante(request):
 @domain_required()
 def grafico_sexo_participante(request):
     parameters = {'paises[]': 'contact__country__in', 'rubros[]': 'product__in',
-                  'proyecto': 'project', 'desde': 'date_entry_project__gte',
-                  'hasta': 'date_entry_project__lte'}
+                  'proyecto': 'project', 'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)  # filter_by(parameters, request)
 
     result = ProjectContact.objects.filter(**filter_kwargs).aggregate(
@@ -443,6 +448,7 @@ def grafico_pais_eventos(request):
 def filter_by(parameters, request):
     paises = request.POST.getlist('country_id[]')
     regions = request.POST.getlist('lwrregion_id[]')
+    years = request.POST.getlist('year[]')
     # paises_todos = request.POST['paises_todos'] == '1'
     # rubros_todos = request.POST['rubros_todos'] == '1'
     filter_kwargs = {}
@@ -451,9 +457,11 @@ def filter_by(parameters, request):
         if key in parameters:
             if key == 'country_id[]':
                 filter_kwargs[parameters[key]] = paises
-            elif key == 'lwrregion_id[]' and len(regions) > 0:
+            elif key == 'lwrregion_id[]':
                 filter_kwargs[parameters[key]] = regions
-            elif key != 'paises[]' and key != 'rubros[]' and value != '':
+            elif key == 'year[]':
+                filter_kwargs[parameters[key]] = years
+            elif '[]' not in key and value != '':
                 filter_kwargs[parameters[key]] = value
 
     return filter_kwargs

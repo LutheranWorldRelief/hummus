@@ -12,6 +12,7 @@ var graphicMixins = {
                 gettext('Women')
             ],
             icon_graph: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            radioSexPie: '70%',
         }
     },
     methods: {
@@ -211,7 +212,7 @@ var graphicMixins = {
             };
 
             var option = {
-                toolbox: this.setToolBox('Assigned Goal - Amound Goal'),
+                toolbox: this.setToolBox('Actual - Target - Actual'),
                 backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
@@ -245,7 +246,7 @@ var graphicMixins = {
                     textStyle: {
                         color: '#4f5f6f',
                     },
-                    data: [gettext('Actual'), gettext('Meta')],
+                    data: [gettext('Actual'), gettext('Target')],
                 },
                 xAxis: [{
                     type: 'category',
@@ -349,7 +350,7 @@ var graphicMixins = {
                     },
                     z: 2
                 }, {
-                    name: gettext('Meta'),
+                    name: gettext('Target'),
                     type: 'bar',
                     xAxisIndex: 2,
                     data: this.metaPoranio,
@@ -371,7 +372,7 @@ var graphicMixins = {
             let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
             option = {
-                toolbox: this.setToolBox('Assigned Goal - Amound Goal by Sex'),
+                toolbox: this.setToolBox('Actual - Target by Sex'),
                 backgroundColor: this.background_color,
                 "tooltip": {
                     "trigger": "axis",
@@ -397,7 +398,7 @@ var graphicMixins = {
                     textStyle: {
                         color: '#90979c',
                     },
-                    "data": [gettext('Men'), gettext('Woman'), gettext('Meta')]
+                    "data": [gettext('Men'), gettext('Woman'), gettext('Target')]
                 },
                 "calculable": true,
                 "xAxis": [{
@@ -491,7 +492,7 @@ var graphicMixins = {
                     },
                     "data": this.mujeres
                 }, {
-                    "name": gettext('Meta'),
+                    "name": gettext('Target'),
                     "type": "line",
                     "stack": true,
                     symbolSize: 10,
@@ -604,7 +605,7 @@ var graphicMixins = {
                     axisPointer: {
                         type: 'shadow' //'line' | 'shadow'
                     }, formatter: function (params) {
-                        let axisValue = '<p>' + params[0].axisValue + '</p>';
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
                             if (item.seriesName !== 'total') {
                                 axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
@@ -845,28 +846,33 @@ var graphicMixins = {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: this.names_legends
-                },
                 series: [
                     {
                         name: '',
                         type: 'pie',
-                        radius: '35%',
+                        radius: this.radioSexPie,
                         center: ['50%', '50%'],
                         data: [{
                             name: totalMen.name,
                             value: totalMen.value,
                             itemStyle: {
                                 color: this.colors.men
+                            }, label: {
+                                normal: {
+                                    formatter: '{a} {b} : {c} ({d}%)',
+                                    position: 'inside'
+                                }
                             }
                         }, {
                             name: totalWomen.name,
                             value: totalWomen.value,
                             itemStyle: {
                                 color: this.colors.women
+                            }, label: {
+                                normal: {
+                                    formatter: '{a} {b} : {c} ({d}%)',
+                                    position: 'inside'
+                                }
                             }
                         }],
                         label: {
@@ -896,7 +902,7 @@ var graphicMixins = {
                     let data_project = response.proyectos_metas;
                     let data_chart = {
                         name_project: data_project['categorias'][0],
-                        legends: [gettext('Participants'), gettext('Goals')],
+                        legends: [gettext('Beneficiaries'), gettext('Target')],
                         legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
@@ -919,7 +925,7 @@ var graphicMixins = {
 
 
                     let option = {
-                        toolbox: this.setToolBox('Total participants achieved and goals, by sex'),
+                        toolbox: this.setToolBox('Total beneficiaries achieved and target, by sex'),
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
@@ -1089,6 +1095,18 @@ var graphicMixins = {
                     instance_echarts.resize();
                 });
             }
+
+
+            window.addEventListener('resize', function (event) {
+                let width = document.documentElement.clientWidth;
+                if (width >= 1700) {
+                    this.radioSexPie = '70%';
+                } else if (width >= 1200 && width <= 1700) {
+                    this.radioSexPie = '55%'
+                } else {
+                    this.radioSexPie = '35%'
+                }
+            });
 
             window.onresize = function () {
                 instance_echarts.resize();

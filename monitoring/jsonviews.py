@@ -392,15 +392,23 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context = {}
         queryset = ProjectContact.objects.all()
 
-        if self.request.GET.get('year'):
-            year = int(self.request.GET.get('year'))
-            queryset = queryset.filter(date_entry_project__fyear=year)
+        if self.request.GET.get('year[]'):
+            years = self.request.GET.getlist('year[]')
+            # FIXME: escoger cual es filtro correcto para los anios
+            # queryset = queryset.filter(date_entry_project__fyear__=years)
+            queryset = queryset.filter(date_entry_project__year__in=years)
         if self.request.GET.get('quarter'):
             quarter = int(self.request.GET.get('quarter'))
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
         if self.request.GET.get('lwrregion_id[]'):
             queryset = queryset.filter(
                 project__lwrregion__id__in=self.request.GET.getlist('lwrregion_id[]'))
+        if self.request.GET.get('from_date'):
+            queryset = queryset.filter(
+                date_entry_project__gte=self.request.GET.get('from_date'))
+        if self.request.GET.get('to_date'):
+            queryset = queryset.filter(
+                date_entry_project__lte=self.request.GET.get('to_date'))
 
         if self.request.GET.get('country_id[]'):
             queryset = queryset.filter(
@@ -480,11 +488,22 @@ class Countries(JSONResponseMixin, TemplateView):
         countries_id = self.request.GET.getlist('country_id[]')
         regions = self.request.GET.getlist('lwrregion_id[]')
         project = self.request.GET.get('project_id')
+        from_date = self.request.GET.get('from_date')
+        to_date = self.request.GET.get('to_date')
+        years = self.request.GET.getlist('year[]')
         ''  # TODO: verify if variable will be occupied but delete
         ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
 
         if len(regions) > 0 or regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
+        if len(years) > 0 or years:
+            queryset = queryset.filter(date_entry_project__year__in=years)
+
+        if from_date:
+            queryset = queryset.filter(date_entry_project__gte=from_date)
+        if to_date:
+            queryset = queryset.filter(date_entry_project__lte=to_date)
+
         if project:
             queryset = queryset.filter(project_id=project)
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
@@ -638,6 +657,15 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
 
     def get_queryset(self):
         queryset = Project.objects.all()
+
+        if 'from_date' in self.kwargs:
+            queryset = queryset.filter(start__gte=self.kwargs['from_date'])
+        if 'to_date' in self.kwargs:
+            queryset = queryset.filter(start__lte=self.kwargs['to_date'])
+        if 'year' in self.kwargs:
+            queryset = queryset.filter(
+                date_entry_project__year__in=self.kwargs['year[]'])
+
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(id=self.kwargs['project_id'])
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
@@ -659,6 +687,14 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
         queryset = SubProject.objects.all()
         if 'subproject_id' in self.kwargs:
             queryset = queryset.filter(id=self.kwargs['subproject_id'])
+
+        if 'from_date' in self.kwargs:
+            queryset = queryset.filter(start__gte=self.kwargs['from_date'])
+        if 'to_date' in self.kwargs:
+            queryset = queryset.filter(start__lte=self.kwargs['to_date'])
+        if 'year[]' in self.kwargs:
+            queryset = queryset.filter(start__year__int=self.kwargs['year[]'])
+
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(project_id=self.kwargs['project_id'])
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):

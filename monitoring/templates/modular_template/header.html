@@ -6,6 +6,22 @@
         </button>
     </div>
 
+    <div class="header-block header-block-buttons">
+        {# Regions options #}
+        {% trans 'Filter By' %}:
+        {% verbatim %}
+        <button v-for="region,index in list_lwrregions" type="button" class="btn btn-sm icon m-1"
+                :class="{ 'btn-inactive': !region.active, 'btn-success': region.active,
+                    'btn-color-1': (index === 0), 'btn-color-2': (index === 1),
+                     'btn-color-3': (index === 2), 'btn-color-4': (index === 3)}"
+                v-on:click="changeActiveStatusAndFilter(region,'region')">
+            <i class="fa" :class="{'fa-check': region.active}"></i>
+            <span>{{ region.name }}</span>
+        </button>
+
+        {% endverbatim %}
+    </div>
+
     <div class="header-block header-block-nav">
         <ul class="nav-profile">
             <li class="profile dropdown">
