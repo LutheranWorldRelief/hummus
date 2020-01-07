@@ -2007,7 +2007,7 @@ span a {
       font-size: 0.9vw; } }
 
 .dashboard-page .stats .stat-progress {
-  height: 2px;
+  height: 6px;
   margin: 5px 0;
   color: #85CE36;
   background-color: #dddddd; }
