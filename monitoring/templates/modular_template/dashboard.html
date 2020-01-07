@@ -36,7 +36,7 @@
                             </div>
                             <div class="pull-right">
                                 <div class="col-12">
-                                    <label>
+                                    <label style="font-size: 80%;font-weight: 400;">
                                         {% verbatim %}
                                         <input v-model="check_filter" class="checkbox" type="checkbox"
                                                value="{{ check_filter }}">
@@ -86,7 +86,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
 
                                         {# Note Filter by dates #}
                                         <div class="col-lg-3 col-md-3 col-sm-3"
@@ -149,7 +148,7 @@
                                     <div class="row">
                                         {% verbatim %}
                                         <div v-if="list_countries.length > 0" v-for="country in list_countries"
-                                             class="col-lg-4">
+                                             class="col-lg-6">
                                             <button type="button" class="btn w-100 icon"
                                                     :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
                                                     v-on:click="changeActiveStatusAndFilter(country)">
