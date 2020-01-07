@@ -1,10 +1,6 @@
 {% load i18n %}
 {# section Beneficiares Information Graphics #}
-<div class="title-block mt-4 mb-1 border-0">
-    <h1 class="title"> {% trans 'Beneficiary Information' %} </h1>
-    <p class="title-description"> {% trans 'Graphics' %} </p>
-</div>
-<div class="row sameheight-container-">
+<div class="row sameheight-container- mt-3">
     <div class="col-12">
         <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col">
@@ -13,7 +9,7 @@
             <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col">
                 <div class="card" data-exclude="xs">
                     <div class="card-header card-header-sm bordered">
-                        <ul role="tablist" class="nav nav-tabs pull-left" id="tab_quarter-click">
+                        <ul role="tablist" class="nav nav-tabs pull-right" id="tab_quarter-click">
                             <li class="nav-item">
                                 <a class="nav-link active" href="#fiscalyeartab" role="tab"
                                    data-toggle="tab">{% trans 'Beneficiaries by Fiscal Year' %}</a>
@@ -57,12 +53,10 @@
             </div>
         </div>
     </div>
-
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col mt-3">
         <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
-                <ul role="tablist" class="nav nav-tabs pull-left" id="tab_types-click">
+                <ul role="tablist" class="nav nav-tabs pull-right" id="tab_types-click">
                     <li class="nav-item">
                         <a class="nav-link active" href="#GraphBy_Age_Sex" role="tab"
                            data-toggle="tab">{% trans 'Beneficiaries by Age And Sex' %}</a>
@@ -96,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col mt-3">
         <div class="card" data-exclude="xs">
             <div class="card-header card-header-sm bordered">
                 <div class="header-block">
