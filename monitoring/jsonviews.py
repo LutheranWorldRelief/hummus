@@ -588,8 +588,6 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                     y=Cast(F('project__countries__y'), FloatField()),
                     )
 
-        print(countries.query)
-
         participants = []
 
         totals = dict(queryset2.filter(**filter_kwargs).order_by()
