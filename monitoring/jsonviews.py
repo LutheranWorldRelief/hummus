@@ -412,9 +412,12 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        # get totals
-        totals = dict(queryset.order_by().values('contact__sex_id').
-                      annotate(total=Count('id')).values_list('contact__sex_id', 'total'))
+        # get unique participants
+        queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
+
+        # get unique totals by gender
+        totals = dict(queryset_unique.values_list('contact__sex_id').
+                      annotate(total=Count('contact', distinct=True)))
 
         if totals:
             totals['T'] = totals['M'] + totals['F']
@@ -423,8 +426,8 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         # get totals by year
         query_years = queryset.order_by(). \
             values('date_entry_project__fyear', 'contact__sex_id'). \
-            annotate(total=Count('id')).values('date_entry_project__fyear',
-                                               'contact__sex_id', 'total')
+            annotate(total=Count('contact', unique=True)).values('date_entry_project__fyear',
+                                                                 'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
             fyear = query_year['date_entry_project__fyear']
