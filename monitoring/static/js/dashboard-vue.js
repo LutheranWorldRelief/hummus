@@ -2,7 +2,7 @@ Vue.component('vue-multiselect', window.VueMultiselect.default);
 
 var app = new Vue({
     el: '#app',
-    mixins: [graphicMixins],
+    mixins: [graphicMixins, geographicsMixins],
     data: {
         check_filter: false,
         formInputs: {
@@ -57,7 +57,7 @@ var app = new Vue({
         },
         'formInputs.project_id': function (object) {
             this.show_subproject = (!this.empty(object));
-            if (this.show_subproject){
+            if (this.show_subproject) {
                 let project_id = object.value;
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${project_id}/`;
@@ -95,11 +95,15 @@ var app = new Vue({
 
         this.loadDataForDashboard();
     },
+    mounted(){
+      this.loadCountriesMaps();
+    },
     methods: {
         loadDataWithFilters() {
             this.getValueOfFilter()
                 .then(() => {
                     this.loadCatalogs();
+                    this.loadCountriesMaps();
                     this.loadDataForDashboard();
                 });
         },
