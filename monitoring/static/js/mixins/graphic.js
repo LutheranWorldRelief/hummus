@@ -12,6 +12,7 @@ var graphicMixins = {
                 gettext('Women')
             ],
             icon_graph: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            radioSexPie: '70%',
         }
     },
     methods: {
@@ -604,7 +605,6 @@ var graphicMixins = {
                     axisPointer: {
                         type: 'shadow' //'line' | 'shadow'
                     }, formatter: function (params) {
-                        let axisValue = '<p>' + params[0].axisValue + '</p>';
                         let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
                             if (item.seriesName !== 'total') {
@@ -846,16 +846,11 @@ var graphicMixins = {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: this.names_legends
-                },
                 series: [
                     {
                         name: '',
                         type: 'pie',
-                        radius: '35%',
+                        radius: this.radioSexPie,
                         center: ['50%', '50%'],
                         data: [{
                             name: totalMen.name,
@@ -897,7 +892,7 @@ var graphicMixins = {
                     let data_project = response.proyectos_metas;
                     let data_chart = {
                         name_project: data_project['categorias'][0],
-                        legends: [gettext('Participants'), gettext('Goals')],
+                        legends: [gettext('Beneficiaries'), gettext('Target')],
                         legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
@@ -920,7 +915,7 @@ var graphicMixins = {
 
 
                     let option = {
-                        toolbox: this.setToolBox('Total participants achieved and goals, by sex'),
+                        toolbox: this.setToolBox('Total beneficiaries achieved and target, by sex'),
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
@@ -1090,6 +1085,18 @@ var graphicMixins = {
                     instance_echarts.resize();
                 });
             }
+
+
+            window.addEventListener('resize', function (event) {
+                let width = document.documentElement.clientWidth;
+                if (width >= 1700) {
+                    this.radioSexPie = '70%';
+                } else if (width >= 1200 && width <= 1700) {
+                    this.radioSexPie = '55%'
+                } else {
+                    this.radioSexPie = '35%'
+                }
+            });
 
             window.onresize = function () {
                 instance_echarts.resize();

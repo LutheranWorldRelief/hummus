@@ -116,6 +116,28 @@ var app = new Vue({
         this.loadCatalogs();
 
         this.loadDataForDashboard();
+
+        let width = document.documentElement.clientWidth;
+        if (width >= 1700) {
+            this.radioSexPie = '70%';
+        } else if (width >= 1200 && width <= 1700) {
+            this.radioSexPie = '60%'
+        }else{
+            this.radioSexPie = '50%'
+        }
+
+    },
+    mounted() {
+        this.$nextTick(function () {
+            window.addEventListener('resize', function (event) {
+                let width = document.documentElement.clientWidth;
+                if (width >= 1700) {
+                    this.radioSexPie = '70%';
+                } else if (width >= 1200 && width <= 1700) {
+                    this.radioSexPie = '60%'
+                }
+            });
+        })
     },
     methods: {
         loadDataWithFilters() {
