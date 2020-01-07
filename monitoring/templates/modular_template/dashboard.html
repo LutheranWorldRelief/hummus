@@ -148,7 +148,7 @@
                                     <div class="row">
                                         {% verbatim %}
                                         <div v-if="list_countries.length > 0" v-for="country in list_countries"
-                                             class="col-lg-6">
+                                             class="col-lg-4">
                                             <button type="button" class="btn btn-sm w-100 icon"
                                                     :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
                                                     v-on:click="changeActiveStatusAndFilter(country)">
