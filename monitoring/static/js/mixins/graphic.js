@@ -857,12 +857,22 @@ var graphicMixins = {
                             value: totalMen.value,
                             itemStyle: {
                                 color: this.colors.men
+                            }, label: {
+                                normal: {
+                                    formatter: '{a} {b} : {c} ({d}%)',
+                                    position: 'inside'
+                                }
                             }
                         }, {
                             name: totalWomen.name,
                             value: totalWomen.value,
                             itemStyle: {
                                 color: this.colors.women
+                            }, label: {
+                                normal: {
+                                    formatter: '{a} {b} : {c} ({d}%)',
+                                    position: 'inside'
+                                }
                             }
                         }],
                         label: {
