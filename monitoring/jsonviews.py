@@ -585,7 +585,10 @@ class LWRRegions(JSONResponseMixin, TemplateView):
 
 class GeographyAPI(JSONResponseMixin, TemplateView):
     """
-    Geografi
+    API retorna un JSON con datos de los paises relacionados
+    a proyectos implementados tales como ID,Alfa 3,Nombre,
+    coordenadas(X,Y) del pais y cantidad de participantes
+    por pais segregado por genero
     """
 
     def render_to_response(self, context, **response_kwargs):
