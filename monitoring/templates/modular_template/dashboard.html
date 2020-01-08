@@ -93,6 +93,14 @@
                         <div class="card-header card-header-sm bordered">
                             <div class="header-block">
                                 <h3 class="title">{% trans 'Filters' %}</h3>
+                                 <small v-on:mouseover="spin_refresh_icon = true"
+                                       v-on:mouseout="spin_refresh_icon = false"
+                                       v-on:click="clearFilters()">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-refresh" :class="{'fa-spin': spin_refresh_icon }"></i>
+                                        {% trans 'Clear filters' %}
+                                    </a>
+                                </small>
                             </div>
                             <div class="pull-right">
                                 <div class="col-12">
@@ -250,7 +258,7 @@
             UrlGraficoEdad: "{% url 'monitoring:grafico-edad' %}",
             UrlGraficoEducacion: "{% url 'monitoring:grafico-educacion' %}",
             UrlGraficoSexo: "{% url 'monitoring:grafico-sexo-participante' %}",
-            UrlCountriesPolygons:"{% static 'js/countries.json' %}",
+            UrlCountriesPolygons: "{% static 'js/countries.json' %}",
         };
         let years = {{ years|safe }};
     </script>

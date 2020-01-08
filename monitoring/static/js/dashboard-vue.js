@@ -21,6 +21,7 @@ var app = new Vue({
         },
         show_projectgraph: false,
         show_subproject: false,
+        spin_refresh_icon: false,
         list_projects: [],
         list_countries: [],
         list_lwrregions: [],
@@ -347,7 +348,30 @@ var app = new Vue({
 
             this.loadDataWithFilters();
         },
+        clearFilters() {
+            this.formInputs = {
+                project_id: null,
+                subproject_id: null,
+                country_id: [],
+                lwrregion_id: null,
+                year: [],
+                quarter: null,
+                from_date: '',
+                to_date: '',
+            };
+            this.requestParameters = {
+                paises_todos: true,
+                rubros_todos: true,
+            };
 
+            this.list_countries.forEach((country) => {
+                country.active = false
+            });
+
+            this.list_lwrregions.forEach((region) => {
+                region.active = false
+            })
+
+        }
     }
-
 });
