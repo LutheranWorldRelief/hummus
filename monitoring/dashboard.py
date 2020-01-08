@@ -246,7 +246,7 @@ def grafico_edad(request):
     parameters = {'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
                   'country_id[]': 'project__countries__id__in',
-                  'year[]': 'date_entry_project__year__in',
+                  'year[]': 'date_entry_project__fyear__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in', }
     filter_kwargs = filter_by(parameters, request)
@@ -275,7 +275,7 @@ def grafico_educacion(request):
     parameters = {'project_id': 'project__id', 'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
                   'country_id[]': 'project__countries__id__in',
-                  'year[]': 'date_entry_project__year__in',
+                  'year[]': 'date_entry_project__fyear__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in'}
     filter_kwargs = filter_by(parameters, request)
@@ -299,7 +299,7 @@ def grafico_educacion(request):
 def cantidad_subproyectos(request):
     queryset = SubProject.objects
     parameters = {'country_id[]': 'country_id__in',
-                  'year[]': 'project__projectcontact__date_entry_project__year__in',
+                  'year[]': 'project__projectcontact__date_entry_project__fyear__in',
                   'quarter': 'project__projectcontact__date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
                   'rubros[]': 'project__product__in',
