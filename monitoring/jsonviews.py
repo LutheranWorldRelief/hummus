@@ -492,7 +492,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
 class Countries(JSONResponseMixin, TemplateView):
     """
-    Countries
+    List of countries with projects and participants
     """
 
     def render_to_response(self, context, **response_kwargs):
@@ -526,13 +526,10 @@ class Countries(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        countries = queryset.filter(project__countries__isnull=False) \
-            .order_by('project__countries__id') \
-            .distinct('project__countries__id') \
+        countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
-                    country_name=F(_('project__countries__name')),
-                    region=F('project__lwrregion__id')
-                    )
+                    country_name=F('project__countries__name'),
+                    region=F('project__lwrregion__id')).order_by().distinct()
 
         paises = []
         for row in countries:
