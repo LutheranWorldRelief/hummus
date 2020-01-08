@@ -394,9 +394,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
-            # FIXME: escoger cual es filtro correcto para los anios
-            # queryset = queryset.filter(date_entry_project__fyear__=years)
-            queryset = queryset.filter(date_entry_project__year__in=years)
+            queryset = queryset.filter(date_entry_project__fyear__in=years)
         if self.request.GET.get('quarter'):
             quarter = int(self.request.GET.get('quarter'))
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
@@ -420,11 +418,11 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        # get unique participants
-        queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
+        # get unique participants # not used for now
+        # queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
 
         # get unique totals by gender
-        totals = dict(queryset_unique.values_list('contact__sex_id').
+        totals = dict(queryset.order_by().values_list('contact__sex_id').
                       annotate(total=Count('contact', distinct=True)))
 
         if totals:
@@ -434,7 +432,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         # get totals by year
         query_years = queryset.order_by(). \
             values('date_entry_project__fyear', 'contact__sex_id'). \
-            annotate(total=Count('contact', unique=True)).values('date_entry_project__fyear',
+            annotate(total=Count('contact', distinct=True)).values('date_entry_project__fyear',
                                                                  'contact__sex_id', 'total')
         years = {}
         for query_year in query_years:
@@ -453,7 +451,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             values('date_entry_project__fyear',
                    'date_entry_project__fquarter',
                    'contact__sex_id'). \
-            annotate(total=Count('id')). \
+            annotate(total=Count('contact', distinct=True)). \
             values('date_entry_project__fyear',
                    'date_entry_project__fquarter',
                    'contact__sex_id', 'total')
