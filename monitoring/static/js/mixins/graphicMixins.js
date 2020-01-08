@@ -902,7 +902,7 @@ var graphicMixins = {
                     let data_project = response.proyectos_metas;
                     let data_chart = {
                         name_project: data_project['categorias'][0],
-                        legends: [gettext('Beneficiaries'), gettext('Target')],
+                        legends: [gettext('Participants'), gettext('Target')],
                         legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
