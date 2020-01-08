@@ -514,7 +514,7 @@ class Countries(JSONResponseMixin, TemplateView):
         if len(regions) > 0 or regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
         if len(years) > 0 or years:
-            queryset = queryset.filter(date_entry_project__year__in=years)
+            queryset = queryset.filter(date_entry_project__fyear__in=years)
 
         if from_date:
             queryset = queryset.filter(date_entry_project__gte=from_date)
@@ -681,7 +681,7 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(start__lte=self.kwargs['to_date'])
         if 'year' in self.kwargs:
             queryset = queryset.filter(
-                date_entry_project__year__in=self.kwargs['year[]'])
+                date_entry_project__fyear__in=self.kwargs['year[]'])
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(id=self.kwargs['project_id'])
@@ -710,7 +710,7 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
         if 'to_date' in self.kwargs:
             queryset = queryset.filter(start__lte=self.kwargs['to_date'])
         if 'year[]' in self.kwargs:
-            queryset = queryset.filter(start__year__int=self.kwargs['year[]'])
+            queryset = queryset.filter(start__fyear__in=self.kwargs['year[]'])
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(project_id=self.kwargs['project_id'])
