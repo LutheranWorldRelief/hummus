@@ -419,7 +419,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.for_user(self.request.user)
 
         # get unique participants # not used for now
-        #queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
+        # queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
 
         # get unique totals by gender
         totals = dict(queryset.order_by().values_list('contact__sex_id').
