@@ -37,17 +37,17 @@ var geographicsMixins = {
             };
 
             info.update = function (props) {
-                let title1 = gettext('Participants');
-                let title2 = gettext('Country');
-                let title3 = gettext('Total');
-                let title4 = gettext('Percentage');
-                let title5 = gettext('Hover over a country');
-                this._div.innerHTML = `<h4>${title1}</h4>`;
+                let title1 = gettext('Country');
+                let title2 = gettext('Total');
+                let title3 = gettext('Percentage');
+                let title4 = gettext('Hover over a country');
+                let text = '';
                 if (props) {
-                    this._div.innerHTML += `<b>${title2}: </b>${props.name}<br/><b>${title3}: </b>${props.total}<br/><b>${title4}: </b>${props.percentage}`
+                    text = `<b>${title1}: </b>${props.name}<br/><b>${title2}: </b>${props.total}<br/><b>${title3}: </b>${props.percentage}`
                 } else {
-                    this._div.innerHTML += `<b>${title5}</b>`;
+                    text = `<b>${title4}</b>`;
                 }
+                this._div.innerHTML = text;
             };
 
             info.addTo(this.map);
