@@ -533,7 +533,7 @@ class DashboardView(DomainRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        years = Project.objects.order_by('start__fyear').\
+        years = Project.objects.order_by('start__fyear').exclude(projectcontact__isnull=True). \
             values_list('start__fyear', flat=True).distinct()
         context['months'] = MONTHS
         context['years'] = list(years)
