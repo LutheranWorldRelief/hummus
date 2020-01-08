@@ -19,38 +19,38 @@ var geographicsMixins = {
         }
     },
     methods: {
-        loadCountriesMaps(){
+        loadCountriesMaps() {
             if (this.map)
                 this.map.remove();
 
-                this.map = new L.Map('map');
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
-                }).addTo(this.map);
+            this.map = new L.Map('map');
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+            }).addTo(this.map);
 
             let info = L.control();
 
-                info.onAdd = function (map) {
-                    this._div = L.DomUtil.create('div', 'info'); //div con clase 'info'
-                    this.update();
-                    return this._div;
-                };
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info'); //div con clase 'info'
+                this.update();
+                return this._div;
+            };
 
-                info.update = function (props) {
-                    let title1 = gettext('Participants');
-                    let title2 = gettext('Country');
-                    let title3 = gettext('Total');
-                    let title4 = gettext('Percentage');
-                    let title5 = gettext('Hover over a country');
-                    this._div.innerHTML = `<h4>${title1}</h4>`;
-                    if (props) {
-                        this._div.innerHTML += `<b>${title2}: </b>${props.name}<br/><b>${title3}: </b>${props.total}<br/><b>${title4}: </b>${props.percentage}`
-                    } else {
-                        this._div.innerHTML += `<b>${title5}</b>`;
-                    }
-                };
+            info.update = function (props) {
+                let title1 = gettext('Participants');
+                let title2 = gettext('Country');
+                let title3 = gettext('Total');
+                let title4 = gettext('Percentage');
+                let title5 = gettext('Hover over a country');
+                this._div.innerHTML = `<h4>${title1}</h4>`;
+                if (props) {
+                    this._div.innerHTML += `<b>${title2}: </b>${props.name}<br/><b>${title3}: </b>${props.total}<br/><b>${title4}: </b>${props.percentage}`
+                } else {
+                    this._div.innerHTML += `<b>${title5}</b>`;
+                }
+            };
 
-                info.addTo(this.map);
+            info.addTo(this.map);
 
             $.get(UrlsAcciones.UrlCountriesGeography, this.requestParameters)
                 .then(response => {
@@ -70,7 +70,7 @@ var geographicsMixins = {
                             let countries = response;
                             let geojSonLayerGroup = null;
 
-                            this.geojson.features=[];
+                            this.geojson.features = [];
 
                             data.participants.forEach(participant => {
 
