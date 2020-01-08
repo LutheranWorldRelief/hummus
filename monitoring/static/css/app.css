@@ -2455,7 +2455,7 @@ span a {
 
 .header .header-block-buttons {
   text-align: center;
-  margin-left: auto;
+  margin-left: 40px;
   margin-right: auto;
   white-space: nowrap; }
   .header .header-block-buttons .btn.header-btn {
