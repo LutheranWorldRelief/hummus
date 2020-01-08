@@ -45,6 +45,17 @@
                                     </tr>
                                     {% endverbatim %}
                                     </tbody>
+                                    {% verbatim %}
+                                    <tfoot v-if="formInputs.country_id.length <= 0">
+                                    {% endverbatim %}
+                                    <tr>
+                                        <th class="text-center">{% trans 'Total Participants' %}</th>
+                                        {% verbatim %}
+                                        <th class="text-center">{{ quantity_participants }}</th>
+                                        <th class="text-center">{{ sum_total_participants }}%</th>
+                                    </tr>
+                                    </tfoot>
+                                    {% endverbatim %}
                                 </table>
                             </div>
                             <div class="col-lg-6">
