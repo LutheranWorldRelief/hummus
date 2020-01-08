@@ -57,7 +57,6 @@ var geographicsMixins = {
                 .then(response => {
                     let data = response;
                     this.dataTableGeographic = [];
-                    let total_participants = response.total_participants;
                     this.sum_total_participants = 0;
 
                     data.participants.forEach((country_data) => {
@@ -81,7 +80,7 @@ var geographicsMixins = {
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
                                 country.properties.total = participant.total;
-                                country.properties.percentage = participant.percentage;
+                                country.properties.percentage = `${Math.floor(participant.percentage)} %`;
                                 this.geojson.features.push(country);
                             });
 

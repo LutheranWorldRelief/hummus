@@ -639,7 +639,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
             values_list('contact__sex_id').\
             annotate(total=Count('contact', distinct=True))
         totals = dict(queryset2)
-        context['total_participants'] = totals['M'] + totals['F']
+        total_participants = totals['M'] + totals['F']
         for row in countries:
             ''  # get unique totals by gender in a country
             totals = dict(queryset2.\
@@ -656,7 +656,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                 'men': totals['M'],
                 'percentage': round(
                     (totals['T'] * 100) /
-                    context['total_participants'], 0)
+                    total_participants, 0)
             })
 
         context['participants'] = participants
