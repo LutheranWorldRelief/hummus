@@ -84,6 +84,8 @@ urlpatterns = [
     path('api/ids/<int:id1>/<int:id2>/', jsonviews.ContactIdsDupesDetails.as_view(), ),
 
     # Participants counter API
+    path('api/targets/', jsonviews.TargetsCounter.as_view(),
+         name='api-targets'),
     path('api/participants/', jsonviews.ProjectContactCounter.as_view(),
          name='api-participants'),
     path('graphic/paises/', jsonviews.Countries.as_view(), name='graphic-paises'),

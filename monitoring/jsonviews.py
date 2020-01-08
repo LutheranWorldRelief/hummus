@@ -2,7 +2,7 @@
 Django views returning json
 """
 
-from django.db.models import Count, Q, F, FloatField
+from django.db.models import Sum, Count, Q, F, FloatField
 from django.db.models.functions import Upper, Trim, Cast
 from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
@@ -380,6 +380,25 @@ class YearsAPI(JSONResponseMixin, TemplateView):
         return list(queryset)
 
 
+class TargetsCounter(JSONResponseMixin, TemplateView):
+    """
+    Count projects targets filter by several params
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        queryset = Project.objects.all().order_by()
+        if self.request.GET.get('year[]'):
+            years = self.request.GET.getlist('year[]')
+            # FIXME - how do we get target totals per year?
+            queryset = queryset.filter(start__fyear__in=years)
+        context['targets'] = queryset.aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+        return context
+
+
 class ProjectContactCounter(JSONResponseMixin, TemplateView):
     """
     Count participants filter by several params
@@ -390,7 +409,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {}
-        queryset = ProjectContact.objects.all()
+        queryset = ProjectContact.objects.all().order_by()
 
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
@@ -422,7 +441,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         # queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
 
         # get unique totals by gender
-        totals = dict(queryset.order_by().values_list('contact__sex_id').
+        totals = dict(queryset.values_list('contact__sex_id').
                       annotate(total=Count('contact', distinct=True)))
 
         if totals:
@@ -430,7 +449,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context['totals'] = totals
 
         # get totals by year
-        query_years = queryset.order_by(). \
+        query_years = queryset. \
             values('date_entry_project__fyear', 'contact__sex_id'). \
             annotate(total=Count('contact', distinct=True)).values('date_entry_project__fyear',
                                                                  'contact__sex_id', 'total')
@@ -447,7 +466,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context['year'] = years
 
         # get totals by quarter
-        query_years = queryset.order_by(). \
+        query_years = queryset. \
             values('date_entry_project__fyear',
                    'date_entry_project__fquarter',
                    'contact__sex_id'). \
