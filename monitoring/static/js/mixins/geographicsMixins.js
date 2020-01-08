@@ -16,6 +16,7 @@ var geographicsMixins = {
                 dashArray: '3',
                 fillOpacity: 0.7
             },
+            sum_total_participants: 0,
         }
     },
     methods: {
@@ -56,13 +57,16 @@ var geographicsMixins = {
                 .then(response => {
                     let data = response;
                     this.dataTableGeographic = [];
+                    let total_participants = response.total_participants;
+                    this.sum_total_participants = 0;
 
                     data.participants.forEach((country_data) => {
                         this.dataTableGeographic.push({
                             name: country_data.name,
                             total_participants: country_data.total,
                             percentage_participants: country_data.percentage,
-                        })
+                        });
+                        this.sum_total_participants += country_data.percentage;
                     });
 
                     $.get(UrlsAcciones.UrlCountriesPolygons)
@@ -71,15 +75,13 @@ var geographicsMixins = {
                             let geojSonLayerGroup = null;
 
                             this.geojson.features = [];
-
                             data.participants.forEach(participant => {
 
                                 let country = countries.features.find(country => country.id === participant.alfa3);
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
                                 country.properties.total = participant.total;
-                                country.properties.percentage = `${Math.floor(participant.percentage)} %`;
-
+                                country.properties.percentage = participant.percentage;
                                 this.geojson.features.push(country);
                             });
 
