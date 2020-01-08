@@ -375,7 +375,7 @@ class YearsAPI(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_context_data(self, **kwargs):
-        queryset = Project.objects.order_by('start__fyear'). \
+        queryset = Project.objects.order_by('start__fyear').exclude(projectcontact__isnull=True). \
             values_list('start__fyear', flat=True).distinct()
         return list(queryset)
 
