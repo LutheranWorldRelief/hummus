@@ -631,7 +631,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                     )
 
         participants = []
-        ''# get unique totals by gender general
+        ''  # get unique totals by gender general
         queryset2 = queryset2.order_by().\
             values('contact', 'contact__sex_id').\
             distinct()
@@ -642,8 +642,8 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         total_participants = totals['M'] + totals['F']
         for row in countries:
             ''  # get unique totals by gender in a country
-            totals = dict(queryset2.\
-                        filter(project__countries__id=row['country_id']))
+            totals = dict(queryset2.
+                          filter(project__countries__id=row['country_id']))
 
             totals['T'] = totals['M'] + totals['F']
             participants.append({
