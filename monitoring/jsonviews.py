@@ -585,7 +585,10 @@ class LWRRegions(JSONResponseMixin, TemplateView):
 
 class GeographyAPI(JSONResponseMixin, TemplateView):
     """
-    Geografi
+    API retorna un JSON con datos de los paises relacionados
+    a proyectos implementados tales como ID,Alfa 3,Nombre,
+    coordenadas(X,Y) del pais y cantidad de participantes
+    por pais segregado por genero
     """
 
     def render_to_response(self, context, **response_kwargs):
@@ -621,27 +624,26 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
             .order_by('project__countries__id') \
             .distinct('project__countries__id') \
             .values(country_id=F('project__countries__id'),
-                    alta_3=F(_('project__countries__alfa3')),
+                    alta_3=F('project__countries__alfa3'),
                     country_name=F(_('project__countries__name')),
                     x=Cast(F('project__countries__x'), FloatField()),
                     y=Cast(F('project__countries__y'), FloatField()),
                     )
 
         participants = []
-
-        totals = dict(queryset2.filter(**filter_kwargs).order_by()
-                      .values('contact__sex_id')
-                      .annotate(total=Count('id'))
-                      .values_list('contact__sex_id', 'total'))
-        context['total_participants'] = totals['M'] + totals['F']
+        ''  # get unique totals by gender general
+        queryset2 = queryset2.order_by().\
+            values('contact', 'contact__sex_id').\
+            distinct()
+        queryset2 = queryset2.\
+            values_list('contact__sex_id').\
+            annotate(total=Count('contact', distinct=True))
+        totals = dict(queryset2)
+        total_participants = totals['M'] + totals['F']
         for row in countries:
-            data = queryset2.filter(contact__country__id=row['country_id']) \
-                .order_by() \
-                .values('contact__sex_id') \
-                .annotate(total=Count('id')) \
-                .values_list('contact__sex_id', 'total')
-
-            totals = dict(data)
+            ''  # get unique totals by gender in a country
+            totals = dict(queryset2.
+                          filter(project__countries__id=row['country_id']))
 
             totals['T'] = totals['M'] + totals['F']
             participants.append({
@@ -654,7 +656,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                 'men': totals['M'],
                 'percentage': round(
                     (totals['T'] * 100) /
-                    context['total_participants'], 0)
+                    total_participants, 0)
             })
 
         context['participants'] = participants

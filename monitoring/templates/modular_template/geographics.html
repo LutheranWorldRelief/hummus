@@ -32,12 +32,12 @@
                                     <thead>
                                     <tr>
                                         <th class="text-center">{% trans 'Country' %}</th>
-                                        <th class="text-center">{% trans 'Target' %}</th>
+                                        <th class="text-center">{% trans 'Actual' %}</th>
                                         <th class="text-center">{% trans '%' %}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                   {% verbatim %}
+                                    {% verbatim %}
                                     <tr v-for="country in dataTableGeographic">
                                         <td class="text-center">{{ country.name }}</td>
                                         <td class="text-center">{{ country.total_participants }}</td>
@@ -45,6 +45,17 @@
                                     </tr>
                                     {% endverbatim %}
                                     </tbody>
+                                    {% verbatim %}
+                                    <tfoot v-if="formInputs.country_id.length <= 0">
+                                    {% endverbatim %}
+                                    <tr>
+                                        <th class="text-center">{% trans 'Total Participants' %}</th>
+                                        {% verbatim %}
+                                        <th class="text-center">{{ quantity_participants }}</th>
+                                        <th class="text-center">{{ sum_total_participants }}%</th>
+                                    </tr>
+                                    </tfoot>
+                                    {% endverbatim %}
                                 </table>
                             </div>
                             <div class="col-lg-6">
