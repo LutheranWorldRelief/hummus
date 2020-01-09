@@ -429,7 +429,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
         if self.request.GET.get('country_id[]'):
             queryset = queryset.filter(
-                project__countries__in=self.request.GET.getlist('country_id[]'))
+                subproject__country__in=self.request.GET.getlist('country_id[]'))
         if self.request.GET.get('subproject_id'):
             queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
@@ -604,10 +604,10 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
             filter_kwargs['project__lwrregion__id__in'] = regions
 
         if len(countries) > 0 or countries:
-            queryset = queryset.filter(project__countries__id__in=countries)
-            filter_kwargs['project__countries__id__in'] = countries
+            queryset = queryset.filter(subproject__country__id__in=countries)
+            filter_kwargs['subproject__country__id__in'] = countries
         else:
-            queryset = queryset.filter(project__countries__isnull=False)
+            queryset = queryset.filter(subproject__country__isnull=False)
 
         if project:
             queryset = queryset.filter(project_id=project)
@@ -638,7 +638,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         for row in countries:
             ''  # get unique totals by gender in a country
             totals = dict(queryset2.
-                          filter(project__countries__id=row['country_id']))
+                          filter(subproject__country__id=row['country_id']))
 
             totals['T'] = totals['M'] + totals['F']
             participants.append({
