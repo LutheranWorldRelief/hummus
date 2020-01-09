@@ -508,8 +508,6 @@ class Countries(JSONResponseMixin, TemplateView):
         from_date = self.request.GET.get('from_date')
         to_date = self.request.GET.get('to_date')
         years = self.request.GET.getlist('year[]')
-        ''  # TODO: verify if variable will be occupied but delete
-        ''  # ninguno = not (self.request.GET.getlist("paises[]") or paises_todos)
 
         if len(regions) > 0 or regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)

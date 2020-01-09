@@ -56,7 +56,7 @@ def cantidad_participantes(request):
 @domain_required()
 def cantidad_proyectos(request):
     parameters = {'country_id[]': 'project__countries__id__in',
-                  'year[]': 'date_entry_project__year__in',
+                  'year[]': 'date_entry_project__fyear__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
                   'project_id': 'project_id',
@@ -243,7 +243,8 @@ def grafico_anio_fiscal(request):
 @csrf_exempt
 @domain_required()
 def grafico_edad(request):
-    parameters = {'project_id': 'project_id', 'from_date': 'date_entry_project__gte',
+    parameters = {'project_id': 'project_id',
+                  'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
                   'country_id[]': 'project__countries__id__in',
                   'year[]': 'date_entry_project__fyear__in',
@@ -272,7 +273,8 @@ def grafico_edad(request):
 @csrf_exempt
 @domain_required()
 def grafico_educacion(request):
-    parameters = {'project_id': 'project__id', 'from_date': 'date_entry_project__gte',
+    parameters = {'project_id': 'project__id',
+                  'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
                   'country_id[]': 'project__countries__id__in',
                   'year[]': 'date_entry_project__fyear__in',
@@ -302,7 +304,6 @@ def cantidad_subproyectos(request):
                   'year[]': 'project__projectcontact__date_entry_project__fyear__in',
                   'quarter': 'project__projectcontact__date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
-                  'rubros[]': 'project__product__in',
                   'project_id': 'project_id',
                   'from_date': 'start__gte',
                   'to_date': 'start__lte'}
@@ -449,8 +450,6 @@ def filter_by(parameters, request):
     paises = request.POST.getlist('country_id[]')
     regions = request.POST.getlist('lwrregion_id[]')
     years = request.POST.getlist('year[]')
-    # paises_todos = request.POST['paises_todos'] == '1'
-    # rubros_todos = request.POST['rubros_todos'] == '1'
     filter_kwargs = {}
 
     for key, value in request.POST.items():
