@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='projectcontact',
             name='subproject',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='monitoring.SubProject', verbose_name='SubProject'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    to='monitoring.SubProject', verbose_name='SubProject'),
         ),
     ]
