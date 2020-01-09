@@ -15,10 +15,7 @@ var app = new Vue({
             from_date: '',
             to_date: '',
         },
-        requestParameters: {
-            paises_todos: true,
-            rubros_todos: true,
-        },
+        requestParameters: {},
         show_projectgraph: false,
         show_subproject: false,
         spin_refresh_icon: false,
@@ -44,10 +41,7 @@ var app = new Vue({
     },
     watch: {
         check_filter: function () {
-            this.requestParameters = {
-                paises_todos: true,
-                rubros_todos: true,
-            };
+            this.requestParameters = {};
             this.formInputs.to_date = '';
             this.formInputs.from_date = '';
             this.formInputs.quarter = null;
@@ -273,10 +267,7 @@ var app = new Vue({
         },
         getValueOfFilter() {
             return new Promise((resolved, reject) => {
-                this.requestParameters = {
-                    paises_todos: true,
-                    rubros_todos: true,
-                };
+                this.requestParameters = {};
 
                 for (const key in this.formInputs) {
                     let input = this.formInputs[key];
@@ -359,10 +350,7 @@ var app = new Vue({
                 from_date: '',
                 to_date: '',
             };
-            this.requestParameters = {
-                paises_todos: true,
-                rubros_todos: true,
-            };
+            this.requestParameters = {};
 
             this.list_countries.forEach((country) => {
                 country.active = false
