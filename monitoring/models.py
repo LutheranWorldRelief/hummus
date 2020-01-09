@@ -662,6 +662,8 @@ class ProjectContactQuerySet(models.QuerySet):
 
 
 class ProjectContact(models.Model):
+    subproject = models.ForeignKey('SubProject', on_delete=models.CASCADE,
+                                   verbose_name=_('SubProject'))
     project = models.ForeignKey('Project', on_delete=models.CASCADE, verbose_name=_('Project'))
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE, verbose_name=_('Contact'))
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, blank=True, null=True,
