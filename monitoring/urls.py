@@ -107,6 +107,9 @@ urlpatterns = [
     path('api/types/', jsonviews.JsonIdName.as_view(queryset=models.ContactType.objects.all())),
     path('api/education/',
          jsonviews.JsonIdName.as_view(queryset=models.Education.objects.all()), ),
+    path('api/countries/',
+         jsonviews.JsonIdName.as_view(queryset=models.Country.objects.all()),
+         name="api-countries"),
     path('api/lwrregions/', jsonviews.LWRRegions.as_view(), name="api-lwrregions"),
     path('api/geography/', jsonviews.GeographyAPI.as_view(), name="api-geography"),
 ]
