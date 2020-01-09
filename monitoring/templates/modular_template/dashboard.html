@@ -44,6 +44,7 @@
             margin: 0 0 5px;
             color: #777;
         }
+
         /* agregando color al borde de los tabs cuando esten activos*/
         #tab_quarter-click .active {
             border-top-color: #a768f3;
@@ -113,8 +114,16 @@
                                             </vue-multiselect>
                                             <div v-if="this.formInputs.year.length > 0">
                                                 {% endverbatim %}
-                                                <label class="font-weight-bold control-label"
-                                                       for="fiscal_year">{% trans 'Quarter' %}:</label>
+                                                <small class="font-weight-bold control-label">
+                                                    {% trans 'Quarter' %}
+                                                    <a href="javascript:;"
+                                                       v-if="formInputs.quarter !== null"
+                                                       v-on:click="formInputs.quarter = null;"
+                                                       style="font-size: 9px;text-decoration: none;color: #36a2f2">
+                                                        {% trans 'deselect quarter' %}
+                                                        <icon class="fa fa-hand-pointer-o"></icon>
+                                                    </a>
+                                                </small>
                                                 <div style="font-size: 12px">
                                                     {% for num_quarter in '1234'|make_list %}
                                                         <label>
