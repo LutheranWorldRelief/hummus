@@ -23,6 +23,43 @@
             border: 1px solid #c8d0da;
         }
 
+        /* color for btn and icons*/
+        .btn-color-1 {
+            background-color: #a768f3;
+        }
+
+        .btn-color-2 {
+            background-color: #36A2F2;
+        }
+
+        .btn-color-3 {
+            background-color: #e83e8c;
+        }
+
+        .btn-color-4 {
+            background-color: #28a745;
+        }
+
+        .text-color-1 {
+            color: #a768f3;
+        }
+
+        .text-color-2 {
+            color: #36A2F2;
+        }
+
+        .text-color-3 {
+            color: #e83e8c;
+        }
+
+        .text-color-4 {
+            color: #28a745;
+        }
+
+        .text-color-5 {
+            color: #0DAEA1;
+        }
+
         /*leaflet map styles*/
         #map {
             width: 100%;
@@ -43,19 +80,6 @@
             margin: 0 0 5px;
             color: #777;
         }
-
-        /*color for tabs*/
-        #tab_quarter-click .active {
-            border-top-color: #a768f3;
-        }
-
-        #tab_types-click .active {
-            border-top-color: #36A2F2;
-        }
-
-        #tab_geographic .active {
-            border-top-color: #e83e8c;
-        }
     </style>
 {% endblock %}
 
@@ -69,7 +93,7 @@
                         <div class="card-header card-header-sm bordered">
                             <div class="header-block">
                                 <h3 class="title">{% trans 'Filters' %}</h3>
-                                <small v-on:mouseover="spin_refresh_icon = true"
+                                 <small v-on:mouseover="spin_refresh_icon = true"
                                        v-on:mouseout="spin_refresh_icon = false"
                                        v-on:click="clearFilters()">
                                     <a href="javascript:;">
