@@ -241,7 +241,6 @@ class CityAdmin(AdminForUserMixin, LeafletGeoAdmin):
 
 class CountryAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = ('id', 'name', 'name_es', 'name_fr')
-    readonly_fields = ['id']
     search_fields = ['name', 'name_es', 'name_fr']
     list_display_links = ('name',)
     list_per_page = 20
