@@ -200,7 +200,6 @@ var app = new Vue({
 
                     for (const participants in orderedQ) {
                         this.aniosQ.push(this.formatAnioQuater(participants));
-
                         this.totalByBarQ.push(this.setZero(orderedQ[participants].T));
                         this.mujeresQ.push(this.setZero(orderedQ[participants].F));
                         this.hombresQ.push(this.setZero(orderedQ[participants].M));
