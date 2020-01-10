@@ -132,9 +132,7 @@ var app = new Vue({
                     this.radioSexPie = '60%'
                 }
             });
-        })
-    },
-    mounted() {
+        });
         this.loadCountriesMaps();
     },
     methods: {
@@ -163,12 +161,12 @@ var app = new Vue({
             $.get(UrlsAcciones.UrlTarget, this.requestParameters)
                 .then(response => {
                     let target = response.targets;
-                    this.goal_participants = parseInt(target.F) + parseInt(target.M)
+                    this.goal_participants = this.setZero(target.F) + this.setZero(target.M);
                 });
 
 
             $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
-                .then(((response) => {
+                .then(response => {
                     this.clearData();
                     let data = response;
 
@@ -178,20 +176,17 @@ var app = new Vue({
                     // funcion to graph the participants by sex
                     this.graficoParticipantesSexo();
 
-                    setZeroIsUndefined = (data) => {
-                        return data === undefined ? 0 : data
-                    };
                     /** Recorrer participantes por anio fisca */
                     for (const participants in data['year']) {
                         this.anios.push(participants);
-                        this.totalByBar.push(setZeroIsUndefined(data['year'][participants].T));
-                        this.mujeres.push(setZeroIsUndefined(data['year'][participants].F));
-                        this.hombres.push(setZeroIsUndefined(data['year'][participants].M));
+                        this.totalByBar.push(this.setZero(data['year'][participants].T));
+                        this.mujeres.push(this.setZero(data['year'][participants].F));
+                        this.hombres.push(this.setZero(data['year'][participants].M));
                         this.defauldSerie.push(0);
                     }
 
                     //NOTE: calculating the number of participants
-                    this.quantity_participants = setZeroIsUndefined(this.tatals.T);
+                    this.quantity_participants = this.setZero(this.tatals.T);
                     // calculating the percentage for the progress bar
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
                     this.width_progress_bar.width = this.goal_percentage + '%';
@@ -205,11 +200,20 @@ var app = new Vue({
 
                     for (const participants in orderedQ) {
                         this.aniosQ.push(this.formatAnioQuater(participants));
-
-                        this.totalByBarQ.push(setZeroIsUndefined(orderedQ[participants].T));
-                        this.mujeresQ.push(setZeroIsUndefined(orderedQ[participants].F));
-                        this.hombresQ.push(setZeroIsUndefined(orderedQ[participants].M));
+                        this.totalByBarQ.push(this.setZero(orderedQ[participants].T));
+                        this.mujeresQ.push(this.setZero(orderedQ[participants].F));
+                        this.hombresQ.push(this.setZero(orderedQ[participants].M));
                         this.defauldSerieQ.push(0);
+                    }
+                    // NOTE: mujeresQ is my pivot to verify is full or empty
+                    //       and declare in 0 the arrays
+                    if (this.mujeresQ.length <= 0){
+                        this.mujeres = 0;
+                        this.mujeresQ = 0;
+                        this.hombres = 0;
+                        this.hombresQ = 0;
+                        this.defauldSerie = 0;
+                        this.defauldSerieQ = 0;
                     }
 
                     this.graphicParticipants('').then(() => {
@@ -218,7 +222,7 @@ var app = new Vue({
                         this.graficoMetasLinea();
                     });
 
-                }));
+                });
             // funcion to graph the participants by age
             this.graficoParticipantesEdad();
             // funcion to graph the participants by education
@@ -366,6 +370,14 @@ var app = new Vue({
                 region.active = false
             })
 
+        },
+        setZero(data) {
+            if (data === null)
+                return 0;
+            if (data === undefined)
+                return 0;
+
+            return data
         }
     }
 });

@@ -176,7 +176,6 @@ var graphicMixins = {
             });
         },
         graficoMetas() {
-
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
             // TODO Inicio Asignar meta
@@ -821,18 +820,17 @@ var graphicMixins = {
             })
         },
         graficoParticipantesSexo() {
-
             let data = this.tatals;
-            let total = data.T;
+            let total = this.setZero(data.T);
 
             let totalMen = {
                 name: 'Men',
-                value: data.M
+                value: this.setZero(data.M)
             };
 
             let totalWomen = {
                 name: 'Women',
-                value: data.F
+                value: this.setZero(data.F)
             };
             this.graphicSexo(total, totalMen, totalWomen);
 
