@@ -543,8 +543,9 @@ class Countries(JSONResponseMixin, TemplateView):
 
         countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
-                    country_name=F('project__countries__name'),
-                    region=F('project__lwrregion__id')).order_by().distinct()
+                    country_name=F(_('project__countries__name')),
+                    region=F('project__lwrregion__id')) \
+            .order_by('project__countries__name').distinct()
 
         paises = []
         for row in countries:
@@ -635,15 +636,13 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        countries = queryset \
-            .order_by('project__countries__id') \
-            .distinct('project__countries__id') \
+        countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
                     alta_3=F('project__countries__alfa3'),
                     country_name=F(_('project__countries__name')),
                     x=Cast(F('project__countries__x'), FloatField()),
                     y=Cast(F('project__countries__y'), FloatField()),
-                    )
+                    ).order_by('project__countries__name').distinct()
 
         participants = []
         for row in countries:
