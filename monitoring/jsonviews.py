@@ -645,7 +645,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         for row in countries:
             ''  # get the target by gender in a country
             targets = queryset3. \
-                filter(countries=row['country_id']). \
+                filter(subproject__country__id=row['country_id']). \
                 aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
             participants_target = targets['F'] + targets['M']
 
