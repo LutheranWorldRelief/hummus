@@ -47,15 +47,13 @@
                                     </tr>
                                     {% endverbatim %}
                                     </tbody>
-                                    {% verbatim %}
-                                    <tfoot v-if="formInputs.country_id.length <= 0">
-                                    {% endverbatim %}
+                                    <tfoot>
                                     <tr>
                                         <th>{% trans 'Total Participants' %}</th>
                                         {% verbatim %}
                                         <th class="text-right">{{ actual_participants }}</th>
                                         <th class="text-right">{{ target_participants }}</th>
-                                        <th class="text-right">{{ percentage_participants.toFixed(1) }}%</th>
+                                        <th class="text-right">{{ percentage(actual_participants,target_participants) }}%</th>
                                     </tr>
                                     </tfoot>
                                     {% endverbatim %}
