@@ -2831,3 +2831,4 @@ span a {
 .text-color-3{color:#e83e8c}
 .text-color-4{color:#28a745}
 .text-color-5{color:#0daea1}
+.bullet-point{background-color:#4ac1bf;display: inline-block; height: 5px;vertical-align: middle;width: 5px}

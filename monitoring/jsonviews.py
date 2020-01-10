@@ -404,7 +404,7 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(lwrregion__id__in=regions)
         if self.request.GET.get('country_id[]'):
             countries = self.request.GET.getlist('country_id[]')
-            queryset = queryset.filter(countries__in=countries)
+            queryset = queryset.filter(subproject__country__id__in=countries)
 
         if self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
@@ -609,7 +609,10 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = ProjectContact.objects.all()
-        queryset2 = queryset
+        ''  # queryset for count participants by gender
+        queryset2 = queryset.order_by()
+        ''  # queryset to get the Target by gender
+        queryset3 = Project.objects.all().order_by()
         filter_kwargs = {}
 
         regions = self.request.GET.getlist('lwrregion_id[]')
@@ -643,32 +646,34 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                     )
 
         participants = []
-        ''  # get unique totals by gender general
-        queryset2 = queryset2.order_by().\
-            values('contact', 'contact__sex_id').\
-            distinct()
-        queryset2 = queryset2.\
-            values_list('contact__sex_id').\
-            annotate(total=Count('contact', distinct=True))
-        totals = dict(queryset2)
-        total_participants = totals['M'] + totals['F']
         for row in countries:
-            ''  # get unique totals by gender in a country
+            ''  # get the target by gender in a country
+            targets = queryset3. \
+                filter(subproject__country__id=row['country_id']). \
+                aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+            participants_target = targets['F'] + targets['M']
+
+            ''  # get totals participants by gender in a country
             totals = dict(queryset2.
-                          filter(subproject__country__id=row['country_id']))
+                          filter(subproject__country__id=row['country_id']).
+                          values_list('contact__sex_id').
+                          annotate(total=Count('contact', distinct=True))
+                          )
 
             totals['T'] = totals['M'] + totals['F']
+            percentage = (totals['T'] / participants_target) * 100
             participants.append({
                 'id': row['country_id'],
                 'alfa3': row['alta_3'],
                 'name': row['country_name'],
                 'location': [row['x'], row['y']],
                 'total': totals['T'],
+                'total_target': participants_target,
                 'women': totals['F'],
+                'target_women': targets['F'],
                 'men': totals['M'],
-                'percentage': round(
-                    (totals['T'] * 100) /
-                    total_participants, 0)
+                'target_men': targets['M'],
+                'percentage': percentage
             })
 
         context['participants'] = participants

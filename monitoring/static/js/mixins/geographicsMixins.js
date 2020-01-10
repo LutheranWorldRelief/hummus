@@ -16,7 +16,8 @@ var geographicsMixins = {
                 dashArray: '3',
                 fillOpacity: 0.7
             },
-            sum_total_participants: 0,
+            actual_participants: 0,
+            target_participants: 0,
         }
     },
     methods: {
@@ -57,15 +58,18 @@ var geographicsMixins = {
                 .then(response => {
                     let data = response;
                     this.dataTableGeographic = [];
-                    this.sum_total_participants = 0;
 
+                    this.actual_participants = 0;
+                    this.target_participants = 0;
                     data.participants.forEach((country_data) => {
                         this.dataTableGeographic.push({
                             name: country_data.name,
-                            total_participants: country_data.total,
-                            percentage_participants: country_data.percentage,
+                            total_participants: this.formatNumber(country_data.total),
+                            total_target: this.formatNumber(country_data.total_target),
+                            percentage_participants: country_data.percentage.toFixed(2),
                         });
-                        this.sum_total_participants += country_data.percentage;
+                        this.actual_participants += country_data.total;
+                        this.target_participants += country_data.total_target;
                     });
 
                     $.get(UrlsAcciones.UrlCountriesPolygons)
@@ -80,7 +84,7 @@ var geographicsMixins = {
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
                                 country.properties.total = participant.total;
-                                country.properties.percentage = `${Math.floor(participant.percentage)} %`;
+                                country.properties.percentage = `${participant.percentage.toFixed(2)} %`;
                                 this.geojson.features.push(country);
                             });
 
@@ -130,7 +134,9 @@ var geographicsMixins = {
 
                         });
                 });
+        },
+        formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
     }
-
 };
