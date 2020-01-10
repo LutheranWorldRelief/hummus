@@ -64,8 +64,8 @@ var geographicsMixins = {
                     data.participants.forEach((country_data) => {
                         this.dataTableGeographic.push({
                             name: country_data.name,
-                            total_participants: country_data.total,
-                            total_target: country_data.total_target,
+                            total_participants: this.formatNumber(country_data.total),
+                            total_target: this.formatNumber(country_data.total_target),
                             percentage_participants: country_data.percentage.toFixed(2),
                         });
                         this.actual_participants += country_data.total;
@@ -134,7 +134,9 @@ var geographicsMixins = {
 
                         });
                 });
+        },
+        formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
     }
-
 };
