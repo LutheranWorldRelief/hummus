@@ -214,7 +214,7 @@ JET_SIDE_MENU_ITEMS = [
     {'label': _('Dashboard'), 'items': [
         {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},
     ]},
-    {'label': _('Configurations'), 'items': [
+    {'label': _('Data Tables'), 'items': [
         {'name': 'monitoring.project', 'label': _('Projects'), 'permissions': [
             'monitoring.view_project']},
         {'name': 'monitoring.organization', 'label': _('Organizations'),
