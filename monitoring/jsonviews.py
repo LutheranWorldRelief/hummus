@@ -650,9 +650,9 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
             participants_target = targets['F'] + targets['M']
 
             ''  # get totals participants by gender in a country
-            totals = dict(queryset2. \
-                          filter(subproject__country__id=row['country_id']). \
-                          values_list('contact__sex_id'). \
+            totals = dict(queryset2.
+                          filter(subproject__country__id=row['country_id']).
+                          values_list('contact__sex_id').
                           annotate(total=Count('contact', distinct=True))
                           )
 
