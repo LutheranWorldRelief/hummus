@@ -205,15 +205,17 @@ var app = new Vue({
                         this.hombresQ.push(this.setZero(orderedQ[participants].M));
                         this.defauldSerieQ.push(0);
                     }
-                    // NOTE: mujeresQ is my pivot to verify is full or empty
-                    //       and declare in 0 the arrays
+                    // NOTE: mujeresQ is my pivot to verify is empty
+                    //       to fill arrays with zeros
                     if (this.mujeresQ.length <= 0){
-                        this.mujeres = 0;
-                        this.mujeresQ = 0;
-                        this.hombres = 0;
-                        this.hombresQ = 0;
-                        this.defauldSerie = 0;
-                        this.defauldSerieQ = 0;
+                        for (const year of this.list_years){
+                            this.mujeres.push(0);
+                            this.mujeresQ.push(0);
+                            this.hombres.push(0);
+                            this.hombresQ.push(0);
+                            this.defauldSerie.push(0);
+                            this.defauldSerieQ.push(0);
+                        }
                     }
 
                     this.graphicParticipants('').then(() => {
