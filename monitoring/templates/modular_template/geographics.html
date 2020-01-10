@@ -27,8 +27,8 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active fade show" id="beneficiares">
                         <div class="row">
-                            <div class="col-5">
-                                <table class="table table-sm table-borderless ">
+                            <div class="col-4">
+                                <table class="table table-sm table-borderless" style="font-size: 0.8em">
                                     <thead>
                                     <tr>
                                         <th class="text-center">{% trans 'Country' %}</th>
@@ -40,7 +40,10 @@
                                     <tbody>
                                     {% verbatim %}
                                     <tr v-for="country in dataTableGeographic">
-                                        <td>{{ country.name }}</td>
+                                        <td>
+                                            <span class="bullet-point"></span>
+                                            {{ country.name }}
+                                        </td>
                                         <td class="text-right">{{ country.total_participants }}</td>
                                         <td class="text-right">{{ country.total_target }}</td>
                                         <td class="text-right">{{ country.percentage_participants }}</td>
@@ -59,7 +62,7 @@
                                     {% endverbatim %}
                                 </table>
                             </div>
-                            <div class="col-7">
+                            <div class="col-8">
                                 <div id="map"></div>
                             </div>
                         </div>
