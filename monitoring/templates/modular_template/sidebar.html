@@ -21,7 +21,7 @@
                 {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
                     <li {% if 'step' in request.resolver_match.url_name %}class="active"{% endif %}>
                         <a href="{% url 'monitoring:import-step1' %}">
-                            <i class="fa fa-upload"></i> {% trans 'Import Beneficiaries' %} </a>
+                            <i class="fa fa-upload"></i> {% trans 'Import Participants' %} </a>
                     </li>
                 {% endif %}
                 {# 3 Participants #}
