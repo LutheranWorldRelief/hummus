@@ -18,7 +18,6 @@ var geographicsMixins = {
             },
             actual_participants: 0,
             target_participants: 0,
-            percentage_participants: 0,
         }
     },
     methods: {
@@ -59,8 +58,9 @@ var geographicsMixins = {
                 .then(response => {
                     let data = response;
                     this.dataTableGeographic = [];
-                    this.sum_total_participants = 0;
 
+                    this.actual_participants = 0;
+                    this.target_participants = 0;
                     data.participants.forEach((country_data) => {
                         this.dataTableGeographic.push({
                             name: country_data.name,
@@ -70,7 +70,6 @@ var geographicsMixins = {
                         });
                         this.actual_participants += country_data.total;
                         this.target_participants += country_data.total_target;
-                        this.percentage_participants += country_data.percentage;
                     });
 
                     $.get(UrlsAcciones.UrlCountriesPolygons)
