@@ -57,7 +57,7 @@ var graphicMixins = {
 
                 let text_label = type === 'GraphicQuarter' ? 'Participants by quarter' : 'Participants by fiscal year';
                 let option = {
-                    toolbox: this.setToolBox(text_label),
+                    toolbox: this.setToolBox(text_label, true),
                     color: [this.colors.men, this.colors.women],
                     backgroundColor: this.background_color,
                     tooltip: {
@@ -641,7 +641,7 @@ var graphicMixins = {
                         position: isLastSeries(index) ? 'top' : 'inside'
                     },
                 })),
-                toolbox: this.setToolBox('Participants by Age')
+                toolbox: this.setToolBox('Participants by Age', true)
             };
 
             myChart.setOption(option);
@@ -1112,8 +1112,9 @@ var graphicMixins = {
                 instance_echarts.resize();
             };
         },
-        setToolBox(title_1) {
-            return {
+        setToolBox(title_1, isCustomTable) {
+
+            let tableData = {
                 show: true,
                 feature: {
                     restore: {
@@ -1127,6 +1128,38 @@ var graphicMixins = {
                         readOnly: true,
                         lang: [gettext(title_1), gettext('Close'), gettext('Apply')]
                     },
+                }
+            };
+            if (isCustomTable)
+                Object.assign(tableData, this.customTable());
+
+            return tableData;
+        },
+        customTable() {
+
+            return {
+                optionToContent: function (opt) {
+
+                    var axisData = opt.xAxis[0].data;
+                    var series = opt.series;
+                    var table = '<table style="width:70%; font-family: monospace; color:#000; font-size: 13px; font-weight:500; border: 1px solid #000;' +
+                        '' +
+                        '">' +
+                        '<tbody></tbody> <tr>'
+                        + '<td></td>'
+                        + '<td>' + series[0].name + '</td>'
+                        + '<td>' + series[1].name + '</td>'
+                        + '</tr>';
+                    for (var i = 0, l = axisData.length; i < l; i++) {
+                        table += '<tr>'
+                            + '<td>' + axisData[i] + '</td>'
+                            + '<td>' + series[0].data[i] + '</td>'
+                            + '<td>' + series[1].data[i] + '</td>'
+                            + '</tr>';
+                    }
+                    table += '</tr></tbody></table>';
+
+                    return table;
                 }
             }
         }
