@@ -117,7 +117,7 @@ var app = new Vue({
             this.radioSexPie = '70%';
         } else if (width >= 1200 && width <= 1700) {
             this.radioSexPie = '60%'
-        }else{
+        } else {
             this.radioSexPie = '50%'
         }
 
@@ -134,8 +134,8 @@ var app = new Vue({
             });
         })
     },
-    mounted(){
-      this.loadCountriesMaps();
+    mounted() {
+        this.loadCountriesMaps();
     },
     methods: {
         loadDataWithFilters() {
@@ -154,10 +154,18 @@ var app = new Vue({
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
             }
+
             $.post(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
                 .then(response => {
                     this.quantity_subprojects = response.quantity_subprojects;
                 });
+
+            $.get(UrlsAcciones.UrlTarget, this.requestParameters)
+                .then(response => {
+                    let target = response.targets;
+                    this.goal_participants = parseInt(target.F) + parseInt(target.M)
+                });
+
 
             $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
                 .then(((response) => {
@@ -184,8 +192,7 @@ var app = new Vue({
 
                     //NOTE: calculating the number of participants
                     this.quantity_participants = setZeroIsUndefined(this.tatals.T);
-                    // TODO set in goal_participants the global goal
-                    this.goal_participants = 1000 + this.quantity_participants;
+                    // calculating the percentage for the progress bar
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
                     this.width_progress_bar.width = this.goal_percentage + '%';
 
@@ -227,8 +234,7 @@ var app = new Vue({
 
             let percentage = (dividend / divider) * 100;
 
-            return Math.round(percentage)
-
+            return percentage.toFixed(2);
         },
         loadCatalogs() {
 

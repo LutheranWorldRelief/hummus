@@ -395,6 +395,19 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             years = self.request.GET.getlist('year[]')
             # FIXME - how do we get target totals per year?
             queryset = queryset.filter(start__fyear__in=years)
+        if self.request.GET.get('lwrregion_id[]'):
+            regions = self.request.GET.getlist('lwrregion_id[]')
+            queryset = queryset.filter(lwrregion__id__in=regions)
+        if self.request.GET.get('country_id[]'):
+            countries = self.request.GET.getlist('country_id[]')
+            queryset = queryset.filter(countries__in=countries)
+
+        if self.request.GET.get('project_id'):
+            project = self.request.GET.get('project_id')
+            queryset = queryset.filter(id=project)
+        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+            queryset = queryset.for_user(self.request.user)
+
         context['targets'] = queryset.aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
         return context
 
