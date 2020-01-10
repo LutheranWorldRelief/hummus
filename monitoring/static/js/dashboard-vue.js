@@ -132,9 +132,7 @@ var app = new Vue({
                     this.radioSexPie = '60%'
                 }
             });
-        })
-    },
-    mounted() {
+        });
         this.loadCountriesMaps();
     },
     methods: {
