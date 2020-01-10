@@ -545,7 +545,7 @@ class Countries(JSONResponseMixin, TemplateView):
             .values(country_id=F('project__countries__id'),
                     country_name=F(_('project__countries__name')),
                     region=F('project__lwrregion__id')) \
-                    .order_by('project__countries__name').distinct()
+            .order_by('project__countries__name').distinct()
 
         paises = []
         for row in countries:
