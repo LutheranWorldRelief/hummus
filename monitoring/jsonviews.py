@@ -400,7 +400,7 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(lwrregion__id__in=regions)
         if self.request.GET.get('country_id[]'):
             countries = self.request.GET.getlist('country_id[]')
-            queryset = queryset.filter(countries__in=countries)
+            queryset = queryset.filter(subproject__country__id__in=countries)
 
         if self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
