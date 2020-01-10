@@ -64,7 +64,7 @@
                         </div>
                         <div class="stat">
                             {% verbatim %}
-                            <div class="value"> {{ quantity_participants }}</div>
+                            <div class="value"> {{ formatNumber(quantity_participants) }}</div>
                             {% endverbatim %}
                             <div class="name"> {% trans 'Actual Participants' %}</div>
                         </div>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="stat">
                             {% verbatim %}
-                            <div class="value"> {{ goal_participants }}</div>
+                            <div class="value"> {{ formatNumber(goal_participants) }}</div>
                             {% endverbatim %}
                             <div class="name"> {% trans 'Target Participants' %}</div>
                         </div>
