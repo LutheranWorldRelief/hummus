@@ -391,6 +391,10 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = Project.objects.all().order_by()
+
+        # exclude projects with no participants in 3D
+        queryset = queryset.exclude(projectcontact__isnull=True)
+
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
             # FIXME - how do we get target totals per year?
