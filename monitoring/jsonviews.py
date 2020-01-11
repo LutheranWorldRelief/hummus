@@ -395,10 +395,14 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         # exclude projects with no participants in 3D
         queryset = queryset.exclude(projectcontact__isnull=True)
 
+        # filter by selected years
+        years_filter = Q()
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
-            # FIXME - how do we get target totals per year?
-            queryset = queryset.filter(start__fyear__in=years)
+            for year in years:
+                years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
+            queryset = queryset.filter(years_filter)
+
         if self.request.GET.get('lwrregion_id[]'):
             regions = self.request.GET.getlist('lwrregion_id[]')
             queryset = queryset.filter(lwrregion__id__in=regions)
@@ -697,9 +701,18 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(start__gte=self.kwargs['from_date'])
         if 'to_date' in self.kwargs:
             queryset = queryset.filter(start__lte=self.kwargs['to_date'])
-        if 'year' in self.kwargs:
-            queryset = queryset.filter(
-                date_entry_project__fyear__in=self.kwargs['year[]'])
+
+        # filter by selected years
+        years_filter = Q()
+        if self.request.GET.get('year[]'):
+            years = self.request.GET.getlist('year[]')
+            for year in years:
+                years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
+            queryset = queryset.filter(years_filter)
+
+        if self.request.GET.get('country_id[]'):
+            countries = self.request.GET.getlist('country_id[]')
+            queryset = queryset.filter(subproject__country__id__in=countries)
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(id=self.kwargs['project_id'])
@@ -727,8 +740,18 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
             queryset = queryset.filter(start__gte=self.kwargs['from_date'])
         if 'to_date' in self.kwargs:
             queryset = queryset.filter(start__lte=self.kwargs['to_date'])
-        if 'year[]' in self.kwargs:
-            queryset = queryset.filter(start__fyear__in=self.kwargs['year[]'])
+
+        # filter by selected years
+        years_filter = Q()
+        if self.request.GET.get('year[]'):
+            years = self.request.GET.getlist('year[]')
+            for year in years:
+                years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
+            queryset = queryset.filter(years_filter)
+
+        if self.request.GET.get('country_id[]'):
+            countries = self.request.GET.getlist('country_id[]')
+            queryset = queryset.filter(country__id__in=countries)
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(project_id=self.kwargs['project_id'])
