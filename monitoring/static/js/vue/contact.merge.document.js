@@ -126,7 +126,15 @@ var app = new Vue({
             $.get(self.getUrlProjects(), function (data, textStatus, jqXHR) {
                 if (textStatus != 'success')
                     console.log([textStatus, jqXHR]);
-                self.list_projects = data;
+
+                let id = 0, name = '';
+                self.list_projects = {};
+                for (const row of data['object_list']){
+                    id = row.id;
+                    name = row.name;
+
+                    self.list_projects[id]= name;
+                }
             })
                 .fail(function () {
                 // @ts-ignore
