@@ -97,13 +97,12 @@ var app = new Vue({
         this.list_years = years;
 
         $.get(UrlsAcciones.UrlProjects)
-            .then(response => {
+            .then(projects => {
                 this.list_projects = [];
-                let data = response['object_list'];
-                for (const key in data) {
+                for (const id in projects){
                     this.list_projects.push({
-                        name: data[key]['name'],
-                        value: data[key]['id']
+                        name: projects[id],
+                        value: id
                     });
                 }
             });
