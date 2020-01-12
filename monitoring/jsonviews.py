@@ -690,7 +690,7 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
     """
 
     def render_to_response(self, context, **response_kwargs):
-        #json_context = context['object_list']
+        # json_context = context['object_list']
         json_context = {}
         for row in context['object_list']:
             json_context[row['id']] = row['name']
