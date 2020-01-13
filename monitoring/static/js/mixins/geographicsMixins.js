@@ -66,6 +66,8 @@ var geographicsMixins = {
                         });
 
                         this.dataTableGeographic.push({
+                            id: country_data.id,
+                            flag_url: `https://www.countryflags.io/${country_data.id}/flat/16.png`,
                             name: country_data.name,
                             total_participants: country_data.total,
                             total_target: country_data.total_target,

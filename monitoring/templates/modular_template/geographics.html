@@ -11,7 +11,7 @@
                     <div class="col-6">
                         <table class="table table-borderless" style="font-size: 0.8em">
                             <thead>
-                            <tr>
+                            <tr class="bg-muted">
                                 <th colspan="1" rowspan="2" class="align-middle">{% trans 'Country' %}</th>
                                 <th colspan="1" rowspan="2" class="text-center align-middle">{% trans 'Projects' %}</th>
                                 <th colspan="1" rowspan="2"
@@ -19,7 +19,7 @@
                                 <th colspan="3" rowspan="1"
                                     class="text-center border-bottom-0">{% trans 'Participants' %}</th>
                             </tr>
-                            <tr>
+                            <tr class="bg-muted">
                                 <th colspan="1" rowspan="1" class="text-center border-top-0">{% trans 'Actual' %}</th>
                                 <th colspan="1" rowspan="1" class="text-center border-top-0">{% trans 'Target' %}</th>
                                 <th colspan="1" rowspan="1" class="text-center border-top-0">{% trans '%' %}</th>
@@ -28,8 +28,8 @@
                             <tbody>
                             {% verbatim %}
                             <tr v-for="country in dataTableGeographic">
-                                <td>
-                                    <span class="bullet-point"></span>
+                                <td class="text-nowrap">
+                                    <img :src="country.flag_url">
                                     {{ country.name }}
                                 </td>
                                 <td class="text-right">{{ country.projects }}</td>
