@@ -553,12 +553,18 @@ class Countries(JSONResponseMixin, TemplateView):
 
         paises = []
         for row in countries:
-            paises.append({
+            new_row = {
                 'id': row['country_id'],
                 'name': row['country_name'],
                 'region': row['region'],
-                'active': row['country_id'] in countries_id
-            })
+                'active': row['country_id'] in countries_id,
+                }
+            if self.request.GET.get('extra_counters'):
+                new_row['projects'] = Project.objects.filter(
+                    countries=row['country_id']).count()
+                new_row['subprojects'] = SubProject.objects.filter(
+                    country_id=row['country_id']).count()
+            paises.append(new_row)
 
         context['paises'] = paises
 
