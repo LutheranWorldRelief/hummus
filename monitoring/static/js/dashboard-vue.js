@@ -15,7 +15,9 @@ var app = new Vue({
             from_date: '',
             to_date: '',
         },
-        requestParameters: {},
+        requestParameters: {
+            extra_counters: 1
+        },
         show_projectgraph: false,
         show_subproject: false,
         spin_refresh_icon: false,
@@ -41,7 +43,9 @@ var app = new Vue({
     },
     watch: {
         check_filter: function () {
-            this.requestParameters = {};
+            this.requestParameters = {
+                extra_counters: 1
+            };
             this.formInputs.to_date = '';
             this.formInputs.from_date = '';
             this.formInputs.quarter = null;
@@ -99,7 +103,7 @@ var app = new Vue({
         $.get(UrlsAcciones.UrlProjects)
             .then(projects => {
                 this.list_projects = [];
-                for (const id in projects){
+                for (const id in projects) {
                     this.list_projects.push({
                         name: projects[id],
                         value: id
@@ -206,8 +210,8 @@ var app = new Vue({
                     }
                     // NOTE: mujeresQ is my pivot to verify is empty
                     //       to fill arrays with zeros
-                    if (this.mujeresQ.length <= 0){
-                        for (const year of this.list_years){
+                    if (this.mujeresQ.length <= 0) {
+                        for (const year of this.list_years) {
                             this.mujeres.push(0);
                             this.mujeresQ.push(0);
                             this.hombres.push(0);
@@ -278,7 +282,9 @@ var app = new Vue({
         },
         getValueOfFilter() {
             return new Promise((resolved, reject) => {
-                this.requestParameters = {};
+                this.requestParameters = {
+                    extra_counters: 1
+                };
 
                 for (const key in this.formInputs) {
                     let input = this.formInputs[key];
@@ -361,7 +367,9 @@ var app = new Vue({
                 from_date: '',
                 to_date: '',
             };
-            this.requestParameters = {};
+            this.requestParameters = {
+                extra_counters: 1
+            };
 
             this.list_countries.forEach((country) => {
                 country.active = false
