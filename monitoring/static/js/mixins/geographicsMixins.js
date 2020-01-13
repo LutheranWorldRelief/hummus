@@ -16,8 +16,6 @@ var geographicsMixins = {
                 dashArray: '3',
                 fillOpacity: 0.7
             },
-            actual_participants: 0,
-            target_participants: 0,
         }
     },
     methods: {
@@ -40,12 +38,15 @@ var geographicsMixins = {
 
             info.update = function (props) {
                 let title1 = gettext('Country');
-                let title2 = gettext('Total');
+                let title2 = gettext('Total Participants');
                 let title3 = gettext('Percentage');
                 let title4 = gettext('Hover over a country');
+                let title5 = gettext('Projects');
+                let title6 = gettext('Subprojects');
                 let text = '';
                 if (props) {
-                    text = `<b>${title1}: </b>${props.name}<br/><b>${title2}: </b>${props.total}<br/><b>${title3}: </b>${props.percentage}`
+                    text = `<b>${title1}: </b>${props.name}<br/><b>${title2}: </b>${props.total}`;
+                    text += `<br><b>${title5}: </b>${props.projects}<br/><b>${title6}: </b>${props.subprojects}<br/>`;
                 } else {
                     text = `<b>${title4}</b>`;
                 }
@@ -59,17 +60,19 @@ var geographicsMixins = {
                     let data = response;
                     this.dataTableGeographic = [];
 
-                    this.actual_participants = 0;
-                    this.target_participants = 0;
                     data.participants.forEach((country_data) => {
+                        let data = this.list_countries.find((item) => {
+                            return item.name === country_data.name;
+                        });
+
                         this.dataTableGeographic.push({
                             name: country_data.name,
-                            total_participants: this.formatNumber(country_data.total),
-                            total_target: this.formatNumber(country_data.total_target),
+                            total_participants: country_data.total,
+                            total_target: country_data.total_target,
                             percentage_participants: country_data.percentage.toFixed(2),
+                            projects: data.projects,
+                            subprojects: data.subprojects,
                         });
-                        this.actual_participants += country_data.total;
-                        this.target_participants += country_data.total_target;
                     });
 
                     $.get(UrlsAcciones.UrlCountriesPolygons)
@@ -79,12 +82,16 @@ var geographicsMixins = {
 
                             this.geojson.features = [];
                             data.participants.forEach(participant => {
-
+                                let data = this.list_countries.find((item) => {
+                                    return item.name === participant.name;
+                                });
                                 let country = countries.features.find(country => country.id === participant.alfa3);
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
                                 country.properties.total = participant.total;
                                 country.properties.percentage = `${participant.percentage.toFixed(2)} %`;
+                                country.properties.projects = data.projects;
+                                country.properties.subprojects = data.subprojects;
                                 this.geojson.features.push(country);
                             });
 
@@ -137,6 +144,14 @@ var geographicsMixins = {
         },
         formatNumber(num) {
             return num.toLocaleString();
+        },
+        Sum(array, field_name) {
+            let total = 0;
+            for (const object of array) {
+                total += object[field_name];
+            }
+
+            return this.formatNumber(total);
         }
     }
 };
