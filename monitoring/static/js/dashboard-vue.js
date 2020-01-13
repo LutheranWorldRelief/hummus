@@ -167,7 +167,6 @@ var app = new Vue({
                     this.goal_participants = this.setZero(target.F) + this.setZero(target.M);
                 });
 
-
             $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
                 .then(response => {
                     this.clearData();
@@ -263,6 +262,8 @@ var app = new Vue({
                             value: countries[key].id,
                             active: countries[key].active,
                             region: countries[key].region,
+                            projects: countries[key].projects,
+                            subprojects: countries[key].subprojects,
                         });
                     }
                 });
