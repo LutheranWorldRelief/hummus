@@ -558,7 +558,7 @@ class Countries(JSONResponseMixin, TemplateView):
                 'name': row['country_name'],
                 'region': row['region'],
                 'active': row['country_id'] in countries_id,
-                }
+            }
             if self.request.GET.get('extra_counters'):
                 new_row['projects'] = Project.objects.filter(
                     countries=row['country_id']).count()
