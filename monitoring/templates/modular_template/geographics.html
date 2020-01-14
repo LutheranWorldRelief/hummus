@@ -5,117 +5,57 @@
 </div>
 <div class="row sameheight-container">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
-        <div class="card sameheight-item" data-exclude="xs" id="Geographic-Information"
-             style="height: 322.6px;">
-            <div class="card-header card-header-sm bordered">
-                <ul role="tablist" class="nav nav-tabs pull-left" id="tab_geographic">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#participants" role="tab"
-                           data-toggle="tab">{% trans 'Participants' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects" role="tab"
-                           data-toggle="tab">{% trans 'Projects' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#subprojects" role="tab"
-                           data-toggle="tab">{% trans 'Subprojects' %}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-block">
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active fade show" id="participants">
-                        <div class="row">
-                            <div class="col-4">
-                                <table class="table table-sm table-borderless" style="font-size: 0.8em">
-                                    <thead>
-                                    <tr>
-                                        <th>{% trans 'Country' %}</th>
-                                        <th class="text-right">{% trans 'Actual' %}</th>
-                                        <th class="text-right">{% trans 'Target' %}</th>
-                                        <th class="text-right">{% trans '%' %}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% verbatim %}
-                                    <tr v-for="country in dataTableGeographic">
-                                        <td>
-                                            <span class="bullet-point"></span>
-                                            {{ country.name }}
-                                        </td>
-                                        <td class="text-right">{{ country.total_participants }}</td>
-                                        <td class="text-right">{{ country.total_target }}</td>
-                                        <td class="text-right">{{ country.percentage_participants }}</td>
-                                    </tr>
-                                    {% endverbatim %}
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>{% trans 'Total Participants' %}</th>
-                                        {% verbatim %}
-                                        <th class="text-right">{{ formatNumber(actual_participants) }}</th>
-                                        <th class="text-right">{{ formatNumber( target_participants) }}</th>
-                                        <th class="text-right">{{ /*percentage(actual_participants,target_participants) + '%'*/ }}</th>
-                                    </tr>
-                                    </tfoot>
-                                    {% endverbatim %}
-                                </table>
-                            </div>
-                            <div class="col-8">
-                                <div id="map"></div>
-                            </div>
-                        </div>
+        <div class="card" data-exclude="xs" id="Geographic-Information">
+            <div class="card-block container-fluid">
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-borderless" style="font-size: 0.8em">
+                            <thead>
+                            <tr class="bg-muted">
+                                <th colspan="1" rowspan="2" class="align-middle">{% trans 'Country' %}</th>
+                                <th colspan="1" rowspan="2" class="text-center align-middle">{% trans 'Projects' %}</th>
+                                <th colspan="1" rowspan="2"
+                                    class="text-center align-middle">{% trans 'Subprojects' %}</th>
+                                <th colspan="3" rowspan="1"
+                                    class="text-center border-bottom-0">{% trans 'Participants' %}</th>
+                            </tr>
+                            <tr class="bg-muted">
+                                <th colspan="1" rowspan="1" class="text-center border-top-0">{% trans 'Actual' %}</th>
+                                <th colspan="1" rowspan="1" class="text-center border-top-0">{% trans 'Target' %}</th>
+                                <th colspan="1" rowspan="1" class="text-center border-top-0">{% trans '%' %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% verbatim %}
+                            <tr v-for="country in dataTableGeographic">
+                                <td class="text-nowrap">
+                                    <img :src="country.flag_url">
+                                    {{ country.name }}
+                                </td>
+                                <td class="text-right">{{ country.projects }}</td>
+                                <td class="text-right">{{ country.subprojects }}</td>
+                                <td class="text-right">{{ formatNumber(country.total_participants) }}</td>
+                                <td class="text-right">{{ formatNumber(country.total_target) }}</td>
+                                <td class="text-right">{{ country.percentage_participants }}</td>
+                            </tr>
+                            {% endverbatim %}
+                            </tbody>
+                            <tfoot ng-if="dataTableGeographic.length > 0">
+                            <tr>
+                                <th>{% trans 'Total' %}</th>
+                                {% verbatim %}
+                                <th class="text-right">{{ Sum(dataTableGeographic,'projects') }}</th>
+                                <th class="text-right">{{ Sum(dataTableGeographic,'subprojects') }}</th>
+                                <th class="text-right">{{ Sum(dataTableGeographic,'total_participants') }}</th>
+                                <th class="text-right">{{ Sum(dataTableGeographic,'total_target') }}</th>
+                                <th></th>
+                            </tr>
+                            </tfoot>
+                            {% endverbatim %}
+                        </table>
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="projects">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <table class="table table-sm table-bordered ">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">{% trans 'Country' %}</th>
-                                        <th class="text-center">{% trans '%' %}</th>
-                                        <th class="text-center">{% trans 'Goal' %}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th class="text-center">data 1</th>
-                                        <th class="text-center">data 1</th>
-                                        <th class="text-center">data 1</th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-6">
-                                <div id="dashboard-downloads-chart"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="subprojects">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <table class="table table-sm table-bordered ">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">{% trans 'Country' %}</th>
-                                        <th class="text-center">{% trans '%' %}</th>
-                                        <th class="text-center">{% trans 'Goal' %}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th class="text-center">data 1</th>
-                                        <th class="text-center">data 1</th>
-                                        <th class="text-center">data 1</th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-6">
-
-                            </div>
-                        </div>
+                    <div class="col-6">
+                        <div id="map"></div>
                     </div>
                 </div>
             </div>
