@@ -27,7 +27,7 @@ def try_to_find(model, value, exists=False, language=None):
     if not found:
         filter_type = 'iexact'  # be case insensitive
         fields = ['name', 'varname']
-        condition = Q(pk=None)  # start with always false
+        condition = Q(pk=None)  # start with always false FIXME : use Q()
 
         for field in fields.copy():
             fields.append(__(field, language))
@@ -35,7 +35,7 @@ def try_to_find(model, value, exists=False, language=None):
         for field in fields:
             field_filter = '{}__{}'.format(field, filter_type)
             if hasattr(model, field):
-                condition = (condition | Q(**{field_filter: value}))
+                condition = (condition | Q(**{field_filter: value})) # FIXME use |=
 
         if exists:
             found = model.objects.filter(condition).exists()
