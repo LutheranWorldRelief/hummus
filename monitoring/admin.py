@@ -125,7 +125,7 @@ class ProjectAdmin(AdminForUserMixin, admin.ModelAdmin):
                      'show_salesforce_url', 'created', 'updated', ]}),
         (_('Countries'), {'fields': ['countries']}),
         (_('Date information'), {'fields': ['start', 'end']}),
-        (_('Goal'), {'fields': ['targetmen', 'targetwomen']}),
+        (_('Targets'), {'fields': ['targetmen', 'targetwomen']}),
     ]
 
     list_filter = [
@@ -214,7 +214,7 @@ class SubprojectAdmin(AdminForUserMixin, admin.ModelAdmin):
          {'fields': ['code', 'name', 'project', 'status', 'organization', 'country',
                      'show_salesforce_url', 'created', 'updated', ]}),
         (_('Date information'), {'fields': ['start', 'end', ]}),
-        (_('Goals'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
+        (_('Targets'), {'fields': ['targetimen', 'targetiwomen', 'targetmen', 'targetwomen']}),
     ]
     list_filter = [
         ('status'),

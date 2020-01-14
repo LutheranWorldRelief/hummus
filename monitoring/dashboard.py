@@ -196,9 +196,9 @@ def proyectos_metas(request):
                                                              'targetwomen').first()
     result = []
     categorias = []
-    serie_meta_h = {'name': _('Goal Men'), 'color': 'rgba(42,123,153,.9)', 'data': [],
+    serie_meta_h = {'name': _('Target Men'), 'color': 'rgba(42,123,153,.9)', 'data': [],
                     'pointPadding': 0.3, 'pointPlacement': -0.2}
-    serie_meta_f = {'name': _('Goal Women'), 'color': 'rgba(68,87,113,1)', 'data': [],
+    serie_meta_f = {'name': _('Target Women'), 'color': 'rgba(68,87,113,1)', 'data': [],
                     'pointPadding': 0.3, 'pointPlacement': 0.2}
     serie_h = {'name': _('Amount Men'), 'color': 'rgba(255,205,85,.8)', 'data': [],
                'pointPadding': 0.4, 'pointPlacement': -0.2}

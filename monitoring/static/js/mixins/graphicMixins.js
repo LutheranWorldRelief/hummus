@@ -900,7 +900,7 @@ var graphicMixins = {
                     let data_project = response.proyectos_metas;
                     let data_chart = {
                         name_project: data_project['categorias'][0],
-                        legends: [gettext('Participants'), gettext('Target')],
+                        legends: [gettext('Actual'), gettext('Target')],
                         legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
@@ -923,7 +923,7 @@ var graphicMixins = {
 
 
                     let option = {
-                        toolbox: this.setToolBox('Total beneficiaries achieved and target, by sex'),
+                        toolbox: this.setToolBox('Total actual participants and target, by sex'),
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
