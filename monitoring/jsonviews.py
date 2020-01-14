@@ -440,12 +440,12 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             years_filter = Q()
             for year in years:
                 years_filter |= Q(project__end__fyear__gte=year,
-                                 date_entry_project__fyear__lte=year)
+                                  date_entry_project__fyear__lte=year)
             queryset = queryset.filter(years_filter)
         else:
-            years = list(Project.objects.order_by('start__fyear'). \
-            exclude(projectcontact__isnull=True). \
-            values_list('start__fyear', flat=True).distinct())
+            years = list(Project.objects.order_by('start__fyear').
+                         exclude(projectcontact__isnull=True).
+                         values_list('start__fyear', flat=True).distinct())
 
         if self.request.GET.get('quarter'):
             quarter = int(self.request.GET.get('quarter'))
