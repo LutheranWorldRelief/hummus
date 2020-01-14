@@ -9,7 +9,9 @@ var graphicMixins = {
             },
             names_legends: [
                 gettext('Men'),
-                gettext('Women')
+                gettext('Women'),
+                gettext('Actual'),
+                gettext('Target'),
             ],
             icon_graph: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
             radioSexPie: '70%',
@@ -74,7 +76,7 @@ var graphicMixins = {
                         },
                     },
                     legend: {
-                        data: this.names_legends,
+                        data: this.names_legends.slice(0, 2),
                         center: 'right'
                     },
                     grid: {
@@ -211,7 +213,7 @@ var graphicMixins = {
             };
 
             var option = {
-                toolbox: this.setToolBox('Actual - Target - Actual'),
+                toolbox: this.setToolBox('Actual vs Target'),
                 backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
@@ -242,10 +244,7 @@ var graphicMixins = {
                 },
                 legend: {
                     bottom: 'bottom',
-                    textStyle: {
-                        color: '#4f5f6f',
-                    },
-                    data: [gettext('Actual'), gettext('Target')],
+                    data: this.names_legends.slice(2, 4),
                 },
                 xAxis: [{
                     type: 'category',
@@ -334,7 +333,7 @@ var graphicMixins = {
                     },
                 },
                 series: [{
-                    name: gettext('Actual'),
+                    name: this.names_legends[2],
                     type: 'bar',
                     stack: '1',
                     xAxisIndex: 0,
@@ -344,19 +343,19 @@ var graphicMixins = {
                     barWidth: '35%',
                     itemStyle: {
                         normal: {
-                            color: array_colors_lwr[1],
+                            color: this.colors.women,
                         }
                     },
                     z: 2
                 }, {
-                    name: gettext('Target'),
+                    name: this.names_legends[3],
                     type: 'bar',
                     xAxisIndex: 2,
                     data: this.metaPoranio,
                     barWidth: '67%',
                     itemStyle: {
                         normal: {
-                            color: 'rgba(4,170,171,0.6)',
+                            color: this.colors.men.replace('0.7', '0.4'),
                             barBorderRadius: 1,
                         }
                     },
@@ -370,8 +369,8 @@ var graphicMixins = {
 
             let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
 
-            option = {
-                toolbox: this.setToolBox('Actual - Target by Sex'),
+            let option = {
+                toolbox: this.setToolBox('Actual vs Target, by Sex'),
                 backgroundColor: this.background_color,
                 "tooltip": {
                     "trigger": "axis",
@@ -397,7 +396,9 @@ var graphicMixins = {
                     textStyle: {
                         color: '#90979c',
                     },
-                    "data": [gettext('Men'), gettext('Woman'), gettext('Target')]
+                    "data": this.names_legends.filter((name) => {
+                        return name !== this.names_legends[2];
+                    })
                 },
                 "calculable": true,
                 "xAxis": [{
@@ -450,7 +451,7 @@ var graphicMixins = {
                 }],
                 "dataZoom": this.getGraphicZoom(),
                 "series": [{
-                    "name": gettext("Men"),
+                    "name": this.names_legends[0],
                     "type": "bar",
                     "barMaxWidth": 35,
                     "barGap": "20%",
@@ -471,7 +472,7 @@ var graphicMixins = {
                     },
                     "data": this.hombres
                 }, {
-                    "name": gettext("Woman"),
+                    "name": this.names_legends[1],
                     "type": "bar",
                     "itemStyle": {
                         "normal": {
@@ -491,7 +492,7 @@ var graphicMixins = {
                     },
                     "data": this.mujeres
                 }, {
-                    "name": gettext('Target'),
+                    "name": this.names_legends[3],
                     "type": "line",
                     "stack": true,
                     symbolSize: 10,
@@ -559,19 +560,19 @@ var graphicMixins = {
 
             const series = [
                 {
-                    name: 'Men',
+                    name: this.names_legends[0],
                     itemStyle: {
                         color: this.colors.men
                     },
                     data: participants.fParticipants
                 }, {
-                    name: 'Women',
+                    name: this.names_legends[1],
                     itemStyle: {
                         color: this.colors.women
                     },
                     data: participants.mParticipants
                 }, {
-                    name: 'total',
+                    name: gettext('total'),
                     data: total
                 }
             ];
@@ -614,7 +615,7 @@ var graphicMixins = {
                     },
                 },
                 legend: {
-                    data: this.names_legends,
+                    data: this.names_legends.slice(0, 2),
                     center: 'right',
                 },
                 grid: {
@@ -715,21 +716,21 @@ var graphicMixins = {
 
             const series = [
                 {
-                    name: 'Men',
+                    name: this.names_legends[0],
                     itemStyle: {
                         color: this.colors.men
                     },
                     data: participants.fParticipants
                 },
                 {
-                    name: 'Women',
+                    name: this.names_legends[1],
                     itemStyle: {
                         color: this.colors.women
                     },
                     data: participants.mParticipants
                 },
                 {
-                    name: 'total',
+                    name: gettext('Total'),
                     data: total
                 }
             ];
@@ -754,7 +755,7 @@ var graphicMixins = {
                     },
                 },
                 legend: {
-                    data: this.names_legends,
+                    data: this.names_legends.slice(0, 2),
                     center: 'right',
                 },
                 grid: {
@@ -824,12 +825,12 @@ var graphicMixins = {
             let total = this.setZero(data.T);
 
             let totalMen = {
-                name: 'Men',
+                name: this.names_legends[0],
                 value: this.setZero(data.M)
             };
 
             let totalWomen = {
-                name: 'Women',
+                name: this.names_legends[1],
                 value: this.setZero(data.F)
             };
             this.graphicSexo(total, totalMen, totalWomen);
@@ -900,7 +901,7 @@ var graphicMixins = {
                     let data_project = response.proyectos_metas;
                     let data_chart = {
                         name_project: data_project['categorias'][0],
-                        legends: [gettext('Actual'), gettext('Target')],
+                        legends: this.names_legends.slice(2, 4),
                         legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
@@ -940,7 +941,7 @@ var graphicMixins = {
                         xAxis: [{
                             show: true,
                             position: 'bottom',
-                            name: gettext('Persons'),
+                            name: gettext('Participants'),
                             nameLocation: 'middle',
                             nameGap: 30,
                         }],
@@ -968,7 +969,7 @@ var graphicMixins = {
                                 },
                                 margin: 30
                             },
-                            data: this.names_legends
+                            data: this.names_legends.slice(0, 2)
                         }, {
                             data: []
                         }],
