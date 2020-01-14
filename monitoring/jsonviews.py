@@ -375,6 +375,7 @@ class YearsAPI(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_context_data(self, **kwargs):
+        # FIXME : from first start_fyear to current year would be better
         queryset = Project.objects.order_by('start__fyear').exclude(projectcontact__isnull=True). \
             values_list('start__fyear', flat=True).distinct()
         return list(queryset)
@@ -396,10 +397,11 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         queryset = queryset.exclude(projectcontact__isnull=True)
 
         # filter by selected years
-        years_filter = Q()
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
+            years_filter = Q()
             for year in years:
+                # FIXME: determianr como se cuentan los target por año
                 years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
             queryset = queryset.filter(years_filter)
 
@@ -408,7 +410,7 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(lwrregion__id__in=regions)
         if self.request.GET.get('country_id[]'):
             countries = self.request.GET.getlist('country_id[]')
-            queryset = queryset.filter(subproject__country__id__in=countries)
+            queryset = queryset.filter(subproject__country__id__in=countries).distinct()
 
         if self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
@@ -432,9 +434,19 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         context = {}
         queryset = ProjectContact.objects.all().order_by()
 
+        # filter by selected years
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
-            queryset = queryset.filter(date_entry_project__fyear__in=years)
+            years_filter = Q()
+            for year in years:
+                years_filter |= Q(project__end__fyear__gte=year,
+                                  date_entry_project__fyear__lte=year)
+            queryset = queryset.filter(years_filter)
+        else:
+            years = list(Project.objects.order_by('start__fyear').
+                         exclude(projectcontact__isnull=True).
+                         values_list('start__fyear', flat=True).distinct())
+
         if self.request.GET.get('quarter'):
             quarter = int(self.request.GET.get('quarter'))
             queryset = queryset.filter(date_entry_project__fquarter=quarter)
@@ -466,25 +478,22 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
                       annotate(total=Count('contact', distinct=True)))
 
         if totals:
-            totals['T'] = totals['M'] + totals['F']
+            totals['T'] = sum(totals.values())
+
         context['totals'] = totals
 
         # get totals by year
-        query_years = queryset. \
-            values('date_entry_project__fyear', 'contact__sex_id'). \
-            annotate(total=Count('contact', distinct=True)).values('date_entry_project__fyear',
-                                                                 'contact__sex_id', 'total')
-        years = {}
-        for query_year in query_years:
-            fyear = query_year['date_entry_project__fyear']
-            if fyear not in years:
-                years[fyear] = {}
-            current_year = years[fyear]
-            current_year[query_year['contact__sex_id']] = query_year['total']
-            if 'T' not in current_year:
-                current_year['T'] = 0
-            current_year['T'] += query_year['total']
-        context['year'] = years
+        years_data = {}
+        for year in years:
+            year_filter = Q(project__end__fyear__gte=year,
+                            date_entry_project__fyear__lte=year)
+            year_queryset = queryset.filter(year_filter)
+            year_total = dict(year_queryset.values_list('contact__sex_id').
+                              annotate(total=Count('contact', distinct=True)))
+
+            year_total['T'] = sum(year_total.values())
+            years_data[year] = year_total
+        context['year'] = years_data
 
         # get totals by quarter
         query_years = queryset. \
