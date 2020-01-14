@@ -211,7 +211,7 @@ var graphicMixins = {
             };
 
             var option = {
-                toolbox: this.setToolBox('Actual - Target - Actual'),
+                toolbox: this.setToolBox('Actual vs Target'),
                 backgroundColor: this.background_color,
                 grid: {
                     left: '3%',
@@ -242,9 +242,6 @@ var graphicMixins = {
                 },
                 legend: {
                     bottom: 'bottom',
-                    textStyle: {
-                        color: '#4f5f6f',
-                    },
                     data: [gettext('Actual'), gettext('Target')],
                 },
                 xAxis: [{
@@ -344,7 +341,7 @@ var graphicMixins = {
                     barWidth: '35%',
                     itemStyle: {
                         normal: {
-                            color: array_colors_lwr[1],
+                            color: this.colors.women,
                         }
                     },
                     z: 2
@@ -356,7 +353,7 @@ var graphicMixins = {
                     barWidth: '67%',
                     itemStyle: {
                         normal: {
-                            color: 'rgba(4,170,171,0.6)',
+                            color: this.colors.men.replace('0.7','0.4'),
                             barBorderRadius: 1,
                         }
                     },
