@@ -223,7 +223,7 @@ var app = new Vue({
                     this.graphicParticipants('').then(() => {
                         this.graphicParticipants('GraphicQuarter');
                         this.graficoMetas();
-                        this.graficoMetasLinea();
+                        this.graphFixedColumnGender();
                     });
 
                 });

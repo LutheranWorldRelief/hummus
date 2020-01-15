@@ -5,7 +5,9 @@ var graphicMixins = {
             background_color: '#fff',
             colors: {
                 men: array_colors_lwr[1],
-                women: array_colors_lwr[0]
+                target_men: array_colors_lwr[2],
+                women: array_colors_lwr[0],
+                target_women: array_colors_lwr[3],
             },
             names_legends: [
                 gettext('Men'),
@@ -365,160 +367,140 @@ var graphicMixins = {
             this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
         },
-        graficoMetasLinea() {
+        graphFixedColumnGender() {
+            let myChart = echarts.init(document.getElementById('FixedColumns'));
+            let totalHombres = [], totalMujeres = [];
 
-            let myChart = echarts.init(document.getElementById('MetaParticipantesPorSexo'));
+            // Random Asignar met
+            this.mujeres.forEach(function (numero, index) {
+                if (Math.floor(Math.random() * 10) % 2 === 0)
+                    totalMujeres.push(numero + (index * 100));
+                else if (numero < 200)
+                    totalMujeres.push(numero + (300));
+                else
+                    totalMujeres.push(numero - (300));
+            });
+
+            this.hombres.forEach(function (numero, index) {
+                if (Math.floor(Math.random() * 10) % 2 === 0)
+                    totalHombres.push(numero + (index * 100));
+                else if (numero < 200)
+                    totalHombres.push(numero + (300));
+                else
+                    totalHombres.push(numero - (300));
+            });
+
+            let label = {
+                normal: {
+                    show: true,
+                    position: 'top',
+                    distance: 15,
+                    verticalAlign: 'middle',
+                    formatter: function (param) {
+                        return param.value;
+                    },
+                    textStyle: {
+                        color: 'black',
+                        fontSize: '11',
+
+                    },
+                    rotate: 90
+                }
+            };
+
+            let legends = [gettext('Woman'), gettext('Target Women'), gettext('Men'), gettext('Target Men')];
 
             let option = {
-                toolbox: this.setToolBox('Actual vs Target, by Sex'),
-                backgroundColor: this.background_color,
-                "tooltip": {
-                    "trigger": "axis",
-                    "axisPointer": {
-                        "type": "shadow",
-                        textStyle: {
-                            color: "#fff"
-                        }
-                    },
-                },
-                "grid": {
-                    "borderWidth": 0,
-                    "top": 110,
-                    "bottom": 95,
-                    textStyle: {
-                        color: "#fff"
-                    }
-                },
-                "legend": {
-                    x: '40%',
-                    top: '7%',
-                    align: 'right',
-                    textStyle: {
-                        color: '#90979c',
-                    },
-                    "data": this.names_legends.filter((name) => {
-                        return name !== this.names_legends[2];
-                    })
-                },
-                "calculable": true,
-                "xAxis": [{
-                    "type": "category",
-                    "axisLine": {
-                        lineStyle: {
-                            color: '#90979c'
-                        }
-                    },
-                    "splitLine": {
-                        "show": false
-                    },
-                    "axisTick": {
-                        "show": false
-                    },
-                    "splitArea": {
-                        "show": false
-                    },
-                    "axisLabel": {
-                        "interval": 0,
-                        rotate: 90,
-                        verticalAlign: 'middle',
-                        textStyle: {
-                            color: '#4f5f6f',
-                            fontWeight: '500',
-                            fontSize: '12',
+                toolbox:this.setToolBox('Actual vs Target, by Sex(Fixed placement columns)'),
+                tooltip: {
+                    show: "true",
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',// 'line' | 'shadow'
+                        shadowStyle: {
+                            color: 'rgba(112,112,112,0)',
                         },
                     },
-                    "data": this.anios,
-                }],
-                "yAxis": [{
-                    "type": "value",
-                    "splitLine": {
-                        "show": false
+                    formatter: function (params) {
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
+                        params.forEach(item => {
+                            axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
+                        });
+                        return axisValue;
                     },
-                    "axisLine": {
-                        lineStyle: {
-                            color: '#90979c'
-                        }
-                    },
-                    "axisTick": {
-                        "show": false
-                    },
-                    "axisLabel": {
-                        "interval": 0,
-                    },
-                    "splitArea": {
-                        "show": false
-                    },
-                }],
-                "dataZoom": this.getGraphicZoom(),
-                "series": [{
-                    "name": this.names_legends[0],
-                    "type": "bar",
-                    "barMaxWidth": 35,
-                    "barGap": "20%",
-                    "itemStyle": {
-                        "normal": {
-                            "color": array_colors_lwr[1],
-                            "label": {
-                                "show": true,
-                                "position": "inside",
-                                color: 'rgba(0,0,0,0.6)',
-                                fontWeight: '550',
-                                fontSize: '11', //insideTop
-                                formatter: function (p) {
-                                    return p.value > 0 ? (p.value) : '';
-                                }
-                            }
-                        }
-                    },
-                    "data": this.hombres
-                }, {
-                    "name": this.names_legends[1],
-                    "type": "bar",
-                    "itemStyle": {
-                        "normal": {
-                            "color": array_colors_lwr[0],
-                            "barBorderRadius": 0,
-                            "label": {
-                                "show": true,
-                                "position": "inside",
-                                color: 'rgba(0,0,0,0.6)',
-                                fontWeight: '550',
-                                fontSize: '11',
-                                formatter: function (p) {
-                                    return p.value > 0 ? (p.value) : '';
-                                }
-                            }
-                        }
-                    },
-                    "data": this.mujeres
-                }, {
-                    "name": this.names_legends[3],
-                    "type": "line",
-                    "stack": true,
-                    symbolSize: 10,
-                    position: 'fixed',
-                    symbol: 'circle',
-                    "itemStyle": {
-                        "normal": {
-                            "color": 'rgba(49,147,218,0.5)',
-                            "barBorderRadius": 0,
-                            "label": {
-                                "show": true,
-                                "position": "top",
-                                fontWeight: '570',
-                                fontSize: '12',
-                                distance: 35,
-                                formatter: function (p) {
-                                    return p.value > 0 ? (p.value) : '';
-                                }
-                            }
-                        }
-                    },
-                    "data": this.metaPoranio
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    padding: [6, 6],
+                    extraCssText: 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);',
                 },
-                ]
+                legend: {
+                    data: legends,
+                    textStyle: {
+                        color: '#4f5f6f',
+                    },
+                    bottom: 'bottom',
+                },
+                xAxis: {
+                    boundaryGap: true,
+                    axisLine: {
+                        show: false
+                    },
+                    data: this.anios
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: true,
+                    }
+                },
+                series: [{
+                    name: legends[0],
+                    type: 'bar',
+                    label: label,
+                    barWidth: 8,
+                    z: 10,
+                    itemStyle: {
+                        normal: {
+                            color: this.colors.women
+                        }
+                    },
+                    data: this.mujeres
+                }, {
+                    name: legends[1],
+                    type: 'bar',
+                    barWidth: 20,
+                    itemStyle: {
+                        normal: {
+                            color: this.colors.target_women
+                        }
+                    },
+                    data: totalMujeres
+                }, {
+                    name: legends[2],
+                    type: 'bar',
+                    barGap: '-175%',
+                    label: label,
+                    barWidth: 8,
+                    z: 10,
+                    itemStyle: {
+                        normal: {
+                            color: this.colors.men
+                        }
+                    },
+                    data: this.hombres
+                }, {
+                    name: legends[3],
+                    type: 'bar',
+                    barWidth: 20,
+                    itemStyle: {
+                        normal: {
+                            color: this.colors.target_men
+                        }
+                    },
+                    data: totalHombres
+                }]
             };
-            this.responsiveChart('', myChart);
+
+            this.responsiveChart('#tabs_target-click', myChart);
             myChart.setOption(option);
         },
         graficoParticipantesEdad() {
