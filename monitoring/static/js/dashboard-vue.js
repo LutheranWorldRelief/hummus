@@ -226,6 +226,9 @@ var app = new Vue({
                         this.graphFixedColumnGender();
                     });
 
+                    // function to graph a stacked chart with line
+                    this.graphicStackedLine(response);
+
                 });
             // funcion to graph the participants by age
             this.graficoParticipantesEdad();

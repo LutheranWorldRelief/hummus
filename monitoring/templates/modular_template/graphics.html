@@ -98,6 +98,10 @@
                         <a class="nav-link active" href="#GraphSexYearDoubleBar" role="tab"
                            data-toggle="tab">{% trans 'Actual vs Target, by Sex(Fixed placement columns)' %}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#GraphSexYearStackedLine" role="tab"
+                           data-toggle="tab">{% trans 'Actual vs Target, by Sex()' %}</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-block">
@@ -106,6 +110,13 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div id="FixedColumns" style="height:500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="container-fluid fade tab-pane" id="GraphSexYearStackedLine">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="StackedLine" style="height: 500px; width: 100%;"></div>
                             </div>
                         </div>
                     </div>

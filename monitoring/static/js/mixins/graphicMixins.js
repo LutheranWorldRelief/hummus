@@ -1002,6 +1002,112 @@ var graphicMixins = {
                     this.responsiveChart('', chart_goal_project);
                 });
         },
+        graphicStackedLine() {
+            const myChart = echarts.init(document.getElementById('StackedLine'));
+
+            let meta = [];
+
+            this.hombres.forEach((meta_hombre, index) => {
+                let year_target = (meta_hombre + this.mujeres[index]) * Math.random();
+                meta.push(year_target.toFixed(0))
+            });
+
+            const series = [{
+                name: this.names_legends[0],
+                type: 'bar',
+                stack: true,
+                label: {
+                    show: true,
+                    formatter: null,
+                    color: 'black',
+                    position: 'inside'
+                },
+                itemStyle: {
+                    color: this.colors.men
+                },
+                data: this.hombres
+            }, {
+                name: this.names_legends[1],
+                type: 'bar',
+                stack: true,
+                label: {
+                    show: true,
+                    formatter: null,
+                    color: 'black',
+                    position: 'inside'
+                },
+                itemStyle: {
+                    color: this.colors.women
+                },
+                data: this.mujeres
+            }, {
+                "name": gettext('Target'),
+                "type": "line",
+                "stack": true,
+                symbolSize: 10,
+                position: 'fixed',
+                symbol: 'circle',
+                "itemStyle": {
+                    "normal": {
+                        "color": 'rgba(49,147,218,0.5)',
+                        "barBorderRadius": 0,
+                        "label": {
+                            "show": true,
+                            "position": "top",
+                            fontWeight: '570',
+                            fontSize: '12',
+                            distance: 35,
+                            formatter: function (p) {
+                                return p.value > 0 ? (p.value) : '';
+                            }
+                        }
+                    }
+                },
+                "data": meta
+            }];
+
+            let option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow' //'line' | 'shadow'
+                    }, formatter: function (params) {
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
+                        params.forEach(item => {
+                            if (item.seriesName !== 'total') {
+                                axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
+                            }
+                        });
+                        return axisValue;
+                    },
+                },
+                legend: {
+                    data: [
+                        gettext('Men'),
+                        gettext('Women'),
+                        gettext('Target')],
+                    center: 'right',
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: this.anios
+                },
+                series: series
+            };
+
+            this.responsiveChart('#tabs_target-click', myChart);
+            myChart.setOption(option);
+
+        },
         getGraphicZoom() {
             return [{
                 "show": true,
