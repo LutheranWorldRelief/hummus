@@ -38,7 +38,7 @@ var geographicsMixins = {
 
             info.update = function (props) {
                 let title1 = gettext('Country');
-                let title2 = gettext('Total Participants');
+                let title2 = gettext('Participants');
                 let title3 = gettext('Percentage');
                 let title4 = gettext('Hover over a country');
                 let title5 = gettext('Projects');
