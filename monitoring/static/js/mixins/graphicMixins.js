@@ -884,7 +884,7 @@ var graphicMixins = {
                     let data_chart = {
                         name_project: data_project['categorias'][0],
                         legends: this.names_legends.slice(2, 4),
-                        legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
+                        legends_colors: [this.colors.women, this.colors.men],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
                             data_project['series'][2]['data'][0],// goal women
@@ -972,10 +972,7 @@ var graphicMixins = {
                             barWidth: 30,
                             itemStyle: {
                                 normal: {
-                                    color: function (params) {
-                                        var num = data_chart.data_colors.length;
-                                        return data_chart.data_colors[params.dataIndex % num]
-                                    },
+                                    color: data_chart.legends_colors[0]
                                 }
                             },
                             z: 2
@@ -988,10 +985,7 @@ var graphicMixins = {
                             barWidth: 60,
                             itemStyle: {
                                 normal: {
-                                    color: function (params) {
-                                        var num = data_chart.goals_color.length;
-                                        return data_chart.goals_color[params.dataIndex % num]
-                                    },
+                                    color: data_chart.legends_colors[1]
                                 }
                             },
                             z: 1
