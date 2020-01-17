@@ -889,17 +889,9 @@ var graphicMixins = {
                             data_project['series'][0]['data'][0],// goal men
                             data_project['series'][2]['data'][0],// goal women
                         ],
-                        goals_color: [
-                            data_project['series'][0]['color'],
-                            data_project['series'][2]['color'],
-                        ],
                         scope_data: [
                             data_project['data'][1].m,// scope men
                             data_project['data'][1].f,// scope women
-                        ],
-                        data_colors: [
-                            data_project['series'][1]['color'],
-                            data_project['series'][3]['color'],
                         ],
                         font_size: 16,
                     };
@@ -964,7 +956,7 @@ var graphicMixins = {
                                     show: true,
                                     position: 'right',
                                     textStyle: {
-                                        color: '#fff',
+                                        color: '#000',
                                         fontSize: data_project.font_size,
                                     }
                                 }
