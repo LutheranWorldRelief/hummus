@@ -182,21 +182,6 @@ var graphicMixins = {
         graficoMetas() {
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
-            // TODO Inicio Asignar meta
-            var meta = [];
-            this.totalByBar.forEach(function (numero, index) {
-                if (Math.floor(Math.random() * 10) % 2 === 0)
-                    meta.push(numero + (index * 100));
-                else if (numero < 200)
-                    meta.push(numero + (300));
-                else
-                    meta.push(numero - (1000));
-            });
-            this.metaPoranio = meta;
-            /**
-             *
-             * Fin
-             */
             var label = {
                 normal: {
                     show: true,
@@ -289,7 +274,7 @@ var graphicMixins = {
                         },
                         margin: 20,
                     },
-                    data: this.metaPoranio
+                    data: this.targets_year
                 }, {
                     type: 'category',
                     axisLine: {
@@ -353,7 +338,7 @@ var graphicMixins = {
                     name: this.names_legends[3],
                     type: 'bar',
                     xAxisIndex: 2,
-                    data: this.metaPoranio,
+                    data: this.targets_year,
                     barWidth: '67%',
                     itemStyle: {
                         normal: {
@@ -369,26 +354,6 @@ var graphicMixins = {
         },
         graphFixedColumnGender() {
             let myChart = echarts.init(document.getElementById('FixedColumns'));
-            let totalHombres = [], totalMujeres = [];
-
-            // Random Asignar met
-            this.mujeres.forEach(function (numero, index) {
-                if (Math.floor(Math.random() * 10) % 2 === 0)
-                    totalMujeres.push(numero + (index * 100));
-                else if (numero < 200)
-                    totalMujeres.push(numero + (300));
-                else
-                    totalMujeres.push(numero - (300));
-            });
-
-            this.hombres.forEach(function (numero, index) {
-                if (Math.floor(Math.random() * 10) % 2 === 0)
-                    totalHombres.push(numero + (index * 100));
-                else if (numero < 200)
-                    totalHombres.push(numero + (300));
-                else
-                    totalHombres.push(numero - (300));
-            });
 
             let label = {
                 normal: {
@@ -473,7 +438,7 @@ var graphicMixins = {
                             color: this.colors.target_women
                         }
                     },
-                    data: totalMujeres
+                    data: this.targets_women
                 }, {
                     name: legends[2],
                     type: 'bar',
@@ -496,7 +461,7 @@ var graphicMixins = {
                             color: this.colors.target_men
                         }
                     },
-                    data: totalHombres
+                    data: this.targets_men
                 }]
             };
 
@@ -991,13 +956,6 @@ var graphicMixins = {
         graphicStackedLine() {
             const myChart = echarts.init(document.getElementById('StackedLine'));
 
-            let meta = [];
-
-            this.hombres.forEach((meta_hombre, index) => {
-                let year_target = (meta_hombre + this.mujeres[index]) * Math.random();
-                meta.push(year_target.toFixed(0))
-            });
-
             const series = [{
                 name: this.names_legends[0],
                 type: 'bar',
@@ -1049,7 +1007,7 @@ var graphicMixins = {
                         }
                     }
                 },
-                "data": meta
+                "data": this.targets_year
             }];
 
             let option = {
@@ -1152,7 +1110,6 @@ var graphicMixins = {
             this.tatal = {};
             this.totalByBar = [];
             this.efauldSerie = [];
-            this.metaPoranio = [];
             /** Var gráfico participantes quarter */
             this.aniosQ = [];
             this.hombresQ = [];

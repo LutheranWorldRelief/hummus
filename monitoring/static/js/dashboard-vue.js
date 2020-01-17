@@ -36,7 +36,8 @@ var app = new Vue({
             width: '0px'
         },
         /** Var gráfico participantes por año fiscal*/
-        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], metaPoranio: [],
+        anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], targets_year: [],
+        targets_women: [], targets_men: [],
         /** Var gráfico participantes quarter */
         aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
         show: true,
@@ -164,8 +165,15 @@ var app = new Vue({
 
             $.get(UrlsAcciones.UrlTarget, this.requestParameters)
                 .then(response => {
-                    let target = response.targets;
-                    this.goal_participants = this.setZero(target.F) + this.setZero(target.M);
+                    let targets = response.totals;
+                    let target_years = response.year;
+                    this.goal_participants = targets.T;
+                    this.targets_year = [];
+                    for (const year in target_years) {
+                        this.targets_men.push(this.setZero(target_years[year].M));
+                        this.targets_women.push(this.setZero(target_years[year].F));
+                        this.targets_year.push(this.setZero(target_years[year].T));
+                    }
                 });
 
             $.get(UrlsAcciones.UrlDatosGraficosParticipantes, this.requestParameters)
@@ -225,11 +233,9 @@ var app = new Vue({
                         this.graphicParticipants('GraphicQuarter');
                         this.graficoMetas();
                         this.graphFixedColumnGender();
+                        // function to graph a stacked chart with line
+                        this.graphicStackedLine();
                     });
-
-                    // function to graph a stacked chart with line
-                    this.graphicStackedLine(response);
-
                 });
             // funcion to graph the participants by age
             this.graficoParticipantesEdad();
