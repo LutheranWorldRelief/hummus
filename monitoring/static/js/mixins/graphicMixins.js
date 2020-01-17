@@ -884,22 +884,14 @@ var graphicMixins = {
                     let data_chart = {
                         name_project: data_project['categorias'][0],
                         legends: this.names_legends.slice(2, 4),
-                        legends_colors: [array_colors_lwr[0], array_colors_lwr[1]],
+                        legends_colors: [this.colors.women, this.colors.men],
                         goals_data: [
                             data_project['series'][0]['data'][0],// goal men
                             data_project['series'][2]['data'][0],// goal women
                         ],
-                        goals_color: [
-                            data_project['series'][0]['color'],
-                            data_project['series'][2]['color'],
-                        ],
                         scope_data: [
                             data_project['data'][1].m,// scope men
                             data_project['data'][1].f,// scope women
-                        ],
-                        data_colors: [
-                            data_project['series'][1]['color'],
-                            data_project['series'][3]['color'],
                         ],
                         font_size: 16,
                     };
@@ -964,7 +956,7 @@ var graphicMixins = {
                                     show: true,
                                     position: 'right',
                                     textStyle: {
-                                        color: '#fff',
+                                        color: '#000',
                                         fontSize: data_project.font_size,
                                     }
                                 }
@@ -972,10 +964,7 @@ var graphicMixins = {
                             barWidth: 30,
                             itemStyle: {
                                 normal: {
-                                    color: function (params) {
-                                        var num = data_chart.data_colors.length;
-                                        return data_chart.data_colors[params.dataIndex % num]
-                                    },
+                                    color: data_chart.legends_colors[0]
                                 }
                             },
                             z: 2
@@ -988,10 +977,7 @@ var graphicMixins = {
                             barWidth: 60,
                             itemStyle: {
                                 normal: {
-                                    color: function (params) {
-                                        var num = data_chart.goals_color.length;
-                                        return data_chart.goals_color[params.dataIndex % num]
-                                    },
+                                    color: data_chart.legends_colors[1]
                                 }
                             },
                             z: 1
