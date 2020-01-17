@@ -90,7 +90,7 @@ var geographicsMixins = {
                                 let country = countries.features.find(country => country.id === participant.alfa3);
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
-                                country.properties.total = participant.total;
+                                country.properties.total = this.formatNumber(participant.total);
                                 country.properties.percentage = `${participant.percentage.toFixed(2)} %`;
                                 country.properties.projects = data.projects;
                                 country.properties.subprojects = data.subprojects;
