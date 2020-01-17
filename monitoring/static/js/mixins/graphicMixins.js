@@ -26,7 +26,7 @@ var graphicMixins = {
 
                 let series = [
                     {
-                        name: 'Men',
+                        name: this.names_legends[0],
                         type: 'bar',
                         stack: true,
                         label: {
@@ -38,7 +38,7 @@ var graphicMixins = {
                         data: type === 'GraphicQuarter' ? this.hombresQ : this.hombres
                     },
                     {
-                        name: 'Women',
+                        name: this.names_legends[1],
                         type: 'bar',
                         stack: true,
                         label: {
@@ -1092,7 +1092,6 @@ var graphicMixins = {
 
             this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
-
         },
         getGraphicZoom() {
             return [{
