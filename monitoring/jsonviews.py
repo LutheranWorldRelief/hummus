@@ -402,7 +402,7 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             years_filter = Q()
             for year in years:
                 # FIXME: determianr como se cuentan los target por año
-                years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
+                years_filter |= Q(start__fyear__lte=year, end__fyear__gte=year)
             queryset = queryset.filter(years_filter)
         else:
             years = list(Project.objects.order_by('start__fyear').
@@ -430,7 +430,7 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         years_data = {}
         for year in years:
             # FIXME: determianr como se cuentan los target por año
-            year_filter = Q(start__fyear=year, end__fyear__gte=year)
+            year_filter = Q(start__fyear__lte=year, end__fyear__gte=year)
             year_queryset = queryset.filter(year_filter)
             year_total = dict(year_queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
                                                       F=Coalesce(Sum('targetwomen'), 0)))
