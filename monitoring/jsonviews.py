@@ -744,7 +744,7 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
             for year in years:
-                years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
+                years_filter |= Q(start__fyear__lte=year, end__fyear__gte=year)
             queryset = queryset.filter(years_filter)
 
         if self.request.GET.get('country_id[]'):
@@ -783,7 +783,7 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
         if self.request.GET.get('year[]'):
             years = self.request.GET.getlist('year[]')
             for year in years:
-                years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
+                years_filter |= Q(start__fyear__lte=year, end__fyear__gte=year)
             queryset = queryset.filter(years_filter)
 
         if self.request.GET.get('country_id[]'):
