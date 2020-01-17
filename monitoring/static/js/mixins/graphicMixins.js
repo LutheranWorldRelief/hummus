@@ -1090,7 +1090,7 @@ var graphicMixins = {
                 series: series
             };
 
-            this.responsiveChart('#tabs_target-click', myChart);
+            this.responsiveChart('#tab_quarter-click', myChart);
             myChart.setOption(option);
 
         },
