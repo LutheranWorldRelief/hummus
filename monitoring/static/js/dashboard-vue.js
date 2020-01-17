@@ -67,6 +67,7 @@ var app = new Vue({
                 $.get(new_url)
                     .then(response => {
                         let data = response.object_list;
+                        this.list_subprojects = [];
                         for (const subproject of data) {
                             this.list_subprojects.push({
                                 name: subproject['name'],
