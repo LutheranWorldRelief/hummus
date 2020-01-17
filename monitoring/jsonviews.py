@@ -3,7 +3,7 @@ Django views returning json
 """
 
 from django.db.models import Sum, Count, Q, F, FloatField
-from django.db.models.functions import Upper, Trim, Cast
+from django.db.models.functions import Upper, Trim, Cast, Coalesce
 from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
@@ -404,6 +404,10 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
                 # FIXME: determianr como se cuentan los target por año
                 years_filter |= Q(start__fyear__gte=year, end__fyear__lte=year)
             queryset = queryset.filter(years_filter)
+        else:
+            years = list(Project.objects.order_by('start__fyear').
+                         exclude(projectcontact__isnull=True).
+                         values_list('start__fyear', flat=True).distinct())
 
         if self.request.GET.get('lwrregion_id[]'):
             regions = self.request.GET.getlist('lwrregion_id[]')
@@ -418,7 +422,23 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        context['targets'] = queryset.aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+        totals = queryset.aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+        totals['T'] = sum(totals.values())
+        context['totals'] = totals
+
+        # get totals by year
+        years_data = {}
+        for year in years:
+            # FIXME: determianr como se cuentan los target por año
+            year_filter = Q(start__fyear=year, end__fyear__gte=year)
+            year_queryset = queryset.filter(year_filter)
+            year_total = dict(year_queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
+                                                      F=Coalesce(Sum('targetwomen'), 0)))
+
+            year_total['T'] = sum(year_total.values())
+            years_data[year] = year_total
+        context['year'] = years_data
+
         return context
 
 
