@@ -4,11 +4,14 @@
     <h1 class="title"> {% trans 'Project Actual vs Target' %} </h1>
     <p class="title-description"> {% trans 'Total of actual participants and targets, by sex' %} </p>
 </div>
-<div class="row sameheight-container">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col">
+<div class="row">
+    <div v-if="show_projectgraph" class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
+        {% include 'modular_template/summary.html' %}
+    </div>
+    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
         <div class="card sameheight-item items" data-exclude="xs,sm,lg">
             <div class="card-body">
-                <div id="ProjectGoalsGraph" style="height: 600px;width: 100%"></div>
+                <div id="ProjectGoalsGraph" style="height: 440px;width: 100%"></div>
             </div>
         </div>
     </div>
