@@ -15,6 +15,17 @@ var graphicMixins = {
                 gettext('Actual'),
                 gettext('Target'),
             ],
+            label_participants: gettext('Participants'),
+            label_project_subproject: {
+                normal: {
+                    show: true,
+                    position: 'right',
+                    textStyle: {
+                        color: '#000',
+                        fontSize: 16,
+                    }
+                }
+            },
             icon_graph: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
             radioSexPie: '70%',
         }
@@ -792,49 +803,48 @@ var graphicMixins = {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                series: [
-                    {
-                        name: '',
-                        type: 'pie',
-                        radius: this.radioSexPie,
-                        center: ['50%', '50%'],
-                        data: [{
-                            name: totalMen.name,
-                            value: totalMen.value,
-                            itemStyle: {
-                                color: this.colors.men
-                            }, label: {
-                                normal: {
-                                    formatter: '{a} {b} : {c} ({d}%)',
-                                    position: 'inside'
-                                }
-                            }
-                        }, {
-                            name: totalWomen.name,
-                            value: totalWomen.value,
-                            itemStyle: {
-                                color: this.colors.women
-                            }, label: {
-                                normal: {
-                                    formatter: '{a} {b} : {c} ({d}%)',
-                                    position: 'inside'
-                                }
-                            }
-                        }],
-                        label: {
-                            show: true,
-                            formatter: function (params) {
-                                return params.name + ': ' + params.percent + ' %, ' + params.value;
-                            }
-                        },
+                series: [{
+                    name: '',
+                    type: 'pie',
+                    radius: this.radioSexPie,
+                    center: ['50%', '50%'],
+                    data: [{
+                        name: totalMen.name,
+                        value: totalMen.value,
                         itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            color: this.colors.men
+                        }, label: {
+                            normal: {
+                                formatter: '{a} {b} : {c} ({d}%)',
+                                position: 'inside'
                             }
                         }
+                    }, {
+                        name: totalWomen.name,
+                        value: totalWomen.value,
+                        itemStyle: {
+                            color: this.colors.women
+                        }, label: {
+                            normal: {
+                                formatter: '{a} {b} : {c} ({d}%)',
+                                position: 'inside'
+                            }
+                        }
+                    }],
+                    label: {
+                        show: true,
+                        formatter: function (params) {
+                            return params.name + ': ' + params.percent + ' %, ' + params.value;
+                        }
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     }
+                }
                 ]
             };
 
@@ -850,7 +860,7 @@ var graphicMixins = {
                         name_project: data_project['categorias'][0],
                         legends: this.names_legends.slice(2, 4),
                         legends_colors: [this.colors.women, this.colors.men],
-                        goals_data: [
+                        target_data: [
                             data_project['series'][0]['data'][0],// goal men
                             data_project['series'][2]['data'][0],// goal women
                         ],
@@ -880,7 +890,7 @@ var graphicMixins = {
                         xAxis: [{
                             show: true,
                             position: 'bottom',
-                            name: gettext('Participants'),
+                            name: this.label_participants,
                             nameLocation: 'middle',
                             nameGap: 30,
                         }],
@@ -916,16 +926,7 @@ var graphicMixins = {
                             name: data_chart.legends[0],
                             type: 'bar',
                             data: data_chart.scope_data,
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'right',
-                                    textStyle: {
-                                        color: '#000',
-                                        fontSize: data_project.font_size,
-                                    }
-                                }
-                            },
+                            label: this.label_project_subproject,
                             barWidth: 30,
                             itemStyle: {
                                 normal: {
@@ -938,7 +939,7 @@ var graphicMixins = {
                             type: 'bar',
                             yAxisIndex: 1,
                             barGap: '-100%',
-                            data: data_chart.goals_data,
+                            data: data_chart.target_data,
                             barWidth: 60,
                             itemStyle: {
                                 normal: {
@@ -982,7 +983,7 @@ var graphicMixins = {
                 xAxis: [{
                     show: true,
                     position: 'bottom',
-                    name: gettext('Participants'),
+                    name: this.label_participants,
                     nameLocation: 'middle',
                     nameGap: 30,
                 }],
@@ -1018,16 +1019,7 @@ var graphicMixins = {
                     name: data_chart.legends[0],
                     type: 'bar',
                     data: data_chart.actual_data,
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'right',
-                            textStyle: {
-                                color: '#000',
-                                fontSize: data_chart.font_size,
-                            }
-                        }
-                    },
+                    label: this.label_project_subproject,
                     barWidth: 30,
                     itemStyle: {
                         normal: {
