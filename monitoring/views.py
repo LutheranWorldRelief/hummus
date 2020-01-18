@@ -537,7 +537,10 @@ class DashboardView(DomainRequiredMixin, TemplateView):
             values_list('start__fyear', flat=True).distinct()
         context['months'] = MONTHS
         context['years'] = list(years)
-        context['project_id'] = self.request.GET.get('project_id', -1)
+        if self.request.GET.get('project_id'):
+            project_id = self.request.GET.get('project_id')
+            context['project'] = Project.objects.filter(id=project_id).values('id', 'name').first()
+
         return context
 
 

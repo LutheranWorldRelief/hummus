@@ -6,7 +6,7 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: id,
+            project_id: project_data,
             subproject_id: null,
             country_id: [],
             lwrregion_id: null,
