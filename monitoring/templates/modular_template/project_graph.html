@@ -9,9 +9,38 @@
         {% include 'modular_template/summary.html' %}
     </div>
     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-        <div class="card sameheight-item items" data-exclude="xs,sm,lg">
-            <div class="card-body">
-                <div id="ProjectGoalsGraph" style="height: 440px;width: 100%"></div>
+        <div class="card">
+            <div v-if="formInputs.subproject_id !== null" class="card-header card-header-sm bordered">
+                <ul role="tablist" class="nav nav-tabs pull-right" id="tabs_projects-click">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#GraphProjectTab" role="tab"
+                           data-toggle="tab">{% trans 'Project' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#GraphSubprojectTab" role="tab"
+                           data-toggle="tab">{% trans 'Subproject' %}</a>
+                    </li>
+                </ul>
+            </div>
+            <div :class="{'card-body': (formInputs.subproject_id === null), 'card-block': (formInputs.subproject_id !== null) }">
+                <div :class="{'tab-content': (formInputs.subproject_id !== null) }">
+                    <div role="tabpanel" :class="class_tabs_container"
+                         id="GraphProjectTab">
+                        <div :class="{'row' : (formInputs.subproject_id !== null) }">
+                            <div :class="{'col-12' : (formInputs.subproject_id !== null) }">
+                                <div id="ProjectGoalsGraph" style="height: 440px;width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="formInputs.subproject_id !== null" role="tabpanel"
+                         class="container-fluid tab-pane fade show" id="GraphSubprojectTab">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div id="SubprojectGoalsGraph" style="height:500px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -35,6 +35,13 @@ var app = new Vue({
         width_progress_bar: {
             width: '0px'
         },
+        class_tabs_container: {
+            'container-fluid': false,
+            'tab-pane': false,
+            'active': false,
+            'fade': false,
+            'show': false
+        },
         /** Var gráfico participantes por año fiscal*/
         anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], targets_year: [],
         targets_women: [], targets_men: [],
@@ -82,11 +89,16 @@ var app = new Vue({
 
             this.loadDataWithFilters();
 
-            setTimeout(function(){
+            setTimeout(function () {
                 $('#tab_quarter-click').children('li').eq(0).find('a').trigger('click');
             }, 1000);
         },
-        'formInputs.subproject_id': function () {
+        'formInputs.subproject_id': function (value) {
+
+            for (const key in this.class_tabs_container) {
+                this.class_tabs_container[key] = (value !== null);
+            }
+
             this.loadDataWithFilters();
         },
         'formInputs.country_id': function () {
