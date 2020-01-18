@@ -145,18 +145,34 @@ var app = new Vue({
                     this.radioSexPie = '60%'
                 }
             });
+            $('#r').val('23');
+
+            var data = {
+  "id": 23,
+  "value": "23",
+  "name": "Tyto",
+  "species": "alba"
+};
+
+$('#r').trigger({
+    type: 'select2:select',
+    params: {
+        data: data
+    }
+});
         });
         this.loadCountriesMaps();
-
+        console.log(this.formInputs.project_id, 'obteniendo data');
         this.filterByParametersInUrl()
     },
     methods: {
+
         filterByParametersInUrl() {
 
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-           /* for (const idInput in this.formInputs) {
+            for (const idInput in this.formInputs) {
 
                 if (urlParams.has(idInput) && !this.empty(urlParams.has(idInput))) {
 
@@ -168,10 +184,14 @@ var app = new Vue({
                     if (isArray)
                         this.formInputs[idInput] = JSON.parse(urlParams.getAll(idInput));
                     else
-                        this.formInputs[idInput] = urlParams.get(idInput);
+                    {
+                        console.log(this.list_projects,'listproject');
+                        this.formInputs[idInput] = { value: urlParams.get(idInput), name: 'jjfjsfsj' };
+
+                    }
 
                 }
-            }*/
+            }
 
             //console.log(this.formInputs);
           /*  entries = urlParams.entries();
