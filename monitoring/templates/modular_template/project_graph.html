@@ -10,7 +10,7 @@
     </div>
     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
         <div class="card">
-            <div v-if="formInputs.subproject_id !== null" class="card-header card-header-sm bordered">
+            <div :class="{'d-none': (formInputs.subproject_id === null)}" class="card-header card-header-sm bordered">
                 <ul role="tablist" class="nav nav-tabs pull-right" id="tabs_projects-click">
                     <li class="nav-item">
                         <a class="nav-link active" href="#GraphProjectTab" role="tab"
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="formInputs.subproject_id !== null" role="tabpanel"
+                    <div role="tabpanel" :class="{'d-none': (formInputs.subproject_id === null)}"
                          class="container-fluid tab-pane fade show" id="GraphSubprojectTab">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
