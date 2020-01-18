@@ -6,7 +6,7 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: null,
+            project_id: id,
             subproject_id: null,
             country_id: [],
             lwrregion_id: null,
@@ -82,7 +82,7 @@ var app = new Vue({
 
             this.loadDataWithFilters();
 
-            setTimeout(function(){
+            setTimeout(function () {
                 $('#tab_quarter-click').children('li').eq(0).find('a').trigger('click');
             }, 1000);
         },
@@ -106,6 +106,7 @@ var app = new Vue({
         }
     },
     created() {
+
         // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
         this.list_years = years;
 
@@ -146,8 +147,40 @@ var app = new Vue({
             });
         });
         this.loadCountriesMaps();
+
+        this.filterByParametersInUrl()
     },
     methods: {
+        filterByParametersInUrl() {
+
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+
+           /* for (const idInput in this.formInputs) {
+
+                if (urlParams.has(idInput) && !this.empty(urlParams.has(idInput))) {
+
+                    let isArray = false;
+                    if (this.formInputs[idInput] !== null)
+                        if (this.formInputs[idInput].constructor === Array)
+                            isArray = true;
+
+                    if (isArray)
+                        this.formInputs[idInput] = JSON.parse(urlParams.getAll(idInput));
+                    else
+                        this.formInputs[idInput] = urlParams.get(idInput);
+
+                }
+            }*/
+
+            //console.log(this.formInputs);
+          /*  entries = urlParams.entries();
+            for (const entry of entries) {
+                console.log(`${entry[0]}: ${entry[1]}`);
+            }*/
+
+
+        },
         loadDataWithFilters() {
             this.getValueOfFilter()
                 .then(() => {

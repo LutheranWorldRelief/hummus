@@ -246,6 +246,8 @@
             UrlCountriesPolygons: "{% static 'js/countries.json' %}",
         };
         let years = {{ years|safe }};
+        let id = {{ project_id }};
+        console.log(id,'ddddddddd');
     </script>
     <script src="{% static 'leaflet/dist/leaflet.js' %}"></script>
     <script src="{% static 'vue/dist/vue.min.js' %}"></script>
