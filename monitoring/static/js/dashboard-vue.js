@@ -77,7 +77,14 @@ var app = new Vue({
                         }
                     });
             }
+
+            $('#tab_quarter-click').children('li').eq(3).find('a').trigger('click');
+
             this.loadDataWithFilters();
+
+            setTimeout(function(){
+                $('#tab_quarter-click').children('li').eq(0).find('a').trigger('click');
+            }, 1000);
         },
         'formInputs.subproject_id': function () {
             this.loadDataWithFilters();
