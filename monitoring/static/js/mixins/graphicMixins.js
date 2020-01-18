@@ -1125,7 +1125,6 @@ var graphicMixins = {
                 });
             }
 
-
             window.addEventListener('resize', function (event) {
                 let width = document.documentElement.clientWidth;
                 if (width >= 1700) {

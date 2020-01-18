@@ -42,6 +42,10 @@ var app = new Vue({
             'fade': false,
             'show': false
         },
+        data_subproject_graph: {
+            target_data: [],
+            actual_data: []
+        },
         /** Var gráfico participantes por año fiscal*/
         anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], targets_year: [],
         targets_women: [], targets_men: [],
@@ -186,7 +190,15 @@ var app = new Vue({
                 .then(response => {
                     let targets = response.totals;
                     let target_years = response.year;
-                    this.goal_participants = targets.T;
+                    //set the global target Total
+                    this.goal_participants = this.setZero(targets.T);
+                    //set the global target by gender in array
+                    this.data_subproject_graph.target_data = [];
+                    this.data_subproject_graph.target_data.push(
+                        this.setZero(targets.F),
+                        this.setZero(targets.M)
+                    );
+                    //set the targets(Total,Male & Female) by year
                     this.targets_year = [];
                     for (const year in target_years) {
                         this.targets_men.push(this.setZero(target_years[year].M));
@@ -215,8 +227,16 @@ var app = new Vue({
                         this.defauldSerie.push(0);
                     }
 
+
                     //NOTE: calculating the number of participants
                     this.quantity_participants = this.setZero(this.tatals.T);
+                    //set the quantity of participats by gender in array
+                    this.data_subproject_graph.actual_data = [];
+                    this.data_subproject_graph.actual_data.push(
+                        this.setZero(this.tatals.F),
+                        this.setZero(this.tatals.M)
+                    );
+
                     // calculating the percentage for the progress bar
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
                     this.width_progress_bar.width = this.goal_percentage + '%';
