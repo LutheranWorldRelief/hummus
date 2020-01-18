@@ -104,6 +104,10 @@ var app = new Vue({
             }
 
             this.loadDataWithFilters();
+
+            if (value) {
+                this.graphicGoalSubproject(value.name);
+            }
         },
         'formInputs.country_id': function () {
             this.loadDataWithFilters();

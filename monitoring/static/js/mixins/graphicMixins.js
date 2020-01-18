@@ -376,7 +376,7 @@ var graphicMixins = {
             let legends = [gettext('Woman'), gettext('Target Women'), gettext('Men'), gettext('Target Men')];
 
             let option = {
-                toolbox:this.setToolBox('Actual vs Target, by Sex(Fixed placement columns)'),
+                toolbox: this.setToolBox('Actual vs Target, by Sex(Fixed placement columns)'),
                 tooltip: {
                     show: "true",
                     trigger: 'axis',
@@ -893,7 +893,7 @@ var graphicMixins = {
                             axisLabel: {
                                 textStyle: {
                                     color: '#000',
-                                    fontSize: data_project.font_size,
+                                    fontSize: data_chart.font_size,
                                 },
                             },
                             data: ['', '']
@@ -950,8 +950,112 @@ var graphicMixins = {
                     };
 
                     chart_goal_project.setOption(option);
-                    this.responsiveChart('', chart_goal_project);
+                    this.responsiveChart('#tabs_projects-click', chart_goal_project);
                 });
+        },
+        graphicGoalSubproject(name_subproject) {
+            let chart_subproject = echarts.init(document.getElementById('SubprojectGoalsGraph'));
+            let data_chart = {
+                name_project: name_subproject,
+                legends: this.names_legends.slice(2, 4),
+                legends_colors: [this.colors.women, this.colors.men],
+                target_data: this.data_subproject_graph.target_data,
+                actual_data: this.data_subproject_graph.actual_data,
+                font_size: 16,
+            };
+
+            let option = {
+                toolbox: this.setToolBox(name_subproject),
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: data_chart.legends,
+                    top: '40',
+                    icon: 'roundRect',
+                    center: 'right',
+                    color: data_chart.legends_colors,
+                },
+                xAxis: [{
+                    show: true,
+                    position: 'bottom',
+                    name: gettext('Participants'),
+                    nameLocation: 'middle',
+                    nameGap: 30,
+                }],
+                yAxis: [{
+                    show: true,
+                    position: 'botton',
+                    name: data_chart.name_project,
+                    nameLocation: 'middle',
+                    axisTick: 'none',
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000',
+                            fontSize: data_chart.font_size,
+                        },
+                    },
+                    data: ['', '']
+                }, {
+                    show: false,
+                    axisTick: 'none',
+                    axisLine: 'none',
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000',
+                            fontSize: data_chart.font_size,
+                        },
+                        margin: 30
+                    },
+                    data: this.names_legends.slice(0, 2)
+                }, {
+                    data: []
+                }],
+                series: [{
+                    name: data_chart.legends[0],
+                    type: 'bar',
+                    data: data_chart.actual_data,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right',
+                            textStyle: {
+                                color: '#000',
+                                fontSize: data_chart.font_size,
+                            }
+                        }
+                    },
+                    barWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color: data_chart.legends_colors[0]
+                        }
+                    },
+                    z: 2
+                }, {
+                    name: data_chart.legends[1],
+                    type: 'bar',
+                    yAxisIndex: 1,
+                    barGap: '-100%',
+                    data: data_chart.target_data,
+                    barWidth: 60,
+                    itemStyle: {
+                        normal: {
+                            color: data_chart.legends_colors[1]
+                        }
+                    },
+                    z: 1
+                }]
+            };
+
+            chart_subproject.setOption(option);
+            this.responsiveChart('#tabs_projects-click', chart_subproject);
+            setTimeout(function () {
+                $('#tabs_projects-click').children('li').eq(1).find('a').trigger('click');
+            }, 500);
         },
         graphicStackedLine() {
             const myChart = echarts.init(document.getElementById('StackedLine'));
