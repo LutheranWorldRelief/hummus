@@ -422,7 +422,8 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        totals = queryset.aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+        totals = queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
+                                    F=Coalesce(Sum('targetwomen'), 0))
         totals['T'] = sum(totals.values())
         context['totals'] = totals
 
@@ -649,10 +650,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = ProjectContact.objects.all()
-        ''  # queryset for count participants by gender
-        queryset2 = queryset.order_by()
-        ''  # queryset to get the Target by gender
-        queryset3 = Project.objects.all().order_by()
+        project_queryset = Project.objects.all().order_by()
         filter_kwargs = {}
 
         regions = self.request.GET.getlist('lwrregion_id[]')
@@ -686,13 +684,13 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         participants = []
         for row in countries:
             ''  # get the target by gender in a country
-            targets = queryset3. \
+            targets = project_queryset. \
                 filter(subproject__country__id=row['country_id']). \
                 aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
             participants_target = targets['F'] + targets['M']
 
             ''  # get totals participants by gender in a country
-            totals = dict(queryset2.
+            totals = dict(queryset.order_by().
                           filter(subproject__country__id=row['country_id']).
                           values_list('contact__sex_id').
                           annotate(total=Count('contact', distinct=True))
