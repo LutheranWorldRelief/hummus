@@ -6,11 +6,11 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: id,
+            project_id: project_data,
             subproject_id: null,
-            country_id: [],
+            country_id: [],//countries_data,
             lwrregion_id: null,
-            year: [],
+            year: years_filter_data,
             quarter: null,
             from_date: '',
             to_date: '',
@@ -113,6 +113,7 @@ var app = new Vue({
         $.get(UrlsAcciones.UrlProjects)
             .then(projects => {
                 this.list_projects = [];
+
                 for (const id in projects) {
                     this.list_projects.push({
                         name: projects[id],
@@ -145,24 +146,9 @@ var app = new Vue({
                     this.radioSexPie = '60%'
                 }
             });
-            $('#r').val('23');
-
-            var data = {
-  "id": 23,
-  "value": "23",
-  "name": "Tyto",
-  "species": "alba"
-};
-
-$('#r').trigger({
-    type: 'select2:select',
-    params: {
-        data: data
-    }
-});
         });
+
         this.loadCountriesMaps();
-        console.log(this.formInputs.project_id, 'obteniendo data');
         this.filterByParametersInUrl()
     },
     methods: {
@@ -182,14 +168,25 @@ $('#r').trigger({
                             isArray = true;
 
                     if (isArray)
-                        this.formInputs[idInput] = JSON.parse(urlParams.getAll(idInput));
+                    {
+                        if(idInput==='country_id') {
+                            let countryArray = urlParams.get(idInput).replace(/['[\]/]/gi, '');
+
+                            countryArray.split(',').forEach((key) => {
+                                this.formInputs.country_id.push(key);
+                            });
+                        }
+                        else
+                             this.formInputs[idInput] = JSON.parse(urlParams.get(idInput));
+                    }
                     else
                     {
-                        console.log(this.list_projects,'listproject');
-                        this.formInputs[idInput] = { value: urlParams.get(idInput), name: 'jjfjsfsj' };
+                        if(idInput==='project_id')
+                             this.formInputs[idInput] =  project_data;
+                        else
+                             this.formInputs[idInput] =  urlParams.get(idInput);
 
                     }
-
                 }
             }
 
@@ -327,10 +324,17 @@ $('#r').trigger({
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
                     for (const key in countries) {
+                        let estado = countries[key].active;
+
+                        if(countries_data.length>0)
+                        {
+                           estado =  countries_data.includes(countries[key].id);
+                        }
+
                         this.list_countries.push({
                             name: countries[key].name,
                             value: countries[key].id,
-                            active: countries[key].active,
+                            active: estado,
                             region: countries[key].region,
                             projects: countries[key].projects,
                             subprojects: countries[key].subprojects,

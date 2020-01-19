@@ -422,7 +422,8 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
             queryset = queryset.for_user(self.request.user)
 
-        totals = queryset.aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+        totals = queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
+                                    F=Coalesce(Sum('targetwomen'), 0))
         totals['T'] = sum(totals.values())
         context['totals'] = totals
 

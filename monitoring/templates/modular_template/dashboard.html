@@ -216,8 +216,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+            {{ project.name }}
         </section>
         {% verbatim %}
         <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
@@ -246,7 +246,25 @@
             UrlCountriesPolygons: "{% static 'js/countries.json' %}",
         };
         let years = {{ years|safe }};
-        let id = {{ project_id }};
+        var project_data = null;
+        var years_filter_data = [];
+        var countries_data = [];
+
+        {% if project %}
+            project_data = {};
+            project_data['name'] = "{{ project.name }}";
+            project_data['value'] =  {{ project.id }};
+        {% endif %}
+
+        {% if years_filter %}
+                years_filter_data = {{ years_filter|safe }};
+        {% endif %}
+
+
+        {% if countries %}
+            countries_data = {{ countries|safe }};
+        {% endif %}
+
 
     </script>
     <script src="{% static 'leaflet/dist/leaflet.js' %}"></script>
