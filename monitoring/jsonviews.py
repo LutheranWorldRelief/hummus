@@ -16,6 +16,13 @@ from .models import Contact, ProjectContact, SubProject, Project, LWRRegion
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 
+def mydashboard(request, queryset):
+    if request.GET.get('mydashboard') and request.user and \
+        hasattr(queryset.model.objects, 'for_user'):
+        queryset = queryset.for_user(request.user)
+    return queryset
+
+
 class ContactEmpty(JSONResponseMixin, TemplateView):
     def render_to_response(self, context, **response_kwargs):
         return self.render_to_json_response(context, **response_kwargs)
@@ -419,8 +426,8 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         if self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
             queryset = queryset.filter(id=project)
-        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-        #    queryset = queryset.for_user(self.request.user)
+        else:
+            queryset = mydashboard(self.request, queryset)
 
         totals = queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
                                     F=Coalesce(Sum('targetwomen'), 0))
@@ -488,8 +495,8 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
             queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
-        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-        #    queryset = queryset.for_user(self.request.user)
+        else:
+            queryset = mydashboard(self.request, queryset)
 
         # get unique participants # not used for now
         # queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
@@ -572,8 +579,8 @@ class Countries(JSONResponseMixin, TemplateView):
 
         if project:
             queryset = queryset.filter(project_id=project)
-        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-        #    queryset = queryset.for_user(self.request.user)
+        else:
+            queryset = mydashboard(self.request, queryset)
 
         countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
@@ -670,8 +677,8 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         if project:
             queryset = queryset.filter(project_id=project)
             filter_kwargs['project_id'] = project
-        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-        #    queryset = queryset.for_user(self.request.user)
+        else:
+            queryset = mydashboard(self.request, queryset)
 
         countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
@@ -751,8 +758,8 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(id=self.kwargs['project_id'])
-        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-        #    queryset = queryset.for_user(self.request.user)
+        else:
+            queryset = mydashboard(self.request, queryset)
         return list(queryset.values('id', 'name'))
 
 
@@ -790,8 +797,8 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(project_id=self.kwargs['project_id'])
-        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-        #    queryset = queryset.for_user(self.request.user)
+        else:
+            queryset = mydashboard(self.request, queryset)
         return list(queryset.values())
 
 
