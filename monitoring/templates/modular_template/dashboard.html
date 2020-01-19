@@ -79,6 +79,15 @@
                                     </a>
                                 </small>
                             </div>
+                            <div class="header-block">
+                                <h3 class="title">{% trans 'Show' %}</h3>
+                                <small>
+                                    <a :href="currentUrl">
+                                        <i class="fa fa-link" :class="{'fa-spin': spin_refresh_icon }"></i>
+                                        {% trans 'Link' %}
+                                    </a>
+                                </small>
+                            </div>
                             <div class="pull-right">
                                 <div class="col-12">
                                     <label style="font-size: 80%;font-weight: 400;">
@@ -247,7 +256,7 @@
         };
         let years = {{ years|safe }};
         var project_data = null;
-        var years_filter_data = [];
+        var subproject = null;
         var countries_data = [];
 
         {% if project %}
@@ -256,10 +265,11 @@
             project_data['value'] =  {{ project.id }};
         {% endif %}
 
-        {% if years_filter %}
-                years_filter_data = {{ years_filter|safe }};
+        {% if subproject %}
+            subproject = {};
+            subproject['name'] = "{{ subproject.name }}";
+            subproject['value'] =  {{ subproject.id }};
         {% endif %}
-
 
         {% if countries %}
             countries_data = {{ countries|safe }};

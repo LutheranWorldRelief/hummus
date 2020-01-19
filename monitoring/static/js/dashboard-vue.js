@@ -6,11 +6,11 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: project_data,
+            project_id: null,
             subproject_id: null,
-            country_id: [],//countries_data,
-            lwrregion_id: null,
-            year: years_filter_data,
+            country_id: [],
+            lwrregion_id: [],
+            year: [],
             quarter: null,
             from_date: '',
             to_date: '',
@@ -35,6 +35,9 @@ var app = new Vue({
         width_progress_bar: {
             width: '0px'
         },
+        btnClick: false,
+        filterByUrl: false,
+        currentUrl:null,
         /** Var gráfico participantes por año fiscal*/
         anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], targets_year: [],
         targets_women: [], targets_men: [],
@@ -47,10 +50,15 @@ var app = new Vue({
             this.requestParameters = {
                 extra_counters: 1
             };
-            this.formInputs.to_date = '';
-            this.formInputs.from_date = '';
+
+            if (!this.filterByUrl) {
+                this.formInputs.to_date = '';
+                this.formInputs.from_date = '';
+            }
+
             this.formInputs.quarter = null;
             this.formInputs.year = [];
+            this.filterByUrl = false;
         },
         'formInputs.year': function (value) {
             if (value.length <= 0) {
@@ -59,24 +67,7 @@ var app = new Vue({
             this.loadDataWithFilters();
         },
         'formInputs.project_id': function (object) {
-            this.show_subproject = (!this.empty(object));
-            if (this.show_subproject) {
-                let project_id = object.value;
-                // NOTE: new_url content example = http://localhost/api/subproject/project/1/
-                let new_url = `/api/subprojects/project/${project_id}/`;
-
-                $.get(new_url)
-                    .then(response => {
-                        let data = response.object_list;
-                        this.list_subprojects = [];
-                        for (const subproject of data) {
-                            this.list_subprojects.push({
-                                name: subproject['name'],
-                                value: subproject['id']
-                            })
-                        }
-                    });
-            }
+            this.loadSubprojects(object);
 
             $('#tab_quarter-click').children('li').eq(3).find('a').trigger('click');
 
@@ -158,45 +149,53 @@ var app = new Vue({
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-            for (const idInput in this.formInputs) {
+            entries = urlParams.entries();
+            for (const entry of entries) {
 
-                if (urlParams.has(idInput) && !this.empty(urlParams.has(idInput))) {
+                if (!this.empty(entry[1])) {
+                    if (entry[0] === 'country_id[]') {
+                        let alpha2 = entry[1].replace(/['/]/gi, '');
+                        this.formInputs.country_id.push(alpha2);
+                    } else if (entry[0] === 'year[]')
+                        this.formInputs.year.push(entry[1]);
+                    else if (entry[0] === 'lwrregion_id[]')
+                        this.formInputs.lwrregion_id.push(entry[1]);
+                    else if (entry[0] === 'project_id') {
+                        this.formInputs.project_id = project_data;
+                        this.loadSubprojects(project_data);
+                    } else if (entry[0] === 'subproject_id')
+                        this.formInputs.subproject_id = subproject;
+                    else if (entry[0] === 'from_date' || entry[0] === 'to_date') {
+                        this.filterByUrl = true;
+                        this.check_filter = true;
+                        this.formInputs[entry[0]] = entry[1].replace(/['/]/gi, '');
 
-                    let isArray = false;
-                    if (this.formInputs[idInput] !== null)
-                        if (this.formInputs[idInput].constructor === Array)
-                            isArray = true;
-
-                    if (isArray)
-                    {
-                        if(idInput==='country_id') {
-                            let countryArray = urlParams.get(idInput).replace(/['[\]/]/gi, '');
-
-                            countryArray.split(',').forEach((key) => {
-                                this.formInputs.country_id.push(key);
-                            });
-                        }
-                        else
-                             this.formInputs[idInput] = JSON.parse(urlParams.get(idInput));
-                    }
-                    else
-                    {
-                        if(idInput==='project_id')
-                             this.formInputs[idInput] =  project_data;
-                        else
-                             this.formInputs[idInput] =  urlParams.get(idInput);
-
-                    }
+                    } else if (entry[0] === 'quarter')
+                        this.formInputs[entry[0]] = entry[1];
                 }
             }
 
-            //console.log(this.formInputs);
-          /*  entries = urlParams.entries();
-            for (const entry of entries) {
-                console.log(`${entry[0]}: ${entry[1]}`);
-            }*/
+        },
+        loadSubprojects(object) {
 
+            this.show_subproject = (!this.empty(object));
+            if (this.show_subproject) {
+                let project_id = object.value;
+                // NOTE: new_url content example = http://localhost/api/subproject/project/1/
+                let new_url = `/api/subprojects/project/${project_id}/`;
 
+                $.get(new_url)
+                    .then(response => {
+                        let data = response.object_list;
+                        this.list_subprojects = [];
+                        for (const subproject of data) {
+                            this.list_subprojects.push({
+                                name: subproject['name'],
+                                value: subproject['id']
+                            })
+                        }
+                    });
+            }
         },
         loadDataWithFilters() {
             this.getValueOfFilter()
@@ -219,17 +218,20 @@ var app = new Vue({
                 .then(response => {
                     this.quantity_subprojects = response.quantity_subprojects;
                 });
-
+             var contentVue = this
             $.get(UrlsAcciones.UrlTarget, this.requestParameters)
-                .then(response => {
+                .then( function (response) {
+
+                    contentVue.createUrl(this.url);
+
                     let targets = response.totals;
                     let target_years = response.year;
-                    this.goal_participants = targets.T;
-                    this.targets_year = [];
+                    contentVue.goal_participants = targets.T;
+                    contentVue.targets_year = [];
                     for (const year in target_years) {
-                        this.targets_men.push(this.setZero(target_years[year].M));
-                        this.targets_women.push(this.setZero(target_years[year].F));
-                        this.targets_year.push(this.setZero(target_years[year].T));
+                        contentVue.targets_men.push(contentVue.setZero(target_years[year].M));
+                        contentVue.targets_women.push(contentVue.setZero(target_years[year].F));
+                        contentVue.targets_year.push(contentVue.setZero(target_years[year].T));
                     }
                 });
 
@@ -323,12 +325,16 @@ var app = new Vue({
                     this.list_countries = [];
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
+
+                    countries_data.forEach((item, i) => {
+                        countries_data[i] = item.replace(/['/]/gi, '')
+                    });
+
                     for (const key in countries) {
                         let estado = countries[key].active;
 
-                        if(countries_data.length>0)
-                        {
-                           estado =  countries_data.includes(countries[key].id);
+                        if (countries_data.length > 0 && !this.btnClick) {
+                            estado = countries_data.includes(countries[key].id);
                         }
 
                         this.list_countries.push({
@@ -340,6 +346,7 @@ var app = new Vue({
                             subprojects: countries[key].subprojects,
                         });
                     }
+                    this.btnClick = false;
                 });
 
             $.get(UrlsAcciones.UrlLWRregions, this.requestParameters)
@@ -405,6 +412,7 @@ var app = new Vue({
 
         },
         changeActiveStatusAndFilter(register, type_register = 'country') {
+            this.btnClick = true;
             let list_items = this.list_countries;
             let actives_regions = [];
 
@@ -430,6 +438,21 @@ var app = new Vue({
             }
 
             this.loadDataWithFilters();
+        },
+        createUrl(uri) {
+
+            let uriRequest = decodeURI(uri);
+            let parametersRequest = uriRequest.split('?')
+
+            let urlBase = window.location.origin;
+           // var createUrl = document.createElement('a');
+
+            if(parametersRequest.length>1)
+                this.currentUrl = urlBase + '/?' + parametersRequest[1];
+               //createUrl.href = urlBase + '/?' + parametersRequest[1];
+             else
+                 this.currentUrl = urlBase;
+                // createUrl.href = urlBase;
         },
         clearFilters() {
             this.formInputs = {
