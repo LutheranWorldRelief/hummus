@@ -533,6 +533,22 @@ class DashboardView(DomainRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
+
+        # sets custom user filters in query string
+        user = self.request.user
+        query_string = []
+        if hasattr(user, 'profile'):
+            project_ids = user.profile.projects.values_list('pk', flat=True)
+            for project_id in project_ids:
+                query_string.append('project_ids[]={}'.format(project_id))
+            if len(project_ids) == 1:
+                query_string.append('project_id={}'.format(project_ids[0]))
+            for country_id in user.profile.countries.values_list('pk', flat=True):
+                query_string.append('country_id[]={}'.format(country_id))
+            for lwrregion_id in user.profile.lwrregions.values_list('pk', flat=True):
+                query_string.append('country_id[]={}'.format(lwrregion_id))
+        context['query_string'] = '&'.join(query_string)
+
         years = Project.objects.order_by('start__fyear').exclude(projectcontact__isnull=True). \
             values_list('start__fyear', flat=True).distinct()
         context['months'] = MONTHS
