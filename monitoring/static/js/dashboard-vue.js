@@ -374,7 +374,7 @@ var app = new Vue({
                     for (const key in countries) {
                         let estado = countries[key].active;
 
-                        if (countries_data.length > 0 && !this.btnClick) {
+                        if (countries_data.length > 0) {
                             estado = countries_data.includes(countries[key].id);
                         }
 
@@ -468,6 +468,11 @@ var app = new Vue({
                 if (item.active) {
                     actives_regions.push(item.value);
                 }
+                if (type_register === 'country') {
+                    countries_data = countries_data.filter((value) => {
+                        return value !== item.value;
+                    });
+                }
             });
 
             if (type_register !== 'country') {
@@ -483,7 +488,7 @@ var app = new Vue({
         createUrl(uri) {
 
             let uriRequest = decodeURI(uri);
-            let parametersRequest = uriRequest.split('?')
+            let parametersRequest = uriRequest.split('?');
 
             let urlBase = window.location.origin;
             // var createUrl = document.createElement('a');
