@@ -14,12 +14,11 @@ var app = new Vue({
             quarter: null,
             from_date: '',
             to_date: '',
-            mydashboard:null,
+            mydashboard: null,
         },
         requestParameters: {
             extra_counters: 1
         },
-        show_subproject: false,
         spin_refresh_icon: false,
         list_projects: [],
         list_countries: [],
@@ -201,8 +200,7 @@ var app = new Vue({
         },
         loadSubprojects(object) {
 
-            this.show_subproject = (!this.empty(object));
-            if (this.show_subproject) {
+            if (!this.empty(object)) {
                 let project_id = object.value;
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${project_id}/`;
@@ -419,15 +417,13 @@ var app = new Vue({
                         if (input.length > 0) {
                             if (key === 'country_id' && this.list_countries.length > 0) {
                                 for (const data of this.list_countries) {
-                                        for(const country of input)
-                                        {
-                                            if(country===data.name && data.name)
-                                            {
-                                                this.requestParameters.country_id.push(country);
-                                            }
+                                    for (const country of input) {
+                                        if (country === data.name && data.name) {
+                                            this.requestParameters.country_id.push(country);
                                         }
+                                    }
                                 }
-                            }else
+                            } else
                                 this.requestParameters[key] = input;
                         }
                     } else if (!this.empty(input)) {
