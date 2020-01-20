@@ -14,6 +14,7 @@ var app = new Vue({
             quarter: null,
             from_date: '',
             to_date: '',
+            mydashboard:null,
         },
         requestParameters: {
             extra_counters: 1
@@ -195,7 +196,7 @@ var app = new Vue({
                         this.check_filter = true;
                         this.formInputs[entry[0]] = entry[1].replace(/['/]/gi, '');
 
-                    } else if (entry[0] === 'quarter')
+                    } else if (entry[0] === 'quarter' || entry[0] === 'mydashboard')
                         this.formInputs[entry[0]] = entry[1];
                 }
             }
