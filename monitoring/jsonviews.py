@@ -693,7 +693,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
             ''  # get the target by gender in a country
             targets = project_queryset. \
                 filter(subproject__country__id=row['country_id']). \
-                aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
+                aggregate(M=Coalesce(Sum('targetmen'), 0), F=Coalesce(Sum('targetwomen'), 0))
             participants_target = targets['F'] + targets['M']
 
             ''  # get totals participants by gender in a country
@@ -703,19 +703,19 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                           annotate(total=Count('contact', distinct=True))
                           )
 
-            totals['T'] = totals['M'] + totals['F']
+            totals['T'] = totals.get('M', 0) + totals.get('F', 0)
             percentage = (totals['T'] / participants_target) * 100
             participants.append({
                 'id': row['country_id'],
                 'alfa3': row['alta_3'],
                 'name': row['country_name'],
                 'location': [row['x'], row['y']],
-                'total': totals['T'],
+                'total': totals.get('T', 0),
                 'total_target': participants_target,
-                'women': totals['F'],
-                'target_women': targets['F'],
-                'men': totals['M'],
-                'target_men': targets['M'],
+                'women': totals.get('F', 0),
+                'target_women': targets.get('F', 0),
+                'men': totals.get('M', 0),
+                'target_men': targets.get('M', 0),
                 'percentage': percentage
             })
 
