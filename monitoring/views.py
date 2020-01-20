@@ -537,6 +537,18 @@ class DashboardView(DomainRequiredMixin, TemplateView):
             values_list('start__fyear', flat=True).distinct()
         context['months'] = MONTHS
         context['years'] = list(years)
+        if self.request.GET.get('project_id'):
+            project_id = self.request.GET.get('project_id')
+            context['project'] = Project.objects.filter(id=project_id).values('id', 'name').first()
+
+        if self.request.GET.get('subproject_id'):
+            subproject_id = self.request.GET.get('subproject_id')
+            context['subproject'] = SubProject.objects.filter(
+                id=subproject_id).values('id', 'name').first()
+
+        if self.request.GET.getlist('country_id[]'):
+            context['countries'] = self.request.GET.getlist('country_id[]')
+
         return context
 
 

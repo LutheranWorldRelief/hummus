@@ -79,6 +79,20 @@
                                     </a>
                                 </small>
                             </div>
+                            <div class="header-block">
+                                <input v-model="currentUrl" type="hidden" id="urlCopy">
+                                <h3 class="title">{% trans 'Share' %}</h3>
+                                <small>
+                                    <a href="javascript:;" data-toggle="tooltip" data-placement="top"
+                                       data-html="true"
+                                       v-bind:title="text_tooltip"
+                                       v-on:click="copyLink"
+                                       id="action_copy">
+                                        <i class="fa fa-link"></i>
+                                        {% trans 'Link' %}
+                                    </a>
+                                </small>
+                            </div>
                             <div class="pull-right">
                                 <div class="col-12">
                                     <label style="font-size: 80%;font-weight: 400;">
@@ -216,8 +230,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+            {{ project.name }}
         </section>
         {% verbatim %}
         <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
@@ -246,6 +260,30 @@
             UrlCountriesPolygons: "{% static 'js/countries.json' %}",
         };
         let years = {{ years|safe }};
+        var project_data = null;
+        var subproject = null;
+        var countries_data = [];
+
+        {% if project %}
+            project_data = {};
+            project_data['name'] = "{{ project.name }}";
+            project_data['value'] =  {{ project.id }};
+        {% endif %}
+
+        {% if subproject %}
+            subproject = {};
+            subproject['name'] = "{{ subproject.name }}";
+            subproject['value'] =  {{ subproject.id }};
+        {% endif %}
+
+        {% if countries %}
+            countries_data = {{ countries|safe }};
+        {% endif %}
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
     </script>
     <script src="{% static 'leaflet/dist/leaflet.js' %}"></script>
     <script src="{% static 'vue/dist/vue.min.js' %}"></script>
