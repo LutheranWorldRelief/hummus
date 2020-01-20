@@ -958,7 +958,7 @@ var graphicMixins = {
             let chart_subproject = echarts.init(document.getElementById('SubprojectGoalsGraph'));
             let data_chart = {
                 name_project: name_subproject,
-                legends: this.names_legends.slice(2, 4),
+                legends: this.names_legends.slice(2, 4).reverse(),
                 legends_colors: [this.colors.women, this.colors.men],
                 target_data: this.data_subproject_graph.target_data,
                 actual_data: this.data_subproject_graph.actual_data,
