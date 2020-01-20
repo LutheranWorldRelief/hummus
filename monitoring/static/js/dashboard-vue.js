@@ -37,7 +37,7 @@ var app = new Vue({
         },
         btnClick: false,
         filterByUrl: false,
-        currentUrl:null,
+        currentUrl: null,
         class_tabs_container: {
             'container-fluid': false,
             'tab-pane': false,
@@ -181,8 +181,13 @@ var app = new Vue({
                     else if (entry[0] === 'lwrregion_id[]')
                         this.formInputs.lwrregion_id.push(entry[1]);
                     else if (entry[0] === 'project_id') {
-                        this.formInputs.project_id = project_data;
-                        this.loadSubprojects(project_data);
+                        if (this.empty(project_data) && !this.empty(entry[1]))//project_id Not found in BD
+                            this.formInputs.project_id = entry[1];
+                        else {
+                            this.formInputs.project_id = project_data;
+                            this.loadSubprojects(project_data);
+                        }
+
                     } else if (entry[0] === 'subproject_id')
                         this.formInputs.subproject_id = subproject;
                     else if (entry[0] === 'from_date' || entry[0] === 'to_date') {
@@ -238,9 +243,9 @@ var app = new Vue({
                 .then(response => {
                     this.quantity_subprojects = response.quantity_subprojects;
                 });
-             var contentVue = this
+            var contentVue = this
             $.get(UrlsAcciones.UrlTarget, this.requestParameters)
-                .then( function (response) {
+                .then(function (response) {
 
                     contentVue.createUrl(this.url);
                     let targets = response.totals;
@@ -480,14 +485,14 @@ var app = new Vue({
             let parametersRequest = uriRequest.split('?')
 
             let urlBase = window.location.origin;
-           // var createUrl = document.createElement('a');
+            // var createUrl = document.createElement('a');
 
-            if(parametersRequest.length>1)
+            if (parametersRequest.length > 1)
                 this.currentUrl = urlBase + '/?' + parametersRequest[1];
-               //createUrl.href = urlBase + '/?' + parametersRequest[1];
-             else
-                 this.currentUrl = urlBase;
-                // createUrl.href = urlBase;
+            //createUrl.href = urlBase + '/?' + parametersRequest[1];
+            else
+                this.currentUrl = urlBase;
+            // createUrl.href = urlBase;
         },
         clearFilters() {
             this.formInputs = {
