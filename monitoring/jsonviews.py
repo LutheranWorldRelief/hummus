@@ -492,7 +492,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(
                 subproject__country__in=self.request.GET.getlist('country_id[]'))
         if self.request.GET.get('subproject_id'):
-            queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
+            queryset = queryset.filter(subproject_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
             queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
         else:
