@@ -2833,3 +2833,5 @@ span a {
 .text-color-5{color:#0daea1}
 .bullet-point{background-color:#4ac1bf;display: inline-block; height: 5px;vertical-align: middle;width: 5px}
 .bg-muted{background-color: #9ba8b573;}
+.icon-share{background-color: #93D228;color: white; padding: 2px; border-radius: 2px;}
+.not-sub{text-decoration: none !important;}
