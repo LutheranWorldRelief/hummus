@@ -132,9 +132,7 @@ var app = new Vue({
                 }
             });
 
-        this.loadCatalogs();
-
-        this.loadDataForDashboard();
+        this.loadDataWithFilters();
 
         let width = document.documentElement.clientWidth;
         if (width >= 1700) {
