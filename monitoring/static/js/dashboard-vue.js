@@ -5,22 +5,21 @@ var app = new Vue({
     mixins: [graphicMixins, geographicsMixins],
     data: {
         check_filter: false,
+        // IMPORTANT NOTE: the keys of formInputs init with the values of variables from js in dashboard.html
         formInputs: {
-            project_id: null,
-            subproject_id: null,
-            country_id: [],
-            lwrregion_id: [],
-            year: [],
-            quarter: null,
+            project_id: project_data,
+            subproject_id: subproject,
+            country_id: countries_data,
+            lwrregion_id: regions_data,
+            year: years_data,
+            quarter: quarter,
             from_date: '',
             to_date: '',
-            mydashboard:null,
+            mydashboard: null,
         },
         requestParameters: {
             extra_counters: 1
         },
-        show_projectgraph: false,
-        show_subproject: false,
         spin_refresh_icon: false,
         list_projects: [],
         list_countries: [],
@@ -133,9 +132,7 @@ var app = new Vue({
                 }
             });
 
-        this.loadCatalogs();
-
-        this.loadDataForDashboard();
+        this.loadDataWithFilters();
 
         let width = document.documentElement.clientWidth;
         if (width >= 1700) {
@@ -158,52 +155,11 @@ var app = new Vue({
                 }
             });
         });
-
-        this.filterByParametersInUrl()
     },
     methods: {
-
-        filterByParametersInUrl() {
-
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-
-            entries = urlParams.entries();
-            for (const entry of entries) {
-
-                if (!this.empty(entry[1])) {
-                    if (entry[0] === 'country_id[]') {
-                        let alpha2 = entry[1].replace(/['/]/gi, '');
-                        this.formInputs.country_id.push(alpha2);
-                    } else if (entry[0] === 'year[]')
-                        this.formInputs.year.push(entry[1]);
-                    else if (entry[0] === 'lwrregion_id[]')
-                        this.formInputs.lwrregion_id.push(entry[1]);
-                    else if (entry[0] === 'project_id') {
-                        if (this.empty(project_data) && !this.empty(entry[1]))//project_id Not found in BD
-                            this.formInputs.project_id = entry[1];
-                        else {
-                            this.formInputs.project_id = project_data;
-                            this.loadSubprojects(project_data);
-                        }
-
-                    } else if (entry[0] === 'subproject_id')
-                        this.formInputs.subproject_id = subproject;
-                    else if (entry[0] === 'from_date' || entry[0] === 'to_date') {
-                        this.filterByUrl = true;
-                        this.check_filter = true;
-                        this.formInputs[entry[0]] = entry[1].replace(/['/]/gi, '');
-
-                    } else if (entry[0] === 'quarter' || entry[0] === 'mydashboard')
-                        this.formInputs[entry[0]] = entry[1];
-                }
-            }
-
-        },
         loadSubprojects(object) {
 
-            this.show_subproject = (!this.empty(object));
-            if (this.show_subproject) {
+            if (!this.empty(object)) {
                 let project_id = object.value;
                 // NOTE: new_url content example = http://localhost/api/subproject/project/1/
                 let new_url = `/api/subprojects/project/${project_id}/`;
@@ -231,9 +187,7 @@ var app = new Vue({
         },
         loadDataForDashboard() {
 
-            this.show_projectgraph = !this.empty(this.requestParameters.project_id);
-
-            if (this.show_projectgraph) {
+            if (this.formInputs.project_id) {
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
             }
@@ -422,15 +376,13 @@ var app = new Vue({
                         if (input.length > 0) {
                             if (key === 'country_id' && this.list_countries.length > 0) {
                                 for (const data of this.list_countries) {
-                                        for(const country of input)
-                                        {
-                                            if(country===data.name && data.name)
-                                            {
-                                                this.requestParameters.country_id.push(country);
-                                            }
+                                    for (const country of input) {
+                                        if (country === data.name && data.name) {
+                                            this.requestParameters.country_id.push(country);
                                         }
+                                    }
                                 }
-                            }else
+                            } else
                                 this.requestParameters[key] = input;
                         }
                     } else if (!this.empty(input)) {

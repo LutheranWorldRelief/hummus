@@ -181,7 +181,7 @@
                                         </div>
                                         {# subproject #}
                                         {% verbatim %}
-                                        <div v-if="show_subproject" class="col-12">
+                                        <div v-if="formInputs.project_id" class="col-12">
                                             {% endverbatim %}
                                             <label class="font-weight-bold" for="">{% trans "Subproject" %}:</label>
                                             {% verbatim %}
@@ -224,7 +224,7 @@
             {{ project.name }}
         </section>
         {% verbatim %}
-        <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
+        <div v-if="formInputs.project_id"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
         {% include 'modular_template/geographics.html' %}
 
@@ -250,9 +250,8 @@
             UrlCountriesPolygons: "{% static 'js/countries.json' %}",
         };
         let years = {{ years|safe }};
-        var project_data = null;
-        var subproject = null;
-        var countries_data = [];
+        var project_data = null, subproject = null, quarter = null;
+        var countries_data = [], regions_data = [], years_data = [];
 
         {% if project %}
             project_data = {};
@@ -266,9 +265,22 @@
             subproject['value'] =  {{ subproject.id }};
         {% endif %}
 
+        {% if quarter %}
+            quarter = {{ quarter }};
+        {% endif %}
+
         {% if countries %}
             countries_data = {{ countries|safe }};
         {% endif %}
+
+        {% if regions %}
+            regions_data = {{ regions|safe }};
+        {% endif %}
+
+        {% if years_data %}
+            years_data = {{ years_data|safe }};
+        {% endif %}
+
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

@@ -553,6 +553,7 @@ class DashboardView(DomainRequiredMixin, TemplateView):
             values_list('start__fyear', flat=True).distinct()
         context['months'] = MONTHS
         context['years'] = list(years)
+
         if self.request.GET.get('project_id'):
             project_id = self.request.GET.get('project_id')
             context['project'] = Project.objects.filter(id=project_id).values('id', 'name').first()
@@ -564,6 +565,16 @@ class DashboardView(DomainRequiredMixin, TemplateView):
 
         if self.request.GET.getlist('country_id[]'):
             context['countries'] = self.request.GET.getlist('country_id[]')
+
+        if self.request.GET.getlist('lwrregion_id[]'):
+            context['regions'] = self.request.GET.getlist('lwrregion_id[]')
+
+        if self.request.GET.getlist('year[]'):
+            context['years_data'] = self.request.GET.getlist('year[]')
+
+        if self.request.GET.get('quarter'):
+            context['quarter'] = self.request.GET.get('quarter')
+
 
         return context
 
