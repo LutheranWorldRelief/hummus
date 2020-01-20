@@ -9,8 +9,6 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, ListView
 
-from Levenshtein import distance
-
 from .models import Contact, ProjectContact, SubProject, Project, LWRRegion
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
