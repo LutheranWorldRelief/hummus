@@ -157,48 +157,8 @@ var app = new Vue({
                 }
             });
         });
-
-        this.filterByParametersInUrl()
     },
     methods: {
-
-        filterByParametersInUrl() {
-
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-
-            entries = urlParams.entries();
-            for (const entry of entries) {
-
-                if (!this.empty(entry[1])) {
-                    if (entry[0] === 'country_id[]') {
-                        let alpha2 = entry[1].replace(/['/]/gi, '');
-                        this.formInputs.country_id.push(alpha2);
-                    } else if (entry[0] === 'year[]')
-                        this.formInputs.year.push(entry[1]);
-                    else if (entry[0] === 'lwrregion_id[]')
-                        this.formInputs.lwrregion_id.push(entry[1]);
-                    else if (entry[0] === 'project_id') {
-                        if (this.empty(project_data) && !this.empty(entry[1]))//project_id Not found in BD
-                            this.formInputs.project_id = entry[1];
-                        else {
-                            this.formInputs.project_id = project_data;
-                            this.loadSubprojects(project_data);
-                        }
-
-                    } else if (entry[0] === 'subproject_id')
-                        this.formInputs.subproject_id = subproject;
-                    else if (entry[0] === 'from_date' || entry[0] === 'to_date') {
-                        this.filterByUrl = true;
-                        this.check_filter = true;
-                        this.formInputs[entry[0]] = entry[1].replace(/['/]/gi, '');
-
-                    } else if (entry[0] === 'quarter' || entry[0] === 'mydashboard')
-                        this.formInputs[entry[0]] = entry[1];
-                }
-            }
-
-        },
         loadSubprojects(object) {
 
             if (!this.empty(object)) {
