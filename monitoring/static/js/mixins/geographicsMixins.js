@@ -61,9 +61,7 @@ var geographicsMixins = {
                     this.dataTableGeographic = [];
 
                     data.participants.forEach((country_data) => {
-                        let country = this.list_countries.find((item) => {
-                            return item.name === country_data.name;
-                        });
+                        let country = this.setCountryObjectZeros(country_data.name);
 
                         this.dataTableGeographic.push({
                             id: country_data.id,
@@ -84,9 +82,8 @@ var geographicsMixins = {
 
                             this.geojson.features = [];
                             data.participants.forEach(participant => {
-                                let data = this.list_countries.find((item) => {
-                                    return item.name === participant.name;
-                                });
+                                let data = this.setCountryObjectZeros(participant.name);
+
                                 let country = countries.features.find(country => country.id === participant.alfa3);
                                 country.properties.women = participant.women;
                                 country.properties.men = participant.men;
@@ -154,6 +151,14 @@ var geographicsMixins = {
             }
 
             return this.formatNumber(total);
+        },
+        setCountryObjectZeros(country_name) {
+            let object = {projects: 0, subprojects: 0};
+            let data = this.list_countries.find((item) => {
+                return item.name === country_name;
+            });
+
+            return this.empty(data) ? object : data;
         }
     }
 };
