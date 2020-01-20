@@ -90,11 +90,13 @@ var app = new Vue({
             }, 1000);
         },
         'formInputs.subproject_id': function (value) {
+            if (!value) {
+                $('#tabs_projects-click').children('li').eq(0).find('a').trigger('click');
+            }
 
             for (const key in this.class_tabs_container) {
                 this.class_tabs_container[key] = (value !== null);
             }
-
             this.loadDataWithFilters();
         },
         'formInputs.country_id': function () {
