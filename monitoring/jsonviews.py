@@ -3,12 +3,12 @@ Django views returning json
 """
 
 from django.db.models import Sum, Count, Q, F, FloatField
-from django.db.models.functions import Trim, Cast, Coalesce
+from django.db.models.functions import Cast, Coalesce
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, ListView
 
 from .models import ProjectContact, SubProject, Project, LWRRegion
-from .common import JSONResponseMixin, get_post_array, xstr
+from .common import JSONResponseMixin
 
 
 def mydashboard(request, queryset):
