@@ -160,7 +160,6 @@ var app = new Vue({
             });
         });
 
-        this.loadCountriesMaps();
         this.filterByParametersInUrl()
     },
     methods: {
@@ -388,6 +387,7 @@ var app = new Vue({
                         });
                     }
                     this.btnClick = false;
+                    this.loadCountriesMaps();
                 });
 
             $.get(UrlsAcciones.UrlLWRregions, this.requestParameters)
