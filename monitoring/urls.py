@@ -7,6 +7,7 @@ from django.views.generic import TemplateView, DetailView
 
 from . import views
 from . import jsonviews
+from . import dupes
 from . import dashboard
 from . import models
 
@@ -70,18 +71,18 @@ urlpatterns = [
     path('dupes/name-fuzzy/', views.ValidateDupesNameFuzzy.as_view(), name='dupes-name-fuzzy'),
 
     # API dupes - merge
-    path('api/fusion/', jsonviews.ContactFusion.as_view(), ),
-    path('api/contact/<int:id>/', jsonviews.ContactImportDupes.as_view(), ),
-    path('api/name-values/', jsonviews.ContactNameValues.as_view(), ),
-    path('api/doc-values/', jsonviews.ContactNameValues.as_view(), ),
-    path('api/empty/', jsonviews.ContactEmpty.as_view(), ),
-    path('api/labels/', jsonviews.ContactLabels.as_view(), ),
-    path('api/docs/', jsonviews.ContactDocDupes.as_view(), ),
-    path('api/names/', jsonviews.ContactNameDupes.as_view(), ),
-    path('api/names-fuzzy/', jsonviews.ContactNameFuzzyDupes.as_view(), ),
-    path('api/doc/<str:document>/', jsonviews.ContactDocDupesDetails.as_view(), ),
-    path('api/name/<str:name>/', jsonviews.ContactNameDupesDetails.as_view(), ),
-    path('api/ids/<int:id1>/<int:id2>/', jsonviews.ContactIdsDupesDetails.as_view(), ),
+    path('api/fusion/', dupes.ContactFusion.as_view(), ),
+    path('api/contact/<int:id>/', dupes.ContactImportDupes.as_view(), ),
+    path('api/name-values/', dupes.ContactNameValues.as_view(), ),
+    path('api/doc-values/', dupes.ContactNameValues.as_view(), ),
+    path('api/empty/', dupes.ContactEmpty.as_view(), ),
+    path('api/labels/', dupes.ContactLabels.as_view(), ),
+    path('api/docs/', dupes.ContactDocDupes.as_view(), ),
+    path('api/names/', dupes.ContactNameDupes.as_view(), ),
+    path('api/names-fuzzy/', dupes.ContactNameFuzzyDupes.as_view(), ),
+    path('api/doc/<str:document>/', dupes.ContactDocDupesDetails.as_view(), ),
+    path('api/name/<str:name>/', dupes.ContactNameDupesDetails.as_view(), ),
+    path('api/ids/<int:id1>/<int:id2>/', dupes.ContactIdsDupesDetails.as_view(), ),
 
     # Participants counter API
     path('api/targets/', jsonviews.TargetsCounter.as_view(),
