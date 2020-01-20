@@ -65,9 +65,6 @@ var geographicsMixins = {
                             return item.name === country_data.name;
                         });
 
-                        console.log(this.list_countries);
-                        console.log(country);
-
                         this.dataTableGeographic.push({
                             id: country_data.id,
                             flag_url: `https://www.countryflags.io/${country_data.id}/flat/16.png`,
