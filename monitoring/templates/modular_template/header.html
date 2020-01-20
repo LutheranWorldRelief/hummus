@@ -19,9 +19,17 @@
                 <i class="fa" :class="{'fa-check': region.active}"></i>
                 <span>{{ region.name }}</span>
             </button>
-
             {% endverbatim %}
         </div>
+        <a href="javascript:;" data-toggle="tooltip" data-placement="top"
+           data-html="true"
+           v-bind:title="text_tooltip"
+           v-on:click="copyLink"
+           class="pull-right not-sub"
+           id="action_copy">
+            <i class="fa fa-share-alt icon-share"></i>
+            {% trans 'Share Link' %}
+        </a>
     {% endif %}
 
     <div class="header-block header-block-nav">
