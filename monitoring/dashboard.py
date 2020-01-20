@@ -17,7 +17,7 @@ from .common import domain_required, get_localized_name as __
 @csrf_exempt
 @domain_required()
 def get_proyecto(request):
-    project_id = request.POST.get('proyecto')
+    project_id = request.GET.get('proyecto')
     if project_id:
         proyecto = Project.objects.values().get(id=project_id)
         data = {'proyecto': proyecto}
@@ -76,8 +76,8 @@ def cantidad_proyectos(request):
 @csrf_exempt
 @domain_required()
 def get_paises(request):
-    paises_todos = (request.POST.get('paises_todos') == 'true')
-    ninguno = not (request.POST.getlist("paises[]") or paises_todos)
+    paises_todos = (request.GET.get('paises_todos') == 'true')
+    ninguno = not (request.GET.getlist("paises[]") or paises_todos)
     parameters = {'proyecto': 'project', 'desde': 'date_entry_project__gte',
                   'hasta': 'date_entry_project__lte'}
     filter_kwargs = filter_by(parameters, request)
@@ -93,7 +93,7 @@ def get_paises(request):
         paises.append({
             'id': row['project__countries'],
             'country': row['project__countries__name'],
-            'active': row['project__countries'] in request.POST.getlist("paises[]") or
+            'active': row['project__countries'] in request.GET.getlist("paises[]") or
             paises_todos})
 
     return JsonResponse({'paises': paises, 'todos': paises_todos, 'ninguno': ninguno, })
@@ -102,9 +102,9 @@ def get_paises(request):
 @csrf_exempt
 @domain_required()
 def get_rubros(request):
-    rubros_todos = request.POST.get('rubros_todos') == 'true'
-    ninguno = not (request.POST.getlist("rubros[]") or rubros_todos)
-    proyecto_id = request.POST.get('proyecto')
+    rubros_todos = request.GET.get('rubros_todos') == 'true'
+    ninguno = not (request.GET.getlist("rubros[]") or rubros_todos)
+    proyecto_id = request.GET.get('proyecto')
     filter_kwargs = {'product__isnull': False}
 
     if proyecto_id:
@@ -115,7 +115,7 @@ def get_rubros(request):
     for row in result:
         row['rubro'] = row[__('product__name')]
         row['id'] = row['product_id']
-        row['active'] = str(row['product_id']) in request.POST.getlist("rubros[]") or rubros_todos
+        row['active'] = str(row['product_id']) in request.GET.getlist("rubros[]") or rubros_todos
     data = {'rubros': list(result), 'todos': rubros_todos, 'ninguno': ninguno, }
 
     return JsonResponse(data)
@@ -189,7 +189,7 @@ def grafico_organizaciones(request):
 @csrf_exempt
 @domain_required()
 def proyectos_metas(request):
-    proyecto_id = request.POST.get('project_id')
+    proyecto_id = request.GET.get('project_id')
     if not proyecto_id:
         return JsonResponse({'proyectos_metas': []})
     proyecto = Project.objects.filter(id=proyecto_id).values('id', 'name', 'targetmen',
@@ -308,8 +308,8 @@ def cantidad_subproyectos(request):
                   'from_date': 'start__gte',
                   'to_date': 'start__lte'}
     filter_kwargs = filter_by(parameters, request)
-    if request.user and hasattr(queryset.model.objects, 'for_user'):
-        queryset = queryset.for_user(request.user)
+    #if request.user and hasattr(queryset.model.objects, 'for_user'):
+    #    queryset = queryset.for_user(request.user)
 
     subproyectos = queryset.\
         filter(**filter_kwargs).\
@@ -447,12 +447,12 @@ def grafico_pais_eventos(request):
 
 
 def filter_by(parameters, request):
-    paises = request.POST.getlist('country_id[]')
-    regions = request.POST.getlist('lwrregion_id[]')
-    years = request.POST.getlist('year[]')
+    paises = request.GET.getlist('country_id[]')
+    regions = request.GET.getlist('lwrregion_id[]')
+    years = request.GET.getlist('year[]')
     filter_kwargs = {}
 
-    for key, value in request.POST.items():
+    for key, value in request.GET.items():
         if key in parameters:
             if key == 'country_id[]':
                 filter_kwargs[parameters[key]] = paises
