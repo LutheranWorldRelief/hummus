@@ -18,7 +18,7 @@ from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 def mydashboard(request, queryset):
     if request.GET.get('mydashboard') and request.user and \
-        hasattr(queryset.model.objects, 'for_user'):
+            hasattr(queryset.model.objects, 'for_user'):
         queryset = queryset.for_user(request.user)
     return queryset
 
