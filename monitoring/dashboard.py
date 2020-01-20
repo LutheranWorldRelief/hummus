@@ -54,27 +54,6 @@ def cantidad_participantes(request):
 
 @csrf_exempt
 @domain_required()
-def cantidad_proyectos(request):
-    parameters = {'country_id[]': 'project__countries__id__in',
-                  'year[]': 'date_entry_project__fyear__in',
-                  'quarter': 'date_entry_project__fquarter',
-                  'lwrregion_id[]': 'project__lwrregion__id__in',
-                  'project_id': 'project_id',
-                  'from_date': 'date_entry_project__gte',
-                  'to_date': 'date_entry_project__lte'}
-    filter_kwargs = filter_by(parameters, request)
-
-    proyectos = ProjectContact.objects.filter(
-        **filter_kwargs). \
-        order_by('project__id'). \
-        distinct('project__id'). \
-        count()
-    data = {'quantity_projects': proyectos}
-    return JsonResponse(data)
-
-
-@csrf_exempt
-@domain_required()
 def get_paises(request):
     paises_todos = (request.GET.get('paises_todos') == 'true')
     ninguno = not (request.GET.getlist("paises[]") or paises_todos)
@@ -298,9 +277,29 @@ def grafico_educacion(request):
 
 @csrf_exempt
 @domain_required()
+def cantidad_proyectos(request):
+    parameters = {'country_id[]': 'project__countries__id__in',
+                  'year[]': 'date_entry_project__fyear__in',
+                  'quarter': 'date_entry_project__fquarter',
+                  'lwrregion_id[]': 'project__lwrregion__id__in',
+                  'project_id': 'project_id',
+                  'from_date': 'date_entry_project__gte',
+                  'to_date': 'date_entry_project__lte'}
+    filter_kwargs = filter_by(parameters, request)
+
+    proyectos = ProjectContact.objects.filter(
+        **filter_kwargs). \
+        order_by('project__id'). \
+        distinct('project__id'). \
+        count()
+    data = {'quantity_projects': proyectos}
+    return JsonResponse(data)
+
+
+@csrf_exempt
+@domain_required()
 def cantidad_subproyectos(request):
-    queryset = SubProject.objects
-    parameters = {'country_id[]': 'country_id__in',
+    parameters = {'country_id[]': 'subproject__country_id__in',
                   'year[]': 'project__projectcontact__date_entry_project__fyear__in',
                   'quarter': 'project__projectcontact__date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
@@ -308,13 +307,14 @@ def cantidad_subproyectos(request):
                   'from_date': 'start__gte',
                   'to_date': 'start__lte'}
     filter_kwargs = filter_by(parameters, request)
+
     # if request.user and hasattr(queryset.model.objects, 'for_user'):
     #    queryset = queryset.for_user(request.user)
 
-    subproyectos = queryset.\
-        filter(**filter_kwargs).\
-        order_by('id').\
-        distinct('id').\
+    subproyectos = ProjectContact.objects.filter(
+        **filter_kwargs). \
+        order_by('subproject__id'). \
+        distinct('subproject__id'). \
         count()
     data = {'quantity_subprojects': subproyectos}
     return JsonResponse(data)
