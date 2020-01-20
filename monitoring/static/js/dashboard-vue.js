@@ -240,7 +240,7 @@ var app = new Vue({
                 this.graphicGoalProject();
             }
 
-            $.post(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
+            $.get(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
                 .then(response => {
                     this.quantity_subprojects = response.quantity_subprojects;
                 });
@@ -356,7 +356,7 @@ var app = new Vue({
         },
         loadCatalogs() {
 
-            $.post(UrlsAcciones.UrlQuantityProjects, this.requestParameters)
+            $.get(UrlsAcciones.UrlQuantityProjects, this.requestParameters)
                 .then(data => {
                     this.quantity_projects = data.quantity_projects;
                 });

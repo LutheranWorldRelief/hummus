@@ -480,7 +480,7 @@ var graphicMixins = {
             myChart.setOption(option);
         },
         graficoParticipantesEdad() {
-            $.post(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
+            $.get(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
                 .then(response => {
                     let data = response.edad;
                     let total = [], ageRange = [];
@@ -635,7 +635,7 @@ var graphicMixins = {
             })
         },
         graficoParticipantesEduacion() {
-            $.post(UrlsAcciones.UrlGraficoEducacion, this.requestParameters)
+            $.get(UrlsAcciones.UrlGraficoEducacion, this.requestParameters)
                 .then(response => {
                     let data = response.educacion;
                     let total = [], educations = [];
@@ -852,7 +852,7 @@ var graphicMixins = {
             myChart.setOption(option);
         },
         graphicGoalProject() {
-            $.post(UrlsAcciones.UrlProjectGoal, this.requestParameters)
+            $.get(UrlsAcciones.UrlProjectGoal, this.requestParameters)
                 .then(response => {
                     const chart_goal_project = echarts.init(document.getElementById('ProjectGoalsGraph'));
                     let data_project = response.proyectos_metas;
