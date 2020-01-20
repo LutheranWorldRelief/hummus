@@ -402,6 +402,8 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
 
         # exclude projects with no participants in 3D
         queryset = queryset.exclude(projectcontact__isnull=True)
+        men = 'targetmen'
+        women = 'targetwomen'
 
         # filter by selected years
         if self.request.GET.get('year[]'):
@@ -423,14 +425,20 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             countries = self.request.GET.getlist('country_id[]')
             queryset = queryset.filter(subproject__country__id__in=countries).distinct()
 
-        if self.request.GET.get('project_id'):
+        if self.request.GET.get('subproject_id'):
+            subproject = self.request.GET.get('subproject_id')
+            queryset = queryset.filter(subproject=subproject)
+            # modify target field variable to count subproject not project targets
+            men = 'subproject__targetmen'
+            women = 'subproject__targetwomen'
+        elif self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
             queryset = queryset.filter(id=project)
         else:
             queryset = mydashboard(self.request, queryset)
 
-        totals = queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
-                                    F=Coalesce(Sum('targetwomen'), 0))
+        totals = queryset.aggregate(M=Coalesce(Sum(men), 0),
+                                    F=Coalesce(Sum(women), 0))
         totals['T'] = sum(totals.values())
         context['totals'] = totals
 
