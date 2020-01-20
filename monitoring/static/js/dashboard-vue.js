@@ -5,13 +5,14 @@ var app = new Vue({
     mixins: [graphicMixins, geographicsMixins],
     data: {
         check_filter: false,
+        // IMPORTANT NOTE: the keys of formInputs init with the values of variables from js in dashboard.html
         formInputs: {
             project_id: project_data,
-            subproject_id: null,
-            country_id: [],
-            lwrregion_id: [],
-            year: [],
-            quarter: null,
+            subproject_id: subproject,
+            country_id: countries_data,
+            lwrregion_id: regions_data,
+            year: years_data,
+            quarter: quarter,
             from_date: '',
             to_date: '',
             mydashboard: null,

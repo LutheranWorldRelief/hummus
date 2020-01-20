@@ -250,9 +250,8 @@
             UrlCountriesPolygons: "{% static 'js/countries.json' %}",
         };
         let years = {{ years|safe }};
-        var project_data = null;
-        var subproject = null;
-        var countries_data = [];
+        var project_data = null, subproject = null, quarter = null;
+        var countries_data = [], regions_data = [], years_data = [];
 
         {% if project %}
             project_data = {};
@@ -266,9 +265,22 @@
             subproject['value'] =  {{ subproject.id }};
         {% endif %}
 
+        {% if quarter %}
+            quarter = {{ quarter }};
+        {% endif %}
+
         {% if countries %}
             countries_data = {{ countries|safe }};
         {% endif %}
+
+        {% if regions %}
+            regions_data = {{ regions|safe }};
+        {% endif %}
+
+        {% if years_data %}
+            years_data = {{ years_data|safe }};
+        {% endif %}
+
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
