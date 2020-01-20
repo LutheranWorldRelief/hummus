@@ -14,6 +14,7 @@ var app = new Vue({
             quarter: null,
             from_date: '',
             to_date: '',
+            mydashboard:null,
         },
         requestParameters: {
             extra_counters: 1
@@ -196,7 +197,7 @@ var app = new Vue({
                         this.check_filter = true;
                         this.formInputs[entry[0]] = entry[1].replace(/['/]/gi, '');
 
-                    } else if (entry[0] === 'quarter')
+                    } else if (entry[0] === 'quarter' || entry[0] === 'mydashboard')
                         this.formInputs[entry[0]] = entry[1];
                 }
             }
@@ -416,7 +417,18 @@ var app = new Vue({
                         this.requestParameters[key] = input['value'];
                     } else if (!this.empty(input) && input.constructor === Array) {
                         if (input.length > 0) {
-                            this.requestParameters[key] = input;
+                            if (key === 'country_id' && this.list_countries.length > 0) {
+                                for (const data of this.list_countries) {
+                                        for(const country of input)
+                                        {
+                                            if(country===data.name && data.name)
+                                            {
+                                                this.requestParameters.country_id.push(country);
+                                            }
+                                        }
+                                }
+                            }else
+                                this.requestParameters[key] = input;
                         }
                     } else if (!this.empty(input)) {
                         this.requestParameters[key] = input;
