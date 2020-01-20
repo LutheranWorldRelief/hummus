@@ -91,16 +91,14 @@ var app = new Vue({
             }, 1000);
         },
         'formInputs.subproject_id': function (value) {
+            if (!value) {
+                $('#tabs_projects-click').children('li').eq(0).find('a').trigger('click');
+            }
 
             for (const key in this.class_tabs_container) {
                 this.class_tabs_container[key] = (value !== null);
             }
-
             this.loadDataWithFilters();
-
-            if (value) {
-                this.graphicGoalSubproject(value.name);
-            }
         },
         'formInputs.country_id': function () {
             this.loadDataWithFilters();
@@ -297,6 +295,11 @@ var app = new Vue({
                         this.setZero(this.tatals.F),
                         this.setZero(this.tatals.M)
                     );
+
+                    if (this.formInputs.subproject_id) {
+                        let subproject_name = this.formInputs.subproject_id.name;
+                        this.graphicGoalSubproject(subproject_name);
+                    }
 
                     // calculating the percentage for the progress bar
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
