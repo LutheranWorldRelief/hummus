@@ -2,15 +2,17 @@
 Django JSON views used by deduplication
 """
 
-from django.db.models import Sum, Count, Q, F, FloatField
-from django.db.models.functions import Upper, Trim, Cast, Coalesce
+from django.db.models import Q, F
+from django.db.models.functions import Upper, Trim
+from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
 
 from Levenshtein import distance
 
-from .models import Contact, ProjectContact, SubProject, Project, LWRRegion
+from .models import Contact, ProjectContact
 from .common import JSONResponseMixin, RegexpReplace, get_post_array, xstr
 
 

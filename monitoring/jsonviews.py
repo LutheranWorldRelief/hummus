@@ -4,7 +4,6 @@ Django views returning json
 
 from django.db.models import Sum, Count, Q, F, FloatField
 from django.db.models.functions import Upper, Trim, Cast, Coalesce
-from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
