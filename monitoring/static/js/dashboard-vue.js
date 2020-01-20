@@ -6,7 +6,7 @@ var app = new Vue({
     data: {
         check_filter: false,
         formInputs: {
-            project_id: null,
+            project_id: project_data,
             subproject_id: null,
             country_id: [],
             lwrregion_id: [],
@@ -19,7 +19,6 @@ var app = new Vue({
         requestParameters: {
             extra_counters: 1
         },
-        show_projectgraph: false,
         show_subproject: false,
         spin_refresh_icon: false,
         list_projects: [],
@@ -231,9 +230,7 @@ var app = new Vue({
         },
         loadDataForDashboard() {
 
-            this.show_projectgraph = !this.empty(this.requestParameters.project_id);
-
-            if (this.show_projectgraph) {
+            if (this.formInputs.project_id) {
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
             }

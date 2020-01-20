@@ -181,7 +181,7 @@
                                         </div>
                                         {# subproject #}
                                         {% verbatim %}
-                                        <div v-if="show_subproject" class="col-12">
+                                        <div v-if="formInputs.project_id" class="col-12">
                                             {% endverbatim %}
                                             <label class="font-weight-bold" for="">{% trans "Subproject" %}:</label>
                                             {% verbatim %}
@@ -224,7 +224,7 @@
             {{ project.name }}
         </section>
         {% verbatim %}
-        <div v-if="show_projectgraph"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
+        <div v-if="formInputs.project_id"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
         {% include 'modular_template/geographics.html' %}
 

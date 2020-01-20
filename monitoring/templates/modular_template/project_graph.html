@@ -5,7 +5,7 @@
     <p class="title-description"> {% trans 'Total of actual participants and targets, by sex' %} </p>
 </div>
 <div class="row">
-    <div v-if="show_projectgraph" class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
+    <div v-if="formInputs.project_id" class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
         {% include 'modular_template/summary.html' %}
     </div>
     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
