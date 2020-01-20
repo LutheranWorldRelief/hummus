@@ -377,7 +377,7 @@ var app = new Vue({
                     for (const key in countries) {
                         let estado = countries[key].active;
 
-                        if (countries_data.length > 0 && !this.btnClick) {
+                        if (countries_data.length > 0) {
                             estado = countries_data.includes(countries[key].id);
                         }
 
@@ -420,7 +420,18 @@ var app = new Vue({
                         this.requestParameters[key] = input['value'];
                     } else if (!this.empty(input) && input.constructor === Array) {
                         if (input.length > 0) {
-                            this.requestParameters[key] = input;
+                            if (key === 'country_id' && this.list_countries.length > 0) {
+                                for (const data of this.list_countries) {
+                                        for(const country of input)
+                                        {
+                                            if(country===data.name && data.name)
+                                            {
+                                                this.requestParameters.country_id.push(country);
+                                            }
+                                        }
+                                }
+                            }else
+                                this.requestParameters[key] = input;
                         }
                     } else if (!this.empty(input)) {
                         this.requestParameters[key] = input;
@@ -472,6 +483,11 @@ var app = new Vue({
                 if (item.active) {
                     actives_regions.push(item.value);
                 }
+                if (type_register === 'country') {
+                    countries_data = countries_data.filter((value) => {
+                        return value !== item.value;
+                    });
+                }
             });
 
             if (type_register !== 'country') {
@@ -487,7 +503,7 @@ var app = new Vue({
         createUrl(uri) {
 
             let uriRequest = decodeURI(uri);
-            let parametersRequest = uriRequest.split('?')
+            let parametersRequest = uriRequest.split('?');
 
             let urlBase = window.location.origin;
             // var createUrl = document.createElement('a');
