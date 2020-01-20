@@ -419,8 +419,8 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         if self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
             queryset = queryset.filter(id=project)
-        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
 
         totals = queryset.aggregate(M=Coalesce(Sum('targetmen'), 0),
                                     F=Coalesce(Sum('targetwomen'), 0))
@@ -488,8 +488,8 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(project_id=self.request.GET.get('subproject_id'))
         if self.request.GET.get('project_id'):
             queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
-        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
 
         # get unique participants # not used for now
         # queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
@@ -572,8 +572,8 @@ class Countries(JSONResponseMixin, TemplateView):
 
         if project:
             queryset = queryset.filter(project_id=project)
-        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
 
         countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
@@ -618,8 +618,8 @@ class LWRRegions(JSONResponseMixin, TemplateView):
 
         if project:
             queryset = queryset.filter(project__id=project)
-        if self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # if self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
 
         lwrregions = queryset.order_by('name').values('id', 'name')
 
@@ -650,10 +650,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = ProjectContact.objects.all()
-        ''  # queryset for count participants by gender
-        queryset2 = queryset.order_by()
-        ''  # queryset to get the Target by gender
-        queryset3 = Project.objects.all().order_by()
+        project_queryset = Project.objects.all().order_by()
         filter_kwargs = {}
 
         regions = self.request.GET.getlist('lwrregion_id[]')
@@ -673,8 +670,8 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         if project:
             queryset = queryset.filter(project_id=project)
             filter_kwargs['project_id'] = project
-        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
 
         countries = queryset.exclude(project__countries__isnull=True) \
             .values(country_id=F('project__countries__id'),
@@ -687,13 +684,13 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         participants = []
         for row in countries:
             ''  # get the target by gender in a country
-            targets = queryset3. \
+            targets = project_queryset. \
                 filter(subproject__country__id=row['country_id']). \
                 aggregate(M=Sum('targetmen'), F=Sum('targetwomen'))
             participants_target = targets['F'] + targets['M']
 
             ''  # get totals participants by gender in a country
-            totals = dict(queryset2.
+            totals = dict(queryset.order_by().
                           filter(subproject__country__id=row['country_id']).
                           values_list('contact__sex_id').
                           annotate(total=Count('contact', distinct=True))
@@ -754,8 +751,8 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(id=self.kwargs['project_id'])
-        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
         return list(queryset.values('id', 'name'))
 
 
@@ -793,8 +790,8 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
 
         if 'project_id' in self.kwargs:
             queryset = queryset.filter(project_id=self.kwargs['project_id'])
-        elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
-            queryset = queryset.for_user(self.request.user)
+        # elif self.request.user and hasattr(queryset.model.objects, 'for_user'):
+        #    queryset = queryset.for_user(self.request.user)
         return list(queryset.values())
 
 

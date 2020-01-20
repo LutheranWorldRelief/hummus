@@ -15,6 +15,17 @@ var graphicMixins = {
                 gettext('Actual'),
                 gettext('Target'),
             ],
+            label_participants: gettext('Participants'),
+            label_project_subproject: {
+                normal: {
+                    show: true,
+                    position: 'right',
+                    textStyle: {
+                        color: '#000',
+                        fontSize: 16,
+                    }
+                }
+            },
             icon_graph: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
             radioSexPie: '70%',
         }
@@ -376,7 +387,7 @@ var graphicMixins = {
             let legends = [gettext('Woman'), gettext('Target Women'), gettext('Men'), gettext('Target Men')];
 
             let option = {
-                toolbox:this.setToolBox('Actual vs Target, by Sex(Fixed placement columns)'),
+                toolbox: this.setToolBox('Actual vs Target, by Sex(Fixed placement columns)'),
                 tooltip: {
                     show: "true",
                     trigger: 'axis',
@@ -792,49 +803,48 @@ var graphicMixins = {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
                 },
-                series: [
-                    {
-                        name: '',
-                        type: 'pie',
-                        radius: this.radioSexPie,
-                        center: ['50%', '50%'],
-                        data: [{
-                            name: totalMen.name,
-                            value: totalMen.value,
-                            itemStyle: {
-                                color: this.colors.men
-                            }, label: {
-                                normal: {
-                                    formatter: '{a} {b} : {c} ({d}%)',
-                                    position: 'inside'
-                                }
-                            }
-                        }, {
-                            name: totalWomen.name,
-                            value: totalWomen.value,
-                            itemStyle: {
-                                color: this.colors.women
-                            }, label: {
-                                normal: {
-                                    formatter: '{a} {b} : {c} ({d}%)',
-                                    position: 'inside'
-                                }
-                            }
-                        }],
-                        label: {
-                            show: true,
-                            formatter: function (params) {
-                                return params.name + ': ' + params.percent + ' %, ' + params.value;
-                            }
-                        },
+                series: [{
+                    name: '',
+                    type: 'pie',
+                    radius: this.radioSexPie,
+                    center: ['50%', '50%'],
+                    data: [{
+                        name: totalMen.name,
+                        value: totalMen.value,
                         itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            color: this.colors.men
+                        }, label: {
+                            normal: {
+                                formatter: '{a} {b} : {c} ({d}%)',
+                                position: 'inside'
                             }
                         }
+                    }, {
+                        name: totalWomen.name,
+                        value: totalWomen.value,
+                        itemStyle: {
+                            color: this.colors.women
+                        }, label: {
+                            normal: {
+                                formatter: '{a} {b} : {c} ({d}%)',
+                                position: 'inside'
+                            }
+                        }
+                    }],
+                    label: {
+                        show: true,
+                        formatter: function (params) {
+                            return params.name + ': ' + params.percent + ' %, ' + params.value;
+                        }
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     }
+                }
                 ]
             };
 
@@ -850,7 +860,7 @@ var graphicMixins = {
                         name_project: data_project['categorias'][0],
                         legends: this.names_legends.slice(2, 4),
                         legends_colors: [this.colors.women, this.colors.men],
-                        goals_data: [
+                        target_data: [
                             data_project['series'][0]['data'][0],// goal men
                             data_project['series'][2]['data'][0],// goal women
                         ],
@@ -880,7 +890,7 @@ var graphicMixins = {
                         xAxis: [{
                             show: true,
                             position: 'bottom',
-                            name: gettext('Participants'),
+                            name: this.label_participants,
                             nameLocation: 'middle',
                             nameGap: 30,
                         }],
@@ -893,7 +903,7 @@ var graphicMixins = {
                             axisLabel: {
                                 textStyle: {
                                     color: '#000',
-                                    fontSize: data_project.font_size,
+                                    fontSize: data_chart.font_size,
                                 },
                             },
                             data: ['', '']
@@ -916,16 +926,7 @@ var graphicMixins = {
                             name: data_chart.legends[0],
                             type: 'bar',
                             data: data_chart.scope_data,
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'right',
-                                    textStyle: {
-                                        color: '#000',
-                                        fontSize: data_project.font_size,
-                                    }
-                                }
-                            },
+                            label: this.label_project_subproject,
                             barWidth: 30,
                             itemStyle: {
                                 normal: {
@@ -938,7 +939,7 @@ var graphicMixins = {
                             type: 'bar',
                             yAxisIndex: 1,
                             barGap: '-100%',
-                            data: data_chart.goals_data,
+                            data: data_chart.target_data,
                             barWidth: 60,
                             itemStyle: {
                                 normal: {
@@ -950,8 +951,103 @@ var graphicMixins = {
                     };
 
                     chart_goal_project.setOption(option);
-                    this.responsiveChart('', chart_goal_project);
+                    this.responsiveChart('#tabs_projects-click', chart_goal_project);
                 });
+        },
+        graphicGoalSubproject(name_subproject) {
+            let chart_subproject = echarts.init(document.getElementById('SubprojectGoalsGraph'));
+            let data_chart = {
+                name_project: name_subproject,
+                legends: this.names_legends.slice(2, 4),
+                legends_colors: [this.colors.women, this.colors.men],
+                target_data: this.data_subproject_graph.target_data,
+                actual_data: this.data_subproject_graph.actual_data,
+                font_size: 16,
+            };
+
+            let option = {
+                toolbox: this.setToolBox(name_subproject),
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: data_chart.legends,
+                    top: '40',
+                    icon: 'roundRect',
+                    center: 'right',
+                    color: data_chart.legends_colors,
+                },
+                xAxis: [{
+                    show: true,
+                    position: 'bottom',
+                    name: this.label_participants,
+                    nameLocation: 'middle',
+                    nameGap: 30,
+                }],
+                yAxis: [{
+                    show: true,
+                    position: 'botton',
+                    name: data_chart.name_project,
+                    nameLocation: 'middle',
+                    axisTick: 'none',
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000',
+                            fontSize: data_chart.font_size,
+                        },
+                    },
+                    data: ['', '']
+                }, {
+                    show: false,
+                    axisTick: 'none',
+                    axisLine: 'none',
+                    axisLabel: {
+                        textStyle: {
+                            color: '#000',
+                            fontSize: data_chart.font_size,
+                        },
+                        margin: 30
+                    },
+                    data: this.names_legends.slice(0, 2)
+                }, {
+                    data: []
+                }],
+                series: [{
+                    name: data_chart.legends[0],
+                    type: 'bar',
+                    data: data_chart.actual_data,
+                    label: this.label_project_subproject,
+                    barWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color: data_chart.legends_colors[0]
+                        }
+                    },
+                    z: 2
+                }, {
+                    name: data_chart.legends[1],
+                    type: 'bar',
+                    yAxisIndex: 1,
+                    barGap: '-100%',
+                    data: data_chart.target_data,
+                    barWidth: 60,
+                    itemStyle: {
+                        normal: {
+                            color: data_chart.legends_colors[1]
+                        }
+                    },
+                    z: 1
+                }]
+            };
+
+            chart_subproject.setOption(option);
+            this.responsiveChart('#tabs_projects-click', chart_subproject);
+            setTimeout(function () {
+                $('#tabs_projects-click').children('li').eq(1).find('a').trigger('click');
+            }, 500);
         },
         graphicStackedLine() {
             const myChart = echarts.init(document.getElementById('StackedLine'));
@@ -1124,7 +1220,6 @@ var graphicMixins = {
                     instance_echarts.resize();
                 });
             }
-
 
             window.addEventListener('resize', function (event) {
                 let width = document.documentElement.clientWidth;

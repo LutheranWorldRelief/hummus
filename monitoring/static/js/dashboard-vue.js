@@ -38,6 +38,17 @@ var app = new Vue({
         btnClick: false,
         filterByUrl: false,
         currentUrl:null,
+        class_tabs_container: {
+            'container-fluid': false,
+            'tab-pane': false,
+            'active': false,
+            'fade': false,
+            'show': false
+        },
+        data_subproject_graph: {
+            target_data: [],
+            actual_data: []
+        },
         /** Var gráfico participantes por año fiscal*/
         anios: [], hombres: [], mujeres: [], tatals: {}, totalByBar: [], defauldSerie: [], targets_year: [],
         targets_women: [], targets_men: [],
@@ -77,8 +88,17 @@ var app = new Vue({
                 $('#tab_quarter-click').children('li').eq(0).find('a').trigger('click');
             }, 1000);
         },
-        'formInputs.subproject_id': function () {
+        'formInputs.subproject_id': function (value) {
+
+            for (const key in this.class_tabs_container) {
+                this.class_tabs_container[key] = (value !== null);
+            }
+
             this.loadDataWithFilters();
+
+            if (value) {
+                this.graphicGoalSubproject(value.name);
+            }
         },
         'formInputs.country_id': function () {
             this.loadDataWithFilters();
@@ -223,10 +243,17 @@ var app = new Vue({
                 .then( function (response) {
 
                     contentVue.createUrl(this.url);
-
                     let targets = response.totals;
                     let target_years = response.year;
-                    contentVue.goal_participants = targets.T;
+                    //set the global target Total
+                    contentVue.goal_participants = contentVue.setZero(targets.T);
+                    //set the global target by gender in array
+                    contentVue.data_subproject_graph.target_data = [];
+                    contentVue.data_subproject_graph.target_data.push(
+                        contentVue.setZero(targets.F),
+                        contentVue.setZero(targets.M)
+                    );
+                    //set the targets(Total,Male & Female) by year
                     contentVue.targets_year = [];
                     for (const year in target_years) {
                         contentVue.targets_men.push(contentVue.setZero(target_years[year].M));
@@ -255,8 +282,16 @@ var app = new Vue({
                         this.defauldSerie.push(0);
                     }
 
+
                     //NOTE: calculating the number of participants
                     this.quantity_participants = this.setZero(this.tatals.T);
+                    //set the quantity of participats by gender in array
+                    this.data_subproject_graph.actual_data = [];
+                    this.data_subproject_graph.actual_data.push(
+                        this.setZero(this.tatals.F),
+                        this.setZero(this.tatals.M)
+                    );
+
                     // calculating the percentage for the progress bar
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
                     this.width_progress_bar.width = this.goal_percentage + '%';
