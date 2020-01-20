@@ -308,7 +308,7 @@ def cantidad_subproyectos(request):
                   'from_date': 'start__gte',
                   'to_date': 'start__lte'}
     filter_kwargs = filter_by(parameters, request)
-    #if request.user and hasattr(queryset.model.objects, 'for_user'):
+    # if request.user and hasattr(queryset.model.objects, 'for_user'):
     #    queryset = queryset.for_user(request.user)
 
     subproyectos = queryset.\
