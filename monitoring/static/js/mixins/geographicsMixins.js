@@ -61,9 +61,12 @@ var geographicsMixins = {
                     this.dataTableGeographic = [];
 
                     data.participants.forEach((country_data) => {
-                        let data = this.list_countries.find((item) => {
+                        let country = this.list_countries.find((item) => {
                             return item.name === country_data.name;
                         });
+
+                        console.log(this.list_countries);
+                        console.log(country);
 
                         this.dataTableGeographic.push({
                             id: country_data.id,
@@ -72,8 +75,8 @@ var geographicsMixins = {
                             total_participants: country_data.total,
                             total_target: country_data.total_target,
                             percentage_participants: country_data.percentage.toFixed(2),
-                            projects: data.projects,
-                            subprojects: data.subprojects,
+                            projects: country.projects,
+                            subprojects: country.subprojects,
                         });
                     });
 
