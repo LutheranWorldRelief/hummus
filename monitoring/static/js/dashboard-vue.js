@@ -38,6 +38,7 @@ var app = new Vue({
         btnClick: false,
         filterByUrl: false,
         currentUrl: null,
+        text_tooltip: 'Click to copy in clipboard',
         class_tabs_container: {
             'container-fluid': false,
             'tab-pane': false,
@@ -525,6 +526,13 @@ var app = new Vue({
                 return 0;
 
             return data
+        },
+        copyLink() {
+            let copyURL = document.getElementById('urlCopy');
+
+            copyURL.select();
+            copyURL.setSelectionRange(0, 99999);
+            document.execCommand("copy");
         }
     }
 });

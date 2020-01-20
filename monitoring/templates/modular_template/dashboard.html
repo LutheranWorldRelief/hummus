@@ -80,9 +80,14 @@
                                 </small>
                             </div>
                             <div class="header-block">
-                                <h3 class="title">{% trans 'Show' %}</h3>
+                                <input v-model="currentUrl" type="hidden" id="urlCopy">
+                                <h3 class="title">{% trans 'Share' %}</h3>
                                 <small>
-                                    <a :href="currentUrl">
+                                    <a href="javascript:;" data-toggle="tooltip" data-placement="top"
+                                       data-html="true"
+                                       v-bind:title="text_tooltip"
+                                       v-on:click="copyLink"
+                                       id="action_copy">
                                         <i class="fa fa-link"></i>
                                         {% trans 'Link' %}
                                     </a>
@@ -275,6 +280,9 @@
             countries_data = {{ countries|safe }};
         {% endif %}
 
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
 
     </script>
     <script src="{% static 'leaflet/dist/leaflet.js' %}"></script>
