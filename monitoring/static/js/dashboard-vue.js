@@ -15,13 +15,12 @@ var app = new Vue({
             quarter: quarter,
             from_date: '',
             to_date: '',
-            mydashboard: null,
+            my_dashboard: my_dashboard,
         },
         requestParameters: {
             extra_counters: 1
         },
         spin_refresh_icon: false,
-        switch_button: false,
         list_projects: [],
         list_countries: [],
         list_lwrregions: [],
