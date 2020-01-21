@@ -8,13 +8,15 @@
 
     {% if request.resolver_match.url_name == 'dashboard' %}
         <div class="header-block header-block-buttons">
-            <div class="checkbox switcher input m-1" style="display: inline">
-                <label for="test1">
-                    <input type="checkbox" id="test1" value="">
-                    <span><small></small></span>
-                    <span>{% trans 'My dashboard' %}</span>
-                </label>
-            </div>
+            {% if query_string %}
+                <div class="checkbox switcher input m-1" style="display: inline">
+                    <label for="test1">
+                        <input type="checkbox" id="test1" value="" data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
+                        <span><small></small></span>
+                        <span>{% trans 'My dashboard' %}</span>
+                    </label>
+                </div>
+            {% endif %}
             <a href="javascript:;" data-toggle="tooltip" data-placement="top"
                data-html="true" style="display: inline"
                v-bind:title="text_tooltip"
