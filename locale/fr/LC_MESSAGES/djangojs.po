@@ -4,16 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Ruddy Mora <rmora.alvarado@gmail.com>, 2019
+# Ruddy Mora <rmora.alvarado@gmail.com>, 2020
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-16 15:39+0000\n"
+"POT-Creation-Date: 2020-01-21 20:48+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
-"Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2019\n"
+"Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2020\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,612 +21,91 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: monitoring/static/js/fileinput.js:4522
-msgid "file"
-msgstr "fichier"
-
-#: monitoring/static/js/fileinput.js:4523
-msgid "files"
-msgstr "des dossiers"
-
-#: monitoring/static/js/fileinput.js:4524
-msgid "Browse &hellip;"
-msgstr "Feuilleter"
-
-#: monitoring/static/js/fileinput.js:4525
-msgid "Remove"
-msgstr "Retirer"
-
-#: monitoring/static/js/fileinput.js:4526
-msgid "Clear selected files"
-msgstr "Effacer les fichiers sélectionnés"
-
-#: monitoring/static/js/fileinput.js:4527
-msgid "Cancel"
-msgstr "Annuler"
-
-#: monitoring/static/js/fileinput.js:4528
-msgid "Abort ongoing upload"
-msgstr "Abandonner le téléchargement en cours"
-
-#: monitoring/static/js/fileinput.js:4529
-msgid "Upload"
-msgstr "Télécharger"
-
-#: monitoring/static/js/fileinput.js:4530
-msgid "Upload selected files"
-msgstr "Télécharger les fichiers sélectionnés"
-
-#: monitoring/static/js/fileinput.js:4531
-msgid "No"
-msgstr "Non"
-
-#: monitoring/static/js/fileinput.js:4532
-msgid "No files selected"
-msgstr "Aucun fichier sélectionné"
-
-#: monitoring/static/js/fileinput.js:4533
-msgid "Cancelled"
-msgstr "Annulé"
-
-#: monitoring/static/js/fileinput.js:4534
-msgid "Select {files}..."
-msgstr "Sélectionnez les  {files}..."
-
-#: monitoring/static/js/fileinput.js:4535
-msgid "Detailed Preview"
-msgstr "Aperçu détaillé"
-
-#: monitoring/static/js/fileinput.js:4536
-msgid "You must select a file to upload."
-msgstr "Vous devez sélectionner un fichier à télécharger."
-
-#: monitoring/static/js/fileinput.js:4537
-msgid ""
-"File \"{name}\" (<b>{size} KB</b>) is too small and must be larger than "
-"<b>{minSize} KB</b>."
-msgstr ""
-"Le fichier \"{name}\" <b>({size} KB</b>) est trop petit et doit être "
-"supérieur à <b>{minSize} KB</b>."
-
-#: monitoring/static/js/fileinput.js:4538
-msgid ""
-"File \"{name}\" (<b>{size} KB</b>) exceeds maximum allowed upload size of "
-"<b>{maxSize} KB</b>."
-msgstr ""
-"Le fichier \"{name}\" (<b>{size} KB</b>) dépasse la taille de téléchargement"
-" maximale autorisée de <b>{maxSize} KB</b>."
-
-#: monitoring/static/js/fileinput.js:4539
-msgid "You must select at least <b>{n}</b> {files} to upload."
-msgstr "Vous devez sélectionner au moins <b>{n}</b> {files} à télécharger."
-
-#: monitoring/static/js/fileinput.js:4540
-msgid ""
-"Number of files selected for upload <b>({n})</b> exceeds maximum allowed "
-"limit of <b>{m}</b>."
-msgstr ""
-"Nombre de fichiers sélectionnés pour le téléchargement<b>({n})</b>dépasse la"
-" limite maximale autorisée de<b>{m}</b>."
-
-#: monitoring/static/js/fileinput.js:4541
-msgid "File \"{name}\" not found!"
-msgstr "Fichier \"{name}\" non trouvé!"
-
-#: monitoring/static/js/fileinput.js:4542
-msgid "Security restrictions prevent reading the file \"{name}\"."
-msgstr "Les restrictions de sécurité empêchent la lecture du fichier \"{name}\"."
-
-#: monitoring/static/js/fileinput.js:4543
-msgid "File \"{name}\" is not readable."
-msgstr "Le fichier \"{name}\" n'est pas lisible."
-
-#: monitoring/static/js/fileinput.js:4544
-msgid "File preview aborted for \"{name}\"."
-msgstr "L'aperçu du fichier a été abandonné pour \"{name}\"."
-
-#: monitoring/static/js/fileinput.js:4545
-msgid "An error occurred while reading the file \"{name}\"."
-msgstr "Une erreur s'est produite lors de la lecture du fichier \"{name}\"."
-
-#: monitoring/static/js/fileinput.js:4546
-msgid "Invalid or unsupported characters in file name \"{name}\"."
-msgstr ""
-"Caractères non valides ou non pris en charge dans le nom de fichier "
-"\"{name}\"."
-
-#: monitoring/static/js/fileinput.js:4547
-msgid "Invalid type for file \"{name}\". Only \"{types}\" files are supported."
-msgstr ""
-"Type non valide pour le fichier \"{name}\". Seuls les fichiers \"{types}\" "
-"sont pris en charge."
-
-#: monitoring/static/js/fileinput.js:4548
-msgid ""
-"Invalid extension for file \"{name}\". Only \"{extensions}\" files are "
-"supported."
-msgstr ""
-"Extension non valide pour le fichier \"{name}\". Seuls les fichiers "
-"\"{extensions}\" sont pris en charge."
-
-#: monitoring/static/js/fileinput.js:4550
-msgid "image"
-msgstr "image"
-
-#: monitoring/static/js/fileinput.js:4551
-msgid "HTML"
-msgstr "HTML"
-
-#: monitoring/static/js/fileinput.js:4552
-msgid "text"
-msgstr "texte"
-
-#: monitoring/static/js/fileinput.js:4553
-msgid "video"
-msgstr "vidéo"
-
-#: monitoring/static/js/fileinput.js:4554
-msgid "audio"
-msgstr "l'audio"
-
-#: monitoring/static/js/fileinput.js:4555
-msgid "flash"
-msgstr "flash"
-
-#: monitoring/static/js/fileinput.js:4556
-msgid "PDF"
-msgstr "PDF"
-
-#: monitoring/static/js/fileinput.js:4557
-msgid "object"
-msgstr "objet"
-
-#: monitoring/static/js/fileinput.js:4559
-msgid "The file upload was aborted"
-msgstr "Le téléchargement du fichier a été annulé"
-
-#: monitoring/static/js/fileinput.js:4560
-msgid "Processing..."
-msgstr "En traitement..."
-
-#: monitoring/static/js/fileinput.js:4561
-msgid "Initializing..."
-msgstr "Initialisation ..."
-
-#: monitoring/static/js/fileinput.js:4562
-msgid "Done"
-msgstr "Terminé"
-
-#: monitoring/static/js/fileinput.js:4563
-msgid "No valid data available for upload."
-msgstr "Aucune donnée valide disponible pour le téléchargement."
-
-#: monitoring/static/js/fileinput.js:4564
-msgid "Error"
-msgstr "Erreur"
-
-#: monitoring/static/js/fileinput.js:4565
-msgid "Validation Error"
-msgstr "erreur de validation"
-
-#: monitoring/static/js/fileinput.js:4566
-msgid "Loading file {index} of {files} &hellip;"
-msgstr "Chargement du fichier {index} sur {files}"
-
-#: monitoring/static/js/fileinput.js:4567
-msgid "Loading file {index} of {files} - {name} completed."
-msgstr "Chargement du fichier {index} sur {files} - {name} terminé."
-
-#: monitoring/static/js/fileinput.js:4568
-msgid "{n} {files} selected"
-msgstr "{n} {files} sélectionnés"
-
-#: monitoring/static/js/fileinput.js:4569
-msgid "Drag & drop files only! not folder(s)."
-msgstr "Glisser-déposer des fichiers uniquement! pas de dossier(s)."
-
-#: monitoring/static/js/fileinput.js:4570
-msgid "Width of image file \"{name}\" must be at least {size} px."
-msgstr "La largeur du fichier image \"{name}\" doit être d'au moins {size} px."
-
-#: monitoring/static/js/fileinput.js:4571
-msgid "Height of image file \"{name}\" must be at least {size} px."
-msgstr "La hauteur du fichier image \"{name}\" doit être au moins {size} px."
-
-#: monitoring/static/js/fileinput.js:4572
-msgid "Width of image file \"{name}\" cannot exceed {size} px."
-msgstr "La largeur du fichier image \"{name}\" ne peut pas dépasser {size} px."
-
-#: monitoring/static/js/fileinput.js:4573
-msgid "Height of image file \"{name}\" cannot exceed {size} px."
-msgstr "La hauteur du fichier image \"{name}\" ne peut pas dépasser {size} px."
-
-#: monitoring/static/js/fileinput.js:4574
-msgid "Could not get the image dimensions to resize."
-msgstr "Impossible de redimensionner les dimensions de l'image."
-
-#: monitoring/static/js/fileinput.js:4575
-msgid "Error while resizing the image.<pre>{errors}</pre>"
-msgstr "Erreur lors du redimensionnement de l'image. <pre>{Erreurs}</pre>"
-
-#: monitoring/static/js/fileinput.js:4576
-msgid "Something went wrong with the {operation} operation."
-msgstr "Quelque chose s'est mal passé lors de l'opération {operation}."
-
-#: monitoring/static/js/fileinput.js:4577
-msgid "{operation} failed"
-msgstr "{operation} échoué"
-
-#: monitoring/static/js/fileinput.js:4579
-msgid "file delete"
-msgstr "suppression de fichier"
-
-#: monitoring/static/js/fileinput.js:4580
-msgid "file upload"
-msgstr "téléchargement de fichiers"
-
-#: monitoring/static/js/fileinput.js:4581
-msgid "batch file upload"
-msgstr "envoi de fichiers par lots"
-
-#: monitoring/static/js/fileinput.js:4582
-msgid "form data upload"
-msgstr "formulaire de téléchargement de données"
-
-#: monitoring/static/js/fileinput.js:4584
-msgid "Drag & drop files here &hellip;"
-msgstr "Glisser-déposer les fichiers ici"
-
-#: monitoring/static/js/fileinput.js:4585
-msgid "<br>(or click to select {files})"
-msgstr "<br>(ou cliquez pour sélectionner {files})"
-
-#: monitoring/static/js/fileinput.js:4587
-msgid "View previous file"
-msgstr "Voir le fichier précédent"
-
-#: monitoring/static/js/fileinput.js:4588
-msgid "View next file"
-msgstr "Voir le fichier suivant"
-
-#: monitoring/static/js/fileinput.js:4589
-msgid "Toggle header"
-msgstr "Basculer l'en-tête"
-
-#: monitoring/static/js/fileinput.js:4590
-msgid "Toggle full screen"
-msgstr "Passer en plein écran"
-
-#: monitoring/static/js/fileinput.js:4591
-msgid "Toggle borderless mode"
-msgstr "Basculer en mode sans bordure"
-
-#: monitoring/static/js/fileinput.js:4592
-msgid "Close detailed preview"
-msgstr "Fermer l'aperçu détaillé"
-
-#: monitoring/static/js/fileinput.min.js:10
-msgid "generic"
-msgstr "générique"
-
-#: monitoring/static/js/lib/highcharts/lib/svg2pdf.js:24
-msgid "_"
-msgstr "_"
-
-#: monitoring/static/js/script/dashboard_index.js:360
-msgid "Activities"
-msgstr "Activités"
-
-#: monitoring/static/js/script/dashboard_index.js:362
-#: monitoring/static/js/script/dashboard_index.js:410
-#: monitoring/static/js/script/dashboard_index.js:497
-#: monitoring/static/js/script/dashboard_index.js:541
-msgid "Amount of people"
-msgstr "Nombre de personnes"
-
-#: monitoring/static/js/script/dashboard_index.js:372
-#: monitoring/static/js/script/dashboard_index.js:420
-#: monitoring/static/js/script/dashboard_index.js:508
-#: monitoring/static/js/script/dashboard_index.js:551
-msgid "<b>Participants</b><br/>"
-msgstr "<b>Participants</b><br/>"
-
-#: monitoring/static/js/script/dashboard_index.js:373
-#: monitoring/static/js/script/dashboard_index.js:421
-#: monitoring/static/js/script/dashboard_index.js:464
-#: monitoring/static/js/script/dashboard_index.js:509
-#: monitoring/static/js/script/dashboard_index.js:552
-msgid "Total:"
-msgstr "Total:"
-
-#: monitoring/static/js/script/dashboard_index.js:404
-msgid "PARTICIPANTS BY TYPE OF PERSON"
-msgstr "PARTICIPANTS PAR TYPE DE PERSONNE"
-
-#: monitoring/static/js/script/dashboard_index.js:407
-msgid "Types"
-msgstr "Les types"
-
-#: monitoring/static/js/script/dashboard_index.js:447
-msgid "PARTICIPANTS BY AGE"
-msgstr "PARTICIPANTS PAR ÂGE"
-
-#: monitoring/static/js/script/dashboard_index.js:450
-msgid "Ages"
-msgstr "Âge"
-
-#: monitoring/static/js/script/dashboard_index.js:490
-msgid "PARTICIPANTS BY FISCAL YEAR"
-msgstr "PARTICIPANTS PAR ANNÉE FISCALE"
-
-#: monitoring/static/js/script/dashboard_index.js:493
-msgid "Years"
-msgstr "Ans"
-
-#: monitoring/static/js/script/dashboard_index.js:535
-msgid "PARTICIPANTS BY EDUCATION"
-msgstr "PARTICIPANTS PAR EDUCATION"
-
-#: monitoring/static/js/script/dashboard_index.js:538
-msgid "Education"
-msgstr "Éducation"
-
-#: monitoring/static/js/script/dashboard_index.js:574
-#: monitoring/static/js/script/dashboard_index.js:668
-msgid "Participants by Nationality"
-msgstr "Participants par nationalité"
-
-#: monitoring/static/js/script/dashboard_index.js:580
-msgid "Geographic location of participants"
-msgstr "Localisation géographique des participants"
-
-#: monitoring/static/js/script/dashboard_index.js:680
-msgid "<b>Participants "
-msgstr "<b>Participants"
-
-#: monitoring/static/js/script/dashboard_index.js:682
-#: monitoring/static/js/script/dashboard_index.js:756
-#: monitoring/static/js/script/dashboard_index.js:823
-#: monitoring/static/js/script/dashboard_index.js:1075
-msgid "Men"
-msgstr "Hommes"
-
-#: monitoring/static/js/script/dashboard_index.js:683
-#: monitoring/static/js/script/dashboard_index.js:760
-#: monitoring/static/js/script/dashboard_index.js:826
-#: monitoring/static/js/script/dashboard_index.js:1078
-msgid "Women"
-msgstr "Femmes"
-
-#: monitoring/static/js/script/dashboard_index.js:697
-msgid "<br/><b>Total Participants: </b>"
-msgstr "<br/><b>Nombre total de participants:</b>"
-
-#: monitoring/static/js/script/dashboard_index.js:700
-msgid "<br/><b>Events: </b>"
-msgstr "<br/><b>Événements:</b>"
-
-#: monitoring/static/js/script/dashboard_index.js:802
-msgid "Participants reached, by sex"
-msgstr "Participants atteints, par sexe"
-
-#: monitoring/static/js/script/dashboard_index.js:803
-msgid "Total amount"
-msgstr "Montant total"
-
-#: monitoring/static/js/script/dashboard_index.js:820
-#: monitoring/static/js/script/dashboard_index.js:833
+#: monitoring/static/js/mixins/geographicsMixins.js:40
+msgid "Country"
+msgstr "Pays"
+
+#: monitoring/static/js/mixins/geographicsMixins.js:41
+#: monitoring/static/js/mixins/graphicMixins.js:18
 msgid "Participants"
 msgstr "Participants"
 
-#: monitoring/static/js/script/dashboard_index.js:843
-msgid "ORGANIZATIONS"
-msgstr "ORGANISATIONS"
+#: monitoring/static/js/mixins/geographicsMixins.js:42
+msgid "Percentage"
+msgstr "Pourcentage"
 
-#: monitoring/static/js/script/dashboard_index.js:844
-msgid "total, in"
-msgstr "total, en"
+#: monitoring/static/js/mixins/geographicsMixins.js:43
+msgid "Hover over a country"
+msgstr "Survolez un pays"
 
-#: monitoring/static/js/script/dashboard_index.js:844
-msgid "Categories"
-msgstr "Les catégories"
+#: monitoring/static/js/mixins/geographicsMixins.js:44
+msgid "Projects"
+msgstr "Projets"
 
-#: monitoring/static/js/script/dashboard_index.js:865
-msgid "Organizations"
-msgstr "Les organisations"
+#: monitoring/static/js/mixins/geographicsMixins.js:45
+msgid "Subprojects"
+msgstr "Sous-projets"
 
-#: monitoring/static/js/script/dashboard_index.js:883
-msgid "Total participants achieved and goals, by sex"
-msgstr "Nombre total de participants atteints et objectifs, par sexe"
+#: monitoring/static/js/mixins/graphicMixins.js:13
+#: monitoring/static/js/mixins/graphicMixins.js:387
+#: monitoring/static/js/mixins/graphicMixins.js:1126
+msgid "Men"
+msgstr "Hommes"
 
-#: monitoring/static/js/script/dashboard_index.js:890
-msgid "Persons"
-msgstr "Personnes"
+#: monitoring/static/js/mixins/graphicMixins.js:14
+#: monitoring/static/js/mixins/graphicMixins.js:1127
+msgid "Women"
+msgstr "Femmes"
 
-#: monitoring/static/js/script/dashboard_index.js:910
-msgid "Goals"
-msgstr "Objectifs"
+#: monitoring/static/js/mixins/graphicMixins.js:15
+msgid "Actual"
+msgstr "Réel"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:4
-msgid "Return"
-msgstr "Revenir"
+#: monitoring/static/js/mixins/graphicMixins.js:16
+#: monitoring/static/js/mixins/graphicMixins.js:1084
+#: monitoring/static/js/mixins/graphicMixins.js:1128
+msgid "Target"
+msgstr "Cible"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "January"
-msgstr "Janvier"
+#: monitoring/static/js/mixins/graphicMixins.js:387
+msgid "Woman"
+msgstr "Femme"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "February"
-msgstr "Février"
+#: monitoring/static/js/mixins/graphicMixins.js:387
+msgid "Target Women"
+msgstr "Cibler les femmes"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "March"
-msgstr "Mars"
+#: monitoring/static/js/mixins/graphicMixins.js:387
+msgid "Target Men"
+msgstr "Cibler les hommes"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "April"
-msgstr "Avril"
+#: monitoring/static/js/mixins/graphicMixins.js:533
+msgid "total"
+msgstr "total"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "May"
-msgstr "Mai"
+#: monitoring/static/js/mixins/graphicMixins.js:691
+msgid "Total"
+msgstr "Total"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "June"
-msgstr "Juin"
+#: monitoring/static/js/mixins/graphicMixins.js:1245
+msgid "Restore"
+msgstr "Restaurer"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "July"
-msgstr "Juillet"
+#: monitoring/static/js/mixins/graphicMixins.js:1248
+msgid "Download as image"
+msgstr "Télécharger comme image"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "August"
-msgstr "Août"
+#: monitoring/static/js/mixins/graphicMixins.js:1251
+msgid "Show data"
+msgstr "Afficher les données"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "September"
-msgstr "Septembre"
+#: monitoring/static/js/mixins/graphicMixins.js:1253
+msgid "Close"
+msgstr "Fermer"
 
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "October"
-msgstr "Octobre"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "November"
-msgstr "Novembre"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:5
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:103
-msgid "December"
-msgstr "Décembre"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Jan"
-msgstr "Janv"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Feb"
-msgstr "Févr"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Mar"
-msgstr "Mars"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Apr"
-msgstr "Avril"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Jun"
-msgstr "Juin"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Jul"
-msgstr "Juil"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Aug"
-msgstr "Août"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Sept"
-msgstr "Sept"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Oct"
-msgstr "Oct"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Nov"
-msgstr "Nov"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:6
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:104
-msgid "Dec"
-msgstr "Déc"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:7
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:105
-msgid "File PDF"
-msgstr "Fichier PDF"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:8
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:106
-msgid "Image JPEG"
-msgstr "Image JPEG"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:9
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:107
-msgid "Image PNG"
-msgstr "Image PNG"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:10
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:108
-msgid "Image SVG"
-msgstr "Image SVG"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:11
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:109
-msgid "Print Chart"
-msgstr "Imprimer le graphique"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:12
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:13
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:110
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:111
-msgid "Reset Zoom"
-msgstr "Réinitialiser le zoom"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:14
-msgid "Download CSV"
-msgstr "Télécharger le CSV"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:15
-msgid "Download Excel XLS"
-msgstr "Télécharger Excel XLS"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:16
-msgid "Open in Highcharts Cloud"
-msgstr "Ouvrir dans Highcharts Nuage"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:17
-msgid "Display data table"
-msgstr "Afficher le tableau de données"
-
-#: monitoring/static/js/servicios_angular/highcharts.optiones.js:117
-msgid "All rights reserved LWR"
-msgstr "Tous droits réservés LWR"
-
-#: monitoring/static/js/validation_data_import.js:10
-msgid "Show only records with missing data"
-msgstr "Afficher uniquement les enregistrements avec des données manquantes"
-
-#: monitoring/static/js/validation_data_import.js:11
-msgid "Show all records"
-msgstr "Afficher tous les enregistrements"
+#: monitoring/static/js/mixins/graphicMixins.js:1253
+msgid "Apply"
+msgstr "Appliquer"
 
 #: monitoring/static/js/vue/contact.merge.document.js:85
 msgid "Problem loading tags"
