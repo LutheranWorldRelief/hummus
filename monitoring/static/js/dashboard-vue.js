@@ -21,6 +21,7 @@ var app = new Vue({
             extra_counters: 1
         },
         spin_refresh_icon: false,
+        switch_button: false,
         list_projects: [],
         list_countries: [],
         list_lwrregions: [],

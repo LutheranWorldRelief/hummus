@@ -11,9 +11,9 @@
             {% if query_string %}
                 <div class="checkbox switcher input m-1" style="display: inline">
                     <label for="test1">
-                        <input type="checkbox" id="test1" value="" data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
+                        <input v-model="switch_button" type="checkbox" id="test1" value="" data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
                         <span><small></small></span>
-                        <span>{% trans 'My dashboard' %}</span>
+                        <span :class="{'text-muted': !switch_button, 'text-dark': switch_button }">{% trans 'My dashboard' %}</span>
                     </label>
                 </div>
             {% endif %}

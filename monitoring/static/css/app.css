@@ -2860,7 +2860,7 @@ div.checkbox.switcher label input + span small, div.radio.switcher label input +
   left: 0;
 }
 div.checkbox.switcher label input:checked + span, div.radio.switcher label input:checked + span {
-  background: #269bff;
-  border-color: #269bff;
+  background: #93D228;
+  border-color: #93D228;
 }
 div.checkbox.switcher label input:checked + span small, div.radio.switcher label input:checked + span small {  left: 50%;}
