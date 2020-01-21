@@ -263,7 +263,7 @@ except ImportError:
 try:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
-    if env('SENTRY_DSN', default=False):
+    if env('SENTRY_DSN', default=None):
         sentry_sdk.init(
             dsn=env('SENTRY_DSN'),
             integrations=[DjangoIntegration()]
