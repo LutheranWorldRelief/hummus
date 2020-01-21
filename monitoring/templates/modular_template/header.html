@@ -8,28 +8,23 @@
 
     {% if request.resolver_match.url_name == 'dashboard' %}
         <div class="header-block header-block-buttons">
-            {# Regions options #}
-            {% trans 'Filter By' %}:
-            {% verbatim %}
-            <button v-for="region,index in list_lwrregions" type="button" class="btn btn-sm icon m-1"
-                    :class="{ 'btn-success': region.active, 'btn-color-1': (index === 0),
-                     'btn-color-2': (index === 1), 'btn-color-3': (index === 2),
-                     'btn-color-4': (index === 3) }"
-                    v-on:click="changeActiveStatusAndFilter(region,'region')">
-                <i class="fa" :class="{'fa-check': region.active}"></i>
-                <span>{{ region.name }}</span>
-            </button>
-            {% endverbatim %}
+            <div class="checkbox switcher input m-1" style="display: inline">
+                <label for="test1">
+                    <input type="checkbox" id="test1" value="">
+                    <span><small></small></span>
+                    <span>{% trans 'My dashboard' %}</span>
+                </label>
+            </div>
+            <a href="javascript:;" data-toggle="tooltip" data-placement="top"
+               data-html="true" style="display: inline"
+               v-bind:title="text_tooltip"
+               v-on:click="copyLink"
+               class="pull-right not-sub ml-2"
+               id="action_copy">
+                <i class="fa fa-share-alt icon-share"></i>
+                {% trans 'Share Link' %}
+            </a>
         </div>
-        <a href="javascript:;" data-toggle="tooltip" data-placement="top"
-           data-html="true"
-           v-bind:title="text_tooltip"
-           v-on:click="copyLink"
-           class="pull-right not-sub"
-           id="action_copy">
-            <i class="fa fa-share-alt icon-share"></i>
-            {% trans 'Share Link' %}
-        </a>
     {% endif %}
 
     <div class="header-block header-block-nav">
