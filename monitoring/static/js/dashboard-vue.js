@@ -79,7 +79,6 @@ var app = new Vue({
             this.loadDataWithFilters();
         },
         'formInputs.project_id': function (object) {
-            this.loadSubprojects(object);
 
             $('#tab_quarter-click').children('li').eq(3).find('a').trigger('click');
 
@@ -163,25 +162,22 @@ var app = new Vue({
         });
     },
     methods: {
-        loadSubprojects(object) {
+        loadSubprojects() {
+            let project_id = this.requestParameters['project_id'];
+            // NOTE: new_url content example = http://localhost/api/subproject/project/1/
+            let new_url = `/api/subprojects/project/${project_id}/`;
 
-            if (!this.empty(object)) {
-                let project_id = object.value;
-                // NOTE: new_url content example = http://localhost/api/subproject/project/1/
-                let new_url = `/api/subprojects/project/${project_id}/`;
-
-                $.get(new_url)
-                    .then(response => {
-                        let data = response.object_list;
-                        this.list_subprojects = [];
-                        for (const subproject of data) {
-                            this.list_subprojects.push({
-                                name: subproject['name'],
-                                value: subproject['id']
-                            })
-                        }
-                    });
-            }
+            $.get(new_url)
+                .then(response => {
+                    let data = response.object_list;
+                    this.list_subprojects = [];
+                    for (const subproject of data) {
+                        this.list_subprojects.push({
+                            name: subproject['name'],
+                            value: subproject['id']
+                        })
+                    }
+                });
         },
         loadDataWithFilters() {
             this.getValueOfFilter()
@@ -196,6 +192,7 @@ var app = new Vue({
             if (this.formInputs.project_id) {
                 //function to graph a Chart with Goal and Scope of Women and Men
                 this.graphicGoalProject();
+                this.loadSubprojects();
             }
 
             $.get(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
