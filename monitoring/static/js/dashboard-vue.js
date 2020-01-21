@@ -15,7 +15,7 @@ var app = new Vue({
             quarter: quarter,
             from_date: '',
             to_date: '',
-            mydashboard: null,
+            my_dashboard: my_dashboard,
         },
         requestParameters: {
             extra_counters: 1
@@ -113,6 +113,12 @@ var app = new Vue({
         },
         'formInputs.to_date': function () {
             this.loadDataWithFilters();
+        },
+        'formInputs.my_dashboard': function (value) {
+            if (value) {
+                let switch_button = document.getElementById('change_url');
+                window.location.href = switch_button.getAttribute('data-uri');
+            }
         }
     },
     created() {

@@ -70,29 +70,46 @@
                         <div class="card-header card-header-sm bordered">
                             <div class="header-block">
                                 <h3 class="title">{% trans 'Filters' %}</h3>
-                                <small v-on:mouseover="spin_refresh_icon = true"
-                                       v-on:mouseout="spin_refresh_icon = false"
-                                       v-on:click="clearFilters()">
-                                    <a href="javascript:;">
-                                        <i class="fa fa-refresh" :class="{'fa-spin': spin_refresh_icon }"></i>
-                                        {% trans 'Clear filters' %}
-                                    </a>
-                                </small>
+                                {% verbatim %}
+                                <button v-for="region,index in list_lwrregions" type="button"
+                                        class="btn btn-sm m-1"
+                                        :class="{ 'btn-success': region.active, 'btn-color-1': (index === 0),
+                                                 'btn-color-2': (index === 1), 'btn-color-3': (index === 2),
+                                                 'btn-color-4': (index === 3) }"
+                                        v-on:click="changeActiveStatusAndFilter(region,'region')">
+                                    <i class="fa" :class="{'fa-check': region.active}"></i>
+                                    <span>{{ region.name }}</span>
+                                </button>
+                                {% endverbatim %}
                             </div>
 
                             <input v-model="currentUrl" style="position: absolute;top: -1000px" type="text"
                                    id="urlCopy">
 
                             <div class="pull-right">
-                                <div class="col-12">
-                                    <label style="font-size: 80%;font-weight: 400;">
-                                        {% verbatim %}
-                                        <input v-model="check_filter" class="checkbox" type="checkbox"
-                                               value="{{ check_filter }}">
-                                        {% endverbatim %}
-                                        <span>{% trans 'Filter by Specifics Dates' %}</span>
-                                    </label>
-                                </div>
+                                <a style="font-size: 20px;font-weight: 400;"
+                                   role="button"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="{% trans 'Filter by Specifics Dates' %}"
+                                   v-on:click="check_filter = !check_filter"
+                                   class="m-2"
+                                   :class="{'text-success': this.check_filter }">
+                                    <i class="fa"
+                                       :class="{'fa-calendar-o': !check_filter, 'fa-calendar-check-o': check_filter }"></i>
+                                </a>
+                                <a style="font-size: 20px;font-weight: 400;"
+                                   role="button"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="{% trans 'Clear filters' %}"
+                                   v-on:mouseover="spin_refresh_icon = true"
+                                   v-on:mouseout="spin_refresh_icon = false"
+                                   v-on:click="clearFilters()"
+                                   :class="{'text-success': this.spin_refresh_icon }"
+                                   class="m-2">
+                                    <i class="fa fa-refresh" :class="{'fa-spin': spin_refresh_icon }"></i>
+                                </a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -252,6 +269,7 @@
         let years = {{ years|safe }};
         var project_data = null, subproject = null, quarter = null;
         var countries_data = [], regions_data = [], years_data = [];
+        var my_dashboard = false;
 
         {% if project %}
             project_data = {};

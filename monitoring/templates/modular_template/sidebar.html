@@ -17,12 +17,6 @@
                     <a href="{% url 'monitoring:dashboard' %}">
                         <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
                 </li>
-                {% if query_string %}
-                <li {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
-                    <a href="{% url 'monitoring:dashboard' %}?{{ query_string }}">
-                        <i class="fa fa-home"></i> {% trans 'My Projects' %} </a>
-                </li>
-                {% endif %}
                 {# 2 Import #}
                 {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
                     <li {% if 'step' in request.resolver_match.url_name %}class="active"{% endif %}>
