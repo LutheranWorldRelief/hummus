@@ -80,7 +80,7 @@ var app = new Vue({
             }
             this.loadDataWithFilters();
         },
-        'formInputs.project_id': function (object) {
+        'formInputs.project_id': function () {
 
             $('#tab_quarter-click').children('li').eq(3).find('a').trigger('click');
 
@@ -334,15 +334,11 @@ var app = new Vue({
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
 
-                    countries_data.forEach((item, i) => {
-                        countries_data[i] = item.replace(/['/]/gi, '')
-                    });
-
                     for (const key in countries) {
                         let estado = countries[key].active;
 
                         if (countries_data.length > 0) {
-                            estado = countries_data.includes(countries[key].id);
+                            estado = countries_data.some(obj => obj.value === countries[key].id);
                         }
 
                         this.list_countries.push({

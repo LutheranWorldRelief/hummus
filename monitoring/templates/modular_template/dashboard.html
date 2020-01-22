@@ -314,6 +314,9 @@
 
         {% if countries %}
             countries_data = {{ countries|safe }};
+            countries_data = countries_data.map((obj) => {
+                return {name: obj.name, value: obj.id}
+            });
         {% endif %}
 
         {% if regions %}
