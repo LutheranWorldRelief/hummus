@@ -539,6 +539,8 @@ class DashboardView(DomainRequiredMixin, TemplateView):
         query_string = []
         if hasattr(user, 'profile'):
             project_ids = user.profile.projects.values_list('pk', flat=True)
+            query_string.append('extra_counters=1')
+            query_string.append('my_dashboard=true')
             for project_id in project_ids:
                 query_string.append('project_ids[]={}'.format(project_id))
             if len(project_ids) == 1:
