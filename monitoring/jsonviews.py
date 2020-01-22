@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, ListView
 
 from .models import ProjectContact, SubProject, Project, LWRRegion
-from .common import JSONResponseMixin
+from .common import JSONResponseMixin, get_localized_name as __
 
 
 def mydashboard(request, queryset):
@@ -281,13 +281,13 @@ class LWRRegions(JSONResponseMixin, TemplateView):
         # if self.request.user and hasattr(queryset.model.objects, 'for_user'):
         #    queryset = queryset.for_user(self.request.user)
 
-        lwrregions = queryset.order_by('name').values('id', 'name')
+        lwrregions = queryset.order_by(__('name')).values('id', __('name'))
 
         lwr_regions = []
         for row in lwrregions:
             lwr_regions.append({
                 'id': row['id'],
-                'name': row['name'],
+                'name': row[__('name')],
                 'active': row['id'] in regions
             })
 
