@@ -61,6 +61,8 @@ class LWRRegionQuerySet(models.QuerySet):
 class LWRRegion(models.Model):
     id = models.CharField(primary_key=True, max_length=8, verbose_name=_('Id'))
     name = models.CharField(max_length=20, verbose_name=_('Name'))
+    name_fr = models.CharField(max_length=20, verbose_name=_('Name FR'))
+    name_es = models.CharField(max_length=20, verbose_name=_('Name ES'))
     subregions = models.CharField(max_length=200, blank=True, null=True,
                                   verbose_name=_('Subregions'))
 
