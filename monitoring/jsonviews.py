@@ -263,7 +263,7 @@ class Countries(JSONResponseMixin, TemplateView):
 
 class LWRRegions(JSONResponseMixin, TemplateView):
     """
-    Regions
+    API to list LWR Regions in local language
     """
 
     def render_to_response(self, context, **response_kwargs):
