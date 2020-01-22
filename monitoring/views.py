@@ -30,7 +30,7 @@ from .tables import (SubProjectTable, ProjectTable, ContactTable, ProjectContact
                      ProjectContactFilter, ProjectContactFilterFormHelper,
                      ContactFilter, ContactFilterFormHelper, )
 from .models import (SubProject, Project, Contact, Template, Organization, ProjectContact,
-                     Request, City, Profile, Log)
+                     Request, City, Profile, Log, Country)
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace, parse_date, xstr)
 from .catalog import create_catalog
@@ -564,7 +564,9 @@ class DashboardView(DomainRequiredMixin, TemplateView):
                 id=subproject_id).values('id', 'name').first()
 
         if self.request.GET.getlist('country_id[]'):
-            context['countries'] = self.request.GET.getlist('country_id[]')
+            countries = self.request.GET.getlist('country_id[]')
+            context['countries'] = list(Country.objects.filter(
+                id__in=countries).values('id', 'name'))
 
         if self.request.GET.getlist('lwrregion_id[]'):
             context['regions'] = self.request.GET.getlist('lwrregion_id[]')

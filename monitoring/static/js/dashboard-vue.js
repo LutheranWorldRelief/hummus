@@ -4,6 +4,8 @@ var app = new Vue({
     el: '#app',
     mixins: [graphicMixins, geographicsMixins],
     data: {
+        limit_options_countries: 9,//NOTE: change the value to vue change botons for multi-select
+        limit_options_regions: 4,
         check_filter: false,
         // IMPORTANT NOTE: the keys of formInputs init with the values of variables from js in dashboard.html
         formInputs: {
@@ -78,7 +80,7 @@ var app = new Vue({
             }
             this.loadDataWithFilters();
         },
-        'formInputs.project_id': function (object) {
+        'formInputs.project_id': function () {
 
             $('#tab_quarter-click').children('li').eq(3).find('a').trigger('click');
 
@@ -98,7 +100,12 @@ var app = new Vue({
             }
             this.loadDataWithFilters();
         },
-        'formInputs.country_id': function () {
+        'formInputs.country_id': function (values) {
+            for (const item of this.list_countries) {
+                item.active = values.some((country) => {
+                    return item.value === country.value;
+                });
+            }
             this.loadDataWithFilters();
         },
         'formInputs.lwrregion_id': function () {
@@ -327,15 +334,11 @@ var app = new Vue({
                     let countries = data['paises'];
                     this.quantity_countries = countries.length;
 
-                    countries_data.forEach((item, i) => {
-                        countries_data[i] = item.replace(/['/]/gi, '')
-                    });
-
                     for (const key in countries) {
                         let estado = countries[key].active;
 
                         if (countries_data.length > 0) {
-                            estado = countries_data.includes(countries[key].id);
+                            estado = countries_data.some(obj => obj.value === countries[key].id);
                         }
 
                         this.list_countries.push({
@@ -431,10 +434,9 @@ var app = new Vue({
                 list_items = this.list_lwrregions;
             }
 
-            list_items.find(function (item) {
-                if (item.name === register.name) {
-                    item.active = !item.active
-                }
+            register.active = !register.active;
+
+            list_items.find((item) => {
                 if (item.active) {
                     actives_regions.push(item.value);
                 }
@@ -442,33 +444,39 @@ var app = new Vue({
                     countries_data = countries_data.filter((value) => {
                         return value !== item.value;
                     });
+
+                    let country_index_exists = this.formInputs.country_id.findIndex(obj => obj.value === register.value);
+                    if (country_index_exists >= 0) {
+                        this.formInputs.country_id.splice(country_index_exists, 1);
+                    } else {
+                        this.formInputs.country_id.push({
+                            name: register.name,
+                            value: register.value,
+                        });
+                    }
                 }
             });
 
             if (type_register !== 'country') {
-                this.list_countries.find(function (row) {
+                this.list_countries.forEach((row) => {
                     if (row.active && !actives_regions.includes(row.region)) {
                         row.active = !row.active;
                     }
-                })
+                });
             }
 
             this.loadDataWithFilters();
         },
         createUrl(uri) {
-
             let uriRequest = decodeURI(uri);
             let parametersRequest = uriRequest.split('?');
 
             let urlBase = window.location.origin;
-            // var createUrl = document.createElement('a');
 
             if (parametersRequest.length > 1)
                 this.currentUrl = urlBase + '/?' + parametersRequest[1];
-            //createUrl.href = urlBase + '/?' + parametersRequest[1];
             else
                 this.currentUrl = urlBase;
-            // createUrl.href = urlBase;
         },
         clearFilters() {
             this.formInputs = {
