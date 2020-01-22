@@ -302,7 +302,7 @@
         let years = {{ years|safe }};
         var project_data = null, subproject = null, quarter = null;
         var countries_data = [], regions_data = [], years_data = [];
-        var my_dashboard = {{ my_dashboard }};
+        var my_dashboard = {{ my_dashboard|yesno:'true,false' }};
 
         {% if project %}
             project_data = {};
