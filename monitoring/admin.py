@@ -252,12 +252,9 @@ class LWRRegionAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display_links = ('name',)
     list_per_page = 20
     list_max_show_all = 50
-    search_fields = ['name', 'subregions']
+    search_fields = ['name', 'name_es', 'name_fr', 'subregions']
     inlines = [
         CountryInline,
-    ]
-    fieldsets = [
-        (_('General information'), {'fields': ['id', 'name', 'subregions']}),
     ]
 
 
