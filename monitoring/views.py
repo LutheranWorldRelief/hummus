@@ -565,7 +565,8 @@ class DashboardView(DomainRequiredMixin, TemplateView):
 
         if self.request.GET.getlist('country_id[]'):
             countries = self.request.GET.getlist('country_id[]')
-            context['countries'] = list(Country.objects.filter(id__in=countries).values('id', 'name'))
+            context['countries'] = list(Country.objects.filter(
+                id__in=countries).values('id', 'name'))
 
         if self.request.GET.getlist('lwrregion_id[]'):
             context['regions'] = self.request.GET.getlist('lwrregion_id[]')
