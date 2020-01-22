@@ -138,7 +138,7 @@
                                                 {% endverbatim %}
                                                 <small class="font-weight-bold control-label">
                                                     {% trans 'Quarter' %}
-                                                    <a href="javascript:;"
+                                                    <a href="javascript:"
                                                        v-if="formInputs.quarter !== null"
                                                        v-on:click="formInputs.quarter = null;"
                                                        style="font-size: 9px;text-decoration: none;color: #36a2f2">
@@ -187,9 +187,12 @@
                                             <vue-multiselect v-model="formInputs.project_id" {% endverbatim %}
                                                              deselect-label="{% trans "Press to remove value selected" %}"
                                                              {% verbatim %}
-                                                             track-by="value" label="name" {% endverbatim %}
+                                                             track-by="value"
+                                                             label="name" {% endverbatim %}
                                                              placeholder="{% trans 'Write the project name' %}"
-                                                             {% verbatim %} :options="list_projects" :searchable="true"
+                                                             {% verbatim %}
+                                                             :options="list_projects"
+                                                             :searchable="true"
                                                              return="value">
                                                 <template slot="singleLabel" slot-scope="{ option }">
                                                     {{ option.name }}
@@ -222,16 +225,38 @@
                                 <div :class="{'col-5': (list_countries.length > 4), 'col-3':(list_countries.length <= 4)}">
                                     <div class="row">
                                         {% verbatim %}
-                                        <div v-if="list_countries.length > 0" v-for="country in list_countries"
+                                        <div v-if="list_countries.length < limit_options_countries"
+                                             v-for="country,index in list_countries" :key="index"
                                              :class="{'col-lg-4': (list_countries.length > 4), 'col-6':(list_countries.length <= 4)}">
                                             <button type="button" class="btn btn-sm w-100 icon"
                                                     :class="{ 'btn-inactive': !country.active, 'btn-success': country.active }"
                                                     v-on:click="changeActiveStatusAndFilter(country)">
-                                                <i class="fa" :class="{'fa-check':country.active}"></i>
+                                                <i class="fa" :class="{'fa-check': country.active }"></i>
                                                 <span>{{ country.name }}</span>
                                             </button>
                                         </div>
                                         {% endverbatim %}
+
+                                        <div v-if="list_countries.length >= limit_options_countries" class="col-12">
+                                            {% verbatim %}
+                                            <vue-multiselect v-model="formInputs.country_id" {% endverbatim %}
+                                                             deselect-label="{% trans "Press to remove value selected" %}"
+                                                             {% verbatim %}
+                                                             track-by="value"
+                                                             label="name" {% endverbatim %}
+                                                             placeholder="{% trans 'select Countries' %}"
+                                                             {% verbatim %}
+                                                             :options="list_countries"
+                                                             :multiple="true"
+                                                             :searchable="true"
+                                                             return="value">
+                                                <template slot="singleLabel" slot-scope="{ option }">
+                                                    {{ option.name }}
+                                                </template>
+                                            </vue-multiselect>
+                                            {% endverbatim %}
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -239,7 +264,6 @@
                     </div>
                 </div>
             </div>
-            {{ project.name }}
         </section>
         {% verbatim %}
         <div v-if="formInputs.project_id"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
