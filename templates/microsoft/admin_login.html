@@ -4,7 +4,7 @@
 {% block extrastyle %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'microsoft/css/login.css' %}"/>
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/font-awesome.min.css' %}" rel="stylesheet">
     <style>
         .login {
             background: #00AAA7 !important;
@@ -137,7 +137,7 @@
                 });
         </script>
     {% endif %}
-    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script>
         $(function () {
             $('body')
