@@ -539,8 +539,6 @@ class DashboardView(DomainRequiredMixin, TemplateView):
         query_string = []
         if hasattr(user, 'profile'):
             project_ids = user.profile.projects.values_list('pk', flat=True)
-            query_string.append('extra_counters=1')
-            query_string.append('my_dashboard=true')
             for project_id in project_ids:
                 query_string.append('project_ids[]={}'.format(project_id))
             if len(project_ids) == 1:
@@ -549,6 +547,9 @@ class DashboardView(DomainRequiredMixin, TemplateView):
                 query_string.append('country_id[]={}'.format(country_id))
             for lwrregion_id in user.profile.lwrregions.values_list('pk', flat=True):
                 query_string.append('country_id[]={}'.format(lwrregion_id))
+            if len(query_string) > 0:
+                query_string.append('extra_counters=1')
+                query_string.append('my_dashboard=true')
         context['query_string'] = '&'.join(query_string)
 
         years = Project.objects.order_by('start__fyear').exclude(projectcontact__isnull=True). \
