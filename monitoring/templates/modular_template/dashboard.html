@@ -302,9 +302,7 @@
         let years = {{ years|safe }};
         var project_data = null, subproject = null, quarter = null;
         var countries_data = [], regions_data = [], years_data = [];
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        var my_dashboard = urlParams.get('my_dashboard');
+        var my_dashboard = {{ my_dashboard }};
 
         {% if project %}
             project_data = {};
@@ -336,10 +334,6 @@
         {% if years_data %}
             years_data = {{ years_data|safe }};
         {% endif %}
-
-
-
-
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

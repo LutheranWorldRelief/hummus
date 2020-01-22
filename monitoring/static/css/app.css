@@ -2842,8 +2842,8 @@ div.checkbox.switcher label input + span, div.radio.switcher label input + span 
   position: relative;
   display: inline-block;
   margin-right: 10px;
-  width: 56px;
-  height: 28px;
+  width: 43px;
+  height: 20px;
   background: #0daea1;
   border: 1px solid #0daea1;
   border-radius: 50px;

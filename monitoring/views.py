@@ -579,6 +579,7 @@ class DashboardView(DomainRequiredMixin, TemplateView):
         if self.request.GET.get('quarter'):
             context['quarter'] = self.request.GET.get('quarter')
 
+        context['my_dashboard'] = self.request.GET.get('my_dashboard', False)
 
         return context
 

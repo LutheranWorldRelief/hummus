@@ -6,21 +6,6 @@
         </button>
     </div>
 
-    {% if request.resolver_match.url_name == 'dashboard' %}
-        <div class="header-block header-block-buttons">
-            {% if query_string %}
-                <div class="checkbox switcher input m-1" style="display: inline">
-                    <label for="change_url">
-                        <input v-model="formInputs.my_dashboard" type="checkbox" id="change_url" value="" data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
-                        <span><small></small></span>
-                        <span :class="{'text-muted': !formInputs.my_dashboard, 'text-dark': formInputs.my_dashboard }">{% trans 'My dashboard' %}</span>
-                    </label>
-                </div>
-            {% endif %}
-
-        </div>
-    {% endif %}
-
     <div class="header-block header-block-nav">
         <ul class="nav-profile">
             <li class="profile dropdown">

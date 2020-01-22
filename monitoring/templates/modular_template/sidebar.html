@@ -13,7 +13,18 @@
                 {# 1 dashboard #}
                 <li {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
                     <a href="{% url 'monitoring:dashboard' %}">
-                        <i class="fa fa-home"></i> {% trans 'Dashboard' %} </a>
+                        <i class="fa fa-home"></i>
+                        {% trans 'Dashboard' %}
+                        {% if query_string %}
+                            <div class="checkbox switcher input" style="display: inline">
+                                <label for="change_url">
+                                    <input v-model="formInputs.my_dashboard" type="checkbox" id="change_url" value=""
+                                           data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
+                                    <span><small></small></span>
+                                </label>
+                            </div>
+                        {% endif %}
+                    </a>
                 </li>
                 {# 2 Import #}
                 {% if perms.monitoring.add_contact and perms.monitoring.add_projectcontact and perms.monitoring.change_contact and perms.monitoring.change_projectcontact %}
