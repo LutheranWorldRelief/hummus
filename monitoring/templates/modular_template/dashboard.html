@@ -299,7 +299,7 @@
         {% if project %}
             project_data = {};
             project_data['name'] = "{{ project.name }}";
-            project_data['value'] =  {{ project.id }};
+            project_data['value'] = "{{ project.id }}";
         {% endif %}
 
         {% if subproject %}
