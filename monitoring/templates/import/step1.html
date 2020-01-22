@@ -2,7 +2,7 @@
 {% load static i18n %}
 {% block extra_header %}
     <link rel="stylesheet" href="{% static 'css/wizard.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery.filer.css' %}">
+    <link rel="stylesheet" href="{% static 'jquery.filer/css/jquery.filer.css' %}">
 
 {% endblock %}
 {% block main_content %}
@@ -138,7 +138,7 @@
     </section>
 {% endblock %}
 {% block extra_body %}
-    <script src="{% static 'js/jquery.filer.min.js' %}"></script>
+    <script src="{% static 'jquery.filer/js/jquery.filer.min.js' %}"></script>
     <script>
         $(function () {
             $('#excel_file').filer({
