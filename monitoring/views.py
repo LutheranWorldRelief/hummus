@@ -235,7 +235,7 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
                     field_name = '{}__name'.format(field_name)
                 field_name = '{}__{}'.format(field_name, filter_type)
-                subproject = subproject.filter(**{field_name: value})
+                subproject = model.objects.filter(**{field_name: value})
                 if not subproject:
                     messages_error.append('Problem to import record #{}: Subproject does not exist'
                                           .format(row[0].row, ))

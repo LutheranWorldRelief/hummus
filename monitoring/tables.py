@@ -138,9 +138,6 @@ class ProjectContactTable(Table):
     def render_education(self, value, record):
         return getattr(record.contact.education, __('name'))
 
-    def render_education(self, value, record):
-        return getattr(record.contact.education, __('name'))
-
     def render_sex(self, value, record):
         return getattr(record.contact.sex, __('name'))
 
