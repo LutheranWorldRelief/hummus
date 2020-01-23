@@ -34,7 +34,7 @@ from .models import (SubProject, Project, Contact, Template, Organization, Proje
 from .common import (DomainRequiredMixin, MONTHS, get_localized_name as __,
                      RegexpReplace, parse_date, xstr)
 from .catalog import create_catalog
-from .updates import update_contact, update_project_contact, validate_data
+from .updates import update_contact, update_project_contact, validate_data, try_to_find
 
 
 class GetExcelToImport(DomainRequiredMixin, View):
@@ -224,26 +224,6 @@ class ImportParticipants(DomainRequiredMixin, FormView):
                 messages_error.append(error_message)
                 continue
 
-            # get subproject, project and organization
-            model = SubProject
-            model_fields = mapping['project']
-            for field_name, field_data in model_fields.items():
-                value = row[field_data['column']].value
-                # removes extra spaces if string
-                if isinstance(value, str):
-                    value = xstr(value)
-                if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
-                    field_name = '{}__name'.format(field_name)
-                field_name = '{}__{}'.format(field_name, filter_type)
-                subproject = model.objects.filter(**{field_name: value})
-                if not subproject:
-                    messages_error.append('Problem to import record #{}: Subproject does not exist'
-                                          .format(row[0].row, ))
-                    continue
-                subproject = subproject.first()
-                project = subproject.project
-                organization = subproject.organization
-
             # create or update contact
             model = Contact
             model_fields = mapping['contact']
@@ -318,29 +298,34 @@ class ImportParticipants(DomainRequiredMixin, FormView):
             model_fields = mapping['project_contact']
             row_dict = {}
             row_dict['source_id'] = 'excel'
-            row_dict['organization'] = organization
+
             for field_name, field_data in model_fields.items():
                 value = row[field_data['column']].value
+                # removes extra spaces if string
+                if isinstance(value, str):
+                    value = xstr(value)
                 if value:
+                    if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
+                        related_model = model._meta.get_field(field_name).related_model
+                        value = try_to_find(related_model, value)
                     if model._meta.get_field(field_name).get_internal_type() == 'DateField':
                         if not row[field_data['column']].is_date:
                             value = parse_date(value, date_format)
-
                 else:
                     value = None
                 row_dict[field_name] = value
 
-                project_contact = ProjectContact.objects.filter(project=project,
-                                                                contact=contact).first()
-                if not project_contact:
-                    messages_info.append('Create project contact: {} {}'.format(project, contact))
-                    project_contact = ProjectContact()
-                    project_contact.contact = contact
-                    project_contact.project = project
-                else:
-                    messages_info.append('Update project contact: {} {}'.format(project, contact))
-                row_dict['log'] = log
-                update_project_contact(request, project_contact, row_dict)
+            subproject = row_dict['subproject']
+            project_contact = ProjectContact.objects.filter(subproject=subproject,
+                                                            contact=contact).first()
+            if not project_contact:
+                messages_info.append('Create participant: {} {}'.format(subproject, contact))
+                project_contact = ProjectContact()
+                project_contact.contact = contact
+            else:
+                messages_info.append('Update participant: {} {}'.format(subproject, contact))
+            row_dict['log'] = log
+            update_project_contact(request, project_contact, row_dict)
 
         # gets dupes
         contacts = Contact.objects.all()
