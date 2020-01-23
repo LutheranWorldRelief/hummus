@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-21 20:48+0000\n"
+"POT-Creation-Date: 2020-01-23 18:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: monitoring/static/js/jquery_filer-translations.js:3
+msgid "Choose Files"
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:4
+msgid "Choose files To Upload"
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:5
+msgid "files were chosen"
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:6
+msgid "Drop file here to Upload"
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:7
+msgid "Are you sure you want to remove this file?"
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:9
+msgid "Only {{fi-limit}} files are allowed to be uploaded."
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:10
+msgid "Only Images are allowed to be uploaded."
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:11
+msgid ""
+"{{fi-name}} is too large! Please upload file up to {{fi-fileMaxSize}} MB."
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:12
+msgid ""
+"Files you've choosed are too large! Please upload files up to {{fi-maxSize}} "
+"MB."
+msgstr ""
+
+#: monitoring/static/js/jquery_filer-translations.js:13
+msgid "You are not allowed to upload folders."
+msgstr ""
 
 #: monitoring/static/js/mixins/geographicsMixins.js:40
 msgid "Country"
