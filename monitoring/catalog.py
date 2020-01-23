@@ -3,6 +3,7 @@ create custom clean template with data validation
 """
 from django.utils.translation import gettext_lazy as _
 
+from constance import config
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter
 from openpyxl.utils.cell import column_index_from_string
@@ -18,10 +19,10 @@ def create_catalog(book, request):
     sheet = book.create_sheet(__('catalog'))
     catalog_cols = (SubProject, Sex, Education, Country, Product, ContactType)
     col_start = 1
-    row_start = 1
+    row_start = config.HEADER_ROW
     for col, col_value in enumerate(catalog_cols, start=col_start):
         sheet.cell(row=row_start, column=col, value=col_value.__name__)
-    row_start = 2
+    row_start = config.START_ROW
     for col, col_value in enumerate(catalog_cols, start=col_start):
         if hasattr(col_value.objects, 'for_user'):
             rows = col_value.objects.for_user(request.user).all()
@@ -42,7 +43,7 @@ def create_catalog(book, request):
     sheet = book[_('data')]
     # TODO this should be mapped for each template differently
     validation_cols = {'A': 'SubProject', 'E': 'Sex', 'G': 'Education', 'L': 'Country', }
-    row_start = 3
+    row_start = config.START_ROW
     row_max = 2000
 
     for letter in validation_cols:
