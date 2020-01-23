@@ -147,7 +147,7 @@ def validate_data(row, mapping, start_row=0, date_format=None, language=None):
                             if language and language != default_language:
                                 options_trans = list(related_model.objects.
                                                      values_list(__('name', language), flat=True))
-                            options.extend(options_trans)
+                                options.extend(options_trans)
                             messages.append('{}: "{}" not found in {}. Options are {}'.
                                             format(reference, value, field, options))
                         else:
