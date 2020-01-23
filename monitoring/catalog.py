@@ -41,7 +41,7 @@ def create_catalog(book, request):
     # applies validations
     sheet = book[_('data')]
     # TODO this should be mapped for each template differently
-    validation_cols = {'A': 'SubProject', 'E': 'Sex', 'G': 'Education', 'M': 'Country', }
+    validation_cols = {'A': 'SubProject', 'E': 'Sex', 'G': 'Education', 'L': 'Country', }
     row_start = 3
     row_max = 2000
 
