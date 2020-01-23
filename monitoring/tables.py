@@ -23,6 +23,10 @@ from .catalog import create_catalog
 
 
 class ReportExportMixin:
+    """
+    Mixin to create a report and enable export to Excel
+    to be used with PagedFilteredTableView
+    """
     export_name = "table"
     export_trigger_param = "_export"
     exclude_columns = ()
@@ -58,7 +62,7 @@ class ReportExportMixin:
         sheet = book[_('data')]
 
         # adds rows
-        cur = 3  # Force start at row 3
+        cur = config.START_ROW  # Force start at row START_ROW
         for row, row_entry in enumerate(dataset, start=1):
             for col, col_entry in enumerate(row_entry, start=1):
                 sheet.cell(row=row + cur - 1, column=col, value=col_entry)
@@ -87,14 +91,14 @@ class PagedFilteredTableView(SingleTableView):
         if hasattr(self.model.objects, 'for_user'):
             qs = self.model.objects.for_user(self.request.user)
         else:
-            qs = super(PagedFilteredTableView, self).get_queryset()
+            qs = super().get_queryset()
 
         self.filter = self.filter_class(self.request.GET, request=self.request, queryset=qs)
         self.filter.form.helper = self.formhelper_class()
         return self.filter.qs
 
     def get_table(self, **kwargs):
-        table = super(PagedFilteredTableView, self).get_table()
+        table = super().get_table()
         if 'page' in self.kwargs:
             page = self.kwargs['page']
         else:
@@ -104,7 +108,7 @@ class PagedFilteredTableView(SingleTableView):
         return table
 
     def get_context_data(self, **kwargs):
-        context = super(PagedFilteredTableView, self).get_context_data()
+        context = super().get_context_data()
         context[self.context_filter_name] = self.filter
         context['export_formats'] = ('xlsx',)
         return context
@@ -123,8 +127,9 @@ class ProjectContactTable(Table):
 
     class Meta:
         model = ProjectContact
+        default = ''
         attrs = {'class': 'table table-bordered', 'id': 'tbPreview'}
-        fields = ('project', 'organization', 'contact.document', 'contact.first_name',
+        fields = ('subproject', 'contact.document', 'contact.first_name',
                   'contact.last_name', 'sex', 'contact.birthdate',
                   'education', 'contact.phone', 'contact.men', 'contact.women',
                   'contact.organization', 'contact.country.name', 'contact.deparment',
