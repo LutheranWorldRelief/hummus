@@ -85,7 +85,15 @@ def update_project_contact(request, project_contact, row):
     else:
         project_contact.created_user = request.user.username
 
+    if not row.get('organization'):
+        row['organization'] = row['subproject'].organization
     project_contact.organization = row.get('organization')
+
+    if not row.get('project'):
+        row['project'] = row['subproject'].project
+    project_contact.project = row.get('project')
+
+    project_contact.subproject = row.get('subproject')
     project_contact.date_entry_project = smart_assign(project_contact.date_entry_project,
                                                       row.get('date_entry_project'))
     project_contact.source_id = row.get('source_id')
@@ -98,36 +106,13 @@ def validate_data(row, mapping, start_row=0, date_format=None, language=None):
     """ validates an excel row """
     messages = []
     app_name = 'monitoring'
-    map_models = {'project': 'SubProject', 'contact': 'Contact',
-                  'project_contact': 'ProjectContact'}
+    map_models = {'contact': 'Contact', 'project_contact': 'ProjectContact'}
     offset = start_row - 1
     filter_type = 'iexact'
     default_language = translation.get_supported_language_variant(settings.LANGUAGE_CODE)
 
     for model_name in mapping:
         model = apps.get_model(app_name, map_models[model_name])
-
-        # validate subproject = project + impleementer
-        if model_name == 'project':
-            subproject = model.objects.all()
-            model_fields = mapping['project']
-            for field_name, field_data in model_fields.items():
-                value = row[field_data['column']].value
-                if value and field_name == 'name' and '=>' in value:
-                    code, value = value.split('=>', 1)
-                if field_name == 'name' and not subproject.filter(name__iexact=value).exists():
-                    field_name = 'project'
-                if model._meta.get_field(field_name).get_internal_type() == 'ForeignKey':
-                    field_name = "{}__name".format(field_name)
-                field_name = '{}__{}'.format(field_name, filter_type)
-                subproject = subproject.filter(**{field_name: value})
-            if not subproject:
-                project = row[model_fields['name']['column']].value
-                organization = row[model_fields['organization']['column']].value
-                messages.append('[{}]: Subproject with Project "{}" and Organization "{}" '
-                                'does not exist!'.format(row[0].row + offset,
-                                                         project,
-                                                         organization, ))
 
         for field, details in mapping[model_name].items():
             cell = row[details['column']]
@@ -141,11 +126,6 @@ def validate_data(row, mapping, start_row=0, date_format=None, language=None):
             # validates required fields
             if details['required'] and not value:
                 messages.append('[{}]: {} is required'.format(reference, details['name']))
-
-            if model_name == 'project' and field == 'name':
-                field = 'project'
-                if value and '=>' in value:
-                    code, value = value.split('=>', 1)
 
             if value and hasattr(model, field):
 

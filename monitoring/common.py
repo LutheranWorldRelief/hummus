@@ -16,6 +16,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 def smart_assign(original, new):
+    """Return new if it holds a value, otherwise return original"""
     if new:
         return new
     return original
