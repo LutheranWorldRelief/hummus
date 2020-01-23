@@ -88,19 +88,27 @@
                                    id="urlCopy">
 
                             <div class="pull-right">
-                                <a style="font-size: 20px;font-weight: 400;"
-                                   role="button"
+                                <a role="button"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   data-html="true"
+                                   title="{% trans 'Share Link' %}"
+                                   v-on:click="copyLink"
+                                   class="m-2 icon-style"
+                                   id="action_copy">
+                                    <i class="fa fa-share-square-o"></i>
+                                </a>
+                                <a role="button"
                                    data-toggle="tooltip"
                                    data-placement="top"
                                    title="{% trans 'Filter by Specifics Dates' %}"
                                    v-on:click="check_filter = !check_filter"
-                                   class="m-2"
+                                   class="m-2 icon-style"
                                    :class="{'text-success': this.check_filter }">
                                     <i class="fa"
                                        :class="{'fa-calendar-o': !check_filter, 'fa-calendar-check-o': check_filter }"></i>
                                 </a>
-                                <a style="font-size: 20px;font-weight: 400;"
-                                   role="button"
+                                <a role="button"
                                    data-toggle="tooltip"
                                    data-placement="top"
                                    title="{% trans 'Clear filters' %}"
@@ -108,7 +116,7 @@
                                    v-on:mouseout="spin_refresh_icon = false"
                                    v-on:click="clearFilters()"
                                    :class="{'text-success': this.spin_refresh_icon }"
-                                   class="m-2">
+                                   class="m-2 icon-style">
                                     <i class="fa fa-refresh" :class="{'fa-spin': spin_refresh_icon }"></i>
                                 </a>
                             </div>
@@ -294,9 +302,7 @@
         let years = {{ years|safe }};
         var project_data = null, subproject = null, quarter = null;
         var countries_data = [], regions_data = [], years_data = [];
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        var my_dashboard = urlParams.get('my_dashboard');
+        var my_dashboard = {{ my_dashboard|yesno:'true,false' }};
 
         {% if project %}
             project_data = {};
@@ -328,10 +334,6 @@
         {% if years_data %}
             years_data = {{ years_data|safe }};
         {% endif %}
-
-
-
-
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

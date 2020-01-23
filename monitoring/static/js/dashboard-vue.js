@@ -124,6 +124,8 @@ var app = new Vue({
             if (value) {
                 let switch_button = document.getElementById('change_url');
                 window.location.href = switch_button.getAttribute('data-uri');
+            }else{
+                window.location.href = window.location.origin
             }
         }
     },

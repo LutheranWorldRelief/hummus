@@ -6,42 +6,21 @@
         </button>
     </div>
 
-    {% if request.resolver_match.url_name == 'dashboard' %}
-        <div class="header-block header-block-buttons">
-            {% if query_string %}
-                <div class="checkbox switcher input m-1" style="display: inline">
-                    <label for="change_url">
-                        <input v-model="formInputs.my_dashboard" type="checkbox" id="change_url" value="" data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
-                        <span><small></small></span>
-                        <span :class="{'text-muted': !formInputs.my_dashboard, 'text-dark': formInputs.my_dashboard }">{% trans 'My dashboard' %}</span>
-                    </label>
-                </div>
-            {% endif %}
-            <a href="javascript:;" data-toggle="tooltip" data-placement="top"
-               data-html="true" style="display: inline"
-               v-bind:title="text_tooltip"
-               v-on:click="copyLink"
-               class="pull-right not-sub ml-2"
-               id="action_copy">
-                <i class="fa fa-share-alt icon-share"></i>
-                {% trans 'Share Link' %}
-            </a>
-        </div>
-    {% endif %}
-
     <div class="header-block header-block-nav">
         <ul class="nav-profile">
             <li class="profile dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:;" role="button"
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:" role="button"
                    aria-haspopup="true" aria-expanded="false">
-                    <div class="img"
-                         style="background-image: url({% static 'img/logo_user.png' %});"></div>
-                    <span class="name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                    <i class="fa fa-user-circle-o"></i>
+                    <span class="name" style="font-size: 14px;">{{ request.user.first_name }} {{ request.user.last_name }}</span>
                 </a>
                 <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <a class="dropdown-item"
-                       href="{% url 'admin:monitoring_profile_change' request.user.profile.id %}}">
-                        <i class="fa fa-user icon"></i> {% trans 'Profile' %} </a>
+                    {% comment %}
+                        <a class="dropdown-item" href="{% url 'admin:monitoring_profile_change' request.user.profile.id %}">
+                            <i class="fa fa-user icon"></i>
+                            {% trans 'Profile' %}
+                        </a>
+                    {% endcomment %}
                     <a class="dropdown-item" href="{% url 'logout' %}">
                         <i class="fa fa-power-off icon"></i> {% trans 'Logout' %} </a>
                 </div>

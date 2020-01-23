@@ -1623,7 +1623,7 @@ span a {
 
 .header {
   background-color: #d7dde4;
-  height: 70px;
+  height: 38px;
   right: 0;
   -webkit-transition: left 0.3s ease;
   transition: left 0.3s ease;
@@ -2833,7 +2833,7 @@ span a {
 .text-color-5{color:#0daea1}
 .bullet-point{background-color:#4ac1bf;display: inline-block; height: 5px;vertical-align: middle;width: 5px}
 .bg-muted{background-color: #9ba8b573;}
-.icon-share{background-color: #93D228;color: white; padding: 2px; border-radius: 2px;}
+.icon-style{font-size: 20px;font-weight: 400;cursor: pointer;}
 .not-sub{text-decoration: none !important;}
 div.checkbox.switcher label, div.radio.switcher label { padding: 0;}
 div.checkbox.switcher label *, div.radio.switcher label * { vertical-align: middle; }
@@ -2842,8 +2842,8 @@ div.checkbox.switcher label input + span, div.radio.switcher label input + span 
   position: relative;
   display: inline-block;
   margin-right: 10px;
-  width: 56px;
-  height: 28px;
+  width: 35px;
+  height: 17px;
   background: #0daea1;
   border: 1px solid #0daea1;
   border-radius: 50px;
@@ -2852,7 +2852,7 @@ div.checkbox.switcher label input + span, div.radio.switcher label input + span 
 div.checkbox.switcher label input + span small, div.radio.switcher label input + span small {
   position: absolute;
   display: block;
-  width: 50%;
+  width: 45%;
   height: 100%;
   background: #fff;
   border-radius: 50%;
