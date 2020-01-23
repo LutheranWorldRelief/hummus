@@ -7,7 +7,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter
 from openpyxl.utils.cell import column_index_from_string
 
-from .models import Project, Organization, Sex, Education, Country, Product, ContactType
+from .models import SubProject, Sex, Education, Country, Product, ContactType
 from .common import get_localized_name as __
 
 
@@ -16,10 +16,7 @@ def create_catalog(book, request):
 
     dvs = {}
     sheet = book.create_sheet(__('catalog'))
-
-    # catalog_cols = (Project, Organization, Sex, Educacion, Country, Departament, Comunity,
-    # Product, ContactType)
-    catalog_cols = (Project, Organization, Sex, Education, Country, Product, ContactType)
+    catalog_cols = (SubProject, Sex, Education, Country, Product, ContactType)
     col_start = 1
     row_start = 1
     for col, col_value in enumerate(catalog_cols, start=col_start):
@@ -43,8 +40,8 @@ def create_catalog(book, request):
 
     # applies validations
     sheet = book[_('data')]
-    validation_cols = {'A': 'Project', 'B': 'Organization', 'F': 'Sex', 'H': 'Education',
-                       'M': 'Country', 'Q': 'Product'}
+    # TODO this should be mapped for each template differently
+    validation_cols = {'A': 'Project', 'E': 'Sex', 'G': 'Education', 'M': 'Country', }
     row_start = 3
     row_max = 2000
 
