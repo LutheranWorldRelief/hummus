@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-21 20:48+0000\n"
+"POT-Creation-Date: 2020-01-23 18:50+0000\n"
 "PO-Revision-Date: 2019-09-03 15:46+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2020\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -20,6 +20,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: monitoring/static/js/jquery_filer-translations.js:3
+msgid "Choose Files"
+msgstr "Choisir les fichiers"
+
+#: monitoring/static/js/jquery_filer-translations.js:4
+msgid "Choose files To Upload"
+msgstr "Choisir les fichiers à télécharger"
+
+#: monitoring/static/js/jquery_filer-translations.js:5
+msgid "files were chosen"
+msgstr "les fichiers ont été choisis"
+
+#: monitoring/static/js/jquery_filer-translations.js:6
+msgid "Drop file here to Upload"
+msgstr "Déposez le fichier ici pour télécharger"
+
+#: monitoring/static/js/jquery_filer-translations.js:7
+msgid "Are you sure you want to remove this file?"
+msgstr "Voulez-vous vraiment supprimer ce fichier?"
+
+#: monitoring/static/js/jquery_filer-translations.js:9
+msgid "Only {{fi-limit}} files are allowed to be uploaded."
+msgstr "Seuls les fichiers {{fi-limit}} peuvent être téléchargés."
+
+#: monitoring/static/js/jquery_filer-translations.js:10
+msgid "Only Images are allowed to be uploaded."
+msgstr "Seules les images peuvent être téléchargées."
+
+#: monitoring/static/js/jquery_filer-translations.js:11
+msgid ""
+"{{fi-name}} is too large! Please upload file up to {{fi-fileMaxSize}} MB."
+msgstr ""
+"{{fi-name}} est trop grand! Veuillez télécharger le fichier jusqu'à {{fi-"
+"fileMaxSize}} Mo."
+
+#: monitoring/static/js/jquery_filer-translations.js:12
+msgid ""
+"Files you've choosed are too large! Please upload files up to {{fi-maxSize}}"
+" MB."
+msgstr ""
+"Les fichiers que vous avez choisis sont trop volumineux! Veuillez "
+"télécharger des fichiers jusqu'à {{fi-maxSize}} Mo."
+
+#: monitoring/static/js/jquery_filer-translations.js:13
+msgid "You are not allowed to upload folders."
+msgstr "Vous n'êtes pas autorisé à télécharger des dossiers."
 
 #: monitoring/static/js/mixins/geographicsMixins.js:40
 msgid "Country"
