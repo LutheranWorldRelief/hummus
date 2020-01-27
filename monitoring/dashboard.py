@@ -225,7 +225,7 @@ def grafico_edad(request):
     parameters = {'project_id': 'project_id',
                   'from_date': 'date_entry_project__gte',
                   'to_date': 'date_entry_project__lte',
-                  'country_id[]': 'project__countries__id__in',
+                  'country_id[]': 'subproject__country_id__in',
                   'year[]': 'date_entry_project__fyear__in',
                   'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in', }
