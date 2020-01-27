@@ -152,7 +152,7 @@ class ValidateExcel(DomainRequiredMixin, FormView):
 
         excel_data_rows = uploaded_ws
         if uploaded_ws.max_row > 20:
-            excel_data_rows = uploaded_ws.iter_rows(min_row=1,max_row=20)
+            excel_data_rows = uploaded_ws.iter_rows(min_row=1, max_row=20)
 
         context['grouped_errors'] = grouped_errors
         context['data'] = excel_data_rows
