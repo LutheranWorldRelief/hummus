@@ -11,8 +11,8 @@
             </div>
             <div class="error-container">
                 <p>{{ exception_type }}: {{ exception_value }}</p>
-                <a class="btn btn-primary" href="index.html">
-                    <i class="fa fa-angle-left"></i> Back to Dashboard </a>
+                <a class="btn btn-primary" href="{% url 'monitoring:dashboard' %}">
+                    <i class="fa fa-angle-left"></i>{% trans 'Back to Dashboard' %}</a>
             </div>
         </div>
     </section>
