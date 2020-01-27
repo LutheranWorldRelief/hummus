@@ -14,15 +14,26 @@
                         <p>{% trans 'Name' %}: <a
                                 href="{% url 'admin:monitoring_contact_change' object.id %}">{{ object.name }}</a></p>
                     </div>
-                    <div class="col-12">
-                        <p>{% trans 'First Name' %}: {{ object.first_name }}</p>
-                    </div>
-                    <div class="col-12">
-                        <p>{% trans 'Last Name' %}: {{ object.last_name }}</p>
-                    </div>
+                    {% if object.first_name %}
+                        <div class="col-12">
+                            <p>{% trans 'First Name' %}: {{ object.first_name }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if object.last_name %}
+                        <div class="col-12">
+                            <p>{% trans 'Last Name' %}: {{ object.last_name }}</p>
+                        </div>
+                    {% endif %}
+
                     <div class="col-12"><p>{% trans 'Document' %}: {{ object.document }}</p></div>
+
                     <div class="col-12"><p>{% trans 'Sex' %}: {% trans object.sex.name %}</p></div>
-                    <div class="col-12"><p>{% trans 'Education' %}: {% trans object.education.name %}</p></div>
+
+                    {% if object.education %}
+                        <div class="col-12"><p>{% trans 'Education' %}: {% trans object.education.name %}</p></div>
+                    {% endif %}
+
                     <div class="col-12"><p>{% trans 'Country' %}: {{ object.country }}</p></div>
                     <div class="col-12"><p>{% trans 'Projects' %}:</p></div>
                     <div class="col-12">
