@@ -124,7 +124,7 @@ var app = new Vue({
             if (value) {
                 let switch_button = document.getElementById('change_url');
                 window.location.href = switch_button.getAttribute('data-uri');
-            }else{
+            } else {
                 window.location.href = window.location.origin
             }
         }
@@ -382,16 +382,17 @@ var app = new Vue({
                         this.requestParameters[key] = input['value'];
                     } else if (!this.empty(input) && input.constructor === Array) {
                         if (input.length > 0) {
-                            if (key === 'country_id' && this.list_countries.length > 0) {
-                                for (const data of this.list_countries) {
-                                    for (const country of input) {
-                                        if (country === data.name && data.name) {
-                                            this.requestParameters.country_id.push(country);
-                                        }
-                                    }
+                            if (key === 'country_id' && this.list_countries.length <= 0) {
+                                let countries_id = [];
+                                for (const country of input) {
+                                    countries_id.push(country['value']);
                                 }
-                            } else
+                                if (countries_id.length > 0) {
+                                    this.requestParameters[key] = countries_id;
+                                }
+                            } else {
                                 this.requestParameters[key] = input;
+                            }
                         }
                     } else if (!this.empty(input)) {
                         this.requestParameters[key] = input;
