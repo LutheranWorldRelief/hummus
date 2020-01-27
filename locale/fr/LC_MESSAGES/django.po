@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-21 20:47+0000\n"
+"POT-Creation-Date: 2020-01-23 18:50+0000\n"
 "PO-Revision-Date: 2019-08-23 06:33+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2020\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -21,20 +21,20 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hummus/settings.py:39 monitoring/models.py:81
+#: hummus/settings.py:39 monitoring/models.py:83
 msgid "English"
 msgstr "Anglais"
 
-#: hummus/settings.py:40 monitoring/models.py:83
+#: hummus/settings.py:40 monitoring/models.py:85
 msgid "Spanish"
 msgstr "Espanol"
 
-#: hummus/settings.py:41 monitoring/models.py:82
+#: hummus/settings.py:41 monitoring/models.py:84
 msgid "French"
 msgstr "Français"
 
 #: hummus/settings.py:188 hummus/settings.py:193
-#: monitoring/templates/modular_template/sidebar.html:24
+#: monitoring/templates/modular_template/sidebar.html:38
 #: monitoring/templates/sidebar.html:27 templates/admin/base.html:326
 msgid "Import Participants"
 msgstr "Importer des participants"
@@ -42,8 +42,8 @@ msgstr "Importer des participants"
 #: hummus/settings.py:195 hummus/settings.py:196
 #: monitoring/templates/dashboard/resumen.html:35
 #: monitoring/templates/modular_template/geographics.html:20
-#: monitoring/templates/modular_template/sidebar.html:32
-#: monitoring/templates/modular_template/sidebar.html:39
+#: monitoring/templates/modular_template/sidebar.html:46
+#: monitoring/templates/modular_template/sidebar.html:53
 #: monitoring/templates/sidebar.html:36 monitoring/templates/sidebar.html:46
 #: templates/admin/base.html:328
 msgid "Participants"
@@ -58,14 +58,14 @@ msgid "Duplicates per document"
 msgstr "Doublons par document"
 
 #: hummus/settings.py:203
-#: monitoring/templates/modular_template/sidebar.html:77
+#: monitoring/templates/modular_template/sidebar.html:91
 #: monitoring/templates/sidebar.html:88 monitoring/templates/sidebar.html:94
 #: templates/admin/base.html:330
 msgid "Reports"
 msgstr "Rapports"
 
 #: hummus/settings.py:207
-#: monitoring/templates/modular_template/sidebar.html:83
+#: monitoring/templates/modular_template/sidebar.html:97
 #: monitoring/templates/sidebar.html:104
 msgid "Project Participants"
 msgstr "Participants au projet"
@@ -75,107 +75,107 @@ msgid "Clean Template"
 msgstr "Modèle propre"
 
 #: hummus/settings.py:214 hummus/settings.py:215
-#: monitoring/templates/modular_template/sidebar.html:18
+#: monitoring/templates/modular_template/sidebar.html:20
 #: monitoring/templates/sidebar.html:122 templates/admin/base.html:332
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
 #: hummus/settings.py:217
-#: monitoring/templates/modular_template/sidebar.html:101
+#: monitoring/templates/modular_template/sidebar.html:115
 msgid "Data Tables"
 msgstr "Tableaux de données"
 
-#: hummus/settings.py:218 monitoring/models.py:90 monitoring/models.py:519
+#: hummus/settings.py:218 monitoring/models.py:92 monitoring/models.py:521
 #: monitoring/templates/_filter_form.html:13
 #: monitoring/templates/dashboard/resumen.html:21
 #: monitoring/templates/modular_template/geographics.html:16
-#: monitoring/templates/modular_template/sidebar.html:108
+#: monitoring/templates/modular_template/sidebar.html:122
 #: monitoring/templates/modular_template/summary.html:23
 #: monitoring/templates/monitoring/contact_detail.html:11
 #: monitoring/templates/sidebar.html:143
 msgid "Projects"
 msgstr "Projets"
 
-#: hummus/settings.py:220 monitoring/models.py:422
+#: hummus/settings.py:220 monitoring/models.py:424
 #: monitoring/templates/_filter_form.html:21
-#: monitoring/templates/modular_template/sidebar.html:116
+#: monitoring/templates/modular_template/sidebar.html:130
 #: monitoring/templates/sidebar.html:152
 msgid "Organizations"
 msgstr "Les organisations"
 
 #: hummus/settings.py:222
-#: monitoring/templates/modular_template/sidebar.html:131
+#: monitoring/templates/modular_template/sidebar.html:145
 #: monitoring/templates/sidebar.html:171
 msgid "Types"
 msgstr "Les types"
 
 #: hummus/settings.py:224 monitoring/admin.py:126 monitoring/admin.py:145
-#: monitoring/models.py:89 monitoring/models.py:348 monitoring/models.py:490
+#: monitoring/models.py:91 monitoring/models.py:350 monitoring/models.py:492
 #: monitoring/templates/dashboard/paises_rubros.html:6
 #: monitoring/templates/dashboard/resumen.html:49
-#: monitoring/templates/modular_template/sidebar.html:149
+#: monitoring/templates/modular_template/sidebar.html:163
 #: monitoring/templates/modular_template/summary.html:45
 #: monitoring/templates/sidebar.html:192
 msgid "Countries"
 msgstr "Des pays"
 
 #: hummus/settings.py:226
-#: monitoring/templates/modular_template/sidebar.html:156
+#: monitoring/templates/modular_template/sidebar.html:170
 #: monitoring/templates/sidebar.html:200
 msgid "Contact Types"
 msgstr "Types de contact"
 
-#: hummus/settings.py:228 monitoring/models.py:729
-#: monitoring/templates/modular_template/sidebar.html:163
+#: hummus/settings.py:228 monitoring/models.py:731
+#: monitoring/templates/modular_template/sidebar.html:177
 #: monitoring/templates/sidebar.html:208
 msgid "Educations"
 msgstr "Éducations"
 
-#: hummus/settings.py:230 monitoring/models.py:144 monitoring/models.py:145
-#: monitoring/models.py:233 monitoring/templates/import/step3.html:62
-#: monitoring/templates/modular_template/sidebar.html:170
+#: hummus/settings.py:230 monitoring/models.py:146 monitoring/models.py:147
+#: monitoring/models.py:235 monitoring/templates/import/step3.html:62
+#: monitoring/templates/modular_template/sidebar.html:184
 #: monitoring/templates/monitoring/contact_detail.html:8
 #: monitoring/templates/sidebar.html:216
 msgid "Sex"
 msgstr "Sexe"
 
 #: hummus/settings.py:231
-#: monitoring/templates/modular_template/sidebar.html:177
+#: monitoring/templates/modular_template/sidebar.html:191
 #: monitoring/templates/sidebar.html:224
 msgid "Regions"
 msgstr "Régions"
 
 #: hummus/settings.py:233
-#: monitoring/templates/modular_template/sidebar.html:188
+#: monitoring/templates/modular_template/sidebar.html:202
 #: monitoring/templates/sidebar.html:234
 msgid "Segmentation"
 msgstr "Segmentation"
 
 #: hummus/settings.py:236
-#: monitoring/templates/modular_template/sidebar.html:199
+#: monitoring/templates/modular_template/sidebar.html:213
 #: monitoring/templates/sidebar.html:244 templates/admin/base.html:336
 msgid "Security"
 msgstr "Sécurité"
 
 #: hummus/settings.py:237
-#: monitoring/templates/modular_template/sidebar.html:205
+#: monitoring/templates/modular_template/sidebar.html:219
 #: monitoring/templates/sidebar.html:253
 msgid "Users"
 msgstr "Utilisateurs"
 
 #: hummus/settings.py:238
-#: monitoring/templates/modular_template/sidebar.html:210
+#: monitoring/templates/modular_template/sidebar.html:224
 #: monitoring/templates/sidebar.html:259
 msgid "Roles"
 msgstr "Rôles"
 
-#: hummus/settings.py:239 monitoring/models.py:101
-#: monitoring/templates/modular_template/sidebar.html:215
+#: hummus/settings.py:239 monitoring/models.py:103
+#: monitoring/templates/modular_template/sidebar.html:229
 #: monitoring/templates/sidebar.html:265
 msgid "Profiles"
 msgstr "Profils"
 
-#: monitoring/admin.py:123 monitoring/admin.py:213 monitoring/admin.py:260
+#: monitoring/admin.py:123 monitoring/admin.py:213
 msgid "General information"
 msgstr "informations générales"
 
@@ -192,7 +192,7 @@ msgid "Quick Liks"
 msgstr "Liens rapides"
 
 #: monitoring/admin_dashboard.py:24
-#: monitoring/templates/modular_template/sidebar.html:142
+#: monitoring/templates/modular_template/sidebar.html:156
 #: monitoring/templates/sidebar.html:181
 msgid "Catalogs"
 msgstr "Des catalogues"
@@ -205,53 +205,53 @@ msgstr "Suppléments"
 msgid "Recent Actions"
 msgstr "Actions récentes"
 
-#: monitoring/catalog.py:45 monitoring/tables.py:58 monitoring/views.py:87
+#: monitoring/catalog.py:45 monitoring/tables.py:62 monitoring/views.py:87
 #: monitoring/views.py:88 monitoring/views.py:92 monitoring/views.py:93
 #: monitoring/views.py:193
 msgid "data"
 msgstr "data"
 
-#: monitoring/common.py:90
+#: monitoring/common.py:91
 msgid "February"
 msgstr "février"
 
-#: monitoring/common.py:91
+#: monitoring/common.py:92
 msgid "March"
 msgstr "Mars"
 
-#: monitoring/common.py:92
+#: monitoring/common.py:93
 msgid "April"
 msgstr "avril"
 
-#: monitoring/common.py:93
+#: monitoring/common.py:94
 msgid "May"
 msgstr "Mai"
 
-#: monitoring/common.py:94
+#: monitoring/common.py:95
 msgid "June"
 msgstr "juin"
 
-#: monitoring/common.py:95
+#: monitoring/common.py:96
 msgid "July"
 msgstr "juillet"
 
-#: monitoring/common.py:96
+#: monitoring/common.py:97
 msgid "August"
 msgstr "août"
 
-#: monitoring/common.py:97
+#: monitoring/common.py:98
 msgid "September"
 msgstr "septembre"
 
-#: monitoring/common.py:98
+#: monitoring/common.py:99
 msgid "October"
 msgstr "octobre"
 
-#: monitoring/common.py:99
+#: monitoring/common.py:100
 msgid "November"
 msgstr "novembre"
 
-#: monitoring/common.py:100
+#: monitoring/common.py:101
 msgid "December"
 msgstr "décembre"
 
@@ -283,14 +283,14 @@ msgstr "Enregistrement sélectionné non trouvé."
 msgid "project__countries__name"
 msgstr "project__countries__name"
 
-#: monitoring/models.py:22 monitoring/models.py:256 monitoring/models.py:405
-#: monitoring/models.py:502 monitoring/models.py:604 monitoring/models.py:694
+#: monitoring/models.py:22 monitoring/models.py:258 monitoring/models.py:407
+#: monitoring/models.py:504 monitoring/models.py:606 monitoring/models.py:696
 msgid "Created by"
 msgstr "Créé par"
 
-#: monitoring/models.py:24 monitoring/models.py:157 monitoring/models.py:260
-#: monitoring/models.py:409 monitoring/models.py:506 monitoring/models.py:608
-#: monitoring/models.py:698
+#: monitoring/models.py:24 monitoring/models.py:159 monitoring/models.py:262
+#: monitoring/models.py:411 monitoring/models.py:508 monitoring/models.py:610
+#: monitoring/models.py:700
 msgid "Data Source"
 msgstr "La source de données"
 
@@ -298,33 +298,33 @@ msgstr "La source de données"
 msgid "Filename"
 msgstr "Nom de fichier"
 
-#: monitoring/models.py:29 monitoring/models.py:63 monitoring/models.py:132
-#: monitoring/models.py:150 monitoring/models.py:164 monitoring/models.py:222
-#: monitoring/models.py:324 monitoring/models.py:352 monitoring/models.py:385
-#: monitoring/models.py:427 monitoring/models.py:458 monitoring/models.py:568
-#: monitoring/models.py:637 monitoring/models.py:716 monitoring/models.py:733
+#: monitoring/models.py:29 monitoring/models.py:63 monitoring/models.py:134
+#: monitoring/models.py:152 monitoring/models.py:166 monitoring/models.py:224
+#: monitoring/models.py:326 monitoring/models.py:354 monitoring/models.py:387
+#: monitoring/models.py:429 monitoring/models.py:460 monitoring/models.py:570
+#: monitoring/models.py:639 monitoring/models.py:718 monitoring/models.py:735
 #: monitoring/templates/dupes_name.html:54
 #: monitoring/templates/dupes_name.html:88
 #: monitoring/templates/dupes_name_fuzzy.html:53
 #: monitoring/templates/dupes_name_fuzzy.html:54
 #: monitoring/templates/dupes_name_fuzzy.html:87
 #: monitoring/templates/dupes_name_fuzzy.html:88
-#: monitoring/templates/modular_template/sidebar.html:53
+#: monitoring/templates/modular_template/sidebar.html:67
 #: monitoring/templates/monitoring/contact_detail.html:4
 #: monitoring/templates/monitoring/project_detail.html:52
 #: monitoring/templates/sidebar.html:63
 msgid "Name"
 msgstr "prénom"
 
-#: monitoring/models.py:30 monitoring/models.py:136 monitoring/models.py:166
-#: monitoring/models.py:326 monitoring/models.py:429 monitoring/models.py:639
-#: monitoring/models.py:720 monitoring/models.py:735
+#: monitoring/models.py:30 monitoring/models.py:64 monitoring/models.py:138
+#: monitoring/models.py:168 monitoring/models.py:328 monitoring/models.py:431
+#: monitoring/models.py:641 monitoring/models.py:722 monitoring/models.py:737
 msgid "Name FR"
 msgstr "Prénom FR"
 
-#: monitoring/models.py:31 monitoring/models.py:134 monitoring/models.py:165
-#: monitoring/models.py:325 monitoring/models.py:428 monitoring/models.py:638
-#: monitoring/models.py:718 monitoring/models.py:734
+#: monitoring/models.py:31 monitoring/models.py:65 monitoring/models.py:136
+#: monitoring/models.py:167 monitoring/models.py:327 monitoring/models.py:430
+#: monitoring/models.py:640 monitoring/models.py:720 monitoring/models.py:736
 msgid "Name ES"
 msgstr "Prénom ES"
 
@@ -360,501 +360,500 @@ msgstr "Modèle"
 msgid "Templates"
 msgstr "Modèles"
 
-#: monitoring/models.py:57 monitoring/models.py:183 monitoring/models.py:217
-#: monitoring/models.py:318 monitoring/models.py:380 monitoring/models.py:453
-#: monitoring/models.py:555 monitoring/models.py:660
+#: monitoring/models.py:57 monitoring/models.py:185 monitoring/models.py:219
+#: monitoring/models.py:320 monitoring/models.py:382 monitoring/models.py:455
+#: monitoring/models.py:557 monitoring/models.py:662
 msgid "Current user has no profile."
 msgstr "L'utilisateur actuel n'a pas de profil"
 
-#: monitoring/models.py:62 monitoring/models.py:131 monitoring/models.py:149
-#: monitoring/models.py:323
+#: monitoring/models.py:62 monitoring/models.py:133 monitoring/models.py:151
+#: monitoring/models.py:325
 msgid "Id"
 msgstr "Id"
 
-#: monitoring/models.py:65
+#: monitoring/models.py:67
 msgid "Subregions"
 msgstr "Sous-régions"
 
-#: monitoring/models.py:74 monitoring/models.py:336 monitoring/models.py:492
-#: monitoring/models.py:580
+#: monitoring/models.py:76 monitoring/models.py:338 monitoring/models.py:494
+#: monitoring/models.py:582
 msgid "LWR Region"
 msgstr "Région de LWR"
 
-#: monitoring/models.py:75 monitoring/models.py:88
+#: monitoring/models.py:77 monitoring/models.py:90
 msgid "LWR Regions"
 msgstr "Régions LWR"
 
-#: monitoring/models.py:85 monitoring/models.py:748
+#: monitoring/models.py:87 monitoring/models.py:750
 msgid "User"
 msgstr "Utilisateur"
 
-#: monitoring/models.py:87
+#: monitoring/models.py:89
 msgid "Language"
 msgstr "La langue"
 
-#: monitoring/models.py:100 monitoring/templates/header.html:40
-#: monitoring/templates/modular_template/header.html:44
+#: monitoring/models.py:102 monitoring/templates/header.html:40
 msgid "Profile"
 msgstr "Profil"
 
-#: monitoring/models.py:106 monitoring/models.py:390 monitoring/models.py:469
-#: monitoring/models.py:571
+#: monitoring/models.py:108 monitoring/models.py:392 monitoring/models.py:471
+#: monitoring/models.py:573
 msgid "Salesforce Id"
 msgstr "Salesforce Id"
 
-#: monitoring/models.py:108 monitoring/models.py:615
+#: monitoring/models.py:110 monitoring/models.py:617
 msgid "Sub Project"
 msgstr "Sous projet"
 
-#: monitoring/models.py:109
-#: monitoring/templates/modular_template/dashboard.html:131
+#: monitoring/models.py:111
+#: monitoring/templates/modular_template/dashboard.html:140
 msgid "Fiscal Year"
 msgstr "Exercice fiscal"
 
-#: monitoring/models.py:110
-#: monitoring/templates/modular_template/dashboard.html:139
+#: monitoring/models.py:112
+#: monitoring/templates/modular_template/dashboard.html:148
 msgid "Quarter"
 msgstr "Trimestre"
 
-#: monitoring/models.py:111 monitoring/models.py:478 monitoring/models.py:591
+#: monitoring/models.py:113 monitoring/models.py:480 monitoring/models.py:593
 #: monitoring/templates/monitoring/project_detail.html:75
 #: monitoring/templates/monitoring/project_detail.html:114
 #: monitoring/templates/monitoring/subproject_detail.html:68
 msgid "Actual Direct Men"
 msgstr "Hommes directs réels"
 
-#: monitoring/models.py:112 monitoring/models.py:479 monitoring/models.py:592
+#: monitoring/models.py:114 monitoring/models.py:481 monitoring/models.py:594
 #: monitoring/templates/monitoring/project_detail.html:83
 #: monitoring/templates/monitoring/project_detail.html:115
 #: monitoring/templates/monitoring/subproject_detail.html:76
 msgid "Actual Direct Women"
 msgstr "Femmes directes réelles"
 
-#: monitoring/models.py:113 monitoring/models.py:480 monitoring/models.py:593
+#: monitoring/models.py:115 monitoring/models.py:482 monitoring/models.py:595
 #: monitoring/templates/monitoring/project_detail.html:91
 #: monitoring/templates/monitoring/subproject_detail.html:84
 msgid "Actual Indirect Men"
 msgstr "Hommes indirects réels"
 
-#: monitoring/models.py:115 monitoring/models.py:482 monitoring/models.py:595
+#: monitoring/models.py:117 monitoring/models.py:484 monitoring/models.py:597
 #: monitoring/templates/monitoring/project_detail.html:99
 #: monitoring/templates/monitoring/subproject_detail.html:92
 msgid "Actual Indirect Women"
 msgstr "Femmes indirectes réelles"
 
-#: monitoring/models.py:116 monitoring/models.py:484 monitoring/models.py:596
+#: monitoring/models.py:118 monitoring/models.py:486 monitoring/models.py:598
 #: monitoring/templates/monitoring/project_detail.html:72
 #: monitoring/templates/monitoring/subproject_detail.html:65
 msgid "Target Direct Men"
 msgstr "Ciblent les hommes"
 
-#: monitoring/models.py:117 monitoring/models.py:486 monitoring/models.py:597
+#: monitoring/models.py:119 monitoring/models.py:488 monitoring/models.py:599
 #: monitoring/templates/monitoring/project_detail.html:80
 #: monitoring/templates/monitoring/subproject_detail.html:73
 msgid "Target Direct Women"
 msgstr "Cibler directement les femmes"
 
-#: monitoring/models.py:118 monitoring/models.py:487 monitoring/models.py:598
+#: monitoring/models.py:120 monitoring/models.py:489 monitoring/models.py:600
 #: monitoring/templates/monitoring/project_detail.html:88
 #: monitoring/templates/monitoring/subproject_detail.html:81
 msgid "Target Indirect Men"
 msgstr "Hommes indirects cibles"
 
-#: monitoring/models.py:120 monitoring/models.py:489 monitoring/models.py:600
+#: monitoring/models.py:122 monitoring/models.py:491 monitoring/models.py:602
 #: monitoring/templates/monitoring/project_detail.html:96
 #: monitoring/templates/monitoring/subproject_detail.html:89
 msgid "Target Indirect Women"
 msgstr "Femmes indirectes cibles"
 
-#: monitoring/models.py:133 monitoring/models.py:717
+#: monitoring/models.py:135 monitoring/models.py:719
 msgid "Variable Id"
 msgstr "Identifiant de variable"
 
-#: monitoring/models.py:135 monitoring/models.py:719
+#: monitoring/models.py:137 monitoring/models.py:721
 msgid "Variable Id ES"
 msgstr "Variable Id ES"
 
-#: monitoring/models.py:137 monitoring/models.py:721
+#: monitoring/models.py:139 monitoring/models.py:723
 msgid "Variable Id FR"
 msgstr "Variable Id FR"
 
-#: monitoring/models.py:158
+#: monitoring/models.py:160
 msgid "Data Sources"
 msgstr "Source d'information"
 
-#: monitoring/models.py:191 monitoring/models.py:241 monitoring/models.py:347
-#: monitoring/models.py:392 monitoring/models.py:578
+#: monitoring/models.py:193 monitoring/models.py:243 monitoring/models.py:349
+#: monitoring/models.py:394 monitoring/models.py:580
 #: monitoring/templates/_filter_form.html:29
 #: monitoring/templates/modular_template/geographics.html:15
 #: monitoring/templates/monitoring/contact_detail.html:10
 msgid "Country"
 msgstr "Pays"
 
-#: monitoring/models.py:203
+#: monitoring/models.py:205
 msgid "Cities"
 msgstr "Villes"
 
-#: monitoring/models.py:223
+#: monitoring/models.py:225
 #: monitoring/templates/monitoring/contact_detail.html:6
 msgid "Last Name"
 msgstr "Nom de famille"
 
-#: monitoring/models.py:225
+#: monitoring/models.py:227
 #: monitoring/templates/monitoring/contact_detail.html:5
 msgid "First Name"
 msgstr "Prénom"
 
-#: monitoring/models.py:226
+#: monitoring/models.py:228
 msgid "Birthdate"
 msgstr "Date de naissance"
 
-#: monitoring/models.py:227 monitoring/templates/dupes_document.html:53
+#: monitoring/models.py:229 monitoring/templates/dupes_document.html:53
 #: monitoring/templates/dupes_document.html:91
 #: monitoring/templates/import/step3.html:63
-#: monitoring/templates/modular_template/sidebar.html:63
+#: monitoring/templates/modular_template/sidebar.html:77
 #: monitoring/templates/monitoring/contact_detail.html:7
 #: monitoring/templates/sidebar.html:75
 msgid "Document"
 msgstr "Document"
 
-#: monitoring/models.py:229 templates/admin/base.html:354
+#: monitoring/models.py:231 templates/admin/base.html:354
 msgid "Title"
 msgstr "Titre"
 
-#: monitoring/models.py:231 monitoring/models.py:396 monitoring/models.py:421
-#: monitoring/models.py:687 monitoring/templates/import/step3.html:64
+#: monitoring/models.py:233 monitoring/models.py:398 monitoring/models.py:423
+#: monitoring/models.py:689 monitoring/templates/import/step3.html:64
 msgid "Organization"
 msgstr "Organisation"
 
-#: monitoring/models.py:235 monitoring/models.py:742
+#: monitoring/models.py:237 monitoring/models.py:744
 msgid "Contact Type"
 msgstr "type de contact"
 
-#: monitoring/models.py:236
+#: monitoring/models.py:238
 msgid "Community"
 msgstr "Communauté"
 
-#: monitoring/models.py:238
+#: monitoring/models.py:240
 msgid "Municipality"
 msgstr "Municipalité"
 
-#: monitoring/models.py:239
+#: monitoring/models.py:241
 msgid "City"
 msgstr "Ville"
 
-#: monitoring/models.py:243 monitoring/models.py:728
+#: monitoring/models.py:245 monitoring/models.py:730
 #: monitoring/templates/monitoring/contact_detail.html:9
 msgid "Education"
 msgstr "Éducation"
 
-#: monitoring/models.py:245
+#: monitoring/models.py:247
 msgid "Phone Personal"
 msgstr "Téléphone personnel"
 
-#: monitoring/models.py:247
+#: monitoring/models.py:249
 msgid "Phone Work"
 msgstr "Travail de téléphone"
 
-#: monitoring/models.py:248
+#: monitoring/models.py:250
 msgid "Men Home"
 msgstr "Hommes à domicile"
 
-#: monitoring/models.py:249
+#: monitoring/models.py:251
 msgid "Women Home"
 msgstr "Femmes à domicile"
 
-#: monitoring/models.py:250
+#: monitoring/models.py:252
 #: monitoring/templates/monitoring/project_detail.html:44
 #: monitoring/templates/monitoring/subproject_detail.html:31
 msgid "Location"
 msgstr "Emplacement"
 
-#: monitoring/models.py:253 monitoring/models.py:402 monitoring/models.py:499
-#: monitoring/models.py:601 monitoring/models.py:691 monitoring/models.py:747
+#: monitoring/models.py:255 monitoring/models.py:404 monitoring/models.py:501
+#: monitoring/models.py:603 monitoring/models.py:693 monitoring/models.py:749
 msgid "Created"
 msgstr "Créé"
 
-#: monitoring/models.py:254 monitoring/models.py:403 monitoring/models.py:500
-#: monitoring/models.py:602 monitoring/models.py:692
+#: monitoring/models.py:256 monitoring/models.py:405 monitoring/models.py:502
+#: monitoring/models.py:604 monitoring/models.py:694
 msgid "Modified"
 msgstr "Modifié"
 
-#: monitoring/models.py:258 monitoring/models.py:407 monitoring/models.py:504
-#: monitoring/models.py:606 monitoring/models.py:696
+#: monitoring/models.py:260 monitoring/models.py:409 monitoring/models.py:506
+#: monitoring/models.py:608 monitoring/models.py:698
 msgid "Modified by"
 msgstr "Modifié par"
 
-#: monitoring/models.py:262 monitoring/models.py:411 monitoring/models.py:508
-#: monitoring/models.py:700
+#: monitoring/models.py:264 monitoring/models.py:413 monitoring/models.py:510
+#: monitoring/models.py:702
 msgid "Related event"
 msgstr "Événement connexe"
 
-#: monitoring/models.py:293
+#: monitoring/models.py:295
 msgid "We need a name! name, first_name and last_name seem to be empty."
 msgstr "Nous avons besoin d'un nom! nom, prénom et nom semblent être vides."
 
-#: monitoring/models.py:300 monitoring/models.py:668
+#: monitoring/models.py:302 monitoring/models.py:670
 msgid "Contact"
 msgstr "Contact"
 
-#: monitoring/models.py:301
+#: monitoring/models.py:303
 msgid "Contacts"
 msgstr "Contacts"
 
-#: monitoring/models.py:327
+#: monitoring/models.py:329
 msgid "Numerical Code"
 msgstr "Code numérique"
 
-#: monitoring/models.py:328
+#: monitoring/models.py:330
 msgid "Alfa3"
 msgstr "Alfa3"
 
-#: monitoring/models.py:329
+#: monitoring/models.py:331
 msgid "X"
 msgstr "X"
 
-#: monitoring/models.py:330
+#: monitoring/models.py:332
 msgid "Y"
 msgstr "Y"
 
-#: monitoring/models.py:331
+#: monitoring/models.py:333
 msgid "Region"
 msgstr "Région"
 
-#: monitoring/models.py:333
+#: monitoring/models.py:335
 msgid "Sub Region"
 msgstr "Sous région"
 
-#: monitoring/models.py:334
+#: monitoring/models.py:336
 msgid "Phone Code"
 msgstr "Code téléphonique"
 
-#: monitoring/models.py:353 monitoring/models.py:473 monitoring/models.py:575
+#: monitoring/models.py:355 monitoring/models.py:475 monitoring/models.py:577
 #: monitoring/templates/monitoring/project_detail.html:57
 msgid "Start"
 msgstr "Début"
 
-#: monitoring/models.py:354 monitoring/models.py:474 monitoring/models.py:576
+#: monitoring/models.py:356 monitoring/models.py:476 monitoring/models.py:578
 #: monitoring/templates/monitoring/project_detail.html:61
 msgid "End"
 msgstr "Fin"
 
-#: monitoring/models.py:355
+#: monitoring/models.py:357
 msgid "Slug"
 msgstr "Limace"
 
-#: monitoring/models.py:356
+#: monitoring/models.py:358
 msgid "Order"
 msgstr "Ordre"
 
-#: monitoring/models.py:358 monitoring/models.py:366
+#: monitoring/models.py:360 monitoring/models.py:368
 #: monitoring/templates/buttons_dupes.html:3
 msgid "Filter"
 msgstr "Filtre"
 
-#: monitoring/models.py:367 monitoring/templates/dashboard/filtros.html:30
+#: monitoring/models.py:369 monitoring/templates/dashboard/filtros.html:30
 #: monitoring/templates/modular_template/dashboard.html:72
 msgid "Filters"
 msgstr "Les filtres"
 
-#: monitoring/models.py:386
+#: monitoring/models.py:388
 msgid "Acronym"
 msgstr "Acronyme"
 
-#: monitoring/models.py:388 monitoring/models.py:476 monitoring/models.py:574
+#: monitoring/models.py:390 monitoring/models.py:478 monitoring/models.py:576
 msgid "Status"
 msgstr "Statut"
 
-#: monitoring/models.py:394 monitoring/models.py:439
+#: monitoring/models.py:396 monitoring/models.py:441
 msgid "Organization Type"
 msgstr "Type d'Organisation"
 
-#: monitoring/models.py:398 monitoring/models.py:431
+#: monitoring/models.py:400 monitoring/models.py:433
 msgid "Description"
 msgstr "La description"
 
-#: monitoring/models.py:399
+#: monitoring/models.py:401
 msgid "Is Implementer"
 msgstr "Est implémenteur"
 
-#: monitoring/models.py:426
+#: monitoring/models.py:428
 msgid "Abbreviation"
 msgstr "Abréviation"
 
-#: monitoring/models.py:440
+#: monitoring/models.py:442
 msgid "Organization Types"
 msgstr "Types d'organisation"
 
-#: monitoring/models.py:460
+#: monitoring/models.py:462
 msgid "In Development"
 msgstr "En développement"
 
-#: monitoring/models.py:461 monitoring/models.py:562
+#: monitoring/models.py:463 monitoring/models.py:564
 msgid "Active"
 msgstr "Actif"
 
-#: monitoring/models.py:462 monitoring/models.py:563
+#: monitoring/models.py:464 monitoring/models.py:565
 msgid "Inactive"
 msgstr "Inactif"
 
-#: monitoring/models.py:463 monitoring/models.py:566
+#: monitoring/models.py:465 monitoring/models.py:568
 #: monitoring/templates/_contact_merge_modal.html:136
 msgid "Closed"
 msgstr "Fermé"
 
-#: monitoring/models.py:464 monitoring/models.py:564
+#: monitoring/models.py:466 monitoring/models.py:566
 msgid "Suspended"
 msgstr "Suspendu"
 
-#: monitoring/models.py:465 monitoring/models.py:565
+#: monitoring/models.py:467 monitoring/models.py:567
 msgid "Terminated"
 msgstr "Terminé"
 
-#: monitoring/models.py:467 monitoring/models.py:569
+#: monitoring/models.py:469 monitoring/models.py:571
 msgid "Code"
 msgstr "Code"
 
-#: monitoring/models.py:470
+#: monitoring/models.py:472
 msgid "Logo"
 msgstr "Logo"
 
-#: monitoring/models.py:471
+#: monitoring/models.py:473
 msgid "Colors"
 msgstr "Couleurs"
 
-#: monitoring/models.py:472
+#: monitoring/models.py:474
 msgid "Url"
 msgstr "URL"
 
-#: monitoring/models.py:477
+#: monitoring/models.py:479
 msgid "Owner"
 msgstr "Propriétaire"
 
-#: monitoring/models.py:494
+#: monitoring/models.py:496
 msgid "Project Type"
 msgstr "Type de projet"
 
-#: monitoring/models.py:496 monitoring/models.py:584
+#: monitoring/models.py:498 monitoring/models.py:586
 msgid "Record Type"
 msgstr "Type d'enregistrement"
 
-#: monitoring/models.py:518 monitoring/models.py:572 monitoring/models.py:667
+#: monitoring/models.py:520 monitoring/models.py:574 monitoring/models.py:669
 #: monitoring/templates/dashboard/filtros.html:86
 #: monitoring/templates/modular_template/project_graph.html:17
 #: monitoring/templates/monitoring/project_detail.html:14
 msgid "Project"
 msgstr "Projet"
 
-#: monitoring/models.py:528
+#: monitoring/models.py:530
 msgid "Women"
 msgstr "Femmes"
 
-#: monitoring/models.py:534
+#: monitoring/models.py:536
 msgid "Men"
 msgstr "Hommes"
 
-#: monitoring/models.py:538
+#: monitoring/models.py:540
 #: monitoring/templates/modular_template/geographics.html:45
 msgid "Total"
 msgstr "Total"
 
-#: monitoring/models.py:561
+#: monitoring/models.py:563
 msgid "Proposed"
 msgstr "Proposé"
 
-#: monitoring/models.py:582
+#: monitoring/models.py:584
 msgid "Implementing Organization"
 msgstr "Organisation d'exécution"
 
-#: monitoring/models.py:586
+#: monitoring/models.py:588
 msgid "SubProject Type"
 msgstr "Type de sous-projet"
 
-#: monitoring/models.py:616
+#: monitoring/models.py:618
 msgid "Sub Projects"
 msgstr "Sous projets"
 
-#: monitoring/models.py:646 monitoring/models.py:670
+#: monitoring/models.py:648 monitoring/models.py:672
 msgid "Product"
 msgstr "Produit"
 
-#: monitoring/models.py:647
+#: monitoring/models.py:649
 msgid "Products"
 msgstr "Des produits"
 
-#: monitoring/models.py:666
+#: monitoring/models.py:668
 msgid "SubProject"
 msgstr "Sous-projet"
 
-#: monitoring/models.py:672
+#: monitoring/models.py:674
 msgid "Area"
 msgstr "Zone"
 
-#: monitoring/models.py:674
+#: monitoring/models.py:676
 msgid "Development Area"
 msgstr "Zone de développement"
 
-#: monitoring/models.py:676
+#: monitoring/models.py:678
 msgid "Productive Area"
 msgstr "Domaine de production"
 
-#: monitoring/models.py:678
+#: monitoring/models.py:680
 msgid "Age Development Plantation"
 msgstr "Plantation de développement d'âge"
 
-#: monitoring/models.py:680
+#: monitoring/models.py:682
 msgid "Age Productive Plantation"
 msgstr "Age Productive Plantation"
 
-#: monitoring/models.py:682
+#: monitoring/models.py:684
 msgid "Yield Field"
 msgstr "Champ de rendement"
 
-#: monitoring/models.py:684
+#: monitoring/models.py:686
 msgid "Date Entry Project"
 msgstr "Date projet d'entrée"
 
-#: monitoring/models.py:685
+#: monitoring/models.py:687
 msgid "Date End Project"
 msgstr "Date de fin du projet"
 
-#: monitoring/models.py:688
+#: monitoring/models.py:690
 msgid "Extra Data"
 msgstr "Données supplémentaires"
 
-#: monitoring/models.py:710
+#: monitoring/models.py:712
 msgid "Project Contact"
 msgstr "Contact du projet"
 
-#: monitoring/models.py:711
+#: monitoring/models.py:713
 msgid "Project Contacts"
 msgstr "Contacts du projet"
 
-#: monitoring/models.py:743
+#: monitoring/models.py:745
 msgid "Contacts Types"
 msgstr "Types de contacts"
 
-#: monitoring/models.py:749
+#: monitoring/models.py:751
 msgid "Module"
 msgstr "Module"
 
-#: monitoring/models.py:750
+#: monitoring/models.py:752
 msgid "Content"
 msgstr "Contenu"
 
-#: monitoring/models.py:757
+#: monitoring/models.py:759
 msgid "Log"
 msgstr "register"
 
-#: monitoring/models.py:758
+#: monitoring/models.py:760
 msgid "Logs"
 msgstr "register"
 
-#: monitoring/tables.py:44
+#: monitoring/tables.py:48
 msgid "Unsupported export format."
 msgstr "Format d'exportation non pris en charge."
 
-#: monitoring/tables.py:215 monitoring/tables.py:243
+#: monitoring/tables.py:220 monitoring/tables.py:248
 #: monitoring/templates/table.html:66
 msgid "Apply Filter"
 msgstr "Appliquer le filtre"
@@ -994,7 +993,7 @@ msgid "Fiscal year start month"
 msgstr "Mois de début d'année fiscale"
 
 #: monitoring/templates/dashboard/filtros.html:46
-#: monitoring/templates/modular_template/dashboard.html:166
+#: monitoring/templates/modular_template/dashboard.html:175
 #: monitoring/templates/table.html:30
 msgid "From"
 msgstr "De"
@@ -1013,7 +1012,7 @@ msgid "Select from..."
 msgstr "Choisissez parmi ..."
 
 #: monitoring/templates/dashboard/filtros.html:67
-#: monitoring/templates/modular_template/dashboard.html:175
+#: monitoring/templates/modular_template/dashboard.html:184
 #: monitoring/templates/table.html:36
 msgid "To"
 msgstr "À"
@@ -1205,15 +1204,15 @@ msgid "Process Completed Successfully"
 msgstr "Processus terminé avec succès"
 
 #: monitoring/templates/import/step3.html:19
-msgid " Records Created"
+msgid "Records Created"
 msgstr "Enregistrements créés"
 
 #: monitoring/templates/import/step3.html:20
-msgid " and "
+msgid "and"
 msgstr "et"
 
 #: monitoring/templates/import/step3.html:21
-msgid " Records Updated"
+msgid "Records Updated"
 msgstr "Dossiers mis à jour"
 
 #: monitoring/templates/import/step3.html:27
@@ -1264,36 +1263,45 @@ msgstr "Terminé et vérifier les doublons"
 msgid "3D"
 msgstr "3D"
 
-#: monitoring/templates/modular_template/dashboard.html:94
+#: monitoring/templates/modular_template/dashboard.html:95
+msgid "Share Link"
+msgstr "Lien de partage"
+
+#: monitoring/templates/modular_template/dashboard.html:104
 msgid "Filter by Specifics Dates"
 msgstr "Filtrer par dates spécifiques"
 
-#: monitoring/templates/modular_template/dashboard.html:105
+#: monitoring/templates/modular_template/dashboard.html:114
 msgid "Clear filters"
 msgstr "Effacer les filtres"
 
-#: monitoring/templates/modular_template/dashboard.html:144
+#: monitoring/templates/modular_template/dashboard.html:153
 msgid "deselect quarter"
 msgstr "désélectionner le trimestre"
 
-#: monitoring/templates/modular_template/dashboard.html:187
-#: monitoring/templates/modular_template/dashboard.html:206
+#: monitoring/templates/modular_template/dashboard.html:196
+#: monitoring/templates/modular_template/dashboard.html:218
+#: monitoring/templates/modular_template/dashboard.html:251
 msgid "Press to remove value selected"
 msgstr "Appuyez pour supprimer la valeur sélectionnée"
 
-#: monitoring/templates/modular_template/dashboard.html:190
+#: monitoring/templates/modular_template/dashboard.html:200
 msgid "Write the project name"
 msgstr "Écrivez le nom du projet"
 
-#: monitoring/templates/modular_template/dashboard.html:203
+#: monitoring/templates/modular_template/dashboard.html:215
 #: monitoring/templates/modular_template/project_graph.html:21
 #: monitoring/templates/monitoring/subproject_detail.html:10
 msgid "Subproject"
 msgstr "Sous-projet"
 
-#: monitoring/templates/modular_template/dashboard.html:208
+#: monitoring/templates/modular_template/dashboard.html:220
 msgid "Write the subproject name"
 msgstr "Écrivez le nom du sous-projet"
+
+#: monitoring/templates/modular_template/dashboard.html:255
+msgid "select Countries"
+msgstr "sélectionner les pays"
 
 #: monitoring/templates/modular_template/geographics.html:4
 msgid "Geographic Information"
@@ -1341,15 +1349,7 @@ msgstr "Participants par éducation"
 msgid "Actual vs Target, by Sex(Fixed placement columns)"
 msgstr "Réel vs cible, par sexe (colonnes de placement fixes)"
 
-#: monitoring/templates/modular_template/header.html:16
-msgid "My dashboard"
-msgstr "Mon tableau de bord"
-
-#: monitoring/templates/modular_template/header.html:27
-msgid "Share Link"
-msgstr "Lien de partage"
-
-#: monitoring/templates/modular_template/header.html:46
+#: monitoring/templates/modular_template/header.html:26
 msgid "Logout"
 msgstr "Se déconnecter"
 
@@ -1361,22 +1361,26 @@ msgstr "Projet actuel vs cible"
 msgid "Total of actual participants and targets, by sex"
 msgstr "Total des participants réels et des cibles, par sexe"
 
-#: monitoring/templates/modular_template/sidebar.html:47
+#: monitoring/templates/modular_template/sidebar.html:18
+msgid "My Dashboard"
+msgstr "Mon tableau de bord"
+
+#: monitoring/templates/modular_template/sidebar.html:61
 #: monitoring/templates/sidebar.html:54
 msgid "Duplicates"
 msgstr "Les doublons"
 
-#: monitoring/templates/modular_template/sidebar.html:58
+#: monitoring/templates/modular_template/sidebar.html:72
 #: monitoring/templates/sidebar.html:69
 msgid "Fuzzy Names"
 msgstr "Fuzzy Names"
 
-#: monitoring/templates/modular_template/sidebar.html:90
+#: monitoring/templates/modular_template/sidebar.html:104
 #: monitoring/templates/sidebar.html:112
 msgid "Clean template"
 msgstr "Modèle propre"
 
-#: monitoring/templates/modular_template/sidebar.html:124
+#: monitoring/templates/modular_template/sidebar.html:138
 #: monitoring/templates/sidebar.html:163
 msgid "List"
 msgstr "liste"
