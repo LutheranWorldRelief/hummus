@@ -1,38 +1,50 @@
-{% load static %}
-<!doctype html>
+{% load static i18n %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo_user.png' %}">
-    <title>Hummus</title>
+    <title>{% trans '3D' %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo_user.png' %}"/>
+    <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
 
-    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static 'css/site.app.css' %}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/AdminLTE.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/skins/_all-skins.min.css' %}" rel="stylesheet">
     {% block extra_header %}
+
     {% endblock %}
+
 </head>
-<body class="skin-blue sidebar-mini sidebar-collapse">
-<div class="wrapper">
-    {% include 'header.html' %}
-    {% include 'sidebar.html' %}
+<body>
+<div class="main-wrapper">
+    <div class="app" {% if request.resolver_match.url_name == 'dashboard' %} id="app" {% endif %}>
+        {% include 'modular_template/header.html' %}
+        {% include 'modular_template/sidebar.html' %}
 
-    <div class="content-wrapper">
-        <section class="content">
-            {% block content %}
+        <article class="content dashboard-page">
+            {% block main_content %}
+
             {% endblock %}
+        </article>
 
-        </section>
     </div>
+</div>
 
-    <script src="{% static 'js/assets/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/adminlte.min.js' %}"></script>
-    {% block extra_body %}
-    {% endblock %}
+<script src="{% static 'js/vendor.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script>
+    //NOTE: Color palette for graphics
+    var array_colors_lwr = [
+        'rgba(33,154,253,0.9)',//men
+        'rgba(97,202,170,0.7)',//women
+        'rgba(133,206,54,0.7)',//target men
+        'rgba(199,84,153,0.7)',//target women
+    ]
+</script>
+
+{% block extra_body %}
+
+{% endblock %}
+
 </body>
 </html>
