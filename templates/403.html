@@ -1,22 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block extra_header %}
-
-{% endblock %}
-
-{% block content %}
-
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <h1>403: {% trans 'Please contact the system administrator to obtain the necessary permissions.' %}</h1>
+{% block main_content %}
+    <section class="section">
+        <div class="error-card">
+            <div class="error-title-block">
+                <h1 class="error-title">403</h1>
+                <h2 class="error-sub-title">{% trans 'Authorized Personnel Only' %}</h2>
+            </div>
+            <div class="error-container">
+                <p>{% trans 'Please contact the system administrator to obtain the necessary permissions.' %}</p>
+            </div>
         </div>
-    </div>
-
-
-{% endblock %}
-
-
-{% block extra_body %}
-
-
+    </section>
 {% endblock %}
