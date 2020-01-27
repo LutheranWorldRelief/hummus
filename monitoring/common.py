@@ -24,7 +24,7 @@ def smart_assign(original, new):
 def domain_required():
     def check_domain(user):
         # domain required
-        domain = user.username.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN))
+        domain = user.username.endswith('@{}'.format(settings.MICROSOFT_DOMAIN))
 
         # super user can always get int
         superuser = user.is_superuser
@@ -43,7 +43,7 @@ class DomainRequiredMixin(UserPassesTestMixin):
             return False
 
         # domain required
-        domain = self.request.user.username.endswith('{}%s'.format(settings.MICROSOFT_DOMAIN))
+        domain = self.request.user.username.endswith('@{}'.format(settings.MICROSOFT_DOMAIN))
 
         # super user can always get int
         superuser = self.request.user.is_superuser
