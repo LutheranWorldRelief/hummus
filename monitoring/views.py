@@ -150,8 +150,12 @@ class ValidateExcel(DomainRequiredMixin, FormView):
         grouped_errors = sorted(grouped_errors.items(),
                                 key=lambda k_v: k_v[1]['count'], reverse=True)
 
+        excel_data_rows = uploaded_ws
+        if uploaded_ws.max_row > 20:
+            excel_data_rows = uploaded_ws.iter_rows(min_row=1,max_row=20)
+
         context['grouped_errors'] = grouped_errors
-        context['data'] = uploaded_ws
+        context['data'] = excel_data_rows
         context['columns_required'] = columns_required
         context['start_row'] = start_row
         context['date_format'] = date_format
