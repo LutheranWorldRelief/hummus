@@ -1,19 +1,57 @@
-{% extends 'base.html' %}
-{% load i18n %}
-{% block content %}
-<p>{% trans 'Name' %}: <a href="{% url 'admin:monitoring_contact_change' object.id %}">{{ object.name }}</a></p>
-<p>{% trans 'First Name' %}: {{ object.first_name }}</p>
-<p>{% trans 'Last Name' %}: {{ object.last_name }}</p>
-<p>{% trans 'Document' %}: {{ object.document }}</p>
-<p>{% trans 'Sex' %}: {% trans object.sex.name %}</p>
-<p>{% trans 'Education' %}: {% trans object.education.name %}</p>
-<p>{% trans 'Country' %}: {{ object.country }}</p>
-<p>{% trans 'Projects' %}:</p>
-<ul>
-{% for row in object.projectcontact_set.all %}
-    <li><a href="{% url 'admin:monitoring_project_change' row.project.id %}">{{ row.project.name }}</a></li>
-    (<a href="{% url 'admin:monitoring_organization_change' row.organization.id %}">{{ row.organization.name }}</a>)
-    {{ row.date_entry_project }}</li>
-{% endfor %}
-</ul>
+{% extends 'modular_template/base.html' %}
+
+{% load  i18n %}
+{% block main_content %}
+    <div class="title-block mt-1 text-center">
+        <h1 class="title"> {{ object.name }} </h1>
+        <p class="title-description">{% trans "Participant" %}</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card sameheight-item">
+                <div class="card-block">
+                    <div class="col-12">
+                        <p>{% trans 'Name' %}: <a
+                                href="{% url 'admin:monitoring_contact_change' object.id %}">{{ object.name }}</a></p>
+                    </div>
+                    {% if object.first_name %}
+                        <div class="col-12">
+                            <p>{% trans 'First Name' %}: {{ object.first_name }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if object.last_name %}
+                        <div class="col-12">
+                            <p>{% trans 'Last Name' %}: {{ object.last_name }}</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="col-12"><p>{% trans 'Document' %}: {{ object.document }}</p></div>
+
+                    <div class="col-12"><p>{% trans 'Sex' %}: {% trans object.sex.name %}</p></div>
+
+                    {% if object.education %}
+                        <div class="col-12"><p>{% trans 'Education' %}: {% trans object.education.name %}</p></div>
+                    {% endif %}
+
+                    <div class="col-12"><p>{% trans 'Country' %}: {{ object.country }}</p></div>
+                    <div class="col-12"><p>{% trans 'Projects' %}:</p></div>
+                    <div class="col-12">
+                        <ul>
+                            {% for row in object.projectcontact_set.all %}
+                                <li>
+                                    <a href="{% url 'admin:monitoring_project_change' row.project.id %}">{{ row.project.name }}</a>
+                                </li>
+                                <li>
+                                    (
+                                    <a href="{% url 'admin:monitoring_organization_change' row.organization.id %}">{{ row.organization.name }}</a>
+                                    )
+                                    {{ row.date_entry_project }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
