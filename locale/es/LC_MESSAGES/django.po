@@ -1104,11 +1104,11 @@ msgstr "Casos duplicador por Nombre"
 
 #: monitoring/templates/dupes_name_fuzzy.html:14
 msgid "Duplicates by name fuzzy"
-msgstr "Duplicates by name fuzzy"
+msgstr "Similares por nombre"
 
 #: monitoring/templates/dupes_name_fuzzy.html:26
 msgid "Cases duplicated by name fuzzy"
-msgstr "Cases duplicated by name fuzzy"
+msgstr "Casos similares por nombre"
 
 #: monitoring/templates/header.html:5 monitoring/templates/header.html:6
 msgid "LWR"
@@ -1373,7 +1373,7 @@ msgstr "Duplicados"
 #: monitoring/templates/modular_template/sidebar.html:72
 #: monitoring/templates/sidebar.html:69
 msgid "Fuzzy Names"
-msgstr "Fuzzy Names"
+msgstr "Nombres similares"
 
 #: monitoring/templates/modular_template/sidebar.html:104
 #: monitoring/templates/sidebar.html:112
