@@ -18,6 +18,8 @@ def get_django_jet_menu():
              'permissions': ['monitoring.view_contact']},
             {'name': '', 'url': '/validate/dupes-name', 'label': _('Duplicates by Name'),
              'permissions': ['monitoring.change_contact', 'monitoring.change_projectcontact']},
+            {'name': '', 'url': '/dupes/name-fuzzy/', 'label': _('Duplicates by Fuzzy Name'),
+             'permissions': ['monitoring.change_contact', 'monitoring.change_projectcontact']},
             {'name': '', 'url': '/validate/dupes-doc', 'label': _('Duplicates per document'),
              'permissions': ['monitoring.change_contact', 'monitoring.change_projectcontact']},
         ]},
