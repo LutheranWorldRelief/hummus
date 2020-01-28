@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 def get_django_jet_menu():
     return [
+        {'label': _('Dashboard'), 'items': [
+            {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},
+        ]},
         {'label': _('Import Participants'), 'permissions': ['monitoring.add_projectcontact',
                                                             'monitoring.change_projectcontact',
                                                             'monitoring.add_contact',
@@ -28,9 +31,6 @@ def get_django_jet_menu():
                              'monitoring.change_projectcontact',
                              'monitoring.add_contact',
                              'monitoring.change_contact']},
-        ]},
-        {'label': _('Dashboard'), 'items': [
-            {'name': '', 'url': '/dashboard/', 'label': _('Dashboard')},
         ]},
         {'label': _('Data Tables'), 'items': [
             {'name': 'monitoring.project', 'label': _('Projects'), 'permissions': [
