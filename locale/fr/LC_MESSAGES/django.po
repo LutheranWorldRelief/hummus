@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-23 18:50+0000\n"
+"POT-Creation-Date: 2020-01-28 21:36+0000\n"
 "PO-Revision-Date: 2019-08-23 06:33+0000\n"
 "Last-Translator: Ruddy Mora <rmora.alvarado@gmail.com>, 2020\n"
 "Language-Team: French (https://www.transifex.com/lutheran-world-relief/teams/101869/fr/)\n"
@@ -91,7 +91,7 @@ msgstr "Tableaux de données"
 #: monitoring/templates/modular_template/geographics.html:16
 #: monitoring/templates/modular_template/sidebar.html:122
 #: monitoring/templates/modular_template/summary.html:23
-#: monitoring/templates/monitoring/contact_detail.html:11
+#: monitoring/templates/monitoring/contact_detail.html:38
 #: monitoring/templates/sidebar.html:143
 msgid "Projects"
 msgstr "Projets"
@@ -132,9 +132,9 @@ msgid "Educations"
 msgstr "Éducations"
 
 #: hummus/settings.py:230 monitoring/models.py:146 monitoring/models.py:147
-#: monitoring/models.py:235 monitoring/templates/import/step3.html:62
+#: monitoring/models.py:235 monitoring/templates/import/step3.html:63
 #: monitoring/templates/modular_template/sidebar.html:184
-#: monitoring/templates/monitoring/contact_detail.html:8
+#: monitoring/templates/monitoring/contact_detail.html:31
 #: monitoring/templates/sidebar.html:216
 msgid "Sex"
 msgstr "Sexe"
@@ -205,9 +205,9 @@ msgstr "Suppléments"
 msgid "Recent Actions"
 msgstr "Actions récentes"
 
-#: monitoring/catalog.py:45 monitoring/tables.py:62 monitoring/views.py:87
+#: monitoring/catalog.py:43 monitoring/tables.py:62 monitoring/views.py:87
 #: monitoring/views.py:88 monitoring/views.py:92 monitoring/views.py:93
-#: monitoring/views.py:193
+#: monitoring/views.py:196
 msgid "data"
 msgstr "data"
 
@@ -310,7 +310,7 @@ msgstr "Nom de fichier"
 #: monitoring/templates/dupes_name_fuzzy.html:87
 #: monitoring/templates/dupes_name_fuzzy.html:88
 #: monitoring/templates/modular_template/sidebar.html:67
-#: monitoring/templates/monitoring/contact_detail.html:4
+#: monitoring/templates/monitoring/contact_detail.html:14
 #: monitoring/templates/monitoring/project_detail.html:52
 #: monitoring/templates/sidebar.html:63
 msgid "Name"
@@ -485,7 +485,7 @@ msgstr "Source d'information"
 #: monitoring/models.py:394 monitoring/models.py:580
 #: monitoring/templates/_filter_form.html:29
 #: monitoring/templates/modular_template/geographics.html:15
-#: monitoring/templates/monitoring/contact_detail.html:10
+#: monitoring/templates/monitoring/contact_detail.html:37
 msgid "Country"
 msgstr "Pays"
 
@@ -494,12 +494,12 @@ msgid "Cities"
 msgstr "Villes"
 
 #: monitoring/models.py:225
-#: monitoring/templates/monitoring/contact_detail.html:6
+#: monitoring/templates/monitoring/contact_detail.html:25
 msgid "Last Name"
 msgstr "Nom de famille"
 
 #: monitoring/models.py:227
-#: monitoring/templates/monitoring/contact_detail.html:5
+#: monitoring/templates/monitoring/contact_detail.html:19
 msgid "First Name"
 msgstr "Prénom"
 
@@ -509,9 +509,9 @@ msgstr "Date de naissance"
 
 #: monitoring/models.py:229 monitoring/templates/dupes_document.html:53
 #: monitoring/templates/dupes_document.html:91
-#: monitoring/templates/import/step3.html:63
+#: monitoring/templates/import/step3.html:64
 #: monitoring/templates/modular_template/sidebar.html:77
-#: monitoring/templates/monitoring/contact_detail.html:7
+#: monitoring/templates/monitoring/contact_detail.html:29
 #: monitoring/templates/sidebar.html:75
 msgid "Document"
 msgstr "Document"
@@ -521,7 +521,7 @@ msgid "Title"
 msgstr "Titre"
 
 #: monitoring/models.py:233 monitoring/models.py:398 monitoring/models.py:423
-#: monitoring/models.py:689 monitoring/templates/import/step3.html:64
+#: monitoring/models.py:689 monitoring/templates/import/step3.html:65
 msgid "Organization"
 msgstr "Organisation"
 
@@ -542,7 +542,7 @@ msgid "City"
 msgstr "Ville"
 
 #: monitoring/models.py:245 monitoring/models.py:730
-#: monitoring/templates/monitoring/contact_detail.html:9
+#: monitoring/templates/monitoring/contact_detail.html:34
 msgid "Education"
 msgstr "Éducation"
 
@@ -944,7 +944,7 @@ msgstr "Résolu"
 #: monitoring/templates/dupes_name.html:107
 #: monitoring/templates/dupes_name_fuzzy.html:72
 #: monitoring/templates/dupes_name_fuzzy.html:106
-#: monitoring/templates/import/step3.html:89
+#: monitoring/templates/import/step3.html:90
 msgid "Fuse"
 msgstr "Fusionner"
 
@@ -1227,15 +1227,15 @@ msgstr "Détails sur les problèmes dans les enregistrements à importer"
 msgid "Possibly Duplicated Persons Regarding Imported"
 msgstr "Personnes susceptibles d'être dupliquées concernant l'importation"
 
-#: monitoring/templates/import/step3.html:59
+#: monitoring/templates/import/step3.html:60
 msgid "N°"
 msgstr "N°"
 
-#: monitoring/templates/import/step3.html:60
+#: monitoring/templates/import/step3.html:61
 msgid "ID"
 msgstr "ID"
 
-#: monitoring/templates/import/step3.html:61
+#: monitoring/templates/import/step3.html:62
 msgid "Full Name"
 msgstr "Nom complet"
 
@@ -1259,7 +1259,7 @@ msgstr "Vérifier les données et les erreurs"
 msgid "Finished and Check Duplicates"
 msgstr "Terminé et vérifier les doublons"
 
-#: monitoring/templates/modular_template/base.html:7
+#: monitoring/templates/modular_template/base.html:7 templates/base.html:7
 msgid "3D"
 msgstr "3D"
 
@@ -1406,6 +1406,10 @@ msgstr "Participants cibles"
 msgid "%% of target completed"
 msgstr "%% de l'objectif atteint"
 
+#: monitoring/templates/monitoring/contact_detail.html:7
+msgid "Participant"
+msgstr "Participant"
+
 #: monitoring/templates/monitoring/helloworld.html:11
 msgid "Hello World!"
 msgstr "Bonjour le monde!"
@@ -1460,6 +1464,10 @@ msgstr "Télécharger"
 msgid "Contact List Preview"
 msgstr "Aperçu de la liste de contacts"
 
+#: templates/403.html:8
+msgid "Authorized Personnel Only"
+msgstr "Personnel autorisé seulement"
+
 #: templates/403.html:11
 msgid ""
 "Please contact the system administrator to obtain the necessary permissions."
@@ -1467,13 +1475,17 @@ msgstr ""
 "Veuillez contacter l'administrateur système pour obtenir les autorisations "
 "nécessaires."
 
-#: templates/404.html:11
-msgid "Not found"
-msgstr "Pas trouvé"
+#: templates/404.html:10
+msgid "Sorry, page not found"
+msgstr "Désolé, page introuvable"
 
-#: templates/500.html:11
-msgid "ERROR"
-msgstr "ERREUR"
+#: templates/500.html:10
+msgid "Internal Server Error."
+msgstr "Erreur Interne du Serveur."
+
+#: templates/500.html:15
+msgid "Back to Dashboard"
+msgstr "Retour au tableau de bord"
 
 #: templates/admin/base.html:80
 msgid "Welcome,"
