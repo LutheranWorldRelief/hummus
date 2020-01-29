@@ -108,6 +108,16 @@ p.help {
     color: black !important;
 }
 
+.sidebar, #branding {
+    background-color: #3A4651;
+}
+
+div.breadcrumbs, span.sidebar-container-toggle{
+    background-color: #D7DDE4;
+    height: 35px;
+}
+
+
 /*textarea from permissions list*/
 
 .related-widget-wrapper span.select2 {
