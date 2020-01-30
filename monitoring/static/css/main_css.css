@@ -112,18 +112,27 @@ p.help {
     background-color: #3A4651;
 }
 
-div.breadcrumbs, span.sidebar-container-toggle{
+div.breadcrumbs, span.sidebar-container-toggle {
     background-color: #D7DDE4;
     height: 35px;
 }
-.sidebar-link-label{
+
+.sidebar-link-label {
     font-size: 16px;
     text-transform: capitalize;
     color: #4f5f6f;
 }
 
-.sidebar-link-label:hover{
+.sidebar-link-label:hover,.sidebar-link:hover .sidebar-right-arrow {
     color: #fff;
+}
+
+.sidebar-section {
+    border-bottom: 0;
+}
+
+.sidebar-right-arrow {
+    color: #4f5f6f;
 }
 
 /*textarea from permissions list*/
