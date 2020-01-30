@@ -252,14 +252,6 @@
                             </form>
 
                             <div class="sidebar-section">
-                                <div class="sidebar-title">
-                                <span class="sidebar-right">
-                                    <a href="#" class="sidebar-right-edit edit-apps-list"><span
-                                            class="icon-settings"></span></a>
-                                </span>
-                                    {% trans 'Applications' %}
-                                </div>
-
                                 <div class="apps-list-pinned">
                                     {% for app in app_list %}
                                         {% if app.has_perms and app.pinned %}
