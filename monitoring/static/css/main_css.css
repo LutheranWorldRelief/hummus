@@ -118,9 +118,9 @@ div.breadcrumbs, span.sidebar-container-toggle {
 }
 
 .sidebar-link-label {
+     color: #4f5f6f;
     font-size: 16px;
     text-transform: capitalize;
-    color: #4f5f6f;
 }
 
 .sidebar-link-label:hover,.sidebar-link:hover .sidebar-right-arrow {
