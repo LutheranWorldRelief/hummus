@@ -108,8 +108,34 @@ p.help {
     color: black !important;
 }
 
-/*textarea from permissions list*/
+.sidebar, #branding {
+    background-color: #3A4651;
+}
 
+div.breadcrumbs, span.sidebar-container-toggle {
+    background-color: #D7DDE4;
+    height: 35px;
+}
+
+.sidebar-link-label {
+     color: #4f5f6f;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+
+.sidebar-link-label:hover,.sidebar-link:hover .sidebar-right-arrow {
+    color: #fff;
+}
+
+.sidebar-section {
+    border-bottom: 0;
+}
+
+.sidebar-right-arrow {
+    color: #4f5f6f;
+}
+
+/*textarea from permissions list*/
 .related-widget-wrapper span.select2 {
     width: 45% !important;
 }
