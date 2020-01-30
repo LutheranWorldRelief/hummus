@@ -116,10 +116,17 @@ div.breadcrumbs, span.sidebar-container-toggle{
     background-color: #D7DDE4;
     height: 35px;
 }
+.sidebar-link-label{
+    font-size: 16px;
+    text-transform: capitalize;
+    color: #4f5f6f;
+}
 
+.sidebar-link-label:hover{
+    color: #fff;
+}
 
 /*textarea from permissions list*/
-
 .related-widget-wrapper span.select2 {
     width: 45% !important;
 }
