@@ -197,7 +197,7 @@
                             <a href="{% url 'monitoring:dashboard' %}" class="sidebar-link icon">
                             <span class="sidebar-link-label">
                                  <span class="fa fa-home"></span>
-                                {% trans 'DASHBOARD' %}
+                                {% trans 'Dashboard' %}
                             </span>
                             </a>
                         {% endif %}
@@ -285,10 +285,6 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-                                <a href="#" class="sidebar-center-link apps-hide">
-                                    <span class="apps-hide-label apps-visible">{% trans "Hide applications" %}</span>
-                                    <span class="apps-hide-label apps-hidden">{% trans "Show hidden" %}</span>
-                                </a>
                                 <div class="apps-list">
                                     {% for app in app_list %}
                                         {% if app.has_perms and not app.pinned %}
