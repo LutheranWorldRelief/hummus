@@ -192,27 +192,11 @@
             <div class="sidebar sidebar-dependent">
                 <div class="sidebar-wrapper scrollable">
                     <div class="sidebar-section">
-                        {% if user.is_active and user.is_superuser %}
-                            <a href="{% url 'admin:index' %}" class="sidebar-link icon">
-                            <span class="sidebar-link-label">
-                                <span class="sidebar-link-icon icon-data"></span>
-                                {% trans 'ADMIN Home' %}
-                            </span>
-                            </a>
-                        {% endif %}
-                        {% if site_url and user.is_superuser %}
-                            <a href="{{ site_url }}" class="sidebar-link icon">
-                            <span class="sidebar-link-label">
-                                <span class="sidebar-link-icon icon-open-external"></span>
-                                {% trans 'View site' %}
-                            </span>
-                            </a>
-                        {% endif %}
 
                         {% if user.is_active %}
                             <a href="{% url 'monitoring:dashboard' %}" class="sidebar-link icon">
                             <span class="sidebar-link-label">
-                                 <span class="sidebar-link-icon icon-star"></span>
+                                 <span class="fa fa-home"></span>
                                 {% trans 'DASHBOARD' %}
                             </span>
                             </a>
