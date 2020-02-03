@@ -300,8 +300,8 @@ def cantidad_proyectos(request):
 @domain_required()
 def cantidad_subproyectos(request):
     parameters = {'country_id[]': 'subproject__country_id__in',
-                  'year[]': 'project__date_entry_project__fyear__in',
-                  'quarter': 'project__date_entry_project__fquarter',
+                  'year[]': 'date_entry_project__fyear__in',
+                  'quarter': 'date_entry_project__fquarter',
                   'lwrregion_id[]': 'project__lwrregion__id__in',
                   'project_id': 'project_id',
                   'from_date': 'start__gte',
