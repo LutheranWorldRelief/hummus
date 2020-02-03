@@ -168,19 +168,19 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class ProjectContactAdmin(AdminForUserMixin, admin.ModelAdmin):
     list_display = (
-        'id', 'project', 'organization', 'contact', 'get_country_contact', 'date_entry_project',
-        'date_end_project',)
+        'id', 'project', 'subproject', 'contact', 'get_country_contact', 'date_entry_project', )
     list_display_links = ['id', 'project']
     ordering = ['-date_entry_project']
     readonly_fields = ['created', 'updated', ]
     list_per_page = 20
     raw_id_fields = ('contact',)
     list_max_show_all = 50
-    search_fields = ['id', 'project__name', 'contact__name', 'product__name']
+    search_fields = ['id', 'subproject__name', 'project__name', 'contact__name', ]
     list_filter = [
+        ('subproject', admin.RelatedOnlyFieldListFilter),
         ('project', admin.RelatedOnlyFieldListFilter),
-        ('contact__country', admin.RelatedOnlyFieldListFilter),
         ('organization', admin.RelatedOnlyFieldListFilter),
+        ('contact__country', admin.RelatedOnlyFieldListFilter),
     ]
 
     def get_country_contact(self, obj):
