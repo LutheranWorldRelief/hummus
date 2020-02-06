@@ -131,6 +131,9 @@ div.breadcrumbs, span.sidebar-container-toggle {
     color: white !important;
     border-left: 3px solid #85CE36;
 }
+.active .sidebar-link-label{
+    color: white;
+}
 
 .sidebar-link-label:hover, .sidebar-link:hover .sidebar-right-arrow {
     color: #fff;
