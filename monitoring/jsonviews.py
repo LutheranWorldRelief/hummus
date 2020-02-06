@@ -220,26 +220,32 @@ class Countries(JSONResponseMixin, TemplateView):
         to_date = self.request.GET.get('to_date')
         years = self.request.GET.getlist('year[]')
 
-        if len(regions) > 0 or regions:
+        if regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
-        if len(years) > 0 or years:
-            queryset = queryset.filter(date_entry_project__fyear__in=years)
 
-        if from_date:
-            queryset = queryset.filter(date_entry_project__gte=from_date)
-        if to_date:
-            queryset = queryset.filter(date_entry_project__lte=to_date)
+        if years:
+            # filter by selected years
+            years_filter = Q()
+            for year in years:
+                years_filter |= Q(project__end__fyear__gte=year,
+                                  date_entry_project__fyear__lte=year)
+            queryset = queryset.filter(years_filter)
+
+        #if from_date:
+        #    queryset = queryset.filter(date_entry_project__gte=from_date)
+        #if to_date:
+        #    queryset = queryset.filter(date_entry_project__lte=to_date)
 
         if project:
             queryset = queryset.filter(project_id=project)
         else:
             queryset = mydashboard(self.request, queryset)
 
-        countries = queryset.exclude(project__countries__isnull=True) \
-            .values(country_id=F('project__countries__id'),
-                    country_name=F(_('project__countries__name')),
-                    region=F('project__lwrregion__id')) \
-            .order_by('project__countries__name').distinct()
+        countries = queryset.exclude(subproject__country__isnull=True) \
+            .values(country_id=F('subproject__country_id'),
+                    country_name=F(_('subproject__country__name')),
+                    region=F('subproject__lwrregion__id')) \
+            .order_by('subproject__country__name').distinct()
 
         paises = []
         for row in countries:
@@ -310,18 +316,26 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {}
         queryset = ProjectContact.objects.all()
-        project_queryset = Project.objects.all().order_by()
         filter_kwargs = {}
 
         regions = self.request.GET.getlist('lwrregion_id[]')
         countries = self.request.GET.getlist('country_id[]')
         project = self.request.GET.get('project_id')
+        years = self.request.GET.getlist('year[]')
 
-        if len(regions) > 0 or regions:
+        if years:
+            # filter by selected years
+            years_filter = Q()
+            for year in years:
+                years_filter |= Q(project__end__fyear__gte=year,
+                                  date_entry_project__fyear__lte=year)
+            queryset = queryset.filter(years_filter)
+
+        if regions:
             queryset = queryset.filter(project__lwrregion__id__in=regions)
             filter_kwargs['project__lwrregion__id__in'] = regions
 
-        if len(countries) > 0 or countries:
+        if countries:
             queryset = queryset.filter(subproject__country__id__in=countries)
             filter_kwargs['subproject__country__id__in'] = countries
         else:
@@ -333,42 +347,34 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
         else:
             queryset = mydashboard(self.request, queryset)
 
-        countries = queryset.exclude(project__countries__isnull=True) \
-            .values(country_id=F('project__countries__id'),
-                    alta_3=F('project__countries__alfa3'),
-                    country_name=F(_('project__countries__name')),
-                    x=Cast(F('project__countries__x'), FloatField()),
-                    y=Cast(F('project__countries__y'), FloatField()),
-                    ).order_by('project__countries__name').distinct()
+        countries = queryset.exclude(subproject__country__isnull=True) \
+            .values(country_id=F('subproject__country__id'),
+                    alfa_3=F('subproject__country__alfa3'),
+                    country_name=F(_('subproject__country__name')),
+                    x=Cast(F('subproject__country__x'), FloatField()),
+                    y=Cast(F('subproject__country__y'), FloatField()),
+                    ).order_by('subproject__country__name').\
+                    annotate(participants=Count('contact_id', distinct=True))
 
         participants = []
+
+        # get list of relevant subprojects
+        subprojects = SubProject.objects.filter(id__in=queryset.values('subproject__id').distinct())
+
         for row in countries:
-            ''  # get the target by gender in a country
-            targets = project_queryset. \
-                filter(subproject__country__id=row['country_id']). \
+            # get the target by gender in a country
+            targets = subprojects.filter(country_id=row['country_id']).\
                 aggregate(M=Coalesce(Sum('targetmen'), 0), F=Coalesce(Sum('targetwomen'), 0))
             participants_target = targets['F'] + targets['M']
 
-            ''  # get totals participants by gender in a country
-            totals = dict(queryset.order_by().
-                          filter(subproject__country__id=row['country_id']).
-                          values_list('contact__sex_id').
-                          annotate(total=Count('contact', distinct=True))
-                          )
-
-            totals['T'] = totals.get('M', 0) + totals.get('F', 0)
-            percentage = (totals['T'] / participants_target) * 100
+            percentage = (row['participants'] / participants_target) * 100
             participants.append({
                 'id': row['country_id'],
-                'alfa3': row['alta_3'],
+                'alfa3': row['alfa_3'],
                 'name': row['country_name'],
                 'location': [row['x'], row['y']],
-                'total': totals.get('T', 0),
+                'total': row['participants'],
                 'total_target': participants_target,
-                'women': totals.get('F', 0),
-                'target_women': targets.get('F', 0),
-                'men': totals.get('M', 0),
-                'target_men': targets.get('M', 0),
                 'percentage': percentage
             })
 
