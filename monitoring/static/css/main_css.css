@@ -122,9 +122,14 @@ div.breadcrumbs, span.sidebar-container-toggle {
 }
 
 .sidebar-link-label {
-    color: #4f5f6f;
+    color: #A5AFBB;
     font-size: 16px;
     text-transform: capitalize;
+}
+
+.active {
+    color: white !important;
+    border-left: 3px solid #85CE36;
 }
 
 .sidebar-link-label:hover, .sidebar-link:hover .sidebar-right-arrow {
@@ -152,6 +157,12 @@ input[type=submit], input.default, .addlink {
 .related-widget-wrapper span.select2 {
     width: 45% !important;
 }
+
+/* title header menu django jet*/
+#site-name a{
+    color: white !important;
+}
+
 
 @media screen and (max-width: 1097px) {
     .related-widget-wrapper span.select2 {
