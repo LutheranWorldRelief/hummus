@@ -69,14 +69,18 @@ div.breadcrumbs a {
 }
 
 /*button tools*/
-ul.object-tools li a {
+ul.object-tools li a.addlink, ul.object-tools li a.addlink::before {
     color: #fff !important;
-    background-color: #00AAA7 !important;
+    background-color: #A768F3 !important;
 }
 
-ul.object-tools li a:before {
-    color: #fff !important;
-    background-color: #00AAA7 !important;
+div.submit-row input.default, div.actions.initialized > button.button {
+    font-weight: 400 !important;
+}
+
+div.actions.initialized > button.button {
+    background-color: #FF4444 !important;
+    border-color: #FF4444 !important;
 }
 
 /*buttons with icons*/
@@ -118,12 +122,12 @@ div.breadcrumbs, span.sidebar-container-toggle {
 }
 
 .sidebar-link-label {
-     color: #4f5f6f;
+    color: #4f5f6f;
     font-size: 16px;
     text-transform: capitalize;
 }
 
-.sidebar-link-label:hover,.sidebar-link:hover .sidebar-right-arrow {
+.sidebar-link-label:hover, .sidebar-link:hover .sidebar-right-arrow {
     color: #fff;
 }
 
@@ -133,6 +137,15 @@ div.breadcrumbs, span.sidebar-container-toggle {
 
 .sidebar-right-arrow {
     color: #4f5f6f;
+}
+
+#content-main, .changelist-footer {
+    background-color: #FFF !important;
+    padding: 8px;
+}
+
+input[type=submit], input.default, .addlink {
+    color: #fff !important;
 }
 
 /*textarea from permissions list*/
