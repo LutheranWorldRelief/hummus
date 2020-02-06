@@ -231,9 +231,9 @@ class Countries(JSONResponseMixin, TemplateView):
                                   date_entry_project__fyear__lte=year)
             queryset = queryset.filter(years_filter)
 
-        #if from_date:
+        # if from_date:
         #    queryset = queryset.filter(date_entry_project__gte=from_date)
-        #if to_date:
+        # if to_date:
         #    queryset = queryset.filter(date_entry_project__lte=to_date)
 
         if project:
@@ -354,7 +354,7 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                     x=Cast(F('subproject__country__x'), FloatField()),
                     y=Cast(F('subproject__country__y'), FloatField()),
                     ).order_by('subproject__country__name').\
-                    annotate(participants=Count('contact_id', distinct=True))
+            annotate(participants=Count('contact_id', distinct=True))
 
         participants = []
 
