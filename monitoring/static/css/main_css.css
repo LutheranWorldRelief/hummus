@@ -69,14 +69,18 @@ div.breadcrumbs a {
 }
 
 /*button tools*/
-ul.object-tools li a {
+ul.object-tools li a.addlink, ul.object-tools li a.addlink::before {
     color: #fff !important;
-    background-color: #00AAA7 !important;
+    background-color: #A768F3 !important;
 }
 
-ul.object-tools li a:before {
-    color: #fff !important;
-    background-color: #00AAA7 !important;
+div.submit-row input.default, div.actions.initialized > button.button {
+    font-weight: 400 !important;
+}
+
+div.actions.initialized > button.button {
+    background-color: #FF4444 !important;
+    border-color: #FF4444 !important;
 }
 
 /*buttons with icons*/
@@ -118,12 +122,20 @@ div.breadcrumbs, span.sidebar-container-toggle {
 }
 
 .sidebar-link-label {
-     color: #4f5f6f;
+    color: #A5AFBB;
     font-size: 16px;
     text-transform: capitalize;
 }
 
-.sidebar-link-label:hover,.sidebar-link:hover .sidebar-right-arrow {
+.active {
+    color: white !important;
+    border-left: 3px solid #85CE36;
+}
+.active .sidebar-link-label{
+    color: white;
+}
+
+.sidebar-link-label:hover, .sidebar-link:hover .sidebar-right-arrow {
     color: #fff;
 }
 
@@ -135,10 +147,25 @@ div.breadcrumbs, span.sidebar-container-toggle {
     color: #4f5f6f;
 }
 
+#content-main, .changelist-footer {
+    background-color: #FFF !important;
+    padding: 8px;
+}
+
+input[type=submit], input.default, .addlink {
+    color: #fff !important;
+}
+
 /*textarea from permissions list*/
 .related-widget-wrapper span.select2 {
     width: 45% !important;
 }
+
+/* title header menu django jet*/
+#site-name a{
+    color: white !important;
+}
+
 
 @media screen and (max-width: 1097px) {
     .related-widget-wrapper span.select2 {

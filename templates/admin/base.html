@@ -259,7 +259,7 @@
                                     {% for app in app_list %}
                                         {% if app.has_perms and not app.pinned %}
                                             <a{% if app.url %} href="{{ app.url }}"{% endif %}
-                                                               class="sidebar-link popup-section-link app-item"
+                                                               class="sidebar-link popup-section-link app-item{% if request.path == app.items.0.url %} active{% endif %}"
                                                                data-app-label="{{ app.app_label }}"
                                                                data-popup-section-class="sidebar-popup-section-{{ app.app_label }}"
                                                                data-order="{{ forloop.counter }}"{% if app.url_blank %}
@@ -288,6 +288,7 @@
                                                     {% else %}
                                                         <i class="fa fa-square"></i>
                                                     {% endif %}
+
                                                     {{ app.label }}
                                                 </span>
                                             </a>
