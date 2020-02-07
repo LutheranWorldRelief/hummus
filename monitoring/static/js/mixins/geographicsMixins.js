@@ -16,6 +16,7 @@ var geographicsMixins = {
                 dashArray: '3',
                 fillOpacity: 0.7
             },
+            countries_polygons_json: {},
         }
     },
     methods: {
@@ -75,70 +76,68 @@ var geographicsMixins = {
                         });
                     });
 
-                    $.get(UrlsAcciones.UrlCountriesPolygons)
-                        .then(response => {
-                            let countries = response;
-                            let geojSonLayerGroup = null;
 
-                            this.geojson.features = [];
-                            data.participants.forEach(participant => {
-                                let data = this.setCountryObjectZeros(participant.name);
+                    let countries = this.countries_polygons_json;
+                    let geojSonLayerGroup = null;
 
-                                let country = countries.features.find(country => country.id === participant.alfa3);
-                                country.properties.women = participant.women;
-                                country.properties.men = participant.men;
-                                country.properties.total = this.formatNumber(participant.total);
-                                country.properties.percentage = `${participant.percentage.toFixed(2)} %`;
-                                country.properties.projects = data.projects;
-                                country.properties.subprojects = data.subprojects;
-                                this.geojson.features.push(country);
-                            });
+                    this.geojson.features = [];
+                    data.participants.forEach(participant => {
+                        let data = this.setCountryObjectZeros(participant.name);
 
-                            function highlightFeature(e) {
-                                let layer = e.target;
+                        let country = countries.features.find(country => country.id === participant.alfa3);
+                        country.properties.women = participant.women;
+                        country.properties.men = participant.men;
+                        country.properties.total = this.formatNumber(participant.total);
+                        country.properties.percentage = `${participant.percentage.toFixed(2)} %`;
+                        country.properties.projects = data.projects;
+                        country.properties.subprojects = data.subprojects;
+                        this.geojson.features.push(country);
+                    });
 
-                                layer.setStyle({
-                                    weight: 1,
-                                    color: '#666',
-                                    dashArray: '',
-                                    fillOpacity: 0.7
-                                });
+                    function highlightFeature(e) {
+                        let layer = e.target;
 
-                                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                                    layer.bringToFront();
-                                }
-
-                                info.update(layer.feature.properties);
-                            }
-
-                            function resetHighlight(e) {
-                                geojSonLayerGroup.resetStyle(e.target);
-                                info.update();
-                            }
-
-                            function zoomToFeature(e) {
-                                this.map.fitBounds(e.target.getBounds());
-                            }
-
-                            function onEachFeature(feature, layer) {
-                                layer.on({
-                                    mouseover: highlightFeature,
-                                    mouseout: resetHighlight,
-                                    click: zoomToFeature
-                                });
-                            }
-
-                            geojSonLayerGroup = L.geoJson(this.geojson, {
-                                onEachFeature: onEachFeature,
-                                style: this.customStyle
-                            });
-
-                            geojSonLayerGroup.addTo(this.map);
-
-                            /*Zoom automático*/
-                            this.map.fitBounds(geojSonLayerGroup.getBounds());
-
+                        layer.setStyle({
+                            weight: 1,
+                            color: '#666',
+                            dashArray: '',
+                            fillOpacity: 0.7
                         });
+
+                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                            layer.bringToFront();
+                        }
+
+                        info.update(layer.feature.properties);
+                    }
+
+                    function resetHighlight(e) {
+                        geojSonLayerGroup.resetStyle(e.target);
+                        info.update();
+                    }
+
+                    function zoomToFeature(e) {
+                        this.map.fitBounds(e.target.getBounds());
+                    }
+
+                    function onEachFeature(feature, layer) {
+                        layer.on({
+                            mouseover: highlightFeature,
+                            mouseout: resetHighlight,
+                            click: zoomToFeature
+                        });
+                    }
+
+                    geojSonLayerGroup = L.geoJson(this.geojson, {
+                        onEachFeature: onEachFeature,
+                        style: this.customStyle
+                    });
+
+                    geojSonLayerGroup.addTo(this.map);
+
+                    /*Zoom automático*/
+                    this.map.fitBounds(geojSonLayerGroup.getBounds());
+
                 });
         },
         formatNumber(num) {
