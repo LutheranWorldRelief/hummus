@@ -705,7 +705,7 @@ var graphicMixins = {
                     }, formatter: function (params) {
                         let axisValue = `<p>${params[0].axisValue}</p>`;
                         params.forEach(item => {
-                            if (item.seriesName !== 'total') {
+                            if (item.seriesName.toLowerCase() !== 'total') {
                                 axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
                             }
                         });
