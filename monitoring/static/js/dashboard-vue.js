@@ -131,6 +131,21 @@ var app = new Vue({
     },
     created() {
 
+        //NOTE Implementing localstorage browser for countries_polygon_json
+        if (localStorage.getItem('countries_polygons_json')) {
+            this.countries_polygons_json = JSON.parse(localStorage.getItem('countries_polygons_json'));
+        } else {
+            console.log(2);
+            $.get(UrlsAcciones.UrlCountriesPolygons)
+                .then(response => {
+                    this.countries_polygons_json = response;
+                    localStorage.setItem(
+                        'countries_polygons_json', JSON.stringify(this.countries_polygons_json)
+                    );
+                });
+        }
+
+
         // NOTE variable declare in monitoring/template/modular_admin/dashboard.html
         this.list_years = years;
 
