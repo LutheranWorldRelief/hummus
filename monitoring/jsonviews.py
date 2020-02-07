@@ -221,7 +221,7 @@ class Countries(JSONResponseMixin, TemplateView):
         years = self.request.GET.getlist('year[]')
 
         if regions:
-            queryset = queryset.filter(project__lwrregion__id__in=regions)
+            queryset = queryset.filter(subproject__lwrregion__id__in=regions)
 
         if years:
             # filter by selected years
@@ -244,7 +244,7 @@ class Countries(JSONResponseMixin, TemplateView):
         countries = queryset.exclude(subproject__country__isnull=True) \
             .values(country_id=F('subproject__country_id'),
                     country_name=F(_('subproject__country__name')),
-                    region=F('subproject__lwrregion__id')) \
+                    region=F('subproject__country__lwrregion__id')) \
             .order_by('subproject__country__name').distinct()
 
         paises = []
