@@ -368,7 +368,8 @@ class GeographyAPI(JSONResponseMixin, TemplateView):
                 aggregate(M=Coalesce(Sum('targetmen'), 0), F=Coalesce(Sum('targetwomen'), 0))
             participants_target = targets['F'] + targets['M']
 
-            percentage = (row['participants'] / participants_target) * 100
+            percentage = (row['participants'] / participants_target) * 100\
+                if participants_target else 0
             participants.append({
                 'id': row['country_id'],
                 'alfa3': row['alfa_3'],
