@@ -466,9 +466,8 @@ var app = new Vue({
                         row.active = !row.active;
                     }
                 });
+                this.loadDataWithFilters();
             }
-
-            this.loadDataWithFilters();
         },
         createUrl(uri) {
             let uriRequest = decodeURI(uri);
