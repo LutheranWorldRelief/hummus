@@ -23,6 +23,9 @@ var graphicMixins = {
                         textStyle: {
                             color: '#000',
                             fontSize: 16,
+                        },
+                        formatter: (item) => {
+                            return `${this.formatNumber(item.value)}`
                         }
                     }
                 },
@@ -77,11 +80,13 @@ var graphicMixins = {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'shadow' //'line' | 'shadow'
-                        }, formatter: function (params) {
+                        }, formatter: (params) => {
                             let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
-                                if (item.seriesName !== 'null')
-                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
+                                let datum = this.formatNumber(item.data);
+                                if (item.seriesName !== 'null') {
+                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${datum}</p>`;
+                                }
                             });
                             return axisValue;
                         },
@@ -109,12 +114,12 @@ var graphicMixins = {
                     yAxis: {
                         type: 'value'
                     }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
-                    series: series.map((item, index) => Object.assign(item, {
+                    series: series.map((items, index) => Object.assign(items, {
                         type: 'bar',
                         stack: true,
                         label: {
                             show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series) : null,
+                            formatter: isLastSeries(index) ? this.genFormatter(series) : this.getLocateStringChart(items, index),
                             fontSize: isLastSeries(index) ? 13 : 11,
                             color: isLastSeries(index) ? '#4f5f6f' : '#000',
                             position: isLastSeries(index) ? 'top' : 'inside',
@@ -142,7 +147,7 @@ var graphicMixins = {
                         stack: true,
                         label: {
                             show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
+                            formatter: isLastSeries(index) ? this.genFormatter(series, gender) : this.getLocateStringChart(items, index),
                             fontSize: isLastSeries(index) ? 13 : 11,
                             color: isLastSeries(index) ? '#4f5f6f' : '#000',
                             position: isLastSeries(index) ? 'top' : 'inside',
@@ -204,11 +209,13 @@ var graphicMixins = {
                             trigger: 'axis',
                             axisPointer: {
                                 type: 'shadow' //'line' | 'shadow'
-                            }, formatter: function (params) {
+                            }, formatter: (params) => {
                                 let axisValue = `<p>${params[0].axisValue}</p>`;
                                 params.forEach(item => {
-                                    if (item.seriesName != 'null')
-                                        axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
+                                    let datum = this.formatNumber(item.data);
+                                    if (item.seriesName !== 'null') {
+                                        axisValue += `<p>${item.marker} ${item.seriesName}: ${datum}</p>`;
+                                    }
                                 });
                                 return axisValue;
                             },
@@ -236,12 +243,12 @@ var graphicMixins = {
                         yAxis: {
                             type: 'value'
                         }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
-                        series: series.map((item, index) => Object.assign(item, {
+                        series: series.map((items, index) => Object.assign(items, {
                             type: 'bar',
                             stack: true,
                             label: {
                                 show: true,
-                                formatter: isLastSeries(index) ? this.genFormatter(series) : null,
+                                formatter: isLastSeries(index) ? this.genFormatter(series) : this.getLocateStringChart(items, index),
                                 fontSize: isLastSeries(index) ? 13 : 11,
                                 color: isLastSeries(index) ? '#4f5f6f' : '#000',
                                 position: isLastSeries(index) ? 'top' : 'inside',
@@ -298,7 +305,7 @@ var graphicMixins = {
                             stack: true,
                             label: {
                                 show: true,
-                                formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
+                                formatter: isLastSeries(index) ? this.genFormatter(series, gender) : this.getLocateStringChart(items, index),
                                 fontSize: isLastSeries(index) ? 13 : 11,
                                 color: isLastSeries(index) ? '#4f5f6f' : '#000',
                                 position: isLastSeries(index) ? 'top' : 'inside',
@@ -314,8 +321,7 @@ var graphicMixins = {
 
                     resolved(true);
                 });
-            }
-            ,
+            },
             graficoMetas() {
                 let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
@@ -325,8 +331,8 @@ var graphicMixins = {
                         position: 'top',
                         distance: 15,
                         verticalAlign: 'middle',
-                        formatter: function (param) {
-                            return param.value;
+                        formatter: (param) => {
+                            return this.formatNumber(param.value);
                         },
                         textStyle: {
                             color: 'rgba(0,0,0,.7)',
@@ -355,10 +361,10 @@ var graphicMixins = {
                                 color: 'rgba(112,112,112,0)',
                             },
                         },
-                        formatter: function (params) {
+                        formatter: (params) => {
                             let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
-                                axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
+                                axisValue += `<p>${item.marker} ${item.seriesName}: ${this.formatNumber(item.data)}</p>`;
                             });
                             return axisValue;
                         },
@@ -411,7 +417,9 @@ var graphicMixins = {
                             },
                             margin: 20,
                         },
-                        data: this.targets_year
+                        data: this.targets_year.map((item) => {
+                            return this.formatNumber(item);
+                        })
                     }, {
                         type: 'category',
                         axisLine: {
@@ -488,8 +496,7 @@ var graphicMixins = {
                 };
                 this.responsiveChart('#tab_quarter-click', myChart);
                 myChart.setOption(option);
-            }
-            ,
+            },
             graphFixedColumnGender() {
                 let myChart = echarts.init(document.getElementById('FixedColumns'));
 
@@ -605,8 +612,7 @@ var graphicMixins = {
 
                 this.responsiveChart('#tabs_target-click', myChart);
                 myChart.setOption(option);
-            }
-            ,
+            },
             graficoParticipantesEdad() {
                 $.get(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
                     .then(response => {
@@ -640,8 +646,7 @@ var graphicMixins = {
                         this.graphicAge(total, ageRange, participants);
                     });
 
-            }
-            ,
+            },
             graphicAge(total, ageRange, participants) {
                 const myChart = echarts.init(document.getElementById('AgeGraph'));
 
@@ -678,7 +683,7 @@ var graphicMixins = {
                                 sum = 0;
                             }
                         });
-                        return sum
+                        return this.formatNumber(sum)
                     }
                 };
 
@@ -691,11 +696,11 @@ var graphicMixins = {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'shadow' //'line' | 'shadow'
-                        }, formatter: function (params) {
+                        }, formatter: (params) => {
                             let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
                                 if (item.seriesName !== 'total') {
-                                    axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
+                                    axisValue += `<p>${item.marker} ${item.seriesName}:  ${this.formatNumber(item.data)}</p>`;
                                 }
                             });
                             return axisValue;
@@ -718,12 +723,12 @@ var graphicMixins = {
                         type: 'category',
                         data: ageRange
                     },
-                    series: series.map((item, index) => Object.assign(item, {
+                    series: series.map((items, index) => Object.assign(items, {
                         type: 'bar',
                         stack: true,
                         label: {
                             show: true,
-                            formatter: isLastSeries(index) ? genFormatter(series) : null,
+                            formatter: isLastSeries(index) ? genFormatter(series) : this.getLocateStringChart(items, index),
                             color: 'black',
                             position: isLastSeries(index) ? 'top' : 'inside'
                         },
@@ -753,7 +758,7 @@ var graphicMixins = {
                         stack: true,
                         label: {
                             show: true,
-                            formatter: isLastSeries(index) ? genFormatter(series, gender) : null,
+                            formatter: isLastSeries(index) ? genFormatter(series, gender) : this.getLocateStringChart(items, index),
                             color: 'black',
                             position: isLastSeries(index) ? 'top' : 'inside'
                         },
@@ -762,8 +767,7 @@ var graphicMixins = {
                     myChart.setOption(option);
                     this.responsiveChart('', myChart);
                 })
-            }
-            ,
+            },
             graficoParticipantesEduacion() {
                 $.get(UrlsAcciones.UrlGraficoEducacion, this.requestParameters)
                     .then(response => {
@@ -797,9 +801,7 @@ var graphicMixins = {
 
                         this.graphicEducacion(total, educations, participants);
                     });
-
-            }
-            ,
+            },
             graphicEducacion(total, ageRange, participants) {
                 const myChart = echarts.init(document.getElementById('EducationGraph'));
 
@@ -833,11 +835,11 @@ var graphicMixins = {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'shadow' //'line' | 'shadow'
-                        }, formatter: function (params) {
+                        }, formatter: (params) => {
                             let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
                                 if (item.seriesName.toLowerCase() !== 'total') {
-                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${item.data}</p>`;
+                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${this.formatNumber(item.data)}</p>`;
                                 }
                             });
                             return axisValue;
@@ -863,12 +865,12 @@ var graphicMixins = {
                             verticalAlign: 'middle',
                         },
                     },
-                    series: series.map((item, index) => Object.assign(item, {
+                    series: series.map((items, index) => Object.assign(items, {
                         type: 'bar',
                         stack: true,
                         label: {
                             show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series) : null,
+                            formatter: isLastSeries(index) ? this.genFormatter(series) : this.getLocateStringChart(items, index),
                             color: 'black',
                             position: isLastSeries(index) ? 'right' : 'inside',
                             verticalAlign: 'middle',
@@ -894,12 +896,12 @@ var graphicMixins = {
                         gender = '';
                     }
 
-                    option.series = series.map((item, index) => Object.assign(item, {
+                    option.series = series.map((items, index) => Object.assign(items, {
                         type: 'bar',
                         stack: true,
                         label: {
                             show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series, gender) : null,
+                            formatter: isLastSeries(index) ? this.genFormatter(series, gender) : this.getLocateStringChart(items, index),
                             color: 'black',
                             position: isLastSeries(index) ? 'right' : 'inside'
                         },
@@ -908,8 +910,7 @@ var graphicMixins = {
                     this.responsiveChart('#tab_types-click', myChart);
                     myChart.setOption(option);
                 })
-            }
-            ,
+            },
             graficoParticipantesSexo() {
                 let data = this.tatals;
                 let total = this.setZero(data.T);
@@ -924,9 +925,7 @@ var graphicMixins = {
                     value: this.setZero(data.F)
                 };
                 this.graphicSexo(total, totalMen, totalWomen);
-
-            }
-            ,
+            },
             graphicSexo(total, totalMen, totalWomen) {
                 const myChart = echarts.init(document.getElementById('SexGraph'));
 
@@ -934,7 +933,10 @@ var graphicMixins = {
                     toolbox: this.setToolBox('Data participants reached, by sex'),
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        formatter: (item) => {
+                            console.log(item);
+                            return `${item.name}: ${this.formatNumber(item.value)} (${item.percent}%)`
+                        },
                     },
                     series: [{
                         name: '',
@@ -948,7 +950,9 @@ var graphicMixins = {
                                 color: this.colors.men
                             }, label: {
                                 normal: {
-                                    formatter: '{a} {b} : {c} ({d}%)',
+                                    formatter: (item) => {
+                                        return `${item.name}: ${this.formatNumber(item.value)} (${item.percent}%)`
+                                    },
                                     position: 'inside'
                                 }
                             }
@@ -959,7 +963,9 @@ var graphicMixins = {
                                 color: this.colors.women
                             }, label: {
                                 normal: {
-                                    formatter: '{a} {b} : {c} ({d}%)',
+                                    formatter: (item) => {
+                                        return `${item.name}: ${this.formatNumber(item.value)} (${item.percent}%)`
+                                    },
                                     position: 'inside'
                                 }
                             }
@@ -983,8 +989,7 @@ var graphicMixins = {
 
                 this.responsiveChart('#tab_types-click', myChart);
                 myChart.setOption(option);
-            }
-            ,
+            },
             graphicGoalProject() {
                 $.get(UrlsAcciones.UrlProjectGoal, this.requestParameters)
                     .then(response => {
@@ -1087,8 +1092,7 @@ var graphicMixins = {
                         chart_goal_project.setOption(option);
                         this.responsiveChart('#tabs_projects-click', chart_goal_project);
                     });
-            }
-            ,
+            },
             graphicGoalSubproject(name_subproject) {
                 let chart_subproject = echarts.init(document.getElementById('SubprojectGoalsGraph'));
                 let data_chart = {
@@ -1183,8 +1187,7 @@ var graphicMixins = {
                 setTimeout(function () {
                     $('#tabs_projects-click').children('li').eq(1).find('a').trigger('click');
                 }, 500);
-            }
-            ,
+            },
             graphicStackedLine() {
                 const myChart = echarts.init(document.getElementById('StackedLine'));
 
@@ -1194,9 +1197,11 @@ var graphicMixins = {
                     stack: true,
                     label: {
                         show: true,
-                        formatter: null,
                         color: 'black',
-                        position: 'inside'
+                        position: 'inside',
+                        formatter: (item) => {
+                            return `${this.formatNumber(item.value)}`
+                        }
                     },
                     itemStyle: {
                         color: this.colors.men
@@ -1208,9 +1213,11 @@ var graphicMixins = {
                     stack: true,
                     label: {
                         show: true,
-                        formatter: null,
                         color: 'black',
-                        position: 'inside'
+                        position: 'inside',
+                        formatter: (item) => {
+                            return `${this.formatNumber(item.value)}`
+                        }
                     },
                     itemStyle: {
                         color: this.colors.women
@@ -1233,8 +1240,8 @@ var graphicMixins = {
                                 fontWeight: '570',
                                 fontSize: '12',
                                 distance: 35,
-                                formatter: function (p) {
-                                    return p.value > 0 ? (p.value) : '';
+                                formatter: (p) => {
+                                    return p.value > 0 ? this.formatNumber(p.value) : '';
                                 }
                             }
                         }
@@ -1247,11 +1254,11 @@ var graphicMixins = {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'shadow' //'line' | 'shadow'
-                        }, formatter: function (params) {
+                        }, formatter: (params) => {
                             let axisValue = `<p>${params[0].axisValue}</p>`;
                             params.forEach(item => {
                                 if (item.seriesName !== 'total') {
-                                    axisValue += `<p>${item.marker} ${item.seriesName}:  ${item.data}</p>`;
+                                    axisValue += `<p>${item.marker} ${item.seriesName}:  ${this.formatNumber(item.data)}</p>`;
                                 }
                             });
                             return axisValue;
@@ -1282,8 +1289,7 @@ var graphicMixins = {
 
                 this.responsiveChart('#tab_quarter-click', myChart);
                 myChart.setOption(option);
-            }
-            ,
+            },
             getGraphicZoom() {
                 return [{
                     "show": true,
@@ -1310,8 +1316,7 @@ var graphicMixins = {
                     "start": 50,
                     "end": 35
                 }]
-            }
-            ,
+            },
             genFormatter(series, gender = null) {
 
                 return (param) => {
@@ -1328,16 +1333,18 @@ var graphicMixins = {
                         }
                     });
 
-                    return sum
+                    return this.formatNumber(sum)
                 }
-
-            }
-            ,
+            },
+            getLocateStringChart(items, index) {
+                return (params) => {
+                    return this.formatNumber(params.data);
+                }
+            },
             formatAnioQuater(anioQuater) {
                 let quater = anioQuater.split('Q');
                 return quater[0] == 'None' ? '0000-Qn' : quater[0] + '-Q' + quater[1];
-            }
-            ,
+            },
             clearData() {
                 /** Var gráfico participantes por año fiscal*/
                 this.anios = [];
@@ -1353,8 +1360,7 @@ var graphicMixins = {
                 this.tatalsQ = {};
                 this.totalByBarQ = [];
                 this.defauldSerieQ = [];
-            }
-            ,
+            },
             responsiveChart(idtab, instance_echarts) {
                 if (idtab.indexOf('.') > -1 || idtab.indexOf('#') > -1) {
                     $(idtab).on('shown.bs.tab', function () {
@@ -1376,8 +1382,7 @@ var graphicMixins = {
                 window.onresize = function () {
                     instance_echarts.resize();
                 };
-            }
-            ,
+            },
             setToolBox(title_1, isCustomTable) {
 
                 let tableData = {
@@ -1400,8 +1405,7 @@ var graphicMixins = {
                     Object.assign(tableData, this.customTable());
 
                 return tableData;
-            }
-            ,
+            },
             customTable() {
 
                 return {
