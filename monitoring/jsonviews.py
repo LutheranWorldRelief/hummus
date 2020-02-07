@@ -43,7 +43,7 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {}
-        queryset = Project.objects.all().order_by()
+        queryset = SubProject.objects.all().order_by()
 
         # exclude projects with no participants in 3D
         queryset = queryset.exclude(projectcontact__isnull=True)
@@ -59,8 +59,9 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
                 years_filter |= Q(start__fyear__lte=year, end__fyear__gte=year)
             queryset = queryset.filter(years_filter)
         else:
-            years = list(Project.objects.order_by('start__fyear').
+            years = list(SubProject.objects.order_by('start__fyear').
                          exclude(projectcontact__isnull=True).
+                         exclude(start__isnull=True).
                          values_list('start__fyear', flat=True).distinct())
 
         if self.request.GET.get('lwrregion_id[]'):
@@ -68,17 +69,17 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
             queryset = queryset.filter(lwrregion__id__in=regions)
         if self.request.GET.get('country_id[]'):
             countries = self.request.GET.getlist('country_id[]')
-            queryset = queryset.filter(subproject__country__id__in=countries).distinct()
+            queryset = queryset.filter(country__id__in=countries).distinct()
 
         if self.request.GET.get('subproject_id'):
             subproject = self.request.GET.get('subproject_id')
-            queryset = queryset.filter(subproject=subproject)
+            queryset = queryset.filter(id=subproject)
             # modify target field variable to count subproject not project targets
-            men = 'subproject__targetmen'
-            women = 'subproject__targetwomen'
         elif self.request.GET.get('project_id'):
             project = self.request.GET.get('project_id')
             queryset = queryset.filter(id=project)
+            men = 'project__targetmen'
+            women = 'project__targetwomen'
         else:
             queryset = mydashboard(self.request, queryset)
 
