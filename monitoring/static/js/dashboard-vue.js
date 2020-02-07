@@ -298,13 +298,13 @@ var app = new Vue({
                         }
                     }
 
-                    this.graphicParticipants('').then(() => {
-                        this.graphicParticipants('GraphicQuarter');
-                        this.graficoMetas();
-                        this.graphFixedColumnGender();
-                        // function to graph a stacked chart with line
-                        this.graphicStackedLine();
-                    });
+                    this.graphicFiscalyear();
+                    this.graphicParticipants('GraphicQuarter');
+                    this.graficoMetas();
+                    this.graphFixedColumnGender();
+                    // function to graph a stacked chart with line
+                    this.graphicStackedLine();
+
                 });
             // funcion to graph the participants by age
             this.graficoParticipantesEdad();
