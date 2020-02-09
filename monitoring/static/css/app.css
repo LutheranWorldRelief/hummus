@@ -2864,3 +2864,9 @@ div.checkbox.switcher label input:checked + span, div.radio.switcher label input
   border-color: #93D228;
 }
 div.checkbox.switcher label input:checked + span small, div.radio.switcher label input:checked + span small {  left: 50%;}
+.card .card-header .nav-tabs .nav-item .nav-link{color:#000}
+/* agregando color al borde de los tabs cuando esten activos*/
+#tab_quarter-click .active, #tab_types-click .active, #tab_geographic .active,#tabs_projects-click .active { font-weight: 600;}
+#tab_quarter-click .active {border-top-color: #a768f3;}
+#tab_types-click .active {border-top-color: #36A2F2;}
+#tab_geographic .active {border-top-color: #e83e8c;}
