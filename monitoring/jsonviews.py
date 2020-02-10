@@ -211,15 +211,7 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
         return self.render_to_json_response(context, safe=False, **response_kwargs)
 
     def get_context_data(self, **kwargs):
-        context = {}
-        queryset = ProjectContact.objects.all().order_by()
-
-        participants = getParticipants(self.request.GET.copy(), get_years=True, get_quarters=True)
-
-        context['totals'] = participants['totals']
-        context['year'] = participants['year']
-        context['quarters'] = participants['quarters']
-
+        context = getParticipants(self.request.GET.copy(), get_years=True, get_quarters=True)
         return context
 
 
