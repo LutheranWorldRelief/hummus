@@ -440,7 +440,10 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
 
     def render_to_response(self, context, **response_kwargs):
         json_context = {}
-        json_context['object_list'] = context['object_list']
+        if self.request.GET.get('extra_counters'):
+            json_context['data'] = context['object_list']
+        else:
+            json_context['object_list'] = context['object_list']
         return self.render_to_json_response(json_context, safe=False, **response_kwargs)
 
     def get_queryset(self):

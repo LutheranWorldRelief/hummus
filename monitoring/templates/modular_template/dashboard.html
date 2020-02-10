@@ -4,6 +4,8 @@
 {% block extra_header %}
     <link rel="stylesheet" href="{% static 'vue-multiselect/dist/vue-multiselect.min.css' %}">
     <link rel="stylesheet" href="{% static 'leaflet/dist/leaflet.css' %}">
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+
     <style>
         /*vue multiselect styles*/
         .multiselect__single {
@@ -264,7 +266,7 @@
         <div v-if="formInputs.project_id"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
         {% include 'modular_template/geographics.html' %}
-
+        {% include 'modular_template/summary_table.html' %}
     </div>
 {% endblock %}
 
@@ -335,4 +337,20 @@
     <script src="{% static 'js/mixins/graphicMixins.js' %}"></script>
     <script src="{% static 'js/mixins/geographicsMixins.js' %}"></script>
     <script src="{% static 'js/dashboard-vue.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#subprojectstable').DataTable( {
+        "ajax": "/api/subprojects/?extra_counters=1",
+        "columns": [
+            { "data": "id" },
+            { "data": "name" },
+            { "data": "code" },
+            { "data": "salesforce" },
+            { "data": "start" },
+            { "data": "end" }
+        ]
+    } );
+} );
+</script>
 {% endblock %}
