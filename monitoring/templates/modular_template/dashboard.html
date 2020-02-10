@@ -266,7 +266,7 @@
         <div v-if="formInputs.project_id"> {% endverbatim %}{% include 'modular_template/project_graph.html' %}</div>
         {% include 'modular_template/graphics.html' %}
         {% include 'modular_template/geographics.html' %}
-
+        {% include 'modular_template/summary_table.html' %}
     </div>
 {% endblock %}
 
@@ -338,28 +338,6 @@
     <script src="{% static 'js/mixins/geographicsMixins.js' %}"></script>
     <script src="{% static 'js/dashboard-vue.js' %}"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <table id="subprojectstable" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Extn.</th>
-                <th>Start date</th>
-                <th>Salary</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Extn.</th>
-                <th>Start date</th>
-                <th>Salary</th>
-            </tr>
-        </tfoot>
-    </table>
 <script>
 $(document).ready(function() {
     $('#subprojectstable').DataTable( {
