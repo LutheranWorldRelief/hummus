@@ -1,7 +1,13 @@
+{% load i18n %}
 <section class="section">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card">
+                <div class="card-header bordered">
+                    <div class="header-block">
+                        <h3 class="title">{% trans 'Subprojects Table Summary' %}</h3>
+                    </div>
+                </div>
                 <div class="card-body">
                     <table id="subprojectstable" class="display" style="width:100%">
                         <thead>
