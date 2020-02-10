@@ -104,67 +104,66 @@ class TargetsCounter(JSONResponseMixin, TemplateView):
         return context
 
 
-class ProjectContactCounter(JSONResponseMixin, TemplateView):
+def getParticipants(params, get_years=False, get_quarters=False):
     """
-    Count participants filter by several params
+    Count participants, filter by querystring params (do the actual counting)
     """
 
-    def render_to_response(self, context, **response_kwargs):
-        return self.render_to_json_response(context, safe=False, **response_kwargs)
+    participants = {}
+    queryset = ProjectContact.objects.all().order_by()
 
-    def get_context_data(self, **kwargs):
-        context = {}
-        queryset = ProjectContact.objects.all().order_by()
+    # easy filters first
+    if params.get('subproject_id'):
+        queryset = queryset.filter(subproject_id=params.get('subproject_id'))
+    if params.get('project_id'):
+        queryset = queryset.filter(project_id=params.get('project_id'))
 
-        # filter by selected years
-        if self.request.GET.get('year[]'):
-            years = self.request.GET.getlist('year[]')
-            years_filter = Q()
-            for year in years:
-                years_filter |= Q(project__end__fyear__gte=year,
-                                  date_entry_project__fyear__lte=year)
-            queryset = queryset.filter(years_filter)
+    # filter by selected years
+    if params.get('year[]'):
+        years = params.getlist('year[]')
+        years_filter = Q()
+        for year in years:
+            years_filter |= Q(project__end__fyear__gte=year,
+                              date_entry_project__fyear__lte=year)
+        queryset = queryset.filter(years_filter)
+    else:
+        years = list(Project.objects.order_by('start__fyear').
+                     exclude(projectcontact__isnull=True).
+                     values_list('start__fyear', flat=True).distinct())
+
+    if params.get('quarter'):
+        quarter = int(params.get('quarter'))
+        queryset = queryset.filter(date_entry_project__fquarter=quarter)
+    if params.get('lwrregion_id[]'):
+        queryset = queryset.filter(
+            project__lwrregion__id__in=params.getlist('lwrregion_id[]'))
+    if params.get('from_date'):
+        queryset = queryset.filter(
+            date_entry_project__gte=params.get('from_date'))
+    if params.get('to_date'):
+        queryset = queryset.filter(
+            date_entry_project__lte=params.get('to_date'))
+
+    if params.get('country_id[]'):
+        queryset = queryset.filter(
+            subproject__country__in=params.getlist('country_id[]'))
+
+    # get unique totals by gender
+    totals = dict(queryset.values_list('contact__sex_id').
+                  annotate(total=Count('contact', distinct=True)))
+    if totals:
+        totals['T'] = sum(totals.values())
+
+    participants['totals'] = totals
+
+    if get_years:
+        # get totals by year
+        if params.get('year[]'):
+            years = params.getlist('year[]')
         else:
             years = list(Project.objects.order_by('start__fyear').
                          exclude(projectcontact__isnull=True).
                          values_list('start__fyear', flat=True).distinct())
-
-        if self.request.GET.get('quarter'):
-            quarter = int(self.request.GET.get('quarter'))
-            queryset = queryset.filter(date_entry_project__fquarter=quarter)
-        if self.request.GET.get('lwrregion_id[]'):
-            queryset = queryset.filter(
-                project__lwrregion__id__in=self.request.GET.getlist('lwrregion_id[]'))
-        if self.request.GET.get('from_date'):
-            queryset = queryset.filter(
-                date_entry_project__gte=self.request.GET.get('from_date'))
-        if self.request.GET.get('to_date'):
-            queryset = queryset.filter(
-                date_entry_project__lte=self.request.GET.get('to_date'))
-
-        if self.request.GET.get('country_id[]'):
-            queryset = queryset.filter(
-                subproject__country__in=self.request.GET.getlist('country_id[]'))
-        if self.request.GET.get('subproject_id'):
-            queryset = queryset.filter(subproject_id=self.request.GET.get('subproject_id'))
-        if self.request.GET.get('project_id'):
-            queryset = queryset.filter(project_id=self.request.GET.get('project_id'))
-        else:
-            queryset = mydashboard(self.request, queryset)
-
-        # get unique participants # not used for now
-        # queryset_unique = queryset.order_by().values('contact', 'contact__sex_id').distinct()
-
-        # get unique totals by gender
-        totals = dict(queryset.values_list('contact__sex_id').
-                      annotate(total=Count('contact', distinct=True)))
-
-        if totals:
-            totals['T'] = sum(totals.values())
-
-        context['totals'] = totals
-
-        # get totals by year
         years_data = {}
         for year in years:
             year_filter = Q(project__end__fyear__gte=year,
@@ -175,8 +174,9 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
 
             year_total['T'] = sum(year_total.values())
             years_data[year] = year_total
-        context['year'] = years_data
+        participants['year'] = years_data
 
+    if get_quarters:
         # get totals by quarter
         query_years = queryset. \
             values('date_entry_project__fyear',
@@ -197,8 +197,21 @@ class ProjectContactCounter(JSONResponseMixin, TemplateView):
             if 'T' not in current_year:
                 current_year['T'] = 0
             current_year['T'] += query_year['total']
-        context['quarters'] = years
+        participants['quarters'] = years
 
+        return participants
+
+
+class ProjectContactCounter(JSONResponseMixin, TemplateView):
+    """
+    Count participants filter by several params
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        return self.render_to_json_response(context, safe=False, **response_kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = getParticipants(self.request.GET.copy(), get_years=True, get_quarters=True)
         return context
 
 
@@ -400,10 +413,10 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
     def get_queryset(self):
         queryset = Project.objects.all()
 
-        if 'from_date' in self.kwargs:
-            queryset = queryset.filter(start__gte=self.kwargs['from_date'])
-        if 'to_date' in self.kwargs:
-            queryset = queryset.filter(start__lte=self.kwargs['to_date'])
+        # easy filters first
+        if self.kwargs.get('project_id') or self.request.GET.get('project_id'):
+            project_id = self.kwargs.get('project_id') or self.request.GET.get('project_id')
+            queryset = queryset.filter(id=project_id)
 
         # filter by selected years
         years_filter = Q()
@@ -417,10 +430,6 @@ class ProjectAPIListView(JSONResponseMixin, ListView):
             countries = self.request.GET.getlist('country_id[]')
             queryset = queryset.filter(subproject__country__id__in=countries)
 
-        if 'project_id' in self.kwargs:
-            queryset = queryset.filter(id=self.kwargs['project_id'])
-        else:
-            queryset = mydashboard(self.request, queryset)
         return list(queryset.values('id', 'name'))
 
 
@@ -436,13 +445,17 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
 
     def get_queryset(self):
         queryset = SubProject.objects.all()
-        if 'subproject_id' in self.kwargs:
-            queryset = queryset.filter(id=self.kwargs['subproject_id'])
+        queryset = queryset.exclude(projectcontact__isnull=True)
 
-        if 'from_date' in self.kwargs:
-            queryset = queryset.filter(start__gte=self.kwargs['from_date'])
-        if 'to_date' in self.kwargs:
-            queryset = queryset.filter(start__lte=self.kwargs['to_date'])
+        # easy filters first
+        if self.kwargs.get('project_id') or self.request.GET.get('project_id'):
+            project_id = self.kwargs.get('project_id') or self.request.GET.get('project_id')
+            queryset = queryset.filter(project_id=project_id)
+
+        if self.kwargs.get('subproject_id') or self.request.GET.get('subproject_id'):
+            subproject_id = self.kwargs.get('subproject_id') or\
+                self.request.GET.get('subproject_id')
+            queryset = queryset.filter(id=subproject_id)
 
         # filter by selected years
         years_filter = Q()
@@ -456,11 +469,14 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
             countries = self.request.GET.getlist('country_id[]')
             queryset = queryset.filter(country__id__in=countries)
 
-        if 'project_id' in self.kwargs:
-            queryset = queryset.filter(project_id=self.kwargs['project_id'])
-        else:
-            queryset = mydashboard(self.request, queryset)
-        return list(queryset.values())
+        params = self.request.GET.copy()
+        queryset_list = list(queryset.values())
+        if self.request.GET.get('extra_counters'):
+            for row in queryset_list:
+                params['subproject_id'] = row['id']
+                row['participants'] = getParticipants(params)
+
+        return queryset_list
 
 
 class JsonIdName(JSONResponseMixin, TemplateView):
