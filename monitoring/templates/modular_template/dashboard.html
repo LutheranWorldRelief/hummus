@@ -336,21 +336,6 @@
     <script src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'js/mixins/graphicMixins.js' %}"></script>
     <script src="{% static 'js/mixins/geographicsMixins.js' %}"></script>
-    <script src="{% static 'js/dashboard-vue.js' %}"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#subprojectstable').DataTable( {
-        "ajax": "/api/subprojects/?extra_counters=1",
-        "columns": [
-            { "data": "name" },
-            { "data": "country_id" },
-            { "data": "start" },
-            { "data": "end" },
-            { "data": "targetmen" },
-            { "data": "participants" }
-        ]
-    } );
-} );
-</script>
+    <script src="{% static 'js/dashboard-vue.js' %}"></script>
 {% endblock %}

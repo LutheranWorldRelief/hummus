@@ -40,6 +40,7 @@ var app = new Vue({
         btnClick: false,
         filterByUrl: false,
         currentUrl: null,
+        parametersRequest: null,
         text_tooltip: 'Click to copy in clipboard',
         class_tabs_container: {
             'container-fluid': false,
@@ -174,6 +175,7 @@ var app = new Vue({
 
     },
     mounted() {
+
         this.$nextTick(function () {
             window.addEventListener('resize', function (event) {
                 let width = document.documentElement.clientWidth;
@@ -186,6 +188,7 @@ var app = new Vue({
         });
     },
     methods: {
+
         loadSubprojects() {
             let project_id = this.requestParameters['project_id'];
             // NOTE: new_url content example = http://localhost/api/subproject/project/1/
@@ -319,7 +322,7 @@ var app = new Vue({
                     this.graphFixedColumnGender();
                     // function to graph a stacked chart with line
                     this.graphicStackedLine();
-
+                    this.loadDataTable();
                 });
             // funcion to graph the participants by age
             this.graficoParticipantesEdad();
@@ -487,6 +490,7 @@ var app = new Vue({
         createUrl(uri) {
             let uriRequest = decodeURI(uri);
             let parametersRequest = uriRequest.split('?');
+            this.parametersRequest = parametersRequest[1];
 
             let urlBase = window.location.origin;
 
@@ -533,6 +537,21 @@ var app = new Vue({
             copyURL.select();
             copyURL.setSelectionRange(0, 99999);
             document.execCommand("copy");
-        }
+        },
+        loadDataTable() {
+            $('#subprojectstable').DataTable({
+                "ajax": "/api/subprojects/?" + this.parametersRequest,
+                'destroy': true,
+                'stateSave': true,
+                "columns": [
+                    {"data": "id"},
+                    {"data": "name"},
+                    {"data": "code"},
+                    {"data": "salesforce"},
+                    {"data": "start"},
+                    {"data": "end"}
+                ]
+            });
+        },
     }
 });
