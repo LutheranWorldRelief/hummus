@@ -333,7 +333,7 @@
     <script src="{% static 'vue/dist/vue.min.js' %}"></script>
     <script src="{% static 'vue-multiselect/dist/vue-multiselect.min.js' %}"></script>
     <script src="{% static 'echarts/dist/echarts.min.js' %}"></script>
-    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'js/mixins/graphicMixins.js' %}"></script>
     <script src="{% static 'js/mixins/geographicsMixins.js' %}"></script>
     <script src="{% static 'js/dashboard-vue.js' %}"></script>
@@ -343,12 +343,12 @@ $(document).ready(function() {
     $('#subprojectstable').DataTable( {
         "ajax": "/api/subprojects/?extra_counters=1",
         "columns": [
-            { "data": "id" },
             { "data": "name" },
-            { "data": "code" },
-            { "data": "salesforce" },
+            { "data": "country_id" },
             { "data": "start" },
-            { "data": "end" }
+            { "data": "end" },
+            { "data": "targetmen" },
+            { "data": "participants" }
         ]
     } );
 } );
