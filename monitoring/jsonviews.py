@@ -199,7 +199,7 @@ def getParticipants(params, get_years=False, get_quarters=False):
             current_year['T'] += query_year['total']
         participants['quarters'] = years
 
-        return participants
+    return participants
 
 
 class ProjectContactCounter(JSONResponseMixin, TemplateView):
