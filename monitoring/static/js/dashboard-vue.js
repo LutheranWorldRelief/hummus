@@ -544,12 +544,12 @@ var app = new Vue({
                 'destroy': true,
                 'stateSave': true,
                 "columns": [
-                    {"data": "id"},
                     {"data": "name"},
-                    {"data": "code"},
-                    {"data": "salesforce"},
+                    {"data": "country_id"},
                     {"data": "start"},
-                    {"data": "end"}
+                    {"data": "end"},
+                    {"data": "participants.totals.T"},
+                    {"data": "targets"}
                 ]
             });
         },

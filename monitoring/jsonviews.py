@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, ListView
 
 from .models import ProjectContact, SubProject, Project, LWRRegion
-from .common import JSONResponseMixin, get_localized_name as __
+from .common import JSONResponseMixin, get_localized_name as __, xnumber
 
 
 def mydashboard(request, queryset):
@@ -477,6 +477,7 @@ class SubProjectAPIListView(JSONResponseMixin, ListView):
         if self.request.GET.get('extra_counters'):
             for row in queryset_list:
                 params['subproject_id'] = row['id']
+                row['targets'] = xnumber(row['targetmen']) + xnumber(row['targetwomen'])
                 row['participants'] = getParticipants(params)
 
         return queryset_list

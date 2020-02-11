@@ -128,6 +128,13 @@ class JSONResponseMixin:
         return context
 
 
+def xnumber(string):
+    """ return number or zero """
+    if not string:
+        return 0
+    return string
+
+
 def xstr(string):
     """ return empty instead of None. credit to https://stackoverflow.com/a/1034598/1170404 """
     string = '' if string is None else str(string).strip()
