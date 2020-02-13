@@ -121,14 +121,6 @@ var app = new Vue({
         'formInputs.to_date': function () {
             this.loadDataWithFilters();
         },
-        'formInputs.my_dashboard': function (value) {
-            if (value) {
-                let switch_button = document.getElementById('change_url');
-                window.location.href = switch_button.getAttribute('data-uri');
-            } else {
-                window.location.href = window.location.origin
-            }
-        }
     },
     created() {
 
@@ -500,16 +492,28 @@ var app = new Vue({
                 this.currentUrl = urlBase;
         },
         clearFilters() {
-            this.formInputs = {
-                project_id: null,
-                subproject_id: null,
-                country_id: [],
-                lwrregion_id: null,
-                year: [],
-                quarter: null,
-                from_date: '',
-                to_date: '',
-            };
+            for (const key in this.formInputs) {
+                if (key === 'my_dashboard')
+                    continue;
+
+                let type = typeof this.formInputs[key];
+                switch (type) {
+                    case 'object':
+                        if (Array.isArray(this.formInputs[key])) {
+                            this.formInputs[key] = []
+                        } else {
+                            this.formInputs[key] = null;
+                        }
+                        break;
+                    case 'string':
+                        this.formInputs[key] = '';
+                        break;
+                    case 'boolean':
+                        this.formInputs[key] = false;
+                        break;
+                    default:
+                }
+            }
             this.requestParameters = {
                 extra_counters: 1
             };
@@ -520,8 +524,14 @@ var app = new Vue({
 
             this.list_lwrregions.forEach((region) => {
                 region.active = false
-            })
+            });
 
+            countries_data= [];
+            project_data = null;
+            subproject = null;
+            regions_data = [];
+            years_data = [];
+            quarter = null;
         },
         setZero(data) {
             if (data === null)
@@ -553,5 +563,14 @@ var app = new Vue({
                 ]
             });
         },
+        changeStatusSwitchButton() {
+            this.formInputs.my_dashboard = !this.formInputs.my_dashboard;
+            if (this.formInputs.my_dashboard) {
+                let switch_button = document.getElementById('change_url');
+                window.location.href = switch_button.getAttribute('data-uri');
+            } else {
+                window.location.href = window.location.origin
+            }
+        }
     }
 });
