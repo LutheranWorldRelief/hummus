@@ -493,6 +493,9 @@ var app = new Vue({
         },
         clearFilters() {
             for (const key in this.formInputs) {
+                if (key === 'my_dashboard')
+                    continue;
+
                 let type = typeof this.formInputs[key];
                 switch (type) {
                     case 'object':
@@ -509,7 +512,6 @@ var app = new Vue({
                         this.formInputs[key] = false;
                         break;
                     default:
-
                 }
             }
             this.requestParameters = {
