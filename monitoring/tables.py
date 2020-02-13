@@ -164,15 +164,15 @@ class ProjectContactFilter(FilterSet):
     contact__name = CharFilter(lookup_expr='icontains')
     project = ModelChoiceFilter(queryset=projects, widget=Select2Widget(
         attrs={
-            'class': 'form-control select2'
+            'class': 'form-control'
         }))
     contact__country = ModelChoiceFilter(queryset=countries, widget=Select2Widget(
         attrs={
-            'class': 'form-control select2'
+            'class': 'form-control'
         }))
     organization = ModelChoiceFilter(queryset=organizations, widget=Select2Widget(
         attrs={
-            'class': 'form-control select2'
+            'class': 'form-control'
         }))
     date_entry_project = DateFromToRangeFilter(widget=RangeWidget(attrs={'type': 'date'}))
 
