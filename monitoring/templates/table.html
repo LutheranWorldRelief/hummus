@@ -7,7 +7,7 @@
             height: 36px;
         }
 
-        #input-contact input{
+        #input-contact input {
             width: 100%;
         }
     </style>
@@ -22,7 +22,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-block">
-                        <form method="GET">
+                        <form method="GET" id="formFilter">
 
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6">
@@ -66,9 +66,10 @@
                                 </div>
                                 {% if export_formats %}
                                     <div class="col-lg-3 col-md-3 col-sm-6">
-                                    <label for="">&nbsp;</label>
+                                        <label for="">&nbsp;</label>
                                         {% for format in export_formats %}
-                                            <a href="{% export_url format %}" class="btn btn-success w-100">
+                                            <a href="{% export_url format %}" id="btn-download"
+                                               class="btn btn-success w-100 {% if format|lower == 'xlsx' %}disabled{% endif %}">
                                                 <i class="fa fa-download"></i> {% trans 'download' %}
                                                 <code>.{{ format }}</code>
                                             </a>
@@ -100,6 +101,19 @@
             $('#id_project').select2();
             $('#id_organization').select2();
             $('#id_contact__country').select2();
+            //arreglo de parametros importantes a validar
+            let important_parameters = ['project', 'contact__country'];
+            //obteniendo los parametros del formulario en arreglo de objetos
+            let parameters = $('#formFilter').serializeArray();
+            //valido si en los parametros del formulario esta incluido un parametro
+            //importante con valores para habilitar boton de descarga
+            for (const parameter of parameters) {
+                if (important_parameters.includes(parameter.name) && parameter.value !== "") {
+                    $('#btn-download').removeClass('disabled');
+                    break;
+                }
+            }
+
         })
     </script>
 {% endblock %}
