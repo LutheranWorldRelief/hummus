@@ -121,14 +121,6 @@ var app = new Vue({
         'formInputs.to_date': function () {
             this.loadDataWithFilters();
         },
-        'formInputs.my_dashboard': function (value) {
-            if (value) {
-                let switch_button = document.getElementById('change_url');
-                window.location.href = switch_button.getAttribute('data-uri');
-            } else {
-                window.location.href = window.location.origin
-            }
-        }
     },
     created() {
 
@@ -553,5 +545,14 @@ var app = new Vue({
                 ]
             });
         },
+        changeStatusSwitchButton() {
+            this.formInputs.my_dashboard = !this.formInputs.my_dashboard;
+            if (this.formInputs.my_dashboard) {
+                let switch_button = document.getElementById('change_url');
+                window.location.href = switch_button.getAttribute('data-uri');
+            } else {
+                window.location.href = window.location.origin
+            }
+        }
     }
 });

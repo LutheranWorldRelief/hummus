@@ -24,7 +24,8 @@
                             <div class="checkbox switcher input ml-2" style="display: inline">
                                 <label for="change_url">
                                     <input v-model="formInputs.my_dashboard" type="checkbox" id="change_url" value=""
-                                           data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}">
+                                           data-uri="{% url 'monitoring:dashboard' %}?{{ query_string }}"
+                                           v-on:click="changeStatusSwitchButton">
                                     <span><small></small></span>
                                 </label>
                             </div>
