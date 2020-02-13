@@ -1,7 +1,6 @@
 {% extends 'modular_template/base.html' %}
 {% load static i18n django_tables2 %}
 {% block extra_header %}
-    {{ filter.form.media }}
     <link rel="stylesheet" href="{% static 'select2/dist/css/select2.min.css' %}">
     <style>
         .select2-container .select2-selection--single {
@@ -94,12 +93,13 @@
     </section>
 {% endblock %}
 {% block extra_body %}
-    {{ filter.form.js }}
     <script src="{% static "select2/dist/js/select2.full.min.js" %}"></script>
 
     <script>
         $(function () {
-            $('#id_project').select2()
+            $('#id_project').select2();
+            $('#id_organization').select2();
+            $('#id_contact__country').select2();
         })
     </script>
 {% endblock %}
