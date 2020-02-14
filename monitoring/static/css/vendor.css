@@ -12534,8 +12534,12 @@ tbody.collapse.show {
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
   list-style: none;
-  background-color: #e9ecef;
+  color: #00AAA7 !important;
   border-radius: 0.25rem;
+}
+
+.breadcrumb-item {
+  margin-top: 12px;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
@@ -12555,7 +12559,7 @@ tbody.collapse.show {
 }
 
 .breadcrumb-item.active {
-  color: #6c757d;
+  font-weight: 600;
 }
 
 .pagination {

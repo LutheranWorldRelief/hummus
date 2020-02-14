@@ -2475,7 +2475,7 @@ span a {
   padding-right: 5px; }
   @media (max-width: 767.98px) {
     .header .header-block-collapse {
-      width: 155px; } }
+      width: 50px; } }
   .header .header-block-collapse .collapse-btn {
     background: none;
     border: none;

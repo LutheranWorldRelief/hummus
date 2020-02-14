@@ -6,13 +6,46 @@
         </button>
     </div>
 
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">
+                {% if request.resolver_match.url_name == 'dashboard' %}
+                    {% trans 'Dashboard' %}
+                {% elif 'import' in request.resolver_match.url_name %}
+                    {% trans 'Import Participants' %}
+                {% elif request.resolver_match.url_name == 'export' %}
+                    <span style="font-weight: normal"> {% trans 'Reports' %}</span>
+                    <icon class="fa fa-angle-right mr-1 ml-2" style="font-weight: normal"></icon>
+                    {% trans 'Project Participants' %}
+                {% elif request.resolver_match.url_name == 'export' %}
+                    <span style="font-weight: normal"> {% trans 'Reports' %}</span>
+                    <icon class="fa fa-angle-right mr-1 ml-2" style="font-weight: normal"></icon>
+                    {% trans 'Project Participants' %}
+                {% elif 'dupes' in request.resolver_match.url_name %}
+                    <span style="font-weight: normal"> {% trans 'Participants' %}</span>
+                    <icon class="fa fa-angle-right mr-1 ml-2" style="font-weight: normal"></icon>
+                    <span style="font-weight: normal"> {% trans 'Duplicates' %}</span>
+                    <icon class="fa fa-angle-right mr-1 ml-2" style="font-weight: normal"></icon>
+                    {% if request.resolver_match.url_name == 'dupes-name' %}
+                        {% trans 'Name' %}
+                    {% elif request.resolver_match.url_name == 'dupes-doc' %}
+                        {% trans 'Document' %}
+                    {% elif request.resolver_match.url_name == 'dupes-name-fuzzy' %}
+                        {% trans 'Fuzzy Names' %}
+                    {% endif %}
+                {% endif %}
+            </li>
+        </ol>
+    </nav>
+
     <div class="header-block header-block-nav">
         <ul class="nav-profile">
             <li class="profile dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:" role="button"
                    aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle-o"></i>
-                    <span class="name" style="font-size: 14px;">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                    <span class="name"
+                          style="font-size: 14px;">{{ request.user.first_name }} {{ request.user.last_name }}</span>
                 </a>
                 <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
                     {% comment %}
