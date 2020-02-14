@@ -8,6 +8,8 @@ var graphicMixins = {
                     target_men: array_colors_lwr[2],
                     women: array_colors_lwr[0],
                     target_women: array_colors_lwr[3],
+                    target: array_colors_lwr[4],
+                    actual: array_colors_lwr[5],
                 },
                 names_legends: [
                     gettext('Men'),
@@ -475,7 +477,7 @@ var graphicMixins = {
                         barWidth: '35%',
                         itemStyle: {
                             normal: {
-                                color: this.colors.women,
+                                color: this.colors.actual,//actual
                             }
                         },
                         z: 2
@@ -487,7 +489,7 @@ var graphicMixins = {
                         barWidth: '67%',
                         itemStyle: {
                             normal: {
-                                color: this.colors.men.replace('0.7', '0.4'),
+                                color: this.colors.target, //meta
                                 barBorderRadius: 1,
                             }
                         },
