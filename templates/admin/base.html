@@ -191,6 +191,17 @@
             </div>
             <div class="sidebar sidebar-dependent">
                 <div class="sidebar-wrapper scrollable">
+                    {% if user.is_active and user.is_superuser %}
+                        <div class="sidebar-section">
+                            <a href="{% url 'admin:index' %}"
+                               class="sidebar-link icon {% if request.resolver_match.url_name|lower == 'index' %}active{% endif %}">
+                            <span class="sidebar-link-label">
+                                <span class="sidebar-link-icon fa fa-circle-o-notch"></span>
+                                {% trans 'Admin Home' %}
+                            </span>
+                            </a>
+                        </div>
+                    {% endif %}
 
                     {% if user.is_active and user.is_staff %}
                         {% jet_get_menu as app_list %}

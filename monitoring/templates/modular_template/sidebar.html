@@ -10,6 +10,15 @@
         </div>
         <nav class="menu">
             <ul class="sidebar-menu metismenu" id="sidebar-menu">
+                {% if user.is_active and user.is_superuser %}
+                    <li>
+                    <icon class="fa fa-circle-o-notch"></icon>
+                        <a href="{% url 'admin:index' %}">
+                            {% trans 'Admin Home' %}
+                        </a>
+                    </li>
+                {% endif %}
+
                 {# 1 dashboard #}
                 <li {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
                     <a href="{% url 'monitoring:dashboard' %}">
