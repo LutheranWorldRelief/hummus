@@ -209,6 +209,7 @@
                                                              placeholder="{% trans 'Write the subproject name' %}"
                                                              {% verbatim %} :options="list_subprojects"
                                                              :searchable="true"
+                                                             @input="selectSubproject"
                                                              return="value">
                                                 <template slot="singleLabel" slot-scope="{ option }">
                                                     {{ option.name }}
