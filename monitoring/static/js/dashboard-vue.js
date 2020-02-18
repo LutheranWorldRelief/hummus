@@ -564,6 +564,17 @@ var app = new Vue({
             } else {
                 window.location.href = window.location.origin
             }
+        },
+        selectSubproject(value) {
+
+            if (!value) {
+                $('#tabs_projects-click').children('li').eq(0).find('a').trigger('click');
+            }
+
+            for (const key in this.class_tabs_container) {
+                this.class_tabs_container[key] = (value !== null);
+            }
+            this.loadDataWithFilters();
         }
     }
 });
