@@ -82,6 +82,9 @@ var app = new Vue({
             this.loadDataWithFilters();
         },
         'formInputs.project_id': function () {
+            if (this.formInputs.subproject_id) {
+                this.formInputs.subproject_id = null;
+            }
 
             $('#tab_quarter-click').children('li').eq(3).find('a').trigger('click');
 
@@ -526,7 +529,7 @@ var app = new Vue({
                 region.active = false
             });
 
-            countries_data= [];
+            countries_data = [];
             project_data = null;
             subproject = null;
             regions_data = [];
