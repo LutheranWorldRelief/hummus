@@ -94,16 +94,6 @@ var app = new Vue({
                 $('#tab_quarter-click').children('li').eq(0).find('a').trigger('click');
             }, 1000);
         },
-        'formInputs.subproject_id': function (value) {
-            if (!value) {
-                $('#tabs_projects-click').children('li').eq(0).find('a').trigger('click');
-            }
-
-            for (const key in this.class_tabs_container) {
-                this.class_tabs_container[key] = (value !== null);
-            }
-            this.loadDataWithFilters();
-        },
         'formInputs.country_id': function (values) {
             for (const item of this.list_countries) {
                 item.active = values.some((country) => {
