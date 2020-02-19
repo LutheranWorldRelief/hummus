@@ -442,7 +442,7 @@ var app = new Vue({
 
             register.active = !register.active;
 
-            list_items.find((item) => {
+            for (const item of list_items) {
                 if (item.active) {
                     actives_regions.push(item.value);
                 }
@@ -461,7 +461,7 @@ var app = new Vue({
                         });
                     }
                 }
-            });
+            }
 
             if (type_register !== 'country') {
                 this.list_countries.forEach((row) => {
