@@ -442,7 +442,7 @@ var app = new Vue({
 
             register.active = !register.active;
 
-            list_items.find((item) => {
+            for (const item of list_items) {
                 if (item.active) {
                     actives_regions.push(item.value);
                 }
@@ -454,14 +454,16 @@ var app = new Vue({
                     let country_index_exists = this.formInputs.country_id.findIndex(obj => obj.value === register.value);
                     if (country_index_exists >= 0) {
                         this.formInputs.country_id.splice(country_index_exists, 1);
+                        break;
                     } else {
                         this.formInputs.country_id.push({
                             name: register.name,
                             value: register.value,
                         });
+                        break;
                     }
                 }
-            });
+            }
 
             if (type_register !== 'country') {
                 this.list_countries.forEach((row) => {
