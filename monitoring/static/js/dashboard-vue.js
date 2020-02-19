@@ -454,11 +454,13 @@ var app = new Vue({
                     let country_index_exists = this.formInputs.country_id.findIndex(obj => obj.value === register.value);
                     if (country_index_exists >= 0) {
                         this.formInputs.country_id.splice(country_index_exists, 1);
+                        break;
                     } else {
                         this.formInputs.country_id.push({
                             name: register.name,
                             value: register.value,
                         });
+                        break;
                     }
                 }
             }
