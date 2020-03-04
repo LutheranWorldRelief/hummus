@@ -173,7 +173,6 @@ var app = new Vue({
         });
     },
     methods: {
-
         loadSubprojects() {
             let project_id = this.requestParameters['project_id'];
             // NOTE: new_url content example = http://localhost/api/subproject/project/1/
@@ -207,10 +206,12 @@ var app = new Vue({
                 this.loadSubprojects();
             }
 
+            //getting the quantity of subprojects
             $.get(UrlsAcciones.UrlQuantitySubProjects, this.requestParameters)
                 .then(response => {
                     this.quantity_subprojects = response.quantity_subprojects;
                 });
+
             var contentVue = this
             $.get(UrlsAcciones.UrlTarget, this.requestParameters)
                 .then(function (response) {
@@ -255,7 +256,6 @@ var app = new Vue({
                         this.defauldSerie.push(0);
                     }
 
-
                     //NOTE: calculating the number of participants
                     this.quantity_participants = this.setZero(this.tatals.T);
                     //set the quantity of participats by gender in array
@@ -265,6 +265,7 @@ var app = new Vue({
                         this.setZero(this.tatals.M)
                     );
 
+                    //calling graphicGoalSubproject when filter subproject
                     if (this.formInputs.subproject_id) {
                         let subproject_name = this.formInputs.subproject_id.name;
                         this.graphicGoalSubproject(subproject_name);
@@ -274,7 +275,7 @@ var app = new Vue({
                     this.goal_percentage = this.percentage(this.quantity_participants, this.goal_participants);
                     this.width_progress_bar.width = this.goal_percentage + '%';
 
-                    /** Recorrer participantes por trimestre (Quarter) */
+                    // Recorrer participantes por trimestre (Quarter)
                     const orderedQ = {};
 
                     Object.keys(data['quarters']).sort().forEach(function (key) {
@@ -327,12 +328,12 @@ var app = new Vue({
             return percentage.toFixed(2);
         },
         loadCatalogs() {
-
+            //getting the quantity of subprojects
             $.get(UrlsAcciones.UrlQuantityProjects, this.requestParameters)
                 .then(data => {
                     this.quantity_projects = data.quantity_projects;
                 });
-
+            //getting the countries with projects implements
             $.get(UrlsAcciones.UrlCountries, this.requestParameters)
                 .then(data => {
                     this.list_countries = [];
@@ -358,7 +359,7 @@ var app = new Vue({
                     this.btnClick = false;
                     this.loadCountriesMaps();
                 });
-
+            //getting the Regions
             $.get(UrlsAcciones.UrlLWRregions, this.requestParameters)
                 .then(data => {
                     this.list_lwrregions = [];
