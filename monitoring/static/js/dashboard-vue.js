@@ -37,7 +37,6 @@ var app = new Vue({
         width_progress_bar: {
             width: '0px'
         },
-        btnClick: false,
         filterByUrl: false,
         currentUrl: null,
         parametersRequest: null,
@@ -58,7 +57,6 @@ var app = new Vue({
         targets_women: [], targets_men: [],
         /** Var gráfico participantes quarter */
         aniosQ: [], hombresQ: [], mujeresQ: [], tatalsQ: {}, totalByBarQ: [], defauldSerieQ: [],
-        show: true,
     },
     watch: {
         check_filter: function () {
@@ -356,7 +354,6 @@ var app = new Vue({
                             subprojects: countries[key].subprojects,
                         });
                     }
-                    this.btnClick = false;
                     this.loadCountriesMaps();
                 });
             //getting the Regions
@@ -433,7 +430,6 @@ var app = new Vue({
 
         },
         changeActiveStatusAndFilter(register, type_register = 'country') {
-            this.btnClick = true;
             let list_items = this.list_countries;
             let actives_regions = [];
 

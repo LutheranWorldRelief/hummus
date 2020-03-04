@@ -1,7 +1,6 @@
 var graphicMixins = {
         data() {
             return {
-                typeGraphic: null,
                 background_color: '#fff',
                 colors: {
                     men: array_colors_lwr[1],
@@ -1350,14 +1349,11 @@ var graphicMixins = {
                 this.anios = [];
                 this.hombres = [];
                 this.mujeres = [];
-                this.tatal = {};
                 this.totalByBar = [];
-                this.efauldSerie = [];
                 /** Var gráfico participantes quarter */
                 this.aniosQ = [];
                 this.hombresQ = [];
                 this.mujeresQ = [];
-                this.tatalsQ = {};
                 this.totalByBarQ = [];
                 this.defauldSerieQ = [];
             },
