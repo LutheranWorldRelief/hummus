@@ -119,7 +119,6 @@ var app = new Vue({
         if (localStorage.getItem('countries_polygons_json')) {
             this.countries_polygons_json = JSON.parse(localStorage.getItem('countries_polygons_json'));
         } else {
-            console.log(2);
             $.get(UrlsAcciones.UrlCountriesPolygons)
                 .then(response => {
                     this.countries_polygons_json = response;
@@ -210,7 +209,7 @@ var app = new Vue({
                     this.quantity_subprojects = response.quantity_subprojects;
                 });
 
-            var contentVue = this
+            var contentVue = this;
             $.get(UrlsAcciones.UrlTarget, this.requestParameters)
                 .then(function (response) {
 
@@ -302,14 +301,14 @@ var app = new Vue({
 
                     this.graphicFiscalyear();
                     this.graphicParticipants('GraphicQuarter');
-                    this.graficoMetas();
+                    this.graphicGoals();
                     this.graphFixedColumnGender();
                     // function to graph a stacked chart with line
                     this.graphicStackedLine();
                     this.loadDataTable();
                 });
             // funcion to graph the participants by age
-            this.graficoParticipantesEdad();
+            this.graphicParticipantsAge();
             // funcion to graph the participants by education
             this.graficoParticipantesEduacion();
 

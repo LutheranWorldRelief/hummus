@@ -321,7 +321,7 @@ var graphicMixins = {
                     resolved(true);
                 });
             },
-            graficoMetas() {
+            graphicGoals() {
                 let myChart = echarts.init(document.getElementById('MetaParticipantes'));
 
                 var label = {
@@ -612,7 +612,7 @@ var graphicMixins = {
                 this.responsiveChart('#tabs_target-click', myChart);
                 myChart.setOption(option);
             },
-            graficoParticipantesEdad() {
+            graphicParticipantsAge() {
                 $.get(UrlsAcciones.UrlGraficoEdad, this.requestParameters)
                     .then(response => {
                         let data = response.edad;
