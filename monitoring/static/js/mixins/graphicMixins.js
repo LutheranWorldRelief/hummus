@@ -1429,6 +1429,149 @@ var graphicMixins = {
                     return table;
                 }
             }
+        },
+        graphicStackedChart(parameters, type_chart = null, contant_id = null) {
+            const container_id = document.getElementById(contant_id);
+            let myChart = echarts.init(container_id);
+            let size_array_default = new Array(parameters.series.men.data.length).fill(0);
+            let series = [];
+
+            for (const gender in parameters.series) {
+                series.push({
+                    name: parameters.series[gender].name,
+                    data: parameters.series[gender].data
+                });
+            }
+
+            series.push({
+                name: 'null',
+                data: size_array_default
+            });
+
+            function isLastSeries(index) {
+                return index === series.length - 1;
+            }
+
+            let option = {
+                toolbox: parameters.toolbox,
+                color: parameters.colors,
+                backgroundColor: parameters.backgroundColor,
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow' //'line' | 'shadow'
+                    }, formatter: (params) => {
+                        let axisValue = `<p>${params[0].axisValue}</p>`;
+                        params.forEach(item => {
+                            let datum = this.formatNumber(item.data);
+                            if (item.seriesName !== 'null') {
+                                axisValue += `<p>${item.marker} ${item.seriesName}: ${datum}</p>`;
+                            }
+                        });
+                        return axisValue;
+                    },
+                },
+                legend: {
+                    data: parameters.legend.labels,
+                    center: parameters.legend.center
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '6%',
+                    containLabel: true
+                },
+                calculable: true,
+                xAxis: [{
+                    type: 'category',
+                    position: 'bottom',
+                    data: parameters.valuesXAxis,
+                    axisLabel: {
+                        rotate: 90,
+                        verticalAlign: 'middle',
+                    },
+                }],
+                yAxis: {
+                    type: 'value'
+                },
+                series: series.map((items, index) => {
+                    return Object.assign(items, {
+                        type: type_chart,
+                        stack: true,
+                        label: {
+                            show: true,
+                            formatter: isLastSeries(index) ? this.genFormatter(series) : this.getLocateStringChart(items, index),
+                            fontSize: isLastSeries(index) ? 13 : 11,
+                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
+                            position: isLastSeries(index) ? 'top' : 'inside',
+                            verticalAlign: 'middle',
+                            distance: 30,
+                        },
+                    })
+                })
+            };
+
+            if (contant_id === 'TrimestralGraph') {
+                //Barra para realizar Zoom
+                option.dataZoom = [{
+                    show: true,
+                    height: 20,
+                    xAxisIndex: [0],
+                    bottom: 0,
+                    start: 50,
+                    end: 100,
+                    handleIcon: this.icon_graph,
+                    handleSize: '110%',
+                    handleStyle: {
+                        color: 'rgba(144,151,156,.8)',
+                    },
+                    textStyle: {
+                        color: '#000'
+                    },
+                    borderColor: '#90979c'
+                }, {
+                    type: 'inside',
+                    show: true,
+                    height: 15,
+                    start: 1,
+                    end: 35
+                }];
+            }
+
+            myChart.setOption(option);
+
+            myChart.on('legendselectchanged', (params) => {
+                let gender = '';
+                let selected = params.selected;
+                if (selected.Men && selected.Women) {
+                    gender = null;
+                } else if (!selected.Men && selected.Women) {
+                    gender = this.names_legends[1];
+                } else if (selected.Men && !selected.Women) {
+                    gender = this.names_legends[0];
+                }
+
+                option.series.map((item, index) => Object.assign(item, {
+                    type: type_chart,
+                    stack: true,
+                    label: {
+                        show: true,
+                        formatter: isLastSeries(index) ? this.genFormatter(series, gender) : this.getLocateStringChart(items, index),
+                        fontSize: isLastSeries(index) ? 13 : 11,
+                        color: isLastSeries(index) ? '#4f5f6f' : '#000',
+                        position: isLastSeries(index) ? 'top' : 'inside',
+                        rotate: 90,
+                        verticalAlign: 'middle',
+                        distance: 30,
+                    },
+                }));
+
+                myChart.setOption(option);
+            });
+
+            if (parameters['responsive']) {
+                this.responsiveChart(parameters['responsive'].id_tab, myChart);
+            }
         }
     }
 };
