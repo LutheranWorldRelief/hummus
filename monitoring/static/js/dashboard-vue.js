@@ -300,7 +300,7 @@ var app = new Vue({
                     }
 
                     this.graphicFiscalyear();
-                    this.graphicParticipants('GraphicQuarter');
+                    this.graphicParticipants();
                     this.graphicGoals();
                     this.graphFixedColumnGender();
                     // function to graph a stacked chart with line

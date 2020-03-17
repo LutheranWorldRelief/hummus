@@ -34,292 +34,58 @@ var graphicMixins = {
     },
     methods: {
         graphicFiscalyear() {
-            let myChart = echarts.init(document.getElementById('FiscalYearGraph'));
-            this.defaultSerie = new Array(this.hombres.length).fill(0);
-            let series = [
-                {
-                    name: this.names_legends[0],
-                    type: 'bar',
-                    stack: true,
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+            let parameters = {
+                series: {
+                    men: {
+                        name: this.names_legends[0],
+                        data: this.hombres,
                     },
-                    data: this.hombres
-                },
-                {
-                    name: this.names_legends[1],
-                    type: 'bar',
-                    stack: true,
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: this.mujeres
-                },
-                {
-                    name: 'null',
-                    data: this.defaultSerie
-                }
-            ];
-
-            function isLastSeries(index) {
-                return index === series.length - 1
-            }
-
-            let option = {
-                toolbox: this.setToolBox('Participants by fiscal year', true),
-                color: [this.colors.men, this.colors.women],
-                backgroundColor: this.background_color,
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow' //'line' | 'shadow'
-                    }, formatter: (params) => {
-                        let axisValue = `<p>${params[0].axisValue}</p>`;
-                        params.forEach(item => {
-                            let datum = this.formatNumber(item.data);
-                            if (item.seriesName !== 'null') {
-                                axisValue += `<p>${item.marker} ${item.seriesName}: ${datum}</p>`;
-                            }
-                        });
-                        return axisValue;
-                    },
+                    women: {
+                        name: this.names_legends[1],
+                        data: this.mujeres,
+                    }
                 },
                 legend: {
-                    data: this.names_legends.slice(0, 2),
-                    center: 'right'
+                    labels: this.names_legends.slice(0, 2),
+                    center: 'center'
                 },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '6%',
-                    containLabel: true
-                },
-                "calculable": true,
-                xAxis: [{
-                    type: 'category',
-                    position: 'bottom',
-                    data: this.anios,
-                    axisLabel: {
-                        rotate: 90,
-                        verticalAlign: 'middle',
-                    },
-                }],
-                yAxis: {
-                    type: 'value'
-                }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
-                series: series.map((items, index) => Object.assign(items, {
-                    type: 'bar',
-                    stack: true,
-                    label: {
-                        show: true,
-                        formatter: isLastSeries(index) ? this.genFormatter(series) : this.getLocateStringChart(items, index),
-                        fontSize: isLastSeries(index) ? 13 : 11,
-                        color: isLastSeries(index) ? '#4f5f6f' : '#000',
-                        position: isLastSeries(index) ? 'top' : 'inside',
-                        verticalAlign: 'middle',
-                        distance: 30,
-                    },
-                }))
+                colors: [this.colors.men, this.colors.women],
+                backgroundColor: this.background_color,
+                toolbox: this.setToolBox('Participants by fiscal year', true),
+                valuesXAxis: this.anios,
+                responsive: {
+                    id_tab: '#tab_quarter-click li'
+                }
             };
 
-            myChart.setOption(option);
-
-            myChart.on('legendselectchanged', (params) => {
-                let gender = '';
-                let selected = params.selected;
-                if (selected.Men && selected.Women) {
-                    gender = null;
-                } else if (!selected.Men && selected.Women) {
-                    gender = this.names_legends[1];
-                } else if (selected.Men && !selected.Women) {
-                    gender = this.names_legends[0];
-                }
-
-                option.series.map((item, index) => Object.assign(item, {
-                    type: 'bar',
-                    stack: true,
-                    label: {
-                        show: true,
-                        formatter: isLastSeries(index) ? this.genFormatter(series, gender) : this.getLocateStringChart(items, index),
-                        fontSize: isLastSeries(index) ? 13 : 11,
-                        color: isLastSeries(index) ? '#4f5f6f' : '#000',
-                        position: isLastSeries(index) ? 'top' : 'inside',
-                        rotate: 90,
-                        verticalAlign: 'middle',
-                        distance: 30,
-                    },
-                }));
-
-                myChart.setOption(option);
-            });
-            this.responsiveChart('#tab_quarter-click li', myChart);
+            this.graphicStackedChart(parameters, 'bar', 'FiscalYearGraph');
         },
-        graphicParticipants(type) {
-            return new Promise((resolved, reject) => {
-                let myChart = echarts.init(document.getElementById(type === 'GraphicQuarter' ? 'TrimestralGraph' : 'FiscalYearGraph'));
-
-                let series = [
-                    {
+        graphicParticipants() {
+            let parameters = {
+                series: {
+                    men: {
                         name: this.names_legends[0],
-                        type: 'bar',
-                        stack: true,
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'insideRight'
-                            }
-                        },
-                        data: type === 'GraphicQuarter' ? this.hombresQ : this.hombres
+                        data: this.hombresQ,
                     },
-                    {
+                    women: {
                         name: this.names_legends[1],
-                        type: 'bar',
-                        stack: true,
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'insideRight'
-                            }
-                        },
-                        data: type === 'GraphicQuarter' ? this.mujeresQ : this.mujeres
-                    },
-                    {
-                        name: 'null',
-                        data: type === 'GraphicQuarter' ? this.defauldSerieQ : this.defauldSerie
+                        data: this.mujeresQ,
                     }
-                ];
-
-                function isLastSeries(index) {
-                    return index === series.length - 1
+                },
+                legend: {
+                    labels: this.names_legends.slice(0, 2),
+                    center: 'center'
+                },
+                colors: [this.colors.men, this.colors.women],
+                backgroundColor: this.background_color,
+                toolbox: this.setToolBox('Participants by quarter', true),
+                valuesXAxis: this.aniosQ,
+                responsive: {
+                    id_tab: '#tab_quarter-click li'
                 }
+            };
 
-                let text_label = type === 'GraphicQuarter' ? 'Participants by quarter' : 'Participants by fiscal year';
-                let option = {
-                    toolbox: this.setToolBox(text_label, true),
-                    color: [this.colors.men, this.colors.women],
-                    backgroundColor: this.background_color,
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow' //'line' | 'shadow'
-                        }, formatter: (params) => {
-                            let axisValue = `<p>${params[0].axisValue}</p>`;
-                            params.forEach(item => {
-                                let datum = this.formatNumber(item.data);
-                                if (item.seriesName !== 'null') {
-                                    axisValue += `<p>${item.marker} ${item.seriesName}: ${datum}</p>`;
-                                }
-                            });
-                            return axisValue;
-                        },
-                    },
-                    legend: {
-                        data: this.names_legends.slice(0, 2),
-                        center: 'right'
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '6%',
-                        containLabel: true
-                    },
-                    "calculable": true,
-                    xAxis: [{
-                        type: 'category',
-                        position: 'bottom',
-                        data: type === 'GraphicQuarter' ? this.aniosQ : this.anios,
-                        axisLabel: {
-                            rotate: 90,
-                            verticalAlign: 'middle',
-                        },
-                    }],
-                    yAxis: {
-                        type: 'value'
-                    }, //Sumar valores de la serie (cantidad hombres y mujeres por año)
-                    series: series.map((items, index) => Object.assign(items, {
-                        type: 'bar',
-                        stack: true,
-                        label: {
-                            show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series) : this.getLocateStringChart(items, index),
-                            fontSize: isLastSeries(index) ? 13 : 11,
-                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
-                            position: isLastSeries(index) ? 'top' : 'inside',
-                            verticalAlign: 'middle',
-                            distance: 30,
-                        },
-                    }))
-                };
-
-                if (type === 'GraphicQuarter') {
-                    //Barra para realizar Zoom
-                    option.dataZoom = [{
-                        "show": true,
-                        "height": 20,
-                        "xAxisIndex": [
-                            0
-                        ],
-                        bottom: 0,
-                        "start": 50,
-                        "end": 100,
-                        handleIcon: this.icon_graph,
-                        handleSize: '110%',
-                        handleStyle: {
-                            color: 'rgba(144,151,156,.8)',
-                        },
-                        textStyle: {
-                            color: "#000"
-                        },
-                        borderColor: "#90979c"
-                    }, {
-                        "type": "inside",
-                        "show": true,
-                        "height": 15,
-                        "start": 1,
-                        "end": 35
-                    }]
-                }
-
-                myChart.setOption(option);
-
-                myChart.on('legendselectchanged', (params) => {
-                    let gender = '';
-                    let selected = params.selected;
-                    if (selected.Men && selected.Women) {
-                        gender = null;
-                    } else if (!selected.Men && selected.Women) {
-                        gender = this.names_legends[1];
-                    } else if (selected.Men && !selected.Women) {
-                        gender = this.names_legends[0];
-                    }
-
-                    option.series.map((item, index) => Object.assign(item, {
-                        type: 'bar',
-                        stack: true,
-                        label: {
-                            show: true,
-                            formatter: isLastSeries(index) ? this.genFormatter(series, gender) : this.getLocateStringChart(items, index),
-                            fontSize: isLastSeries(index) ? 13 : 11,
-                            color: isLastSeries(index) ? '#4f5f6f' : '#000',
-                            position: isLastSeries(index) ? 'top' : 'inside',
-                            rotate: 90,
-                            verticalAlign: 'middle',
-                            distance: 30,
-                        },
-                    }));
-
-                    myChart.setOption(option);
-                });
-                this.responsiveChart('#tab_quarter-click li', myChart);
-
-                resolved(true);
-            });
+            this.graphicStackedChart(parameters, 'bar', 'TrimestralGraph');
         },
         graphicGoals() {
             let myChart = echarts.init(document.getElementById('MetaParticipantes'));
